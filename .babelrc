@@ -1,0 +1,17 @@
+{
+  "plugins": [
+    "relay",
+    "transform-runtime"
+  ],
+  "presets": [
+    "react",
+    [
+      "env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
+  ]
+}
