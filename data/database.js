@@ -1,10 +1,4 @@
-function makeIdGenerator(initialId = 0) {
-  let nextId = initialId;
-
-  return function generateId() {
-    return `${nextId++}`;
-  };
-}
+import makeIdGenerator from '../src/common/makeIdGenerator';
 
 // User (Viewer)
 
