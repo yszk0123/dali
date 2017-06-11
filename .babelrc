@@ -1,7 +1,9 @@
 {
   "plugins": [
-    "relay",
-    "transform-runtime"
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "transform-runtime",
+    "relay"
   ],
   "presets": [
     "react",
