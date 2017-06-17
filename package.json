@@ -8,6 +8,8 @@
   "license": "MIT",
   "scripts": {
     "start": "babel-node ./server.js",
+    "test": "jest",
+    "typecheck": "flow",
     "build": "run-s build:relay build:js",
     "build:js": "webpack",
     "build:relay": "relay-compiler --src ./src/ --schema ./data/schema.graphql",
