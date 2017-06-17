@@ -1,0 +1,20 @@
+[ignore]
+# Test
+.*/__tests__/.*
+
+# npm
+.*/node_modules/babel-plugin-.*
+.*/node_modules/relay-compiler/.*
+.*/node_modules/styled-components/.*
+
+# Use built-in definitions
+.*/node_modules/react/react.js
+.*/node_modules/react/lib/React.js
+.*/node_modules/react/lib/ReactDOM.js
+
+[include]
+
+[libs]
+defs/
+
+[options]
