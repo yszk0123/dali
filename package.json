@@ -9,6 +9,7 @@
   "scripts": {
     "start": "babel-node ./server.js",
     "test": "jest",
+    "test:ci": "yarn typecheck && jest --coverage && cat ./coverage/lcov.info | coveralls",
     "typecheck": "flow",
     "build": "run-s build:relay build:js",
     "build:js": "webpack",
