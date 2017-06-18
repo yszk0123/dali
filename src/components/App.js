@@ -1,3 +1,5 @@
+/* @flow */
+import type { App_viewer } from './__generated__/App_viewer.graphql';
 import React from 'react';
 import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
@@ -8,7 +10,8 @@ const Wrapper = styled.div`
   padding: 1rem;
 `;
 
-function App({ viewer }) {
+type Props = { viewer: App_viewer };
+export function App({ viewer }: Props) {
   return (
     <Wrapper>
       <h1>Hello, {viewer.name}!</h1>
@@ -18,8 +21,9 @@ function App({ viewer }) {
   );
 }
 
-export default createFragmentContainer(App, {
-  viewer: graphql`
+export default createFragmentContainer(
+  App,
+  graphql`
     fragment App_viewer on User {
       id
       name
@@ -27,4 +31,4 @@ export default createFragmentContainer(App, {
       ...RoundList_viewer
     }
   `,
-});
+);

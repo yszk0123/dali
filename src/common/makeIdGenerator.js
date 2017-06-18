@@ -1,4 +1,8 @@
-export default function makeIdGenerator(name = null) {
+/* @flow */
+
+type IdGenerator = () => string;
+
+export default function makeIdGenerator(name: ?string = null): IdGenerator {
   let nextId = 0;
   const prefix = name ? `${name}:` : '';
 

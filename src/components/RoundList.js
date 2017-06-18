@@ -3,7 +3,7 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import Round from './Round';
 import AddRoundMutation from '../mutations/AddRoundMutation';
 
-class RoundList extends React.Component {
+export class RoundList extends React.Component {
   _handleAddRoundClick = event => {
     this._addRound();
   };
@@ -37,8 +37,9 @@ class RoundList extends React.Component {
   }
 }
 
-export default createFragmentContainer(RoundList, {
-  viewer: graphql`
+export default createFragmentContainer(
+  RoundList,
+  graphql`
     fragment RoundList_viewer on User {
       id
       rounds(first: 100) @connection(key: "RoundList_rounds") {
@@ -51,4 +52,4 @@ export default createFragmentContainer(RoundList, {
       }
     }
   `,
-});
+);

@@ -1,3 +1,4 @@
+/* @flow */
 import React from 'react';
 import styled from 'styled-components';
 
@@ -9,7 +10,8 @@ const Wrapper = styled.div`
   minHeight: 50px;
 `;
 
-export default function ErrorOutput({ error }) {
+type Props = { error: Error };
+export default function ErrorOutput({ error }: Props) {
   return (
     <Wrapper>
       {error.message}

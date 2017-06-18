@@ -2,7 +2,7 @@ import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import Project from './Project';
 
-function ProjectList({ viewer }) {
+export function ProjectList({ viewer }) {
   return (
     <div>
       <h1>Projects</h1>
@@ -17,8 +17,9 @@ function ProjectList({ viewer }) {
   );
 }
 
-export default createFragmentContainer(ProjectList, {
-  viewer: graphql`
+export default createFragmentContainer(
+  ProjectList,
+  graphql`
     fragment ProjectList_viewer on User {
       projects(first: 100) {
         edges {
@@ -30,4 +31,4 @@ export default createFragmentContainer(ProjectList, {
       }
     }
   `,
-});
+);
