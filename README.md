@@ -2,13 +2,14 @@
 
 # Development
 
-1. Install dependencies `$ npm install`
-2. Watch file change `$ npm run watch`
-3. Start server `$ npm start`
+- `$ npm install` installs dependencies
+- `$ npm run watch` watches file change
+- `$ npm start` starts the development server
+- `$ npm test` runs the complete test suite
 
-## When schema is updated
+## How to Update Schema
 
-1. Update schema file `$ npm run update:schema`
-2. Restart server `$ npm start`
+- `$ npm run update:schema` updates schema file
+- `$ npm start` restarts the server
 
-(Make sure to commit `schema.graphql`)
+Make sure to commit `schema.graphql` after update.
