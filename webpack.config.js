@@ -7,7 +7,7 @@ const BabiliWebpackPlugin = require('babili-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-module.exports = env => {
+module.exports = (env = {}) => {
   const appPort = env.appPort || process.env.APP_PORT || 3000;
   const graphQLPort = env.graphQLPort || process.env.GRAPHQL_PORT || 3001;
 
