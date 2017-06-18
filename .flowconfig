@@ -4,6 +4,8 @@
 
 # npm
 .*/node_modules/babel-plugin-.*
+.*/node_modules/graphql-.*
+.*/node_modules/graphiql/.*
 .*/node_modules/relay-compiler/.*
 .*/node_modules/styled-components/.*
 
