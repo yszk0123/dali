@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/yszk0123/dali.svg?branch=master)](https://travis-ci.org/yszk0123/dali)
+
 # Development
 
 1. Install dependencies `$ npm install`
