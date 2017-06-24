@@ -1,3 +1,13 @@
+input AddTaskUnitInput {
+  clientMutationId: String
+}
+
+type AddTaskUnitPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
 input AddTimeUnitInput {
   title: String!
   clientMutationId: String
@@ -9,7 +19,73 @@ type AddTimeUnitPayload {
   clientMutationId: String
 }
 
+input CreateDailyReportInput {
+  clientMutationId: String
+}
+
+type CreateDailyReportPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input CreateDailyReportTemplateInput {
+  clientMutationId: String
+}
+
+type CreateDailyReportTemplatePayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input CreateProjectInput {
+  clientMutationId: String
+}
+
+type CreateProjectPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input CreateTaskUnitInput {
+  clientMutationId: String
+}
+
+type CreateTaskUnitPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input CreateTimeUnitInput {
+  clientMutationId: String
+}
+
+type CreateTimeUnitPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
 type Mutation {
+  addTaskUnit(input: AddTaskUnitInput!): AddTaskUnitPayload
+  createDailyReport(input: CreateDailyReportInput!): CreateDailyReportPayload
+  createDailyReportTemplate(input: CreateDailyReportTemplateInput!): CreateDailyReportTemplatePayload
+  createProject(input: CreateProjectInput!): CreateProjectPayload
+  createTaskUnit(input: CreateTaskUnitInput!): CreateTaskUnitPayload
+  createTimeUnit(input: CreateTimeUnitInput!): CreateTimeUnitPayload
+  removeDailyReport(input: RemoveDailyReportInput!): RemoveDailyReportPayload
+  removeDailyReportTemplate(input: RemoveDailyReportTemplateInput!): RemoveDailyReportTemplatePayload
+  removeProject(input: RemoveProjectInput!): RemoveProjectPayload
+  removeTaskUnit(input: RemoveTaskUnitInput!): RemoveTaskUnitPayload
+  removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
+  updateDailyReport(input: UpdateDailyReportInput!): UpdateDailyReportPayload
+  updateDailyReportTemplate(input: UpdateDailyReportTemplateInput!): UpdateDailyReportTemplatePayload
+  updateProject(input: UpdateProjectInput!): UpdateProjectPayload
+  updateTaskUnit(input: UpdateTaskUnitInput!): UpdateTaskUnitPayload
+  updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
   addTimeUnit(input: AddTimeUnitInput!): AddTimeUnitPayload
 }
 
@@ -68,6 +144,56 @@ type Query {
   ): Node
 }
 
+input RemoveDailyReportInput {
+  clientMutationId: String
+}
+
+type RemoveDailyReportPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input RemoveDailyReportTemplateInput {
+  clientMutationId: String
+}
+
+type RemoveDailyReportTemplatePayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input RemoveProjectInput {
+  clientMutationId: String
+}
+
+type RemoveProjectPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input RemoveTaskUnitInput {
+  clientMutationId: String
+}
+
+type RemoveTaskUnitPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input RemoveTimeUnitInput {
+  clientMutationId: String
+}
+
+type RemoveTimeUnitPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
 type TimeUnit {
   # The ID of an object
   id: ID!
@@ -90,6 +216,56 @@ type TimeUnitEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+input UpdateDailyReportInput {
+  clientMutationId: String
+}
+
+type UpdateDailyReportPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input UpdateDailyReportTemplateInput {
+  clientMutationId: String
+}
+
+type UpdateDailyReportTemplatePayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input UpdateProjectInput {
+  clientMutationId: String
+}
+
+type UpdateProjectPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input UpdateTaskUnitInput {
+  clientMutationId: String
+}
+
+type UpdateTaskUnitPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
+}
+
+input UpdateTimeUnitInput {
+  clientMutationId: String
+}
+
+type UpdateTimeUnitPayload {
+  # The ID of an object
+  id: ID!
+  clientMutationId: String
 }
 
 type User implements Node {

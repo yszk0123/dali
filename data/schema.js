@@ -160,9 +160,48 @@ const GraphQLAddTimeUnitMutation = mutationWithClientMutationId({
   },
 });
 
+function getLowerCamelCase(s) {
+  return `${s[0].toLowerCase()}${s.slice(1)}`;
+}
+
+function createStubMutationFields(names) {
+  const fields = {};
+
+  names.forEach(name => {
+    fields[getLowerCamelCase(name)] = mutationWithClientMutationId({
+      name,
+      inputFields: {},
+      outputFields: {
+        id: globalIdField(name),
+      },
+      mutateAndGetPayload: () => {},
+    });
+  });
+
+  return fields;
+}
+
 const GraphQLMutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
+    ...createStubMutationFields([
+      'AddTaskUnit',
+      'CreateDailyReport',
+      'CreateDailyReportTemplate',
+      'CreateProject',
+      'CreateTaskUnit',
+      'CreateTimeUnit',
+      'RemoveDailyReport',
+      'RemoveDailyReportTemplate',
+      'RemoveProject',
+      'RemoveTaskUnit',
+      'RemoveTimeUnit',
+      'UpdateDailyReport',
+      'UpdateDailyReportTemplate',
+      'UpdateProject',
+      'UpdateTaskUnit',
+      'UpdateTimeUnit',
+    ]),
     addTimeUnit: GraphQLAddTimeUnitMutation,
   },
 });
