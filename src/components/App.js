@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import ProjectList from './ProjectList';
-import RoundList from './RoundList';
+import TimeUnitList from './TimeUnitList';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -16,7 +16,7 @@ export function App({ viewer }: Props) {
     <Wrapper>
       <h1>Hello, {viewer.name}!</h1>
       <ProjectList viewer={viewer} />
-      <RoundList viewer={viewer} />
+      <TimeUnitList viewer={viewer} />
     </Wrapper>
   );
 }
@@ -28,7 +28,7 @@ export default createFragmentContainer(
       id
       name
       ...ProjectList_viewer
-      ...RoundList_viewer
+      ...TimeUnitList_viewer
     }
   `,
 );

@@ -21,12 +21,12 @@ import {
   toGlobalId,
 } from 'graphql-relay';
 import {
-  addRound,
+  addTimeUnit,
   getUserById,
   getViewer,
   getProjects,
-  getRounds,
-  getRoundById,
+  getTimeUnits,
+  getTimeUnitById,
 } from './database.js';
 
 // Node
@@ -71,12 +71,12 @@ const {
   nodeType: GraphQLProject,
 });
 
-// Round
+// TimeUnit
 
-const GraphQLRound = new GraphQLObjectType({
-  name: 'Round',
+const GraphQLTimeUnit = new GraphQLObjectType({
+  name: 'TimeUnit',
   fields: {
-    id: globalIdField('Round'),
+    id: globalIdField('TimeUnit'),
     title: {
       type: GraphQLString,
       resolve: obj => obj.title,
@@ -85,11 +85,11 @@ const GraphQLRound = new GraphQLObjectType({
 });
 
 const {
-  connectionType: GraphQLRoundsConnection,
-  edgeType: GraphQLRoundEdge,
+  connectionType: GraphQLTimeUnitsConnection,
+  edgeType: GraphQLTimeUnitEdge,
 } = connectionDefinitions({
-  name: 'Round',
-  nodeType: GraphQLRound,
+  name: 'TimeUnit',
+  nodeType: GraphQLTimeUnit,
 });
 
 // User
@@ -107,10 +107,10 @@ const GraphQLUser = new GraphQLObjectType({
       args: connectionArgs,
       resolve: (obj, args) => connectionFromArray(getProjects(), args),
     },
-    rounds: {
-      type: GraphQLRoundsConnection,
+    timeUnits: {
+      type: GraphQLTimeUnitsConnection,
       args: connectionArgs,
-      resolve: (obj, args) => connectionFromArray(getRounds(), args),
+      resolve: (obj, args) => connectionFromArray(getTimeUnits(), args),
     },
   },
   interfaces: [nodeInterface],
@@ -131,20 +131,20 @@ const GraphQLQuery = new GraphQLObjectType({
 
 // Mutations
 
-const GraphQLAddRoundMutation = mutationWithClientMutationId({
-  name: 'AddRound',
+const GraphQLAddTimeUnitMutation = mutationWithClientMutationId({
+  name: 'AddTimeUnit',
   inputFields: {
     title: { type: new GraphQLNonNull(GraphQLString) },
   },
   outputFields: {
-    roundEdge: {
-      type: GraphQLRoundEdge,
-      resolve: ({ localRoundId }) => {
-        const round = getRoundById(localRoundId);
+    timeUnitEdge: {
+      type: GraphQLTimeUnitEdge,
+      resolve: ({ localTimeUnitId }) => {
+        const timeUnit = getTimeUnitById(localTimeUnitId);
 
         return {
-          cursor: cursorForObjectInConnection(getRounds(), round),
-          node: round,
+          cursor: cursorForObjectInConnection(getTimeUnits(), timeUnit),
+          node: timeUnit,
         };
       },
     },
@@ -154,16 +154,16 @@ const GraphQLAddRoundMutation = mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: ({ title }) => {
-    const localRoundId = addRound({ title });
+    const localTimeUnitId = addTimeUnit({ title });
 
-    return { localRoundId };
+    return { localTimeUnitId };
   },
 });
 
 const GraphQLMutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    addRound: GraphQLAddRoundMutation,
+    addTimeUnit: GraphQLAddTimeUnitMutation,
   },
 });
 

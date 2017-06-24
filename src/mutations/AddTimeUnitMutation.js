@@ -3,12 +3,12 @@ import { ConnectionHandler } from 'relay-runtime';
 import makeIdGenerator from '../common/makeIdGenerator';
 
 const generateId = makeIdGenerator();
-const generateOptimisticId = makeIdGenerator('client:newRound');
+const generateOptimisticId = makeIdGenerator('client:newTimeUnit');
 
 const mutation = graphql`
-  mutation AddRoundMutation($input: AddRoundInput!) {
-    addRound(input: $input) {
-      roundEdge {
+  mutation AddTimeUnitMutation($input: AddTimeUnitInput!) {
+    addTimeUnit(input: $input) {
+      timeUnitEdge {
         __typename
         cursor
         node {
@@ -24,7 +24,7 @@ function sharedUpdater(store, user, newEdge) {
   const userProxy = store.get(user.id);
   const connection = ConnectionHandler.getConnection(
     userProxy,
-    'RoundList_rounds',
+    'TimeUnitList_timeUnits',
   );
 
   ConnectionHandler.insertEdgeAfter(connection, newEdge);
@@ -40,18 +40,18 @@ function commit(environment, { title }, user) {
       },
     },
     updater: store => {
-      const payload = store.getRootField('addRound');
-      const newEdge = payload.getLinkedRecord('roundEdge');
+      const payload = store.getRootField('addTimeUnit');
+      const newEdge = payload.getLinkedRecord('timeUnitEdge');
 
       sharedUpdater(store, user, newEdge);
     },
     optimisticUpdater: store => {
       const id = generateOptimisticId();
-      const node = store.create(id, 'Round');
+      const node = store.create(id, 'TimeUnit');
       node.setValue(title, 'title');
       node.setValue(id, 'id');
 
-      const newEdge = store.create(generateOptimisticId(), 'RoundEdge');
+      const newEdge = store.create(generateOptimisticId(), 'TimeUnitEdge');
       newEdge.setLinkedRecord(node, 'node');
 
       sharedUpdater(store, user, newEdge);

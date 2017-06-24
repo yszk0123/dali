@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  background: #f62;
+  backgtimeUnit: #f62;
   padding: 10px;
   color: white;
   minWidth: 200px;

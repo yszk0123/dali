@@ -54,44 +54,44 @@ export function getProjects() {
   return projectIdsByUser[VIEWER_ID].map(id => projectsById[id]);
 }
 
-// Round
+// TimeUnit
 
-const generateRoundId = makeIdGenerator();
+const generateTimeUnitId = makeIdGenerator();
 
-class Round {
+class TimeUnit {
   constructor({ title }) {
-    this.id = generateRoundId();
+    this.id = generateTimeUnitId();
     this.title = title;
   }
 }
 
-const roundsById = {};
+const timeUnitsById = {};
 
-const roundIdsByUser = {
+const timeUnitIdsByUser = {
   [VIEWER_ID]: [],
 };
 
-export function addRound({ title }) {
-  const round = new Round({ title });
+export function addTimeUnit({ title }) {
+  const timeUnit = new TimeUnit({ title });
 
-  roundsById[round.id] = round;
-  roundIdsByUser[VIEWER_ID].push(round.id);
+  timeUnitsById[timeUnit.id] = timeUnit;
+  timeUnitIdsByUser[VIEWER_ID].push(timeUnit.id);
 
-  return round.id;
+  return timeUnit.id;
 }
 
-export function getRoundById(id) {
-  return roundsById[id];
+export function getTimeUnitById(id) {
+  return timeUnitsById[id];
 }
 
-export function getRounds() {
-  return roundIdsByUser[VIEWER_ID].map(id => roundsById[id]);
+export function getTimeUnits() {
+  return timeUnitIdsByUser[VIEWER_ID].map(id => timeUnitsById[id]);
 }
 
 // Fake data
 
 addProject({ title: 'Private' });
 addProject({ title: 'Work' });
-addRound({ title: 'Breakfast' });
-addRound({ title: 'Lunch' });
-addRound({ title: 'Dinner' });
+addTimeUnit({ title: 'Breakfast' });
+addTimeUnit({ title: 'Lunch' });
+addTimeUnit({ title: 'Dinner' });
