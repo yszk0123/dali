@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import TimeUnit from '../TimeUnit';
+import TimeUnitItem from '../TimeUnitItem';
 import { TimeUnitList } from '../TimeUnitList';
 import AddTimeUnitMutation from '../../mutations/AddTimeUnitMutation';
 jest.mock('../../mutations/AddTimeUnitMutation');
@@ -22,20 +22,21 @@ const viewer = {
 test('renders timeUnits', () => {
   const timeUnitList = shallow(<TimeUnitList relay={relay} viewer={viewer} />);
 
-  expect(timeUnitList.find(TimeUnit)).toHaveLength(
+  expect(timeUnitList.find(TimeUnitItem)).toHaveLength(
     viewer.timeUnits.edges.length,
   );
 });
 
 test('commits AddTimeUnitMutation when the add button clicked', () => {
   const timeUnitList = shallow(<TimeUnitList relay={relay} viewer={viewer} />);
-  const input = { title: 'hoge' };
+  const input = { title: 'foo' };
 
   timeUnitList
     .find('input')
     .simulate('change', { target: { value: input.title } });
   timeUnitList.find('button').simulate('click');
 
+  expect(timeUnitList.state('title')).toEqual('');
   expect(AddTimeUnitMutation.commit).toHaveBeenCalledWith(
     relay.environment,
     input,

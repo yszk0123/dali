@@ -1,9 +1,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import DashboardPage from '../DashboardPage';
+import { DashboardPage } from '../DashboardPage';
+import TimeUnitList from '../TimeUnitList';
+
+const relay = { environment: {} };
+const viewer = {};
 
 test('renders', () => {
-  const wrapper = shallow(<DashboardPage />);
+  const wrapper = shallow(<DashboardPage relay={relay} viewer={viewer} />);
 
-  expect(wrapper).toBeDefined();
+  expect(wrapper.find(TimeUnitList).exists()).toBeTruthy();
 });

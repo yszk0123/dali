@@ -26,6 +26,7 @@ import {
   getViewer,
   getProjects,
   getTimeUnits,
+  getTaskUnits,
   getTimeUnitById,
 } from './database.js';
 
@@ -92,6 +93,27 @@ const {
   nodeType: GraphQLTimeUnit,
 });
 
+// TaskUnit
+
+const GraphQLTaskUnit = new GraphQLObjectType({
+  name: 'TaskUnit',
+  fields: {
+    id: globalIdField('TaskUnit'),
+    title: {
+      type: GraphQLString,
+      resolve: obj => obj.title,
+    },
+  },
+});
+
+const {
+  connectionType: GraphQLTaskUnitsConnection,
+  edgeType: GraphQLTaskUnitEdge,
+} = connectionDefinitions({
+  name: 'TaskUnit',
+  nodeType: GraphQLTaskUnit,
+});
+
 // User
 
 const GraphQLUser = new GraphQLObjectType({
@@ -111,6 +133,11 @@ const GraphQLUser = new GraphQLObjectType({
       type: GraphQLTimeUnitsConnection,
       args: connectionArgs,
       resolve: (obj, args) => connectionFromArray(getTimeUnits(), args),
+    },
+    taskUnits: {
+      type: GraphQLTaskUnitsConnection,
+      args: connectionArgs,
+      resolve: (obj, args) => connectionFromArray(getTaskUnits(), args),
     },
   },
   interfaces: [nodeInterface],

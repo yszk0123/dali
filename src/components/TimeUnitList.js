@@ -1,17 +1,37 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import TimeUnit from './TimeUnit';
+import TimeUnitItem from './TimeUnitItem';
 import AddTimeUnitMutation from '../mutations/AddTimeUnitMutation';
 
 export class TimeUnitList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: '',
+    };
+  }
+
   _handleAddTimeUnitClick = event => {
-    this._addTimeUnit();
+    const { title } = this.state;
+
+    if (title) {
+      this._addTimeUnit(title);
+      this.setState({
+        title: '',
+      });
+    }
   };
 
-  _addTimeUnit() {
+  _handleTitleChange = event => {
+    this.setState({
+      title: event.target.value,
+    });
+  };
+
+  _addTimeUnit(title) {
     AddTimeUnitMutation.commit(
       this.props.relay.environment,
-      { title: 'hoge' },
+      { title },
       this.props.viewer,
     );
   }
@@ -21,16 +41,19 @@ export class TimeUnitList extends React.Component {
 
     return viewer.timeUnits.edges.map(edge =>
       <li key={edge.node.id}>
-        <TimeUnit timeUnit={edge.node} />
+        <TimeUnitItem timeUnit={edge.node} />
       </li>,
     );
   }
 
   render() {
+    const { title } = this.state;
+
     return (
       <div>
         <h1>TimeUnits</h1>
         <ul>{this._renderTimeUnits()}</ul>
+        <input type="text" value={title} onChange={this._handleTitleChange} />
         <button onClick={this._handleAddTimeUnitClick}>Add</button>
       </div>
     );
@@ -46,7 +69,7 @@ export default createFragmentContainer(
         edges {
           node {
             id
-            ...TimeUnit_timeUnit
+            ...TimeUnitItem_timeUnit
           }
         }
       }

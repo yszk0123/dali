@@ -88,6 +88,40 @@ export function getTimeUnits() {
   return timeUnitIdsByUser[VIEWER_ID].map(id => timeUnitsById[id]);
 }
 
+// TaskUnit
+
+const generateTaskUnitId = makeIdGenerator();
+
+class TaskUnit {
+  constructor({ title }) {
+    this.id = generateTaskUnitId();
+    this.title = title;
+  }
+}
+
+const taskUnitsById = {};
+
+const taskUnitIdsByUser = {
+  [VIEWER_ID]: [],
+};
+
+export function addTaskUnit({ title }) {
+  const taskUnit = new TaskUnit({ title });
+
+  taskUnitsById[taskUnit.id] = taskUnit;
+  taskUnitIdsByUser[VIEWER_ID].push(taskUnit.id);
+
+  return taskUnit.id;
+}
+
+export function getTaskUnitById(id) {
+  return taskUnitsById[id];
+}
+
+export function getTaskUnits() {
+  return taskUnitIdsByUser[VIEWER_ID].map(id => taskUnitsById[id]);
+}
+
 // Fake data
 
 addProject({ title: 'Private' });

@@ -1,5 +1,15 @@
 import React from 'react';
+import { createFragmentContainer, graphql } from 'react-relay';
 
-export default function TimeUnitItem() {
-  return <span />;
+export function TimeUnitItem({ timeUnit }) {
+  return <div>{timeUnit.title}</div>;
 }
+
+export default createFragmentContainer(
+  TimeUnitItem,
+  graphql`
+    fragment TimeUnitItem_timeUnit on TimeUnit {
+      title
+    }
+  `,
+);
