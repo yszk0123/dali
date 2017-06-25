@@ -13,7 +13,7 @@ const mutation = graphql`
         cursor
         node {
           id
-          title
+          position
         }
       }
     }
