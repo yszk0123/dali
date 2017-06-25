@@ -1,6 +1,8 @@
 import express from 'express';
 import graphQLHTTP from 'express-graphql';
-import { schema } from './data/schema';
+import { createSchema } from './data/schema';
+import connectDatabase from './data/connectDatabase';
+import generateFakeData from './data/generateFakeData';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import createWebpackConfig from './webpack.config';
@@ -8,9 +10,11 @@ import createWebpackConfig from './webpack.config';
 const APP_PORT = process.env.APP_PORT || 3000;
 const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 3001;
 
-function bootstrapGraphQLServer() {
+async function bootstrapGraphQLServer() {
+  const { models } = await connectDatabase();
+  await generateFakeData({ models });
   const graphQLConfig = {
-    schema,
+    schema: createSchema({ models }),
     graphiql: true,
   };
   const graphQLServer = express();
@@ -34,5 +38,14 @@ function bootstrapAppServer() {
   });
 }
 
-bootstrapGraphQLServer();
-bootstrapAppServer();
+async function main() {
+  try {
+    await bootstrapGraphQLServer();
+    await bootstrapAppServer();
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+}
+
+main();

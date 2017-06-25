@@ -7,7 +7,8 @@
   "author": "Yuji Suzuki <y0suzuki0123@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "babel-node ./server.js",
+    "start": "node -r babel-register ./server.js",
+    "repl": "node -r babel-register -r ./scripts/repl.js",
     "test": "jest",
     "test:ci": "yarn typecheck && jest --coverage && cat ./coverage/lcov.info | coveralls",
     "typecheck": "flow",
@@ -16,7 +17,7 @@
     "build:js": "webpack",
     "build:relay": "relay-compiler --src ./src/ --schema ./data/schema.graphql",
     "watch": "relay-compiler --src ./src/ --schema ./data/schema.graphql --watch",
-    "update:schema": "babel-node ./scripts/updateSchema.js",
+    "update:schema": "node -r babel-register ./scripts/updateSchema.js",
     "lint": "eslint ./src ./data"
   },
   "dependencies": {
@@ -48,6 +49,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.5.1",
     "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.24.1",
     "babel-runtime": "^6.23.0",
     "babili-webpack-plugin": "^0.1.1",
     "css-loader": "^0.28.4",

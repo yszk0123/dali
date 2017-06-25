@@ -1,9 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import { schema } from '../data/schema';
+import { createSchema } from '../data/schema';
 import { printSchema } from 'graphql';
 
 const schemaPath = path.resolve(__dirname, '../data/schema.graphql');
+const dummyModels = {};
+
+const schema = createSchema({ models: dummyModels });
 
 fs.writeFileSync(schemaPath, printSchema(schema));
 
