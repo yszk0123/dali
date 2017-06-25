@@ -59,9 +59,9 @@ export function getProjects() {
 const generateTimeUnitId = makeIdGenerator();
 
 class TimeUnit {
-  constructor({ title }) {
+  constructor({ position }) {
     this.id = generateTimeUnitId();
-    this.title = title;
+    this.position = position;
   }
 }
 
@@ -71,8 +71,8 @@ const timeUnitIdsByUser = {
   [VIEWER_ID]: [],
 };
 
-export function addTimeUnit({ title }) {
-  const timeUnit = new TimeUnit({ title });
+export function addTimeUnit({ position }) {
+  const timeUnit = new TimeUnit({ position });
 
   timeUnitsById[timeUnit.id] = timeUnit;
   timeUnitIdsByUser[VIEWER_ID].push(timeUnit.id);
@@ -126,6 +126,9 @@ export function getTaskUnits() {
 
 addProject({ title: 'Private' });
 addProject({ title: 'Work' });
-addTimeUnit({ title: 'Breakfast' });
-addTimeUnit({ title: 'Lunch' });
-addTimeUnit({ title: 'Dinner' });
+addTimeUnit({ position: 0 });
+addTimeUnit({ position: 1 });
+addTimeUnit({ position: 2 });
+addTaskUnit({ title: 'Breakfast' });
+addTaskUnit({ title: 'Lunch' });
+addTaskUnit({ title: 'Dinner' });

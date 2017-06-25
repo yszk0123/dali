@@ -73,27 +73,6 @@ const {
   nodeType: GraphQLProject,
 });
 
-// TimeUnit
-
-const GraphQLTimeUnit = new GraphQLObjectType({
-  name: 'TimeUnit',
-  fields: {
-    id: globalIdField('TimeUnit'),
-    title: {
-      type: GraphQLString,
-      resolve: obj => obj.title,
-    },
-  },
-});
-
-const {
-  connectionType: GraphQLTimeUnitsConnection,
-  edgeType: GraphQLTimeUnitEdge,
-} = connectionDefinitions({
-  name: 'TimeUnit',
-  nodeType: GraphQLTimeUnit,
-});
-
 // TaskUnit
 
 const GraphQLTaskUnit = new GraphQLObjectType({
@@ -121,6 +100,32 @@ const {
 } = connectionDefinitions({
   name: 'TaskUnit',
   nodeType: GraphQLTaskUnit,
+});
+
+// TimeUnit
+
+const GraphQLTimeUnit = new GraphQLObjectType({
+  name: 'TimeUnit',
+  fields: {
+    id: globalIdField('TimeUnit'),
+    position: {
+      type: GraphQLInt,
+      resolve: obj => obj.position,
+    },
+    taskUnits: {
+      type: GraphQLTaskUnitsConnection,
+      args: connectionArgs,
+      resolve: (obj, args) => connectionFromArray(getTaskUnits(), args),
+    },
+  },
+});
+
+const {
+  connectionType: GraphQLTimeUnitsConnection,
+  edgeType: GraphQLTimeUnitEdge,
+} = connectionDefinitions({
+  name: 'TimeUnit',
+  nodeType: GraphQLTimeUnit,
 });
 
 // User
