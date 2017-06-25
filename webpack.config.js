@@ -37,6 +37,7 @@ module.exports = (env = {}) => {
       contentBase: path.join(__dirname, 'dist'),
       proxy: { '/graphql': `http://localhost:${graphQLPort}` },
       publicPath: '/',
+      historyApiFallback: true,
       stats: { colors: true },
       overlay: {
         errors: true,
