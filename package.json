@@ -24,6 +24,7 @@
     "express-graphql": "^0.6.6",
     "graphiql": "^0.10.2",
     "graphql": "^0.10.1",
+    "graphql-date": "^1.0.3",
     "graphql-relay": "^0.5.2",
     "normalize.css": "^7.0.0",
     "react": "^15.5.4",
