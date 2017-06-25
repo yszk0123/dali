@@ -69,6 +69,8 @@ type CreateTimeUnitPayload {
   clientMutationId: String
 }
 
+scalar Date
+
 type Mutation {
   addTaskUnit(input: AddTaskUnitInput!): AddTaskUnitPayload
   createDailyReport(input: CreateDailyReportInput!): CreateDailyReportPayload
@@ -197,6 +199,8 @@ type RemoveTimeUnitPayload {
 type TaskUnit {
   # The ID of an object
   id: ID!
+  createdAt: Date
+  modifiedAt: Date
   title: String
 }
 

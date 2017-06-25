@@ -9,6 +9,7 @@ import {
   GraphQLSchema,
   GraphQLString,
 } from 'graphql';
+import GraphQLDate from 'graphql-date';
 import {
   connectionArgs,
   connectionDefinitions,
@@ -99,6 +100,14 @@ const GraphQLTaskUnit = new GraphQLObjectType({
   name: 'TaskUnit',
   fields: {
     id: globalIdField('TaskUnit'),
+    createdAt: {
+      type: GraphQLDate,
+      resolve: obj => obj.createdAt,
+    },
+    modifiedAt: {
+      type: GraphQLDate,
+      resolve: obj => obj.modifiedAt,
+    },
     title: {
       type: GraphQLString,
       resolve: obj => obj.title,
