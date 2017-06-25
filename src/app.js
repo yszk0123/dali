@@ -6,6 +6,7 @@ import Loading from './components/Loading';
 import ErrorOutput from './components/ErrorOutput';
 import createEnvironment from './boot/createEnvironment';
 import injectMountNodeIfNeeded from './boot/injectMountNodeIfNeeded';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 function renderRoot({ error, props }) {
   if (error) {
@@ -16,7 +17,7 @@ function renderRoot({ error, props }) {
     return <Loading />;
   }
 
-  return <App {...props} />;
+  return <Router><App {...props} /></Router>;
 }
 
 const query = graphql`
