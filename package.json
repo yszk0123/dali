@@ -27,10 +27,13 @@
     "graphql-date": "^1.0.3",
     "graphql-relay": "^0.5.2",
     "normalize.css": "^7.0.0",
+    "pg": "^6.4.0",
+    "pg-hstore": "^2.3.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-relay": "^1.0.0",
     "react-router-dom": "^4.1.1",
+    "sequelize": "^4.2.0",
     "styled-components": "^2.0.0"
   },
   "devDependencies": {
