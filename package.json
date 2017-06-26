@@ -27,6 +27,7 @@
     "graphql": "^0.10.1",
     "graphql-date": "^1.0.3",
     "graphql-relay": "^0.5.2",
+    "graphql-sequelize": "^5.3.3",
     "normalize.css": "^7.0.0",
     "pg": "^6.4.0",
     "pg-hstore": "^2.3.2",

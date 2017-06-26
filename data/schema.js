@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable no-unused-vars */
 import {
   GraphQLBoolean,
   GraphQLID,
@@ -15,22 +15,14 @@ import {
   connectionDefinitions,
   connectionFromArray,
   cursorForObjectInConnection,
-  fromGlobalId,
   globalIdField,
   mutationWithClientMutationId,
-  nodeDefinitions,
-  toGlobalId,
 } from 'graphql-relay';
-import {
-  addTimeUnit,
-  getViewer,
-  getProjects,
-  getTimeUnits,
-  getTaskUnits,
-  getTimeUnitById,
-} from './database.js';
+import { attributeFields, relay, resolver } from 'graphql-sequelize';
+import { addTimeUnit, getTimeUnits, getTimeUnitById } from './database.js';
+const { sequelizeNodeInterface, sequelizeConnection } = relay;
 
-export function createSchema({ models }) {
+export function createSchema({ models, sequelize }) {
   const {
     DailyReport,
     DailySchedule,
@@ -42,99 +34,102 @@ export function createSchema({ models }) {
 
   // Node
 
-  const { nodeInterface, nodeField } = nodeDefinitions(
-    globalId => {
-      const { type, id } = fromGlobalId(globalId);
-
-      switch (type) {
-        case 'User':
-          return User.findById(id);
-        default:
-          return null;
-      }
-    },
-    obj => {
-      if (obj instanceof User) {
-        return GraphQLUser;
-      }
-      return null;
-    },
+  const { nodeInterface, nodeField, nodeTypeMapper } = sequelizeNodeInterface(
+    sequelize,
   );
 
   // Project
 
   const GraphQLProject = new GraphQLObjectType({
     name: 'Project',
-    fields: {
-      id: globalIdField('Project'),
-      title: {
-        type: GraphQLString,
-        resolve: obj => obj.title,
-      },
-    },
+    fields: attributeFields(Project, {
+      globalId: true,
+    }),
   });
 
-  const {
-    connectionType: GraphQLProjectsConnection,
-    edgeType: GraphQLProjectEdge,
-  } = connectionDefinitions({
-    name: 'Project',
+  const GraphQLUserProjectConnection = sequelizeConnection({
+    name: 'UserProject',
     nodeType: GraphQLProject,
+    target: User.Projects,
+    connectionFields: {
+      total: {
+        type: GraphQLInt,
+        resolve: ({ source }) => source.countProjects(),
+      },
+    },
   });
 
   // TaskUnit
 
   const GraphQLTaskUnit = new GraphQLObjectType({
     name: 'TaskUnit',
-    fields: {
-      id: globalIdField('TaskUnit'),
-      createdAt: {
-        type: GraphQLDate,
-        resolve: obj => obj.createdAt,
-      },
-      modifiedAt: {
-        type: GraphQLDate,
-        resolve: obj => obj.modifiedAt,
-      },
-      title: {
-        type: GraphQLString,
-        resolve: obj => obj.title,
-      },
-    },
+    fields: attributeFields(TaskUnit, {
+      globalId: true,
+    }),
   });
 
-  const {
-    connectionType: GraphQLTaskUnitsConnection,
-    edgeType: GraphQLTaskUnitEdge,
-  } = connectionDefinitions({
-    name: 'TaskUnit',
+  const GraphQLUserTaskUnitConnection = sequelizeConnection({
+    name: 'UserTaskUnit',
     nodeType: GraphQLTaskUnit,
+    target: User.TaskUnits,
+    connectionFields: {
+      total: {
+        type: GraphQLInt,
+        resolve: ({ source }) => source.countTaskUnits(),
+      },
+    },
   });
 
   // TimeUnit
 
   const GraphQLTimeUnit = new GraphQLObjectType({
     name: 'TimeUnit',
-    fields: {
-      id: globalIdField('TimeUnit'),
-      position: {
+    fields: attributeFields(TimeUnit, {
+      globalId: true,
+    }),
+  });
+
+  const GraphQLDailyScheduleTimeUnitConnection = sequelizeConnection({
+    name: 'DailyScheduleTimeUnit',
+    nodeType: GraphQLTimeUnit,
+    target: DailySchedule.TimeUnits,
+    connectionFields: {
+      total: {
         type: GraphQLInt,
-        resolve: obj => obj.position,
-      },
-      taskUnits: {
-        type: GraphQLTaskUnitsConnection,
-        args: connectionArgs,
-        resolve: (obj, args) => connectionFromArray(getTaskUnits(), args),
+        resolve: ({ source }) => source.countTimeUnits(),
       },
     },
   });
 
-  const {
-    connectionType: GraphQLTimeUnitsConnection,
-    edgeType: GraphQLTimeUnitEdge,
-  } = connectionDefinitions({
-    name: 'TimeUnit',
-    nodeType: GraphQLTimeUnit,
+  // DailyReport
+
+  const GraphQLDailyReport = new GraphQLObjectType({
+    name: 'DailyReport',
+    fields: {
+      ...attributeFields(DailyReport, {
+        globalId: true,
+      }),
+    },
+  });
+
+  // DailySchedule
+
+  const GraphQLDailySchedule = new GraphQLObjectType({
+    name: 'DailySchedule',
+    fields: {
+      ...attributeFields(DailySchedule, {
+        globalId: true,
+      }),
+      dailyReport: {
+        type: GraphQLDailyReport,
+        resolve: resolver(DailyReport),
+      },
+      timeUnits: {
+        type: GraphQLDailyScheduleTimeUnitConnection.connectionType,
+        args: GraphQLDailyScheduleTimeUnitConnection.connectionArgs,
+        resolve: GraphQLDailyScheduleTimeUnitConnection.resolve,
+      },
+    },
   });
 
   // User
@@ -142,33 +137,39 @@ export function createSchema({ models }) {
   const GraphQLUser = new GraphQLObjectType({
     name: 'User',
     fields: {
-      id: globalIdField('User'),
-      name: {
-        type: GraphQLString,
-        resolve: obj => obj.name,
-      },
+      ...attributeFields(User, {
+        globalId: true,
+      }),
       projects: {
-        type: GraphQLProjectsConnection,
-        args: connectionArgs,
-        resolve: async (obj, args) =>
-          connectionFromArray(await obj.getProjects(), args),
+        type: GraphQLUserProjectConnection.connectionType,
+        args: GraphQLUserProjectConnection.connectionArgs,
+        resolve: GraphQLUserProjectConnection.resolve,
       },
-      timeUnits: {
-        type: GraphQLTimeUnitsConnection,
-        args: connectionArgs,
-        resolve: (obj, args) => connectionFromArray([], args),
-        // TODO
-        // resolve: async (obj, args) =>
-        //   connectionFromArray(await obj.getTimeUnits(), args),
+      dailySchedule: {
+        type: GraphQLDailySchedule,
+        args: {
+          id: {
+            type: new GraphQLNonNull(GraphQLInt),
+          },
+        },
+        resolve: resolver(DailySchedule),
       },
       taskUnits: {
-        type: GraphQLTaskUnitsConnection,
-        args: connectionArgs,
-        resolve: async (obj, args) =>
-          connectionFromArray(await obj.getTaskUnits(), args),
+        type: GraphQLUserTaskUnitConnection.connectionType,
+        args: GraphQLUserTaskUnitConnection.connectionArgs,
+        resolve: GraphQLUserTaskUnitConnection.resolve,
       },
     },
     interfaces: [nodeInterface],
+  });
+
+  nodeTypeMapper.mapTypes({
+    DailyReport: GraphQLDailyReport,
+    DailySchedule: GraphQLDailySchedule,
+    Project: GraphQLProject,
+    TaskUnit: GraphQLTaskUnit,
+    TimeUnit: GraphQLTimeUnit,
+    User: GraphQLUser,
   });
 
   // Query
@@ -187,34 +188,35 @@ export function createSchema({ models }) {
 
   // Mutations
 
-  const GraphQLAddTimeUnitMutation = mutationWithClientMutationId({
-    name: 'AddTimeUnit',
-    inputFields: {
-      title: { type: new GraphQLNonNull(GraphQLString) },
-    },
-    outputFields: {
-      timeUnitEdge: {
-        type: GraphQLTimeUnitEdge,
-        resolve: ({ localTimeUnitId }) => {
-          const timeUnit = getTimeUnitById(localTimeUnitId);
-
-          return {
-            cursor: cursorForObjectInConnection(getTimeUnits(), timeUnit),
-            node: timeUnit,
-          };
-        },
-      },
-      viewer: {
-        type: GraphQLUser,
-        resolve: () => getViewer(),
-      },
-    },
-    mutateAndGetPayload: ({ title }) => {
-      const localTimeUnitId = addTimeUnit({ title });
-
-      return { localTimeUnitId };
-    },
-  });
+  // const GraphQLAddTimeUnitMutation = mutationWithClientMutationId({
+  //   name: 'AddTimeUnit',
+  //   inputFields: {
+  //     title: { type: new GraphQLNonNull(GraphQLString) },
+  //   },
+  //   outputFields: {
+  //     timeUnitEdge: {
+  //       type: GraphQLTimeUnitEdge,
+  //       resolve: ({ localTimeUnitId }) => {
+  //         const timeUnit = getTimeUnitById(localTimeUnitId);
+  //
+  //         return {
+  //           cursor: cursorForObjectInConnection(getTimeUnits(), timeUnit),
+  //           node: timeUnit,
+  //         };
+  //       },
+  //     },
+  //     viewer: {
+  //       type: GraphQLUser,
+  //       // TODO: Implement authentication
+  //       resolve: () => User.findOne(),
+  //     },
+  //   },
+  //   mutateAndGetPayload: ({ title }) => {
+  //     const localTimeUnitId = addTimeUnit({ title });
+  //
+  //     return { localTimeUnitId };
+  //   },
+  // });
 
   function getLowerCamelCase(s) {
     return `${s[0].toLowerCase()}${s.slice(1)}`;
@@ -242,6 +244,7 @@ export function createSchema({ models }) {
     fields: {
       ...createStubMutationFields([
         'AddTaskUnit',
+        'AddTimeUnit',
         'CreateDailyReport',
         'CreateDailyReportTemplate',
         'CreateProject',
@@ -258,7 +261,7 @@ export function createSchema({ models }) {
         'UpdateTaskUnit',
         'UpdateTimeUnit',
       ]),
-      addTimeUnit: GraphQLAddTimeUnitMutation,
+      // addTimeUnit: GraphQLAddTimeUnitMutation,
     },
   });
 

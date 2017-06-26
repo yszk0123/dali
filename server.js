@@ -11,10 +11,10 @@ const APP_PORT = process.env.APP_PORT || 3000;
 const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 3001;
 
 async function bootstrapGraphQLServer() {
-  const { models } = await connectDatabase();
+  const { models, sequelize } = await connectDatabase();
   await generateFakeData({ models });
   const graphQLConfig = {
-    schema: createSchema({ models }),
+    schema: createSchema({ models, sequelize }),
     graphiql: true,
   };
   const graphQLServer = express();

@@ -18,8 +18,8 @@ export default function createTaskUnit(sequelize, DataTypes) {
   );
 
   TaskUnit.associate = ({ TimeUnit, Project }) => {
-    TaskUnit.belongsTo(Project);
-    TaskUnit.belongsToMany(TimeUnit, {
+    TaskUnit.Project = TaskUnit.belongsTo(Project);
+    TaskUnit.TimeUnits = TaskUnit.belongsToMany(TimeUnit, {
       through: 'TimeUnitTaskUnit',
     });
   };

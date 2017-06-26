@@ -10,7 +10,7 @@ export default function createProject(sequelize, DataTypes) {
   );
 
   Project.associate = ({ TaskUnit }) => {
-    Project.hasMany(TaskUnit);
+    Project.TaskUnits = Project.hasMany(TaskUnit);
   };
 
   return Project;

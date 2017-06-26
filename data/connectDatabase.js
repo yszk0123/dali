@@ -9,12 +9,12 @@ const modelNames = [
   'User',
 ];
 
-export default async function connectDatabase() {
+export default async function connectDatabase({ noSync } = {}) {
   const sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
   });
-
   const models = {};
+
   modelNames.forEach(name => {
     models[name] = sequelize.import(
       name,
@@ -29,7 +29,9 @@ export default async function connectDatabase() {
     }
   });
 
-  await sequelize.sync({ force: true });
+  if (!noSync) {
+    await sequelize.sync({ force: true });
+  }
 
-  return { models };
+  return { models, sequelize };
 }
