@@ -1,16 +1,6 @@
-/* eslint-disable no-unused-vars */
-import {
-  GraphQLBoolean,
-  GraphQLID,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLSchema,
-  GraphQLString,
-} from 'graphql';
+import { GraphQLInt, GraphQLObjectType } from 'graphql';
 import { attributeFields, relay, resolver } from 'graphql-sequelize';
-const { sequelizeNodeInterface, sequelizeConnection } = relay;
+const { sequelizeConnection } = relay;
 
 export default function defineGraphQLDailySchedule({
   DailySchedule,

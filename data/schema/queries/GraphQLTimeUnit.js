@@ -1,16 +1,6 @@
-/* eslint-disable no-unused-vars */
-import {
-  GraphQLBoolean,
-  GraphQLID,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLSchema,
-  GraphQLString,
-} from 'graphql';
-import { attributeFields, relay, resolver } from 'graphql-sequelize';
-const { sequelizeNodeInterface, sequelizeConnection } = relay;
+import { GraphQLInt, GraphQLObjectType } from 'graphql';
+import { attributeFields, relay } from 'graphql-sequelize';
+const { sequelizeConnection } = relay;
 
 export default function defineGraphQLTimeUnit({ TimeUnit, GraphQLTaskUnit }) {
   const GraphQLTimeUnitTaskUnitConnection = sequelizeConnection({
