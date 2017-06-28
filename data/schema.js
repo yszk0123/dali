@@ -20,6 +20,12 @@ import {
 } from 'graphql-relay';
 import { attributeFields, relay, resolver } from 'graphql-sequelize';
 import { addTimeUnit, getTimeUnits, getTimeUnitById } from './database.js';
+import defineGraphQLProject from './schema/GraphQLProject';
+import defineGraphQLTaskUnit from './schema/GraphQLTaskUnit';
+import defineGraphQLTimeUnit from './schema/GraphQLTimeUnit';
+import defineGraphQLDailyReport from './schema/GraphQLDailyReport';
+import defineGraphQLDailySchedule from './schema/GraphQLDailySchedule';
+import defineGraphQLUser from './schema/GraphQLUser';
 const { sequelizeNodeInterface, sequelizeConnection } = relay;
 
 export function createSchema({ models, sequelize }) {
@@ -39,148 +45,41 @@ export function createSchema({ models, sequelize }) {
   );
 
   // Project
-
-  const GraphQLProject = new GraphQLObjectType({
-    name: 'Project',
-    fields: attributeFields(Project, {
-      globalId: true,
-    }),
+  const { GraphQLProject } = defineGraphQLProject({ Project });
+  const { GraphQLTaskUnit } = defineGraphQLTaskUnit({ TaskUnit });
+  const {
+    GraphQLTimeUnit,
+    GraphQLTimeUnitTaskUnitConnection,
+  } = defineGraphQLTimeUnit({
+    TimeUnit,
+    GraphQLTaskUnit,
   });
-
-  const GraphQLUserProjectConnection = sequelizeConnection({
-    name: 'UserProject',
-    nodeType: GraphQLProject,
-    target: User.Projects,
-    connectionFields: {
-      total: {
-        type: GraphQLInt,
-        resolve: ({ source }) => source.countProjects(),
-      },
-    },
+  const { GraphQLDailyReport } = defineGraphQLDailyReport({ DailyReport });
+  const {
+    GraphQLDailySchedule,
+    GraphQLDailyScheduleTimeUnitConnection,
+  } = defineGraphQLDailySchedule({
+    DailySchedule,
+    GraphQLDailyReport,
+    GraphQLTimeUnit,
+    DailyReport,
+  });
+  const {
+    GraphQLUser,
+    GraphQLUserProjectConnection,
+    GraphQLUserTaskUnitConnection,
+  } = defineGraphQLUser({
+    DailySchedule,
+    GraphQLDailySchedule,
+    GraphQLProject,
+    GraphQLTaskUnit,
+    User,
+    nodeInterface,
   });
 
   // TaskUnit
 
-  const GraphQLTaskUnit = new GraphQLObjectType({
-    name: 'TaskUnit',
-    fields: attributeFields(TaskUnit, {
-      globalId: true,
-    }),
-  });
-
-  const GraphQLUserTaskUnitConnection = sequelizeConnection({
-    name: 'UserTaskUnit',
-    nodeType: GraphQLTaskUnit,
-    target: User.TaskUnits,
-    connectionFields: {
-      total: {
-        type: GraphQLInt,
-        resolve: ({ source }) => source.countTaskUnits(),
-      },
-    },
-  });
-
-  const GraphQLTimeUnitTaskUnitConnection = sequelizeConnection({
-    name: 'TimeUnitTaskUnit',
-    nodeType: GraphQLTaskUnit,
-    target: TimeUnit.TaskUnits,
-    connectionFields: {
-      total: {
-        type: GraphQLInt,
-        resolve: ({ source }) => source.countTaskUnits(),
-      },
-    },
-  });
-
-  // TimeUnit
-
-  const GraphQLTimeUnit = new GraphQLObjectType({
-    name: 'TimeUnit',
-    fields: {
-      ...attributeFields(TimeUnit, {
-        globalId: true,
-      }),
-      taskUnits: {
-        type: GraphQLTimeUnitTaskUnitConnection.connectionType,
-        args: GraphQLTimeUnitTaskUnitConnection.connectionArgs,
-        resolve: GraphQLTimeUnitTaskUnitConnection.resolve,
-      },
-    },
-  });
-
-  const GraphQLDailyScheduleTimeUnitConnection = sequelizeConnection({
-    name: 'DailyScheduleTimeUnit',
-    nodeType: GraphQLTimeUnit,
-    target: DailySchedule.TimeUnits,
-    connectionFields: {
-      total: {
-        type: GraphQLInt,
-        resolve: ({ source }) => source.countTimeUnits(),
-      },
-    },
-  });
-
-  // DailyReport
-
-  const GraphQLDailyReport = new GraphQLObjectType({
-    name: 'DailyReport',
-    fields: {
-      ...attributeFields(DailyReport, {
-        globalId: true,
-      }),
-    },
-  });
-
-  // DailySchedule
-
-  const GraphQLDailySchedule = new GraphQLObjectType({
-    name: 'DailySchedule',
-    fields: {
-      ...attributeFields(DailySchedule, {
-        globalId: true,
-      }),
-      dailyReport: {
-        type: GraphQLDailyReport,
-        resolve: resolver(DailyReport),
-      },
-      timeUnits: {
-        type: GraphQLDailyScheduleTimeUnitConnection.connectionType,
-        args: GraphQLDailyScheduleTimeUnitConnection.connectionArgs,
-        resolve: GraphQLDailyScheduleTimeUnitConnection.resolve,
-      },
-    },
-  });
-
   // User
-
-  const GraphQLUser = new GraphQLObjectType({
-    name: 'User',
-    fields: {
-      ...attributeFields(User, {
-        globalId: true,
-      }),
-      projects: {
-        type: GraphQLUserProjectConnection.connectionType,
-        args: GraphQLUserProjectConnection.connectionArgs,
-        resolve: GraphQLUserProjectConnection.resolve,
-      },
-      dailySchedule: {
-        type: GraphQLDailySchedule,
-        args: {
-          id: {
-            type: new GraphQLNonNull(GraphQLInt),
-          },
-        },
-        resolve: resolver(DailySchedule),
-      },
-      taskUnits: {
-        type: GraphQLUserTaskUnitConnection.connectionType,
-        args: GraphQLUserTaskUnitConnection.connectionArgs,
-        resolve: GraphQLUserTaskUnitConnection.resolve,
-      },
-    },
-    interfaces: [nodeInterface],
-  });
 
   nodeTypeMapper.mapTypes({
     DailyReport: GraphQLDailyReport,
