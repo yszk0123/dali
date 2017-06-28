@@ -1,14 +1,14 @@
 import fs from 'fs';
 import path from 'path';
-import { createSchema } from '../data/schema';
-import connectDatabase from '../data/connectDatabase';
+import defineSchema from '../data/boot/defineSchema';
+import connectDatabase from '../data/boot/connectDatabase';
 import { printSchema } from 'graphql';
 
 const schemaPath = path.resolve(__dirname, '../data/schema.graphql');
 
 async function updateSchema() {
   const { models, sequelize } = await connectDatabase({ noSync: true });
-  const schema = createSchema({ models, sequelize });
+  const schema = defineSchema({ models, sequelize });
   fs.writeFileSync(schemaPath, printSchema(schema));
   console.log('Wrote ' + schemaPath);
 }

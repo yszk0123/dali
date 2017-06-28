@@ -19,16 +19,15 @@ import {
   mutationWithClientMutationId,
 } from 'graphql-relay';
 import { attributeFields, relay, resolver } from 'graphql-sequelize';
-import { addTimeUnit, getTimeUnits, getTimeUnitById } from './database.js';
-import defineGraphQLProject from './schema/GraphQLProject';
-import defineGraphQLTaskUnit from './schema/GraphQLTaskUnit';
-import defineGraphQLTimeUnit from './schema/GraphQLTimeUnit';
-import defineGraphQLDailyReport from './schema/GraphQLDailyReport';
-import defineGraphQLDailySchedule from './schema/GraphQLDailySchedule';
-import defineGraphQLUser from './schema/GraphQLUser';
+import defineGraphQLProject from '../schema/GraphQLProject';
+import defineGraphQLTaskUnit from '../schema/GraphQLTaskUnit';
+import defineGraphQLTimeUnit from '../schema/GraphQLTimeUnit';
+import defineGraphQLDailyReport from '../schema/GraphQLDailyReport';
+import defineGraphQLDailySchedule from '../schema/GraphQLDailySchedule';
+import defineGraphQLUser from '../schema/GraphQLUser';
 const { sequelizeNodeInterface, sequelizeConnection } = relay;
 
-export function createSchema({ models, sequelize }) {
+export default function defineSchema({ models, sequelize }) {
   const {
     DailyReport,
     DailySchedule,
@@ -44,7 +43,8 @@ export function createSchema({ models, sequelize }) {
     sequelize,
   );
 
-  // Project
+  // Query
+
   const { GraphQLProject } = defineGraphQLProject({ Project });
   const { GraphQLTaskUnit } = defineGraphQLTaskUnit({ TaskUnit });
   const {
@@ -77,10 +77,6 @@ export function createSchema({ models, sequelize }) {
     nodeInterface,
   });
 
-  // TaskUnit
-
-  // User
-
   nodeTypeMapper.mapTypes({
     DailyReport: GraphQLDailyReport,
     DailySchedule: GraphQLDailySchedule,
@@ -89,8 +85,6 @@ export function createSchema({ models, sequelize }) {
     TimeUnit: GraphQLTimeUnit,
     User: GraphQLUser,
   });
-
-  // Query
 
   const GraphQLQuery = new GraphQLObjectType({
     name: 'Query',

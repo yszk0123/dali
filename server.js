@@ -1,7 +1,7 @@
 import express from 'express';
 import graphQLHTTP from 'express-graphql';
-import { createSchema } from './data/schema';
-import connectDatabase from './data/connectDatabase';
+import defineSchema from './data/boot/defineSchema';
+import connectDatabase from './data/boot/connectDatabase';
 import generateFakeData from './data/generateFakeData';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
@@ -14,7 +14,7 @@ async function bootstrapGraphQLServer() {
   const { models, sequelize } = await connectDatabase();
   await generateFakeData({ models });
   const graphQLConfig = {
-    schema: createSchema({ models, sequelize }),
+    schema: defineSchema({ models, sequelize }),
     graphiql: true,
   };
   const graphQLServer = express();

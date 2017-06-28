@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+import path from 'path';
 
 const modelNames = [
   'DailyReport',
@@ -18,7 +19,7 @@ export default async function connectDatabase({ noSync } = {}) {
   modelNames.forEach(name => {
     models[name] = sequelize.import(
       name,
-      require(`${__dirname}/models/${name}`),
+      require(path.join(__dirname, '..', 'models', name)),
     );
   });
 
