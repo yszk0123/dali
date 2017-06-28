@@ -247,6 +247,30 @@ type TimeUnit {
   createdAt: String!
   updatedAt: String!
   dailyScheduleId: Int
+  taskUnits(after: String, first: Int, before: String, last: Int, orderBy: [TimeUnitTaskUnitConnectionOrder]): TimeUnitTaskUnitConnection
+}
+
+# A connection to a list of items.
+type TimeUnitTaskUnitConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [TimeUnitTaskUnitEdge]
+  total: Int
+}
+
+enum TimeUnitTaskUnitConnectionOrder {
+  ID
+}
+
+# An edge in a connection.
+type TimeUnitTaskUnitEdge {
+  # The item at the end of the edge
+  node: TaskUnit
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 input UpdateDailyReportInput {

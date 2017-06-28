@@ -80,13 +80,32 @@ export function createSchema({ models, sequelize }) {
     },
   });
 
+  const GraphQLTimeUnitTaskUnitConnection = sequelizeConnection({
+    name: 'TimeUnitTaskUnit',
+    nodeType: GraphQLTaskUnit,
+    target: TimeUnit.TaskUnits,
+    connectionFields: {
+      total: {
+        type: GraphQLInt,
+        resolve: ({ source }) => source.countTaskUnits(),
+      },
+    },
+  });
+
   // TimeUnit
 
   const GraphQLTimeUnit = new GraphQLObjectType({
     name: 'TimeUnit',
-    fields: attributeFields(TimeUnit, {
-      globalId: true,
-    }),
+    fields: {
+      ...attributeFields(TimeUnit, {
+        globalId: true,
+      }),
+      taskUnits: {
+        type: GraphQLTimeUnitTaskUnitConnection.connectionType,
+        args: GraphQLTimeUnitTaskUnitConnection.connectionArgs,
+        resolve: GraphQLTimeUnitTaskUnitConnection.resolve,
+      },
+    },
   });
 
   const GraphQLDailyScheduleTimeUnitConnection = sequelizeConnection({
