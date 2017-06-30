@@ -49,12 +49,12 @@ type CreateProjectPayload {
 }
 
 input CreateTaskUnitInput {
+  title: String!
   clientMutationId: String
 }
 
 type CreateTaskUnitPayload {
-  # The ID of an object
-  id: ID!
+  taskUnitEdge: UserTaskUnitEdge
   clientMutationId: String
 }
 

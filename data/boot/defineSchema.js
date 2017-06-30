@@ -8,14 +8,16 @@ export default function defineSchema({ models, sequelize }) {
   const { nodeInterface, nodeField, nodeTypeMapper } = sequelizeNodeInterface(
     sequelize,
   );
-  const { GraphQLQuery } = defineQuery({
+  const queries = defineQuery({
     models,
     nodeInterface,
     nodeField,
     nodeTypeMapper,
   });
+  const { GraphQLQuery } = queries;
   const { GraphQLMutation } = defineMutation({
     models,
+    queries,
   });
 
   return new GraphQLSchema({

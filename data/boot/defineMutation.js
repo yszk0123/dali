@@ -1,5 +1,6 @@
 import { GraphQLObjectType } from 'graphql';
 import { globalIdField, mutationWithClientMutationId } from 'graphql-relay';
+import defineGraphQLCreateTaskUnitMutation from '../schema/mutations/GraphQLCreateTaskUnitMutation';
 
 function getLowerCamelCase(s) {
   return `${s[0].toLowerCase()}${s.slice(1)}`;
@@ -22,7 +23,7 @@ function createStubMutationFields(names) {
   return fields;
 }
 
-export default function defineMutation({ models }) {
+export default function defineMutation({ models, queries }) {
   // const GraphQLAddTimeUnitMutation = mutationWithClientMutationId({
   //   name: 'AddTimeUnit',
   //   inputFields: {
@@ -52,6 +53,21 @@ export default function defineMutation({ models }) {
   //     return { localTimeUnitId };
   //   },
   // });
+  const { TaskUnit } = models;
+  const {
+    GraphQLTaskUnitEdge,
+    GraphQLUser,
+    GraphQLUserTaskUnitConnection,
+  } = queries;
+
+  const {
+    GraphQLCreateTaskUnitMutation,
+  } = defineGraphQLCreateTaskUnitMutation({
+    GraphQLTaskUnitEdge,
+    GraphQLUser,
+    GraphQLUserTaskUnitConnection,
+    TaskUnit,
+  });
 
   const GraphQLMutation = new GraphQLObjectType({
     name: 'Mutation',
@@ -75,7 +91,7 @@ export default function defineMutation({ models }) {
         'UpdateTaskUnit',
         'UpdateTimeUnit',
       ]),
-      // addTimeUnit: GraphQLAddTimeUnitMutation,
+      createTaskUnit: GraphQLCreateTaskUnitMutation,
     },
   });
 
