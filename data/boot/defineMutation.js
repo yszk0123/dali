@@ -43,8 +43,7 @@ export default function defineMutation({ models, queries }) {
   //     },
   //     viewer: {
   //       type: GraphQLUser,
-  //       // TODO: Implement authentication
-  //       resolve: () => User.findOne(),
+  //       resolve: (obj, args, { user }) => user,
   //     },
   //   },
   //   mutateAndGetPayload: ({ title }) => {

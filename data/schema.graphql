@@ -55,6 +55,7 @@ input CreateTaskUnitInput {
 
 type CreateTaskUnitPayload {
   taskUnitEdge: UserTaskUnitEdge
+  viewer: User
   clientMutationId: String
 }
 

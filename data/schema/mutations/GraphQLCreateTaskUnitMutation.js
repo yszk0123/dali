@@ -19,16 +19,17 @@ export default function defineGraphQLCreateTaskUnitMutation({
           return GraphQLUserTaskUnitConnection.resolveEdge(taskUnit);
         },
       },
-      // TODO: Implement
-      // viewer: {
-      //   type: GraphQLUser,
-      //   resolve: () => User.findOne(),
-      // },
+      viewer: {
+        type: GraphQLUser,
+        resolve: ({ user }) => user,
+      },
     },
-    mutateAndGetPayload: ({ title }) => {
-      const taskUnit = TaskUnit.create({ title });
+    mutateAndGetPayload: async ({ title }, { user }) => {
+      const taskUnit = await TaskUnit.create({ title });
 
-      return { taskUnit };
+      await user.addTaskUnit(taskUnit);
+
+      return { taskUnit, user };
     },
   });
 

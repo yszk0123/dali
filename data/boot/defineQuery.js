@@ -72,8 +72,7 @@ export default function defineQuery({
     fields: {
       viewer: {
         type: GraphQLUser,
-        // TODO: Implement authentication
-        resolve: () => User.findOne(),
+        resolve: (obj, args, { user }) => user,
       },
       node: nodeField,
     },
