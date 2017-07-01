@@ -1,5 +1,7 @@
+import path from 'path';
 import express from 'express';
 import graphQLHTTP from 'express-graphql';
+import favicon from 'serve-favicon';
 import defineSchema from './data/boot/defineSchema';
 import connectDatabase from './data/boot/connectDatabase';
 import generateFakeData from './data/generateFakeData';
@@ -18,6 +20,7 @@ async function bootstrapGraphQLServer() {
     graphiql: true,
   };
   const graphQLServer = express();
+  graphQLServer.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
   graphQLServer.use('/', graphQLHTTP(graphQLConfig));
   graphQLServer.listen(GRAPHQL_PORT, () => {
     console.log(
@@ -33,6 +36,7 @@ function bootstrapAppServer() {
   });
   const compiler = webpack(webpackConfig);
   const app = new WebpackDevServer(compiler, webpackConfig.devServer);
+  app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
   app.listen(APP_PORT, () => {
     console.log(`App is now running on http://localhost:${APP_PORT}`);
   });
