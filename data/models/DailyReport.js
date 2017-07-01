@@ -10,7 +10,7 @@ export default function createDailyReport(sequelize, DataTypes) {
   );
 
   DailyReport.associate = ({ DailySchedule }) => {
-    DailyReport.belongsTo(DailySchedule);
+    DailyReport.DailySchedule = DailyReport.belongsTo(DailySchedule);
   };
 
   return DailyReport;

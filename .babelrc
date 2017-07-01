@@ -3,6 +3,7 @@
     "transform-class-properties",
     "transform-object-rest-spread",
     "transform-runtime",
+    "lodash",
     "relay"
   ],
   "presets": [

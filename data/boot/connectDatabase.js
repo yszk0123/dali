@@ -1,4 +1,6 @@
 import Sequelize from 'sequelize';
+import path from 'path';
+import serverConfig from '../serverConfig';
 
 const modelNames = [
   'DailyReport',
@@ -9,16 +11,16 @@ const modelNames = [
   'User',
 ];
 
-export default async function connectDatabase() {
-  const sequelize = new Sequelize(process.env.DATABASE_URL, {
+export default async function connectDatabase({ noSync } = {}) {
+  const sequelize = new Sequelize(serverConfig.databaseUrl, {
     dialect: 'postgres',
   });
-
   const models = {};
+
   modelNames.forEach(name => {
     models[name] = sequelize.import(
       name,
-      require(`${__dirname}/models/${name}`),
+      require(path.join(__dirname, '..', 'models', name)),
     );
   });
 
@@ -29,7 +31,9 @@ export default async function connectDatabase() {
     }
   });
 
-  await sequelize.sync({ force: true });
+  if (!noSync) {
+    await sequelize.sync({ force: true });
+  }
 
-  return { models };
+  return { models, sequelize };
 }

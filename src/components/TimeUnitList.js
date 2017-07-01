@@ -32,14 +32,14 @@ export class TimeUnitList extends React.Component {
     AddTimeUnitMutation.commit(
       this.props.relay.environment,
       { title },
-      this.props.viewer,
+      this.props.dailySchedule,
     );
   }
 
   _renderTimeUnits() {
-    const { viewer } = this.props;
+    const { dailySchedule } = this.props;
 
-    return viewer.timeUnits.edges.map(edge =>
+    return dailySchedule.timeUnits.edges.map(edge =>
       <li key={edge.node.id}>
         <TimeUnitItem timeUnit={edge.node} />
       </li>,
@@ -63,7 +63,7 @@ export class TimeUnitList extends React.Component {
 export default createFragmentContainer(
   TimeUnitList,
   graphql`
-    fragment TimeUnitList_viewer on User {
+    fragment TimeUnitList_dailySchedule on DailySchedule {
       id
       timeUnits(first: 100) @connection(key: "TimeUnitList_timeUnits") {
         edges {

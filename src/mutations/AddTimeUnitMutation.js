@@ -8,14 +8,7 @@ const generateOptimisticId = makeIdGenerator('client:newTimeUnit');
 const mutation = graphql`
   mutation AddTimeUnitMutation($input: AddTimeUnitInput!) {
     addTimeUnit(input: $input) {
-      timeUnitEdge {
-        __typename
-        cursor
-        node {
-          id
-          position
-        }
-      }
+      id
     }
   }
 `;

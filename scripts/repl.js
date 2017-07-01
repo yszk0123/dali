@@ -5,7 +5,7 @@
  * $ node -r babel-register -r ./repl.js
  * > User.findAll()
  */
-import connectDatabase from '../data/connectDatabase';
+import connectDatabase from '../data/boot/connectDatabase';
 import generateFakeData from '../data/generateFakeData';
 
 function print(value) {
