@@ -72,6 +72,7 @@
     "prettier": "^1.4.4",
     "react-test-renderer": "^15.5.4",
     "relay-compiler": "^1.0.0",
+    "serve-favicon": "^2.4.3",
     "style-loader": "^0.18.2",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5"
