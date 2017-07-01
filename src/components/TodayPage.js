@@ -10,7 +10,10 @@ export default createFragmentContainer(
   TodayPage,
   graphql`
     fragment TodayPage_viewer on User {
-      ...TimeUnitList_viewer
+      dailySchedule {
+        date
+        ...TimeUnitList_dailySchedule
+      }
     }
   `,
 );

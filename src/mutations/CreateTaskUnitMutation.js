@@ -7,7 +7,11 @@ const generateId = makeIdGenerator();
 const mutation = graphql`
   mutation CreateTaskUnitMutation($input: CreateTaskUnitInput!) {
     createTaskUnit(input: $input) {
-      id
+      taskUnitEdge {
+        node {
+          id
+        }
+      }
     }
   }
 `;
