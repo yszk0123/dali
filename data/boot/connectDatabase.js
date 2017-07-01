@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 import path from 'path';
+import serverConfig from '../serverConfig';
 
 const modelNames = [
   'DailyReport',
@@ -11,7 +12,7 @@ const modelNames = [
 ];
 
 export default async function connectDatabase({ noSync } = {}) {
-  const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  const sequelize = new Sequelize(serverConfig.databaseUrl, {
     dialect: 'postgres',
   });
   const models = {};

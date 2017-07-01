@@ -1,6 +1,19 @@
 [![Build Status](https://travis-ci.org/yszk0123/dali.svg?branch=master)](https://travis-ci.org/yszk0123/dali)
 [![Coverage Status](https://coveralls.io/repos/github/yszk0123/dali/badge.svg?branch=master)](https://coveralls.io/github/yszk0123/dali?branch=master)
 
+# Environment Variables
+
+Create a `.env` file in the root directory.
+
+## Example
+
+```
+APP_PORT=3000
+DATABASE_URL="postgres://foobar:password@localhost:5432/dali"
+GRAPHQL_PORT=3001
+SECRET="secret"
+```
+
 # Development
 
 - `$ npm install` installs dependencies
