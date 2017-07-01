@@ -112,6 +112,8 @@ type DailyScheduleTimeUnitEdge {
   cursor: String!
 }
 
+scalar Date
+
 type Mutation {
   addTaskUnit(input: AddTaskUnitInput!): AddTaskUnitPayload
   addTimeUnit(input: AddTimeUnitInput!): AddTimeUnitPayload
@@ -330,7 +332,7 @@ type User implements Node {
   createdAt: String!
   updatedAt: String!
   projects(after: String, first: Int, before: String, last: Int, orderBy: [UserProjectConnectionOrder]): UserProjectConnection
-  dailySchedule(id: Int!): DailySchedule
+  dailySchedule(date: Date): DailySchedule
   taskUnits(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskUnitConnectionOrder]): UserTaskUnitConnection
 }
 

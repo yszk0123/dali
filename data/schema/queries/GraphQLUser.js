@@ -1,5 +1,8 @@
-import { GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
-import { attributeFields, relay, resolver } from 'graphql-sequelize';
+import { GraphQLInt, GraphQLObjectType } from 'graphql';
+import GraphQLDate from 'graphql-date';
+import { attributeFields, relay } from 'graphql-sequelize';
+import { first } from 'lodash';
+import { startOfDay } from '../../utils/DateUtils';
 const { sequelizeConnection } = relay;
 
 export default function defineGraphQLDailySchedule({
@@ -48,11 +51,21 @@ export default function defineGraphQLDailySchedule({
       dailySchedule: {
         type: GraphQLDailySchedule,
         args: {
-          id: {
-            type: new GraphQLNonNull(GraphQLInt),
+          date: {
+            type: GraphQLDate,
           },
         },
-        resolve: resolver(DailySchedule),
+        resolve: async (user, args) => {
+          const date = args.date || new Date();
+
+          const schedules = await user.getDailySchedules({
+            where: {
+              date: startOfDay(date),
+            },
+          });
+
+          return first(schedules);
+        },
       },
       taskUnits: {
         type: GraphQLUserTaskUnitConnection.connectionType,
