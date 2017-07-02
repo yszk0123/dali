@@ -1,10 +1,10 @@
 import { GraphQLObjectType } from 'graphql';
-import defineGraphQLProject from '../schema/queries/GraphQLProject';
-import defineGraphQLTaskUnit from '../schema/queries/GraphQLTaskUnit';
-import defineGraphQLTimeUnit from '../schema/queries/GraphQLTimeUnit';
-import defineGraphQLDailyReport from '../schema/queries/GraphQLDailyReport';
-import defineGraphQLDailySchedule from '../schema/queries/GraphQLDailySchedule';
-import defineGraphQLUser from '../schema/queries/GraphQLUser';
+import defineGraphQLProject from '../queries/GraphQLProject';
+import defineGraphQLTaskUnit from '../queries/GraphQLTaskUnit';
+import defineGraphQLTimeUnit from '../queries/GraphQLTimeUnit';
+import defineGraphQLDailyReport from '../queries/GraphQLDailyReport';
+import defineGraphQLDailySchedule from '../queries/GraphQLDailySchedule';
+import defineGraphQLUser from '../queries/GraphQLUser';
 
 export default function defineQuery({
   models,

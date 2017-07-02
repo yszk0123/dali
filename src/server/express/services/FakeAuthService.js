@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import serverConfig from '../serverConfig';
+import serverConfig from '../../shared/config/serverConfig';
 
 function createToken(user) {
   return user && jwt.sign({ userId: user.id }, serverConfig.secret);

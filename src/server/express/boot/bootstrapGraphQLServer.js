@@ -3,7 +3,7 @@ import graphQLHTTP from 'express-graphql';
 import express from 'express';
 import favicon from 'serve-favicon';
 import createAuthMiddleware from './createAuthMiddleware';
-import serverConfig from '../serverConfig';
+import serverConfig from '../../shared/config/serverConfig';
 
 export default async function bootstrapGraphQLServer({
   services: { AuthService },
@@ -19,7 +19,9 @@ export default async function bootstrapGraphQLServer({
   const graphQLServer = express();
 
   graphQLServer.use(
-    favicon(path.join(__dirname, '..', '..', 'public', 'favicon.ico')),
+    favicon(
+      path.join(__dirname, '..', '..', '..', '..', 'public', 'favicon.ico'),
+    ),
   );
   graphQLServer.use('/', authMiddleware, graphQLHTTPMiddleware);
   graphQLServer.listen(graphQLPort, () => {

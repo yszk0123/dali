@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node -r babel-register ./server.js",
+    "serve:dev": "node -r babel-register ./devServer.js",
     "repl": "node -r babel-register -r ./scripts/repl.js",
     "test": "jest",
     "test:ci": "yarn typecheck && jest --coverage && cat ./coverage/lcov.info | coveralls",
@@ -16,7 +17,9 @@
     "build": "run-s build:relay build:js",
     "build:js": "webpack",
     "build:relay": "relay-compiler --src ./src/ --schema ./data/schema.graphql",
-    "watch": "relay-compiler --src ./src/ --schema ./data/schema.graphql --watch",
+    "watch": "run-p watch:relay watch:js",
+    "watch:js": "webpack --watch",
+    "watch:relay": "relay-compiler --src ./src/ --schema ./data/schema.graphql --watch",
     "update:schema": "node -r babel-register ./scripts/updateSchema.js",
     "lint": "eslint ./src ./data"
   },
@@ -25,6 +28,7 @@
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "express-graphql": "^0.6.6",
+    "express-http-proxy": "^1.0.4",
     "graphiql": "^0.10.2",
     "graphql": "^0.10.1",
     "graphql-date": "^1.0.3",
