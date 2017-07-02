@@ -17,7 +17,7 @@ module.exports = (env = {}) => {
       app: [
         'whatwg-fetch',
         'normalize.css',
-        !isProduction && `webpack-dev-server/client?http://0.0.0.0:${appPort}`,
+        env.autoReload && `webpack-dev-server/client?http://0.0.0.0:${appPort}`,
         './src/client/app.css',
         './src/client/app.js',
       ].filter(Boolean),

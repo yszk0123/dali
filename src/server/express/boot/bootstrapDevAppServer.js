@@ -2,13 +2,14 @@ import path from 'path';
 import favicon from 'serve-favicon';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import createWebpackConfig from '../../webpack.config';
-import serverConfig from '../shared/config/serverConfig';
+import createWebpackConfig from '../../../../webpack.config';
+import serverConfig from '../../shared/config/serverConfig';
 
 export default async function bootstrapDevAppServer() {
   const { appPort, graphQLPort } = serverConfig;
   const webpackConfig = createWebpackConfig({
     appPort,
+    autoReload: true,
     graphQLPort,
   });
   const compiler = webpack(webpackConfig);

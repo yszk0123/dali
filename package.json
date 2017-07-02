@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node -r babel-register ./server.js",
+    "serve:dev": "node -r babel-register ./devServer.js",
     "repl": "node -r babel-register -r ./scripts/repl.js",
     "test": "jest",
     "test:ci": "yarn typecheck && jest --coverage && cat ./coverage/lcov.info | coveralls",

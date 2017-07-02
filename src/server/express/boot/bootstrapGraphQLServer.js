@@ -3,7 +3,7 @@ import graphQLHTTP from 'express-graphql';
 import express from 'express';
 import favicon from 'serve-favicon';
 import createAuthMiddleware from './createAuthMiddleware';
-import serverConfig from '../shared/config/serverConfig';
+import serverConfig from '../../shared/config/serverConfig';
 
 export default async function bootstrapGraphQLServer({
   services: { AuthService },

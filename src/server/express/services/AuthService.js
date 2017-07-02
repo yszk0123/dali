@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import serverConfig from '../shared/config/serverConfig';
+import serverConfig from '../../shared/config/serverConfig';
 
 function decodeToken(token) {
   return jwt.verify(token, serverConfig.secret);
