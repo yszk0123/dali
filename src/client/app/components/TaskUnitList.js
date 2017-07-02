@@ -1,7 +1,7 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import TaskUnitItem from './TaskUnitItem';
-import AddTaskUnitMutation from '../mutations/AddTaskUnitMutation';
+import AddTaskUnitMutation from '../../graphql/mutations/AddTaskUnitMutation';
 
 export class TaskUnitList extends React.Component {
   constructor(props) {
