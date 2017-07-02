@@ -1,5 +1,5 @@
-import Sequelize from 'sequelize';
 import path from 'path';
+import Sequelize from 'sequelize';
 import serverConfig from '../../shared/config/serverConfig';
 
 const modelNames = [

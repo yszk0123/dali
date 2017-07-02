@@ -1,10 +1,10 @@
 /* @flow */
-import type { App_viewer } from './__generated__/App_viewer.graphql';
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import PropsRoute from '../../shared/components/PropsRoute';
+import type { App_viewer } from './__generated__/App_viewer.graphql';
 import ProjectsPage from './ProjectsPage';
 import DashboardPage from './DashboardPage';
 import TodayPage from './TodayPage';

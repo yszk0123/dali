@@ -1,9 +1,9 @@
 import path from 'path';
-import graphQLHTTP from 'express-graphql';
 import express from 'express';
 import favicon from 'serve-favicon';
-import createAuthMiddleware from './createAuthMiddleware';
+import graphQLHTTP from 'express-graphql';
 import serverConfig from '../../shared/config/serverConfig';
+import createAuthMiddleware from './createAuthMiddleware';
 
 export default async function bootstrapGraphQLServer({
   services: { AuthService },

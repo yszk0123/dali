@@ -1,7 +1,7 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import TimeUnitItem from './TimeUnitItem';
 import AddTimeUnitMutation from '../../graphql/mutations/AddTimeUnitMutation';
+import TimeUnitItem from './TimeUnitItem';
 
 export class TimeUnitList extends React.Component {
   constructor(props) {

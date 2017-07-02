@@ -1,7 +1,7 @@
 /* @flow */
-import type { Project_project } from './__generated__/Project_project.graphql';
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
+import type { Project_project } from './__generated__/Project_project.graphql';
 
 type Props = { project: Project_project };
 export function Project({ project }: Props) {
