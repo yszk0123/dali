@@ -18,8 +18,8 @@ module.exports = (env = {}) => {
         'whatwg-fetch',
         'normalize.css',
         env.autoReload && `webpack-dev-server/client?http://0.0.0.0:${appPort}`,
-        './src/client/app.css',
-        './src/client/app.js',
+        './src/client/app/app.css',
+        './src/client/app/app.js',
       ].filter(Boolean),
     },
     output: {
