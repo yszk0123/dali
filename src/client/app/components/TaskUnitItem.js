@@ -2,7 +2,11 @@ import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 
 export function TaskUnitItem({ taskUnit }) {
-  return <div>{taskUnit.title}</div>;
+  return (
+    <div>
+      {taskUnit.title}
+    </div>
+  );
 }
 
 export default createFragmentContainer(

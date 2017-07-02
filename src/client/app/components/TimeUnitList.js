@@ -52,7 +52,9 @@ export class TimeUnitList extends React.Component {
     return (
       <div>
         <h1>TimeUnits</h1>
-        <ul>{this._renderTimeUnits()}</ul>
+        <ul>
+          {this._renderTimeUnits()}
+        </ul>
         <input type="text" value={title} onChange={this._handleTitleChange} />
         <button onClick={this._handleAddTimeUnitClick}>Add</button>
       </div>

@@ -12,11 +12,19 @@ function mapPositionToTimeRange(position) {
 }
 
 export function TaskSummary({ tasks }) {
-  return <div>{tasks.map(task => task.title).join(', ')}</div>;
+  return (
+    <div>
+      {tasks.map(task => task.title).join(', ')}
+    </div>
+  );
 }
 
 export function TimeRange({ position }) {
-  return <div>{mapPositionToTimeRange(position)}</div>;
+  return (
+    <div>
+      {mapPositionToTimeRange(position)}
+    </div>
+  );
 }
 
 export function TimeUnitItem({ timeUnit }) {

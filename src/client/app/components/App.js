@@ -10,23 +10,37 @@ import DashboardPage from './DashboardPage';
 import TodayPage from './TodayPage';
 import WorkspacePage from './WorkspacePage';
 
-const Wrapper = styled.div`
-  padding: 1.5rem;
-`;
+const Wrapper = styled.div`padding: 1.5rem;`;
 
 type Props = { viewer: App_viewer };
 export function App({ viewer }: Props) {
   return (
     <Wrapper>
       <ul>
-        <li><Link to="/">Dashboard</Link></li>
-        <li><Link to="/today">Today</Link></li>
-        <li><Link to="/projects">Projects</Link></li>
-        <li><Link to="/workspace">Workspace</Link></li>
-        <li><Link to="/dailyReport">DailyReport</Link></li>
-        <li><Link to="/options">Options</Link></li>
-        <li><Link to="/profile">Profile</Link></li>
-        <li><Link to="/dailyReportTemplate">DailyReportTemplate</Link></li>
+        <li>
+          <Link to="/">Dashboard</Link>
+        </li>
+        <li>
+          <Link to="/today">Today</Link>
+        </li>
+        <li>
+          <Link to="/projects">Projects</Link>
+        </li>
+        <li>
+          <Link to="/workspace">Workspace</Link>
+        </li>
+        <li>
+          <Link to="/dailyReport">DailyReport</Link>
+        </li>
+        <li>
+          <Link to="/options">Options</Link>
+        </li>
+        <li>
+          <Link to="/profile">Profile</Link>
+        </li>
+        <li>
+          <Link to="/dailyReportTemplate">DailyReportTemplate</Link>
+        </li>
       </ul>
       <PropsRoute exact path="/" component={DashboardPage} viewer={viewer} />
       <PropsRoute path="/today" component={TodayPage} viewer={viewer} />

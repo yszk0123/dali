@@ -5,7 +5,11 @@ import type { Project_project } from './__generated__/Project_project.graphql';
 
 type Props = { project: Project_project };
 export function Project({ project }: Props) {
-  return <div>{project.title}</div>;
+  return (
+    <div>
+      {project.title}
+    </div>
+  );
 }
 
 export default createFragmentContainer(

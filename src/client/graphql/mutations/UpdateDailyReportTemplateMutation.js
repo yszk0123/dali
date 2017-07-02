@@ -5,7 +5,9 @@ const generateId = makeIdGenerator();
 // const generateOptimisticId = makeIdGenerator('client:newUpdateDailyReportTemplate');
 
 const mutation = graphql`
-  mutation UpdateDailyReportTemplateMutation($input: UpdateDailyReportTemplateInput!) {
+  mutation UpdateDailyReportTemplateMutation(
+    $input: UpdateDailyReportTemplateInput!
+  ) {
     updateDailyReportTemplate(input: $input) {
       id
     }

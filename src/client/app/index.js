@@ -17,7 +17,11 @@ function renderRoot({ error, props }) {
     return <Loading />;
   }
 
-  return <Router><App {...props} /></Router>;
+  return (
+    <Router>
+      <App {...props} />
+    </Router>
+  );
 }
 
 const query = graphql`

@@ -52,7 +52,9 @@ export class TaskUnitList extends React.Component {
     return (
       <div>
         <h1>TaskUnits</h1>
-        <ul>{this._renderTaskUnits()}</ul>
+        <ul>
+          {this._renderTaskUnits()}
+        </ul>
         <input type="text" value={title} onChange={this._handleTitleChange} />
         <button onClick={this._handleAddTaskUnitClick}>Add</button>
       </div>
