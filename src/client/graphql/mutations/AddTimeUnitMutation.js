@@ -1,6 +1,6 @@
 import { commitMutation, graphql } from 'react-relay';
 import { ConnectionHandler } from 'relay-runtime';
-import makeIdGenerator from '../common/makeIdGenerator';
+import makeIdGenerator from '../../shared/utils/makeIdGenerator';
 
 const generateId = makeIdGenerator();
 const generateOptimisticId = makeIdGenerator('client:newTimeUnit');

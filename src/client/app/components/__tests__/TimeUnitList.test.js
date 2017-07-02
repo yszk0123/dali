@@ -2,8 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import TimeUnitItem from '../TimeUnitItem';
 import { TimeUnitList } from '../TimeUnitList';
-import AddTimeUnitMutation from '../../mutations/AddTimeUnitMutation';
-jest.mock('../../mutations/AddTimeUnitMutation');
+import AddTimeUnitMutation from '../../../graphql/mutations/AddTimeUnitMutation';
+jest.mock('../../../graphql/mutations/AddTimeUnitMutation');
 
 const relay = { environment: {} };
 const viewer = {

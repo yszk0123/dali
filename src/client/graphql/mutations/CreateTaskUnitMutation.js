@@ -1,13 +1,17 @@
 import { commitMutation, graphql } from 'react-relay';
-import makeIdGenerator from '../common/makeIdGenerator';
+import makeIdGenerator from '../../shared/utils/makeIdGenerator';
 
 const generateId = makeIdGenerator();
-// const generateOptimisticId = makeIdGenerator('client:newCreateProject');
+// const generateOptimisticId = makeIdGenerator('client:newCreateTaskUnit');
 
 const mutation = graphql`
-  mutation CreateProjectMutation($input: CreateProjectInput!) {
-    createProject(input: $input) {
-      id
+  mutation CreateTaskUnitMutation($input: CreateTaskUnitInput!) {
+    createTaskUnit(input: $input) {
+      taskUnitEdge {
+        node {
+          id
+        }
+      }
     }
   }
 `;

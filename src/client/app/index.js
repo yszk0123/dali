@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { QueryRenderer, graphql } from 'react-relay';
+import { BrowserRouter as Router } from 'react-router-dom';
 import App from './components/App';
 import Loading from './components/Loading';
 import ErrorOutput from './components/ErrorOutput';
 import createEnvironment from './boot/createEnvironment';
 import injectMountNodeIfNeeded from './boot/injectMountNodeIfNeeded';
-import { BrowserRouter as Router } from 'react-router-dom';
 
 function renderRoot({ error, props }) {
   if (error) {
@@ -21,12 +21,12 @@ function renderRoot({ error, props }) {
 }
 
 const query = graphql`
-    query appQuery {
-      viewer {
-        ...App_viewer
-      }
+  query appQuery {
+    viewer {
+      ...App_viewer
     }
-  `;
+  }
+`;
 
 const variables = {};
 

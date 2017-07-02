@@ -1,9 +1,9 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import TimeUnitItem from './TimeUnitItem';
-import AddTimeUnitMutation from '../mutations/AddTimeUnitMutation';
+import TaskUnitItem from './TaskUnitItem';
+import AddTaskUnitMutation from '../../graphql/mutations/AddTaskUnitMutation';
 
-export class TimeUnitList extends React.Component {
+export class TaskUnitList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,11 +11,11 @@ export class TimeUnitList extends React.Component {
     };
   }
 
-  _handleAddTimeUnitClick = event => {
+  _handleAddTaskUnitClick = event => {
     const { title } = this.state;
 
     if (title) {
-      this._addTimeUnit(title);
+      this._addTaskUnit(title);
       this.setState({
         title: '',
       });
@@ -28,20 +28,20 @@ export class TimeUnitList extends React.Component {
     });
   };
 
-  _addTimeUnit(title) {
-    AddTimeUnitMutation.commit(
+  _addTaskUnit(title) {
+    AddTaskUnitMutation.commit(
       this.props.relay.environment,
       { title },
-      this.props.dailySchedule,
+      this.props.viewer,
     );
   }
 
-  _renderTimeUnits() {
-    const { dailySchedule } = this.props;
+  _renderTaskUnits() {
+    const { viewer } = this.props;
 
-    return dailySchedule.timeUnits.edges.map(edge =>
+    return viewer.taskUnits.edges.map(edge =>
       <li key={edge.node.id}>
-        <TimeUnitItem timeUnit={edge.node} />
+        <TaskUnitItem taskUnit={edge.node} />
       </li>,
     );
   }
@@ -51,25 +51,25 @@ export class TimeUnitList extends React.Component {
 
     return (
       <div>
-        <h1>TimeUnits</h1>
-        <ul>{this._renderTimeUnits()}</ul>
+        <h1>TaskUnits</h1>
+        <ul>{this._renderTaskUnits()}</ul>
         <input type="text" value={title} onChange={this._handleTitleChange} />
-        <button onClick={this._handleAddTimeUnitClick}>Add</button>
+        <button onClick={this._handleAddTaskUnitClick}>Add</button>
       </div>
     );
   }
 }
 
 export default createFragmentContainer(
-  TimeUnitList,
+  TaskUnitList,
   graphql`
-    fragment TimeUnitList_dailySchedule on DailySchedule {
+    fragment TaskUnitList_viewer on User {
       id
-      timeUnits(first: 100) @connection(key: "TimeUnitList_timeUnits") {
+      taskUnits(first: 100) @connection(key: "TaskUnitList_taskUnits") {
         edges {
           node {
             id
-            ...TimeUnitItem_timeUnit
+            ...TaskUnitItem_taskUnit
           }
         }
       }

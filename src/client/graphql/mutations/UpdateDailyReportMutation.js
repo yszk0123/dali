@@ -1,12 +1,12 @@
 import { commitMutation, graphql } from 'react-relay';
-import makeIdGenerator from '../common/makeIdGenerator';
+import makeIdGenerator from '../../shared/utils/makeIdGenerator';
 
 const generateId = makeIdGenerator();
-// const generateOptimisticId = makeIdGenerator('client:newRemoveDailyReport');
+// const generateOptimisticId = makeIdGenerator('client:newUpdateDailyReport');
 
 const mutation = graphql`
-  mutation RemoveDailyReportMutation($input: RemoveDailyReportInput!) {
-    removeDailyReport(input: $input) {
+  mutation UpdateDailyReportMutation($input: UpdateDailyReportInput!) {
+    updateDailyReport(input: $input) {
       id
     }
   }

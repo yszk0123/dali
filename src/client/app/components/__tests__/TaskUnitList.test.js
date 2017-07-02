@@ -2,8 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import TaskUnitItem from '../TaskUnitItem';
 import { TaskUnitList } from '../TaskUnitList';
-import AddTaskUnitMutation from '../../mutations/AddTaskUnitMutation';
-jest.mock('../../mutations/AddTaskUnitMutation');
+import AddTaskUnitMutation from '../../../graphql/mutations/AddTaskUnitMutation';
+jest.mock('../../../graphql/mutations/AddTaskUnitMutation');
 
 const relay = { environment: {} };
 const viewer = {
