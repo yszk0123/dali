@@ -3,7 +3,7 @@ import favicon from 'serve-favicon';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import createWebpackConfig from '../../webpack.config';
-import serverConfig from '../serverConfig';
+import serverConfig from '../shared/config/serverConfig';
 
 export default async function bootstrapDevServer() {
   const { appPort, graphQLPort } = serverConfig;
