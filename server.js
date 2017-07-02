@@ -1,6 +1,6 @@
 import bootstrapGraphQLServer from './src/server/boot/bootstrapGraphQLServer';
 import bootstrapDevServer from './src/server/boot/bootstrapDevServer';
-import generateFakeData from './src/server/boot/generateFakeData';
+import generateFakeData from './src/server/database/boot/generateFakeData';
 import prepareBackend from './src/server/boot/prepareBackend';
 import FakeAuthService from './src/server/services/FakeAuthService';
 

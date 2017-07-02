@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 import path from 'path';
-import serverConfig from '../serverConfig';
+import serverConfig from '../../serverConfig';
 
 const modelNames = [
   'DailyReport',
