@@ -17,7 +17,9 @@
     "build": "run-s build:relay build:js",
     "build:js": "webpack",
     "build:relay": "relay-compiler --src ./src/ --schema ./data/schema.graphql",
-    "watch": "relay-compiler --src ./src/ --schema ./data/schema.graphql --watch",
+    "watch": "run-p watch:relay watch:js",
+    "watch:js": "webpack --watch",
+    "watch:relay": "relay-compiler --src ./src/ --schema ./data/schema.graphql --watch",
     "update:schema": "node -r babel-register ./scripts/updateSchema.js",
     "lint": "eslint ./src ./data"
   },
