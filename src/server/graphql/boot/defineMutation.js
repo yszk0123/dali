@@ -1,6 +1,6 @@
 import { GraphQLObjectType } from 'graphql';
 import { globalIdField, mutationWithClientMutationId } from 'graphql-relay';
-import defineGraphQLCreateTaskUnitMutation from '../schema/mutations/GraphQLCreateTaskUnitMutation';
+import defineGraphQLCreateTaskUnitMutation from '../mutations/GraphQLCreateTaskUnitMutation';
 
 function getLowerCamelCase(s) {
   return `${s[0].toLowerCase()}${s.slice(1)}`;

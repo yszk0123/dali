@@ -1,4 +1,4 @@
-import defineSchema from './defineSchema';
+import defineSchema from '../graphql/boot/defineSchema';
 import connectDatabase from './connectDatabase';
 
 export default async function prepareBackend() {
