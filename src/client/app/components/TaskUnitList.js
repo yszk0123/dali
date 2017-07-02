@@ -1,6 +1,6 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import AddTaskUnitMutation from '../../graphql/mutations/AddTaskUnitMutation';
+import CreateTaskUnitMutation from '../../graphql/mutations/CreateTaskUnitMutation';
 import TaskUnitItem from './TaskUnitItem';
 
 export class TaskUnitList extends React.Component {
@@ -29,7 +29,7 @@ export class TaskUnitList extends React.Component {
   };
 
   _addTaskUnit(title) {
-    AddTaskUnitMutation.commit(
+    CreateTaskUnitMutation.commit(
       this.props.relay.environment,
       { title },
       this.props.viewer,
