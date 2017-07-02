@@ -4,7 +4,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
-import PropsRoute from '../common/PropsRoute';
+import PropsRoute from '../../shared/components/PropsRoute';
 import ProjectsPage from './ProjectsPage';
 import DashboardPage from './DashboardPage';
 import TodayPage from './TodayPage';
