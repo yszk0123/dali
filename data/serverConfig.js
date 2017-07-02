@@ -1,4 +1,5 @@
-import 'dotenv';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const appPort = process.env.APP_PORT || 3000;
 const graphQLPort = process.env.GRAPHQL_PORT || 3001;
