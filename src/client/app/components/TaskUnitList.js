@@ -1,17 +1,30 @@
+/* @flow */
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import CreateTaskUnitMutation from '../../graphql/mutations/CreateTaskUnitMutation';
+import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import TaskUnitItem from './TaskUnitItem';
+import type { TaskUnitList_viewer } from './__generated__/TaskUnitList_viewer.graphql';
+
+type Props = {
+  viewer: TaskUnitList_viewer,
+  relay: any,
+};
 
 export class TaskUnitList extends React.Component {
-  constructor(props) {
+  props: Props;
+  state: {
+    title: string,
+  };
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       title: '',
     };
   }
 
-  _handleAddTaskUnitClick = event => {
+  _handleAddTaskUnitClick = (event: Event) => {
     const { title } = this.state;
 
     if (title) {
@@ -22,13 +35,17 @@ export class TaskUnitList extends React.Component {
     }
   };
 
-  _handleTitleChange = event => {
+  _handleTitleChange = (event: Event) => {
+    if (!(event.target instanceof HTMLInputElement)) {
+      return;
+    }
+
     this.setState({
       title: event.target.value,
     });
   };
 
-  _addTaskUnit(title) {
+  _addTaskUnit(title: string) {
     CreateTaskUnitMutation.commit(
       this.props.relay.environment,
       { title },
@@ -39,9 +56,9 @@ export class TaskUnitList extends React.Component {
   _renderTaskUnits() {
     const { viewer } = this.props;
 
-    return viewer.taskUnits.edges.map(edge =>
-      <li key={edge.node.id}>
-        <TaskUnitItem taskUnit={edge.node} />
+    return getNodesFromConnection(viewer.taskUnits).map(taskUnit =>
+      <li key={taskUnit.id}>
+        <TaskUnitItem taskUnit={taskUnit} />
       </li>,
     );
   }
