@@ -6,7 +6,6 @@
  * > User.findAll()
  */
 import connectDatabase from '../src/server/database/boot/connectDatabase';
-import generateFakeData from '../src/server/database/boot/generateFakeData';
 
 function print(value) {
   if (value && value.then) {
@@ -19,7 +18,7 @@ function print(value) {
   console.log(value);
 }
 
-connectDatabase()
+connectDatabase({ noSync: true })
   .then(async ({ models }) => {
     global.print = global.p = print;
 
@@ -27,8 +26,6 @@ connectDatabase()
     Object.keys(models).forEach(name => {
       global[name] = models[name];
     });
-
-    await generateFakeData({ models });
   })
   .catch(error => {
     console.error(error);
