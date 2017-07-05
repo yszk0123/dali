@@ -58,7 +58,7 @@ export class TaskUnitList extends React.Component {
 
     return getNodesFromConnection(viewer.taskUnits).map(taskUnit =>
       <li key={taskUnit.id}>
-        <TaskUnitItem taskUnit={taskUnit} />
+        <TaskUnitItem taskUnit={taskUnit} viewer={viewer} />
       </li>,
     );
   }
@@ -92,6 +92,7 @@ export default createFragmentContainer(
           }
         }
       }
+      ...TaskUnitItem_viewer
     }
   `,
 );
