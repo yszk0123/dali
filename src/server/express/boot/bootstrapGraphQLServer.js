@@ -1,6 +1,7 @@
 import path from 'path';
 import express from 'express';
 import favicon from 'serve-favicon';
+import { maskErrors } from 'graphql-errors';
 import graphQLHTTP from 'express-graphql';
 import serverConfig from '../../shared/config/serverConfig';
 import createAuthMiddleware from './createAuthMiddleware';
@@ -10,6 +11,8 @@ export default async function bootstrapGraphQLServer({
   models: { User },
   schema,
 }) {
+  maskErrors(schema);
+
   const { graphQLPort } = serverConfig;
   const authMiddleware = createAuthMiddleware({ User, AuthService });
   const graphQLHTTPMiddleware = graphQLHTTP({
