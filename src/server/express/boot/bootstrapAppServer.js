@@ -3,6 +3,7 @@ import express from 'express';
 import expressHttpProxy from 'express-http-proxy';
 import fallback from 'express-history-api-fallback';
 import favicon from 'serve-favicon';
+import morgan from 'morgan';
 import serverConfig from '../../shared/config/serverConfig';
 
 export default async function bootstrapAppServer() {
@@ -12,6 +13,7 @@ export default async function bootstrapAppServer() {
   const distDir = path.join(rootDir, 'dist');
   const publicDir = path.join(rootDir, 'public');
 
+  app.use(morgan('combined'));
   app.use(favicon(path.join(publicDir, 'favicon.ico')));
   app.use('/graphql', expressHttpProxy(`http://localhost:${graphQLPort}`));
   app.use(express.static(distDir));

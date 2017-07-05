@@ -126,13 +126,13 @@ type Mutation {
   removeDailyReport(input: RemoveDailyReportInput!): RemoveDailyReportPayload
   removeDailyReportTemplate(input: RemoveDailyReportTemplateInput!): RemoveDailyReportTemplatePayload
   removeProject(input: RemoveProjectInput!): RemoveProjectPayload
-  removeTaskUnit(input: RemoveTaskUnitInput!): RemoveTaskUnitPayload
   removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
   updateDailyReport(input: UpdateDailyReportInput!): UpdateDailyReportPayload
   updateDailyReportTemplate(input: UpdateDailyReportTemplateInput!): UpdateDailyReportTemplatePayload
   updateProject(input: UpdateProjectInput!): UpdateProjectPayload
   updateTaskUnit(input: UpdateTaskUnitInput!): UpdateTaskUnitPayload
   updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
+  removeTaskUnit(input: RemoveTaskUnitInput!): RemoveTaskUnitPayload
 }
 
 # An object with an ID
@@ -206,12 +206,13 @@ type RemoveProjectPayload {
 }
 
 input RemoveTaskUnitInput {
+  id: ID!
   clientMutationId: String
 }
 
 type RemoveTaskUnitPayload {
-  # The ID of an object
-  id: ID!
+  deletedTaskUnitId: ID
+  viewer: User
   clientMutationId: String
 }
 
