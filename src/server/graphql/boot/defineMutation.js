@@ -2,6 +2,8 @@ import { GraphQLObjectType } from 'graphql';
 import { globalIdField, mutationWithClientMutationId } from 'graphql-relay';
 import defineGraphQLCreateTaskUnitMutation from '../mutations/GraphQLCreateTaskUnitMutation';
 import defineGraphQLRemoveTaskUnitMutation from '../mutations/GraphQLRemoveTaskUnitMutation';
+import defineGraphQLCreateProjectMutation from '../mutations/GraphQLCreateProjectMutation';
+import defineGraphQLRemoveProjectMutation from '../mutations/GraphQLRemoveProjectMutation';
 
 function getLowerCamelCase(s) {
   return `${s[0].toLowerCase()}${s.slice(1)}`;
@@ -33,6 +35,16 @@ export default function defineMutation({ models, queries }) {
     GraphQLRemoveTaskUnitMutation,
   } = defineGraphQLRemoveTaskUnitMutation({ models, queries });
 
+  const { GraphQLCreateProjectMutation } = defineGraphQLCreateProjectMutation({
+    models,
+    queries,
+  });
+
+  const { GraphQLRemoveProjectMutation } = defineGraphQLRemoveProjectMutation({
+    models,
+    queries,
+  });
+
   const GraphQLMutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
@@ -41,12 +53,9 @@ export default function defineMutation({ models, queries }) {
         'AddTimeUnit',
         'CreateDailyReport',
         'CreateDailyReportTemplate',
-        'CreateProject',
-        'CreateTaskUnit',
         'CreateTimeUnit',
         'RemoveDailyReport',
         'RemoveDailyReportTemplate',
-        'RemoveProject',
         'RemoveTimeUnit',
         'UpdateDailyReport',
         'UpdateDailyReportTemplate',
@@ -56,6 +65,8 @@ export default function defineMutation({ models, queries }) {
       ]),
       createTaskUnit: GraphQLCreateTaskUnitMutation,
       removeTaskUnit: GraphQLRemoveTaskUnitMutation,
+      createProject: GraphQLCreateProjectMutation,
+      removeProject: GraphQLRemoveProjectMutation,
     },
   });
 

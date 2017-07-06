@@ -39,12 +39,13 @@ type CreateDailyReportTemplatePayload {
 }
 
 input CreateProjectInput {
+  title: String!
   clientMutationId: String
 }
 
 type CreateProjectPayload {
-  # The ID of an object
-  id: ID!
+  projectEdge: UserProjectEdge
+  viewer: User
   clientMutationId: String
 }
 
@@ -120,19 +121,19 @@ type Mutation {
   addTimeUnit(input: AddTimeUnitInput!): AddTimeUnitPayload
   createDailyReport(input: CreateDailyReportInput!): CreateDailyReportPayload
   createDailyReportTemplate(input: CreateDailyReportTemplateInput!): CreateDailyReportTemplatePayload
-  createProject(input: CreateProjectInput!): CreateProjectPayload
-  createTaskUnit(input: CreateTaskUnitInput!): CreateTaskUnitPayload
   createTimeUnit(input: CreateTimeUnitInput!): CreateTimeUnitPayload
   removeDailyReport(input: RemoveDailyReportInput!): RemoveDailyReportPayload
   removeDailyReportTemplate(input: RemoveDailyReportTemplateInput!): RemoveDailyReportTemplatePayload
-  removeProject(input: RemoveProjectInput!): RemoveProjectPayload
   removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
   updateDailyReport(input: UpdateDailyReportInput!): UpdateDailyReportPayload
   updateDailyReportTemplate(input: UpdateDailyReportTemplateInput!): UpdateDailyReportTemplatePayload
   updateProject(input: UpdateProjectInput!): UpdateProjectPayload
   updateTaskUnit(input: UpdateTaskUnitInput!): UpdateTaskUnitPayload
   updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
+  createTaskUnit(input: CreateTaskUnitInput!): CreateTaskUnitPayload
   removeTaskUnit(input: RemoveTaskUnitInput!): RemoveTaskUnitPayload
+  createProject(input: CreateProjectInput!): CreateProjectPayload
+  removeProject(input: RemoveProjectInput!): RemoveProjectPayload
 }
 
 # An object with an ID
@@ -196,12 +197,13 @@ type RemoveDailyReportTemplatePayload {
 }
 
 input RemoveProjectInput {
+  id: ID!
   clientMutationId: String
 }
 
 type RemoveProjectPayload {
-  # The ID of an object
-  id: ID!
+  deletedProjectId: ID
+  viewer: User
   clientMutationId: String
 }
 

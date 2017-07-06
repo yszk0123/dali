@@ -1,27 +1,40 @@
 import { commitMutation, graphql } from 'react-relay';
-import makeIdGenerator from '../../shared/utils/makeIdGenerator';
-
-const generateId = makeIdGenerator();
-// const generateOptimisticId = makeIdGenerator('client:newRemoveProject');
+import { ConnectionHandler } from 'relay-runtime';
 
 const mutation = graphql`
   mutation RemoveProjectMutation($input: RemoveProjectInput!) {
     removeProject(input: $input) {
-      id
+      deletedProjectId
     }
   }
 `;
 
-function commit(environment, data, user) {
+function sharedUpdater(store, user, deletedId) {
+  const userProxy = store.get(user.id);
+  const connection = ConnectionHandler.getConnection(
+    userProxy,
+    'ProjectList_projects',
+  );
+
+  ConnectionHandler.deleteNode(connection, deletedId);
+}
+
+function commit(environment, project, user) {
   return commitMutation(environment, {
     mutation,
     variables: {
       input: {
-        clientMutationId: generateId(),
+        id: project.id,
       },
     },
-    updater: store => {},
-    optimisticUpdater: store => {},
+    updater: store => {
+      const payload = store.getRootField('removeProject');
+
+      sharedUpdater(store, user, payload.getValue('deletedProjectId'));
+    },
+    optimisticUpdater: store => {
+      sharedUpdater(store, user, project.id);
+    },
   });
 }
 
