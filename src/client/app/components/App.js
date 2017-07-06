@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import PropsRoute from '../../shared/components/PropsRoute';
 import type { App_viewer } from './__generated__/App_viewer.graphql';
-import ProjectsPage from './ProjectsPage';
+import DailyReportPage from './DailyReportPage';
 import DashboardPage from './DashboardPage';
+import ProjectsPage from './ProjectsPage';
 import TodayPage from './TodayPage';
 import WorkspacePage from './WorkspacePage';
 
@@ -46,6 +47,11 @@ export function App({ viewer }: Props) {
       <PropsRoute path="/today" component={TodayPage} viewer={viewer} />
       <PropsRoute path="/projects" component={ProjectsPage} viewer={viewer} />
       <PropsRoute path="/workspace" component={WorkspacePage} viewer={viewer} />
+      <PropsRoute
+        path="/dailyReport"
+        component={DailyReportPage}
+        viewer={viewer}
+      />
     </Wrapper>
   );
 }
@@ -56,8 +62,9 @@ export default withRouter(
     graphql`
       fragment App_viewer on User {
         id
-        ...TodayPage_viewer
+        ...DailyReportPage_viewer
         ...ProjectsPage_viewer
+        ...TodayPage_viewer
         ...WorkspacePage_viewer
       }
     `,

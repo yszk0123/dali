@@ -81,10 +81,11 @@ export class ProjectList extends React.Component {
 
 export default createFragmentContainer(
   ProjectList,
-  graphql`
-    fragment ProjectList_viewer on User {
+  graphql.experimental`
+    fragment ProjectList_viewer on User
+      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
       id
-      projects(first: 100) @connection(key: "ProjectList_projects") {
+      projects(first: $count) @connection(key: "ProjectList_projects") {
         edges {
           node {
             id
