@@ -11,31 +11,23 @@ export default async function generateFakeData({ models }) {
   } = models;
 
   const user = await User.create({ name: 'foo' });
-  const projects = await Promise.all([
-    Project.create({ title: 'Private' }),
-    Project.create({ title: 'Work' }),
-  ]);
-  const taskUnits = await Promise.all([
-    TaskUnit.create({ title: 'Breakfast' }),
-    TaskUnit.create({ title: 'Lunch' }),
-    TaskUnit.create({ title: 'Dinner' }),
-  ]);
-  const timeUnits = await Promise.all([
-    TimeUnit.build({ position: 0 }),
-    TimeUnit.build({ position: 1 }),
-    TimeUnit.build({ position: 2 }),
-  ]);
+
   const dailySchedule = await DailySchedule.create({
     date: startOfDay(new Date()),
   });
-  const dailyReport = await DailyReport.create({});
   await Promise.all([
-    dailySchedule.addTimeUnits(timeUnits),
-    dailySchedule.setDailyReport(dailyReport),
+    dailySchedule.createTimeUnit({ position: 0 }),
+    dailySchedule.createTimeUnit({ position: 1 }),
+    dailySchedule.createTimeUnit({ position: 2 }),
+    dailySchedule.createDailyReport({}),
   ]);
+
   await Promise.all([
-    user.addProjects(projects),
-    user.addTaskUnits(taskUnits),
+    user.createProject({ title: 'Private' }),
+    user.createProject({ title: 'Work' }),
+    user.createTaskUnit({ title: 'Breakfast' }),
+    user.createTaskUnit({ title: 'Lunch' }),
+    user.createTaskUnit({ title: 'Dinner' }),
     user.addDailySchedule(dailySchedule),
   ]);
 }
