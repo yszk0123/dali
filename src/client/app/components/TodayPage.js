@@ -3,7 +3,7 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import TimeUnitList from './TimeUnitList';
 
 export function TodayPage({ viewer }) {
-  return <TimeUnitList viewer={viewer} />;
+  return <TimeUnitList viewer={viewer} dailySchedule={viewer.dailySchedule} />;
 }
 
 export default createFragmentContainer(

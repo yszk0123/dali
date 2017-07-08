@@ -1,62 +1,55 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import AddTimeUnitMutation from '../../graphql/mutations/AddTimeUnitMutation';
+import { times } from 'lodash';
+import getNodesFromConnection from '../../shared/utils/getNodesFromConnection.js';
+import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 import TimeUnitItem from './TimeUnitItem';
+
+const MAX_TIME_UNITS = 48;
+
+function getSparseTimeUnits(timeUnits) {
+  const sparseTimeUnits = Array.from(Array(MAX_TIME_UNITS));
+
+  timeUnits.forEach(timeUnit => {
+    sparseTimeUnits[timeUnit.position] = timeUnit;
+  });
+
+  return sparseTimeUnits;
+}
 
 export class TimeUnitList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
+      position: '',
     };
-  }
-
-  _handleAddTimeUnitClick = event => {
-    const { title } = this.state;
-
-    if (title) {
-      this._addTimeUnit(title);
-      this.setState({
-        title: '',
-      });
-    }
-  };
-
-  _handleTitleChange = event => {
-    this.setState({
-      title: event.target.value,
-    });
-  };
-
-  _addTimeUnit(title) {
-    AddTimeUnitMutation.commit(
-      this.props.relay.environment,
-      { title },
-      this.props.dailySchedule,
-    );
   }
 
   _renderTimeUnits() {
     const { dailySchedule } = this.props;
+    const timeUnits = getSparseTimeUnits(
+      getNodesFromConnection(dailySchedule.timeUnits),
+    );
 
-    return dailySchedule.timeUnits.edges.map(edge =>
-      <li key={edge.node.id}>
-        <TimeUnitItem timeUnit={edge.node} />
+    return timeUnits.map((timeUnit, position) =>
+      <li key={position}>
+        {timeUnit
+          ? <TimeUnitItem timeUnit={timeUnit} />
+          : <EmptyTimeUnitItem
+              position={position}
+              dailySchedule={dailySchedule}
+            />}
       </li>,
     );
   }
 
   render() {
-    const { title } = this.state;
-
     return (
       <div>
         <h1>TimeUnits</h1>
         <ul>
           {this._renderTimeUnits()}
         </ul>
-        <input type="text" value={title} onChange={this._handleTitleChange} />
-        <button onClick={this._handleAddTimeUnitClick}>Add</button>
       </div>
     );
   }
@@ -71,10 +64,12 @@ export default createFragmentContainer(
         edges {
           node {
             id
+            position
             ...TimeUnitItem_timeUnit
           }
         }
       }
+      ...EmptyTimeUnitItem_dailySchedule
     }
   `,
 );

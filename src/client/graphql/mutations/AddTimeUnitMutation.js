@@ -8,13 +8,26 @@ const generateOptimisticId = makeIdGenerator('client:newTimeUnit');
 const mutation = graphql`
   mutation AddTimeUnitMutation($input: AddTimeUnitInput!) {
     addTimeUnit(input: $input) {
-      id
+      timeUnitEdge {
+        node {
+          id
+          position
+          taskUnits {
+            edges {
+              node {
+                id
+                title
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;
 
-function sharedUpdater(store, user, newEdge) {
-  const userProxy = store.get(user.id);
+function sharedUpdater(store, dailySchedule, newEdge) {
+  const userProxy = store.get(dailySchedule.id);
   const connection = ConnectionHandler.getConnection(
     userProxy,
     'TimeUnitList_timeUnits',
@@ -23,31 +36,40 @@ function sharedUpdater(store, user, newEdge) {
   ConnectionHandler.insertEdgeAfter(connection, newEdge);
 }
 
-function commit(environment, { title }, user) {
+function commit(environment, { position }, dailySchedule) {
   return commitMutation(environment, {
     mutation,
     variables: {
       input: {
-        title,
         clientMutationId: generateId(),
+        dailyScheduleId: dailySchedule.id,
+        position,
       },
     },
     updater: store => {
       const payload = store.getRootField('addTimeUnit');
       const newEdge = payload.getLinkedRecord('timeUnitEdge');
 
-      sharedUpdater(store, user, newEdge);
+      sharedUpdater(store, dailySchedule, newEdge);
     },
     optimisticUpdater: store => {
-      const id = generateOptimisticId();
-      const node = store.create(id, 'TimeUnit');
-      node.setValue(title, 'title');
-      node.setValue(id, 'id');
+      const payload = store.getRootField('addTimeUnit');
+      const newEdge = payload.getLinkedRecord('timeUnitEdge');
 
-      const newEdge = store.create(generateOptimisticId(), 'TimeUnitEdge');
-      newEdge.setLinkedRecord(node, 'node');
-
-      sharedUpdater(store, user, newEdge);
+      sharedUpdater(store, dailySchedule, newEdge);
+    },
+    optimisticResponse: {
+      addTimeUnit: {
+        timeUnitEdge: {
+          node: {
+            id: generateOptimisticId(),
+            position,
+            taskUnits: {
+              edges: [],
+            },
+          },
+        },
+      },
     },
   });
 }

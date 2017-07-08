@@ -1,9 +1,10 @@
 import { GraphQLObjectType } from 'graphql';
 import { globalIdField, mutationWithClientMutationId } from 'graphql-relay';
-import defineGraphQLCreateTaskUnitMutation from '../mutations/GraphQLCreateTaskUnitMutation';
-import defineGraphQLRemoveTaskUnitMutation from '../mutations/GraphQLRemoveTaskUnitMutation';
+import defineGraphQLAddTimeUnitMutation from '../mutations/GraphQLAddTimeUnitMutation';
 import defineGraphQLCreateProjectMutation from '../mutations/GraphQLCreateProjectMutation';
+import defineGraphQLCreateTaskUnitMutation from '../mutations/GraphQLCreateTaskUnitMutation';
 import defineGraphQLRemoveProjectMutation from '../mutations/GraphQLRemoveProjectMutation';
+import defineGraphQLRemoveTaskUnitMutation from '../mutations/GraphQLRemoveTaskUnitMutation';
 
 function getLowerCamelCase(s) {
   return `${s[0].toLowerCase()}${s.slice(1)}`;
@@ -27,6 +28,11 @@ function createStubMutationFields(names) {
 }
 
 export default function defineMutation({ models, queries }) {
+  const { GraphQLAddTimeUnitMutation } = defineGraphQLAddTimeUnitMutation({
+    models,
+    queries,
+  });
+
   const {
     GraphQLCreateTaskUnitMutation,
   } = defineGraphQLCreateTaskUnitMutation({ models, queries });
@@ -50,7 +56,6 @@ export default function defineMutation({ models, queries }) {
     fields: {
       ...createStubMutationFields([
         'AddTaskUnit',
-        'AddTimeUnit',
         'CreateDailyReport',
         'CreateDailyReportTemplate',
         'CreateTimeUnit',
@@ -63,10 +68,11 @@ export default function defineMutation({ models, queries }) {
         'UpdateTaskUnit',
         'UpdateTimeUnit',
       ]),
-      createTaskUnit: GraphQLCreateTaskUnitMutation,
-      removeTaskUnit: GraphQLRemoveTaskUnitMutation,
+      addTimeUnit: GraphQLAddTimeUnitMutation,
       createProject: GraphQLCreateProjectMutation,
+      createTaskUnit: GraphQLCreateTaskUnitMutation,
       removeProject: GraphQLRemoveProjectMutation,
+      removeTaskUnit: GraphQLRemoveTaskUnitMutation,
     },
   });
 
