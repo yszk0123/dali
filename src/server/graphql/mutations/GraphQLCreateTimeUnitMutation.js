@@ -1,26 +1,23 @@
-import { GraphQLNonNull, GraphQLInt, GraphQLID } from 'graphql';
-import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
-import { first } from 'lodash';
+import { GraphQLNonNull, GraphQLInt } from 'graphql';
+import GraphQLDate from 'graphql-date';
+import { mutationWithClientMutationId } from 'graphql-relay';
+import { startOfDay } from '../../shared/utils/DateUtils';
 
 export default function defineGraphQLCreateTimeUnitMutation({
-  queries: {
-    GraphQLTimeUnitEdge,
-    GraphQLUser,
-    GraphQLDailyScheduleTimeUnitConnection,
-  },
+  queries: { GraphQLTimeUnitEdge, GraphQLUser, GraphQLUserTimeUnitConnection },
   models: { TimeUnit },
 }) {
   const GraphQLCreateTimeUnitMutation = mutationWithClientMutationId({
     name: 'CreateTimeUnit',
     inputFields: {
-      dailyScheduleId: { type: new GraphQLNonNull(GraphQLID) },
+      scheduleDate: { type: GraphQLDate },
       position: { type: new GraphQLNonNull(GraphQLInt) },
     },
     outputFields: {
       timeUnitEdge: {
-        type: GraphQLDailyScheduleTimeUnitConnection.edgeType,
+        type: GraphQLUserTimeUnitConnection.edgeType,
         resolve: ({ timeUnit }) => {
-          return GraphQLDailyScheduleTimeUnitConnection.resolveEdge(timeUnit);
+          return GraphQLUserTimeUnitConnection.resolveEdge(timeUnit);
         },
       },
       viewer: {
@@ -29,19 +26,11 @@ export default function defineGraphQLCreateTimeUnitMutation({
       },
     },
     mutateAndGetPayload: async (
-      { dailyScheduleId: globalId, position },
+      { scheduleDate = startOfDay(new Date()), position },
       { user },
     ) => {
-      const { id: localId } = fromGlobalId(globalId);
-      const dailySchedule = first(
-        await user.getDailySchedules({
-          where: { id: localId },
-          rejectOnEmpty: true,
-        }),
-      );
-
-      const timeUnit = await TimeUnit.create({ position });
-      await dailySchedule.createTimeUnit(timeUnit);
+      const timeUnit = await TimeUnit.create({ scheduleDate, position });
+      await user.addTimeUnit(timeUnit);
 
       return { timeUnit, user };
     },

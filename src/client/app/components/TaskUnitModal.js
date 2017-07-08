@@ -4,15 +4,14 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import Modal from 'react-modal';
 import LinkTaskUnitMutation from '../../graphql/mutations/LinkTaskUnitMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
-import type { TaskUnitModal_dailySchedule } from './__generated__/TaskUnitModal_dailySchedule.graphql';
 import type { TaskUnitModal_timeUnit } from './__generated__/TaskUnitModal_timeUnit.graphql';
 import type { TaskUnitModal_viewer } from './__generated__/TaskUnitModal_viewer.graphql';
 
 type Props = {
-  dailySchedule: TaskUnitModal_dailySchedule,
   isOpen: boolean,
   onClose: () => mixed,
   relay: any,
+  scheduleDate: Date,
   timeUnit: TaskUnitModal_timeUnit,
   viewer: TaskUnitModal_viewer,
 };
@@ -21,13 +20,12 @@ export class TaskUnitModal extends React.Component {
   props: Props;
 
   _add(taskUnit) {
-    const { relay, timeUnit, dailySchedule, onClose } = this.props;
+    const { relay, scheduleDate, timeUnit, onClose } = this.props;
 
     LinkTaskUnitMutation.commit(
       relay.environment,
-      taskUnit,
+      { scheduleDate: scheduleDate, taskUnit, timeUnit },
       timeUnit,
-      dailySchedule,
     );
 
     onClose();
@@ -65,10 +63,6 @@ export default createFragmentContainer(
   TaskUnitModal,
   graphql`
     fragment TaskUnitModal_timeUnit on TimeUnit {
-      id
-    }
-
-    fragment TaskUnitModal_dailySchedule on DailySchedule {
       id
     }
 

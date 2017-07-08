@@ -9,8 +9,8 @@ export default function createDailyReport(sequelize, DataTypes) {
     },
   );
 
-  DailyReport.associate = ({ DailySchedule }) => {
-    DailyReport.DailySchedule = DailyReport.belongsTo(DailySchedule);
+  DailyReport.associate = ({ User }) => {
+    DailyReport.User = DailyReport.belongsTo(User);
   };
 
   return DailyReport;

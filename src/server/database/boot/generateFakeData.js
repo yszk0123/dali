@@ -1,33 +1,20 @@
 import { startOfDay } from '../../shared/utils/DateUtils';
 
-export default async function generateFakeData({ models }) {
-  const {
-    DailyReport,
-    DailySchedule,
-    Project,
-    TaskUnit,
-    TimeUnit,
-    User,
-  } = models;
+export default async function generateFakeData({ models: { User } }) {
+  const scheduleDate = startOfDay(new Date());
 
   const user = await User.create({ name: 'foo' });
 
-  const dailySchedule = await DailySchedule.create({
-    date: startOfDay(new Date()),
-  });
   await Promise.all([
-    dailySchedule.createTimeUnit({ position: 0 }),
-    dailySchedule.createTimeUnit({ position: 1 }),
-    dailySchedule.createTimeUnit({ position: 2 }),
-    dailySchedule.createDailyReport({}),
-  ]);
-
-  await Promise.all([
+    user.createTimeUnit({ scheduleDate, position: 0 }),
+    user.createTimeUnit({ scheduleDate, position: 1 }),
+    user.createTimeUnit({ scheduleDate, position: 2 }),
     user.createProject({ title: 'Private' }),
     user.createProject({ title: 'Work' }),
     user.createTaskUnit({ title: 'Breakfast' }),
     user.createTaskUnit({ title: 'Lunch' }),
     user.createTaskUnit({ title: 'Dinner' }),
-    user.addDailySchedule(dailySchedule),
+    // TODO
+    // user.createDailyReport({}),
   ]);
 }

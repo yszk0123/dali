@@ -13,7 +13,6 @@ export default function defineGraphQLLinkTaskUnitMutation({
   const GraphQLLinkTaskUnitMutation = mutationWithClientMutationId({
     name: 'LinkTaskUnit',
     inputFields: {
-      dailyScheduleId: { type: new GraphQLNonNull(GraphQLID) },
       taskUnitId: { type: new GraphQLNonNull(GraphQLID) },
       timeUnitId: { type: new GraphQLNonNull(GraphQLID) },
     },
@@ -30,24 +29,13 @@ export default function defineGraphQLLinkTaskUnitMutation({
       },
     },
     mutateAndGetPayload: async (
-      {
-        dailyScheduleId: globalDailyScheduleId,
-        taskUnitId: globalTaskUnitId,
-        timeUnitId: globalTimeUnitId,
-      },
+      { taskUnitId: globalTaskUnitId, timeUnitId: globalTimeUnitId },
       { user },
     ) => {
       const { id: localTimeUnitId } = fromGlobalId(globalTimeUnitId);
       const { id: localTaskUnitId } = fromGlobalId(globalTaskUnitId);
-      const { id: localDailyScheduleId } = fromGlobalId(globalDailyScheduleId);
-      const dailySchedule = first(
-        await user.getDailySchedules({
-          where: { id: localDailyScheduleId },
-          rejectOnEmpty: true,
-        }),
-      );
       const timeUnit = first(
-        await dailySchedule.getTimeUnits({
+        await user.getTimeUnits({
           where: { id: localTimeUnitId },
           rejectOnEmpty: true,
         }),

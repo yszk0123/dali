@@ -37,9 +37,13 @@ export class EmptyTimeUnitItem extends React.Component {
   };
 
   _createTimeUnit(positioin) {
-    const { relay, position, dailySchedule } = this.props;
+    const { relay, position, scheduleDate, viewer } = this.props;
 
-    CreateTimeUnitMutation.commit(relay.environment, { position }, dailySchedule);
+    CreateTimeUnitMutation.commit(
+      relay.environment,
+      { position, scheduleDate },
+      viewer,
+    );
   }
 
   render() {
@@ -57,7 +61,7 @@ export class EmptyTimeUnitItem extends React.Component {
 export default createFragmentContainer(
   EmptyTimeUnitItem,
   graphql`
-    fragment EmptyTimeUnitItem_dailySchedule on DailySchedule {
+    fragment EmptyTimeUnitItem_viewer on User {
       id
     }
   `,
