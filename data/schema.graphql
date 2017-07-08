@@ -203,10 +203,12 @@ type RemoveTimeUnitPayload {
 type TaskUnit {
   # The ID of an object
   id: ID!
+  title: String
+  doneAt: String
+  routine: taskUnitroutineEnumType
+  priority: taskUnitpriorityEnumType
   createdAt: String
   modifiedAt: String
-  title: String
-  priority: taskUnitpriorityEnumType
   updatedAt: String!
   projectId: Int
   userId: Int
@@ -217,6 +219,12 @@ enum taskUnitpriorityEnumType {
   EMERGENCY
   HIGH
   LOW
+}
+
+enum taskUnitroutineEnumType {
+  EVERYDAY
+  WEEKDAY
+  WEEKEND
 }
 
 type TimeUnit {

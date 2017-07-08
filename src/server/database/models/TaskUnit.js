@@ -2,15 +2,26 @@ export default function createTaskUnit(sequelize, DataTypes) {
   const TaskUnit = sequelize.define(
     'taskUnit',
     {
-      createdAt: DataTypes.DATE,
-      modifiedAt: DataTypes.DATE,
       title: DataTypes.TEXT,
+      doneAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null,
+      },
+      routine: {
+        type: DataTypes.ENUM,
+        values: ['EVERYDAY', 'WEEKDAY', 'WEEKEND'],
+        allowNull: true,
+        defaultValue: null,
+      },
       priority: {
         type: DataTypes.ENUM,
         values: ['EMERGENCY', 'HIGH', 'LOW'],
         allowNull: true,
         defaultValue: null,
       },
+      createdAt: DataTypes.DATE,
+      modifiedAt: DataTypes.DATE,
     },
     {
       timestamps: true,
