@@ -1,9 +1,10 @@
 import { GraphQLObjectType } from 'graphql';
 import { globalIdField, mutationWithClientMutationId } from 'graphql-relay';
-import defineGraphQLLinkTaskUnitMutation from '../mutations/GraphQLLinkTaskUnitMutation';
-import defineGraphQLCreateTimeUnitMutation from '../mutations/GraphQLCreateTimeUnitMutation';
 import defineGraphQLCreateProjectMutation from '../mutations/GraphQLCreateProjectMutation';
 import defineGraphQLCreateTaskUnitMutation from '../mutations/GraphQLCreateTaskUnitMutation';
+import defineGraphQLCreateTimeUnitMutation from '../mutations/GraphQLCreateTimeUnitMutation';
+import defineGraphQLLinkProjectMutation from '../mutations/GraphQLLinkProjectMutation';
+import defineGraphQLLinkTaskUnitMutation from '../mutations/GraphQLLinkTaskUnitMutation';
 import defineGraphQLRemoveProjectMutation from '../mutations/GraphQLRemoveProjectMutation';
 import defineGraphQLRemoveTaskUnitMutation from '../mutations/GraphQLRemoveTaskUnitMutation';
 
@@ -29,12 +30,19 @@ function createStubMutationFields(names) {
 }
 
 export default function defineMutation({ models, queries }) {
-  const { GraphQLCreateTimeUnitMutation } = defineGraphQLCreateTimeUnitMutation({
+  const {
+    GraphQLCreateTimeUnitMutation,
+  } = defineGraphQLCreateTimeUnitMutation({
     models,
     queries,
   });
 
   const { GraphQLLinkTaskUnitMutation } = defineGraphQLLinkTaskUnitMutation({
+    models,
+    queries,
+  });
+
+  const { GraphQLLinkProjectMutation } = defineGraphQLLinkProjectMutation({
     models,
     queries,
   });
@@ -72,10 +80,11 @@ export default function defineMutation({ models, queries }) {
         'UpdateTaskUnit',
         'UpdateTimeUnit',
       ]),
-      linkTaskUnit: GraphQLLinkTaskUnitMutation,
-      createTimeUnit: GraphQLCreateTimeUnitMutation,
       createProject: GraphQLCreateProjectMutation,
       createTaskUnit: GraphQLCreateTaskUnitMutation,
+      createTimeUnit: GraphQLCreateTimeUnitMutation,
+      linkProject: GraphQLLinkProjectMutation,
+      linkTaskUnit: GraphQLLinkTaskUnitMutation,
       removeProject: GraphQLRemoveProjectMutation,
       removeTaskUnit: GraphQLRemoveTaskUnitMutation,
     },

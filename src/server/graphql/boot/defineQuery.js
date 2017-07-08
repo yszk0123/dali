@@ -13,7 +13,7 @@ export default function defineQuery({
 }) {
   const { GraphQLProject } = defineGraphQLProject({ models });
 
-  const { GraphQLTaskUnit } = defineGraphQLTaskUnit({ models });
+  const { GraphQLTaskUnit } = defineGraphQLTaskUnit({ GraphQLProject, models });
 
   const {
     GraphQLTimeUnit,

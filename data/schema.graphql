@@ -63,6 +63,18 @@ type DailyReport {
 
 scalar Date
 
+input LinkProjectInput {
+  projectId: ID!
+  taskUnitId: ID!
+  clientMutationId: String
+}
+
+type LinkProjectPayload {
+  project: Project
+  viewer: User
+  clientMutationId: String
+}
+
 input LinkTaskUnitInput {
   taskUnitId: ID!
   timeUnitId: ID!
@@ -86,10 +98,11 @@ type Mutation {
   updateProject(input: UpdateProjectInput!): UpdateProjectPayload
   updateTaskUnit(input: UpdateTaskUnitInput!): UpdateTaskUnitPayload
   updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
-  linkTaskUnit(input: LinkTaskUnitInput!): LinkTaskUnitPayload
-  createTimeUnit(input: CreateTimeUnitInput!): CreateTimeUnitPayload
   createProject(input: CreateProjectInput!): CreateProjectPayload
   createTaskUnit(input: CreateTaskUnitInput!): CreateTaskUnitPayload
+  createTimeUnit(input: CreateTimeUnitInput!): CreateTimeUnitPayload
+  linkProject(input: LinkProjectInput!): LinkProjectPayload
+  linkTaskUnit(input: LinkTaskUnitInput!): LinkTaskUnitPayload
   removeProject(input: RemoveProjectInput!): RemoveProjectPayload
   removeTaskUnit(input: RemoveTaskUnitInput!): RemoveTaskUnitPayload
 }
@@ -196,6 +209,7 @@ type TaskUnit {
   updatedAt: String!
   projectId: Int
   userId: Int
+  project: Project
 }
 
 enum taskUnitpriorityEnumType {
