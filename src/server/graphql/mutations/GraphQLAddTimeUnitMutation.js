@@ -1,6 +1,6 @@
 import { GraphQLNonNull, GraphQLInt, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
-import firstOrThrow from '../../shared/utils/firstOrThrow';
+import { first } from 'lodash';
 
 export default function defineGraphQLAddTimeUnitMutation({
   queries: {
@@ -33,8 +33,11 @@ export default function defineGraphQLAddTimeUnitMutation({
       { user },
     ) => {
       const { id: localId } = fromGlobalId(globalId);
-      const dailySchedule = firstOrThrow(
-        await user.getDailySchedules({ where: { id: localId } }),
+      const dailySchedule = first(
+        await user.getDailySchedules({
+          where: { id: localId },
+          rejectOnEmpty: true,
+        }),
       );
 
       const timeUnit = await TimeUnit.create({ position });

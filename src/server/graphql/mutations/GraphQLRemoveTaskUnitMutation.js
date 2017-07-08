@@ -1,6 +1,6 @@
 import { GraphQLNonNull, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
-import firstOrThrow from '../../shared/utils/firstOrThrow';
+import { first } from 'lodash';
 
 export default function defineGraphQLRemoveTaskUnitMutation({
   queries: { GraphQLTaskUnitEdge, GraphQLUser, GraphQLUserTaskUnitConnection },
@@ -26,8 +26,11 @@ export default function defineGraphQLRemoveTaskUnitMutation({
 
       // TODO: Implement User#getTaskUnit which throws Error
       // when the taskUnit is not found.
-      const taskUnit = firstOrThrow(
-        await user.getTaskUnits({ where: { id: localId } }),
+      const taskUnit = first(
+        await user.getTaskUnits({
+          where: { id: localId },
+          rejectOnEmpty: true,
+        }),
       );
       taskUnit.destroy();
 

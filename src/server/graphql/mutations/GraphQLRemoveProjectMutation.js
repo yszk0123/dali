@@ -1,6 +1,6 @@
 import { GraphQLNonNull, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
-import firstOrThrow from '../../shared/utils/firstOrThrow';
+import { first } from 'lodash';
 
 export default function defineGraphQLRemoveProjectMutation({
   queries: { GraphQLProjectEdge, GraphQLUser, GraphQLUserProjectConnection },
@@ -26,8 +26,8 @@ export default function defineGraphQLRemoveProjectMutation({
 
       // TODO: Implement User#getProject which throws Error
       // when the project is not found.
-      const project = firstOrThrow(
-        await user.getProjects({ where: { id: localId } }),
+      const project = first(
+        await user.getProjects({ where: { id: localId }, rejectOnEmpty: true }),
       );
       project.destroy();
 
