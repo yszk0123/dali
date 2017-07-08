@@ -2,8 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import TimeUnitItem from '../TimeUnitItem';
 import { TimeUnitList } from '../TimeUnitList';
-import AddTimeUnitMutation from '../../../graphql/mutations/AddTimeUnitMutation';
-jest.mock('../../../graphql/mutations/AddTimeUnitMutation');
+import CreateTimeUnitMutation from '../../../graphql/mutations/CreateTimeUnitMutation';
+jest.mock('../../../graphql/mutations/CreateTimeUnitMutation');
 
 const relay = { environment: {} };
 const viewer = {
@@ -27,7 +27,7 @@ test('renders timeUnits', () => {
   );
 });
 
-test('commits AddTimeUnitMutation when the add button clicked', () => {
+test('commits CreateTimeUnitMutation when the add button clicked', () => {
   const timeUnitList = shallow(<TimeUnitList relay={relay} viewer={viewer} />);
   const input = { title: 'foo' };
 
@@ -37,7 +37,7 @@ test('commits AddTimeUnitMutation when the add button clicked', () => {
   timeUnitList.find('button').simulate('click');
 
   expect(timeUnitList.state('title')).toEqual('');
-  expect(AddTimeUnitMutation.commit).toHaveBeenCalledWith(
+  expect(CreateTimeUnitMutation.commit).toHaveBeenCalledWith(
     relay.environment,
     input,
     viewer,

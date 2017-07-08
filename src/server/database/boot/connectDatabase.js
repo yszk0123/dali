@@ -1,15 +1,8 @@
-import Sequelize from 'sequelize';
 import path from 'path';
+import Sequelize from 'sequelize';
 import serverConfig from '../../shared/config/serverConfig';
 
-const modelNames = [
-  'DailyReport',
-  'DailySchedule',
-  'Project',
-  'TaskUnit',
-  'TimeUnit',
-  'User',
-];
+const modelNames = ['DailyReport', 'Project', 'TaskUnit', 'TimeUnit', 'User'];
 
 export default async function connectDatabase({ noSync } = {}) {
   const sequelize = new Sequelize(serverConfig.databaseUrl, {

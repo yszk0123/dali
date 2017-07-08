@@ -5,7 +5,9 @@ const generateId = makeIdGenerator();
 // const generateOptimisticId = makeIdGenerator('client:newRemoveDailyReportTemplate');
 
 const mutation = graphql`
-  mutation RemoveDailyReportTemplateMutation($input: RemoveDailyReportTemplateInput!) {
+  mutation RemoveDailyReportTemplateMutation(
+    $input: RemoveDailyReportTemplateInput!
+  ) {
     removeDailyReportTemplate(input: $input) {
       id
     }

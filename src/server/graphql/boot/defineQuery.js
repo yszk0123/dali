@@ -3,7 +3,6 @@ import defineGraphQLProject from '../queries/GraphQLProject';
 import defineGraphQLTaskUnit from '../queries/GraphQLTaskUnit';
 import defineGraphQLTimeUnit from '../queries/GraphQLTimeUnit';
 import defineGraphQLDailyReport from '../queries/GraphQLDailyReport';
-import defineGraphQLDailySchedule from '../queries/GraphQLDailySchedule';
 import defineGraphQLUser from '../queries/GraphQLUser';
 
 export default function defineQuery({
@@ -12,55 +11,33 @@ export default function defineQuery({
   nodeField,
   nodeTypeMapper,
 }) {
-  const {
-    DailyReport,
-    DailySchedule,
-    Project,
-    TaskUnit,
-    TimeUnit,
-    User,
-  } = models;
+  const { GraphQLProject } = defineGraphQLProject({ models });
 
-  const { GraphQLProject } = defineGraphQLProject({ Project });
-
-  const { GraphQLTaskUnit } = defineGraphQLTaskUnit({ TaskUnit });
+  const { GraphQLTaskUnit } = defineGraphQLTaskUnit({ GraphQLProject, models });
 
   const {
     GraphQLTimeUnit,
     GraphQLTimeUnitTaskUnitConnection,
-  } = defineGraphQLTimeUnit({
-    TimeUnit,
-    GraphQLTaskUnit,
-  });
+  } = defineGraphQLTimeUnit({ models, GraphQLTaskUnit });
 
-  const { GraphQLDailyReport } = defineGraphQLDailyReport({ DailyReport });
-
-  const {
-    GraphQLDailySchedule,
-    GraphQLDailyScheduleTimeUnitConnection,
-  } = defineGraphQLDailySchedule({
-    DailySchedule,
-    GraphQLDailyReport,
-    GraphQLTimeUnit,
-    DailyReport,
-  });
+  const { GraphQLDailyReport } = defineGraphQLDailyReport({ models });
 
   const {
     GraphQLUser,
     GraphQLUserProjectConnection,
     GraphQLUserTaskUnitConnection,
+    GraphQLUserTimeUnitConnection,
   } = defineGraphQLUser({
-    DailySchedule,
-    GraphQLDailySchedule,
+    GraphQLDailyReport,
     GraphQLProject,
     GraphQLTaskUnit,
-    User,
+    GraphQLTimeUnit,
+    models,
     nodeInterface,
   });
 
   nodeTypeMapper.mapTypes({
     DailyReport: GraphQLDailyReport,
-    DailySchedule: GraphQLDailySchedule,
     Project: GraphQLProject,
     TaskUnit: GraphQLTaskUnit,
     TimeUnit: GraphQLTimeUnit,
@@ -80,8 +57,6 @@ export default function defineQuery({
 
   return {
     GraphQLDailyReport,
-    GraphQLDailySchedule,
-    GraphQLDailyScheduleTimeUnitConnection,
     GraphQLProject,
     GraphQLQuery,
     GraphQLTaskUnit,
@@ -90,5 +65,6 @@ export default function defineQuery({
     GraphQLUser,
     GraphQLUserProjectConnection,
     GraphQLUserTaskUnitConnection,
+    GraphQLUserTimeUnitConnection,
   };
 }

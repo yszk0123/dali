@@ -2,8 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import TaskUnitItem from '../TaskUnitItem';
 import { TaskUnitList } from '../TaskUnitList';
-import AddTaskUnitMutation from '../../../graphql/mutations/AddTaskUnitMutation';
-jest.mock('../../../graphql/mutations/AddTaskUnitMutation');
+import LinkTaskUnitMutation from '../../../graphql/mutations/LinkTaskUnitMutation';
+jest.mock('../../../graphql/mutations/LinkTaskUnitMutation');
 
 const relay = { environment: {} };
 const viewer = {
@@ -27,7 +27,7 @@ test('renders taskUnits', () => {
   );
 });
 
-test('commits AddTaskUnitMutation when the add button clicked', () => {
+test('commits LinkTaskUnitMutation when the add button clicked', () => {
   const taskUnitList = shallow(<TaskUnitList relay={relay} viewer={viewer} />);
   const input = { title: 'foo' };
 
@@ -37,7 +37,7 @@ test('commits AddTaskUnitMutation when the add button clicked', () => {
   taskUnitList.find('button').simulate('click');
 
   expect(taskUnitList.state('title')).toEqual('');
-  expect(AddTaskUnitMutation.commit).toHaveBeenCalledWith(
+  expect(LinkTaskUnitMutation.commit).toHaveBeenCalledWith(
     relay.environment,
     input,
     viewer,

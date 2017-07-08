@@ -1,60 +1,68 @@
+/* @flow */
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
+import getNodesFromConnection from '../../shared/utils/getNodesFromConnection.js';
+import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 import TimeUnitItem from './TimeUnitItem';
-import AddTimeUnitMutation from '../../graphql/mutations/AddTimeUnitMutation';
+import type { TimeUnitList_viewer } from './__generated__/TimeUnitList_viewer.graphql';
+
+const MAX_TIME_UNITS = 48;
+
+function getSparseTimeUnits(timeUnits) {
+  const sparseTimeUnits = Array.from(Array(MAX_TIME_UNITS));
+
+  timeUnits.forEach(timeUnit => {
+    sparseTimeUnits[timeUnit.position] = timeUnit;
+  });
+
+  return sparseTimeUnits;
+}
+
+type Props = {
+  scheduleDate: Date,
+  viewer: TimeUnitList_viewer,
+};
 
 export class TimeUnitList extends React.Component {
-  constructor(props) {
+  props: Props;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
-      title: '',
+      position: '',
     };
   }
 
-  _handleAddTimeUnitClick = event => {
-    const { title } = this.state;
-
-    if (title) {
-      this._addTimeUnit(title);
-      this.setState({
-        title: '',
-      });
-    }
-  };
-
-  _handleTitleChange = event => {
-    this.setState({
-      title: event.target.value,
-    });
-  };
-
-  _addTimeUnit(title) {
-    AddTimeUnitMutation.commit(
-      this.props.relay.environment,
-      { title },
-      this.props.dailySchedule,
-    );
-  }
-
   _renderTimeUnits() {
-    const { dailySchedule } = this.props;
+    const { scheduleDate, viewer } = this.props;
+    const timeUnits = getSparseTimeUnits(
+      getNodesFromConnection(viewer.timeUnits),
+    );
 
-    return dailySchedule.timeUnits.edges.map(edge =>
-      <li key={edge.node.id}>
-        <TimeUnitItem timeUnit={edge.node} />
+    return timeUnits.map((timeUnit, position) =>
+      <li key={position}>
+        {timeUnit
+          ? <TimeUnitItem
+              scheduleDate={scheduleDate}
+              timeUnit={timeUnit}
+              viewer={viewer}
+            />
+          : <EmptyTimeUnitItem
+              position={position}
+              scheduleDate={scheduleDate}
+              viewer={viewer}
+            />}
       </li>,
     );
   }
 
   render() {
-    const { title } = this.state;
-
     return (
       <div>
         <h1>TimeUnits</h1>
-        <ul>{this._renderTimeUnits()}</ul>
-        <input type="text" value={title} onChange={this._handleTitleChange} />
-        <button onClick={this._handleAddTimeUnitClick}>Add</button>
+        <ul>
+          {this._renderTimeUnits()}
+        </ul>
       </div>
     );
   }
@@ -63,16 +71,18 @@ export class TimeUnitList extends React.Component {
 export default createFragmentContainer(
   TimeUnitList,
   graphql`
-    fragment TimeUnitList_dailySchedule on DailySchedule {
-      id
+    fragment TimeUnitList_viewer on User {
       timeUnits(first: 100) @connection(key: "TimeUnitList_timeUnits") {
         edges {
           node {
             id
+            position
             ...TimeUnitItem_timeUnit
           }
         }
       }
+      ...TimeUnitItem_viewer
+      ...EmptyTimeUnitItem_viewer
     }
   `,
 );

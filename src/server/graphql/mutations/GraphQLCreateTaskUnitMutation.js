@@ -2,10 +2,8 @@ import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 
 export default function defineGraphQLCreateTaskUnitMutation({
-  GraphQLTaskUnitEdge,
-  GraphQLUser,
-  GraphQLUserTaskUnitConnection,
-  TaskUnit,
+  queries: { GraphQLTaskUnitEdge, GraphQLUser, GraphQLUserTaskUnitConnection },
+  models: { TaskUnit },
 }) {
   const GraphQLCreateTaskUnitMutation = mutationWithClientMutationId({
     name: 'CreateTaskUnit',

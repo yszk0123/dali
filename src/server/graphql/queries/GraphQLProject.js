@@ -1,7 +1,7 @@
 import { GraphQLObjectType } from 'graphql';
 import { attributeFields } from 'graphql-sequelize';
 
-export default function defineGraphQLProject({ Project }) {
+export default function defineGraphQLProject({ models: { Project } }) {
   const GraphQLProject = new GraphQLObjectType({
     name: 'Project',
     fields: attributeFields(Project, {

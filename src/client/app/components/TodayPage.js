@@ -1,19 +1,23 @@
+/* @flow */
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import TimeUnitList from './TimeUnitList';
+import type { TodayPage_viewer } from './__generated__/TodayPage_viewer.graphql';
 
-export function TodayPage({ viewer }) {
-  return <TimeUnitList viewer={viewer} />;
+type Props = {
+  scheduleDate: Date,
+  viewer: TodayPage_viewer,
+};
+
+export function TodayPage({ scheduleDate, viewer }: Props) {
+  return <TimeUnitList viewer={viewer} scheduleDate={scheduleDate} />;
 }
 
 export default createFragmentContainer(
   TodayPage,
   graphql`
     fragment TodayPage_viewer on User {
-      dailySchedule {
-        date
-        ...TimeUnitList_dailySchedule
-      }
+      ...TimeUnitList_viewer
     }
   `,
 );

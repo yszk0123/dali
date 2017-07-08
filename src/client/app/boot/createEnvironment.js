@@ -1,18 +1,31 @@
 import { Environment, Network, RecordSource, Store } from 'relay-runtime';
 
-async function fetchQuery(operation, variables) {
-  const response = await fetch('/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query: operation.text,
-      variables,
-    }),
-  });
+function prettyFetchErrors(errors) {
+  return errors.map(error => error.message).join('\n');
+}
 
-  return response.json();
+async function fetchQuery(operation, variables) {
+  try {
+    const response = await fetch('/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: operation.text,
+        variables,
+      }),
+    });
+
+    const data = await response.json();
+    if (data.errors) {
+      console.error(prettyFetchErrors(data.errors));
+    }
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export default function createEnvironment() {

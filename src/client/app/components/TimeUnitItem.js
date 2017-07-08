@@ -1,5 +1,7 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
+import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
+import LinkTaskUnitModal from './LinkTaskUnitModal';
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -11,23 +13,65 @@ function mapPositionToTimeRange(position) {
   return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
 }
 
-export function TaskSummary({ tasks }) {
-  return <div>{tasks.map(task => task.title).join(', ')}</div>;
+export function TaskSummary({ taskUnits }) {
+  return (
+    <div>
+      {taskUnits.map(taskUnit => taskUnit.title).join(', ')}
+    </div>
+  );
 }
 
 export function TimeRange({ position }) {
-  return <div>{mapPositionToTimeRange(position)}</div>;
-}
-
-export function TimeUnitItem({ timeUnit }) {
-  const tasks = timeUnit.taskUnits.edges.map(edge => edge.node);
-
   return (
     <div>
-      <TaskSummary tasks={tasks} />
-      <TimeRange position={timeUnit.position} />
+      {mapPositionToTimeRange(position)}
     </div>
   );
+}
+
+export function LinkTaskUnitButton({ onClick }) {
+  return (
+    <div>
+      <button onClick={onClick}>Add TaskUnit Here</button>
+    </div>
+  );
+}
+
+export class TimeUnitItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isModalOpen: false,
+    };
+  }
+
+  _handleLinkTaskUnitButtonClick = event => {
+    this.setState({ isModalOpen: true });
+  };
+
+  _handleModalClose = () => {
+    this.setState({ isModalOpen: false });
+  };
+
+  render() {
+    const { timeUnit, viewer } = this.props;
+    const { isModalOpen } = this.state;
+    const taskUnits = getNodesFromConnection(timeUnit.taskUnits);
+
+    return (
+      <div>
+        <TaskSummary taskUnits={taskUnits} />
+        <LinkTaskUnitButton onClick={this._handleLinkTaskUnitButtonClick} />
+        <TimeRange position={timeUnit.position} />
+        <LinkTaskUnitModal
+          isOpen={isModalOpen}
+          onClose={this._handleModalClose}
+          timeUnit={timeUnit}
+          viewer={viewer}
+        />
+      </div>
+    );
+  }
 }
 
 export default createFragmentContainer(
@@ -35,7 +79,7 @@ export default createFragmentContainer(
   graphql`
     fragment TimeUnitItem_timeUnit on TimeUnit {
       position
-      taskUnits {
+      taskUnits(first: 100) @connection(key: "TimeUnitItem_taskUnits") {
         edges {
           node {
             id
@@ -43,6 +87,11 @@ export default createFragmentContainer(
           }
         }
       }
+      ...LinkTaskUnitModal_timeUnit
+    }
+
+    fragment TimeUnitItem_viewer on User {
+      ...LinkTaskUnitModal_viewer
     }
   `,
 );

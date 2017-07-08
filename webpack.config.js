@@ -1,4 +1,5 @@
 const path = require('path');
+const AutoDllPlugin = require('autodll-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
@@ -46,12 +47,27 @@ module.exports = (env = {}) => {
     plugins: [
       new ExtractTextPlugin('styles.css'),
       new HtmlWebpackPlugin({
-        title: 'Dali',
         alwaysWriteToDisk: true,
-        filename: 'index.html',
         chunks: ['app'],
+        filename: 'index.html',
+        inject: true,
+        title: 'Dali',
       }),
       new HtmlWebpackHarddiskPlugin(),
+      new AutoDllPlugin({
+        context: __dirname,
+        filename: '[name].[hash].js',
+        inject: true,
+        path: './dll',
+        entry: {
+          vendor: [
+            'react',
+            'react-dom',
+            'react-router-dom',
+            'styled-components',
+          ],
+        },
+      }),
       // new CopyWebpackPlugin([
       //   { from: 'src/manifest.json' },
       //   { from: '*.png', to: 'images', context: 'src/images' },
