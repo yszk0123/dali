@@ -38,16 +38,24 @@ export function AddTaskUnitButton({ onClick }) {
 }
 
 export class TimeUnitItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isModalOpen: false,
+    };
+  }
+
   _handleAddTaskUnitButtonClick = event => {
-    this._addTaskUnit();
+    this.setState({ isModalOpen: true });
   };
 
-  _addTaskUnit() {
-    // TODO
-  }
+  _handleModalClose = () => {
+    this.setState({ isModalOpen: false });
+  };
 
   render() {
     const { timeUnit, viewer, dailySchedule } = this.props;
+    const { isModalOpen } = this.state;
     const taskUnits = getNodesFromConnection(timeUnit.taskUnits);
 
     return (
@@ -56,9 +64,11 @@ export class TimeUnitItem extends React.Component {
         <AddTaskUnitButton onClick={this._handleAddTaskUnitButtonClick} />
         <TimeRange position={timeUnit.position} />
         <TaskUnitModal
+          dailySchedule={dailySchedule}
+          isOpen={isModalOpen}
+          onClose={this._handleModalClose}
           timeUnit={timeUnit}
           viewer={viewer}
-          dailySchedule={dailySchedule}
         />
       </div>
     );

@@ -1,6 +1,7 @@
 /* @flow */
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
+import Modal from 'react-modal';
 import AddTaskUnitMutation from '../../graphql/mutations/AddTaskUnitMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import type { TaskUnitModal_dailySchedule } from './__generated__/TaskUnitModal_dailySchedule.graphql';
@@ -8,8 +9,10 @@ import type { TaskUnitModal_timeUnit } from './__generated__/TaskUnitModal_timeU
 import type { TaskUnitModal_viewer } from './__generated__/TaskUnitModal_viewer.graphql';
 
 type Props = {
-  relay: any,
   dailySchedule: TaskUnitModal_dailySchedule,
+  isOpen: boolean,
+  onClose: () => mixed,
+  relay: any,
   timeUnit: TaskUnitModal_timeUnit,
   viewer: TaskUnitModal_viewer,
 };
@@ -18,7 +21,7 @@ export class TaskUnitModal extends React.Component {
   props: Props;
 
   _add(taskUnit) {
-    const { relay, timeUnit, dailySchedule } = this.props;
+    const { relay, timeUnit, dailySchedule, onClose } = this.props;
 
     AddTaskUnitMutation.commit(
       relay.environment,
@@ -26,6 +29,8 @@ export class TaskUnitModal extends React.Component {
       timeUnit,
       dailySchedule,
     );
+
+    onClose();
   }
 
   _renderTaskUnits() {
@@ -43,13 +48,15 @@ export class TaskUnitModal extends React.Component {
   }
 
   render() {
+    const { isOpen, onClose } = this.props;
+
     return (
-      <div>
+      <Modal contentLabel="modal" isOpen={isOpen} onRequestClose={onClose}>
         <h2>TaskUnits</h2>
         <ul>
           {this._renderTaskUnits()}
         </ul>
-      </div>
+      </Modal>
     );
   }
 }
@@ -58,6 +65,10 @@ export default createFragmentContainer(
   TaskUnitModal,
   graphql`
     fragment TaskUnitModal_timeUnit on TimeUnit {
+      id
+    }
+
+    fragment TaskUnitModal_dailySchedule on DailySchedule {
       id
     }
 
