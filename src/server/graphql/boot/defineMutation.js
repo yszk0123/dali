@@ -63,7 +63,6 @@ export default function defineMutation({ models, queries }) {
       ...createStubMutationFields([
         'CreateDailyReport',
         'CreateDailyReportTemplate',
-        'CreateTimeUnit',
         'RemoveDailyReport',
         'RemoveDailyReportTemplate',
         'RemoveTimeUnit',

@@ -65,16 +65,6 @@ type CreateTaskUnitPayload {
   clientMutationId: String
 }
 
-input CreateTimeUnitInput {
-  clientMutationId: String
-}
-
-type CreateTimeUnitPayload {
-  # The ID of an object
-  id: ID!
-  clientMutationId: String
-}
-
 type DailyReport {
   # The ID of an object
   id: ID!
@@ -124,7 +114,6 @@ scalar Date
 type Mutation {
   createDailyReport(input: CreateDailyReportInput!): CreateDailyReportPayload
   createDailyReportTemplate(input: CreateDailyReportTemplateInput!): CreateDailyReportTemplatePayload
-  createTimeUnit(input: CreateTimeUnitInput!): CreateTimeUnitPayload
   removeDailyReport(input: RemoveDailyReportInput!): RemoveDailyReportPayload
   removeDailyReportTemplate(input: RemoveDailyReportTemplateInput!): RemoveDailyReportTemplatePayload
   removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
