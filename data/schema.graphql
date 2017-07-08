@@ -71,6 +71,7 @@ input LinkProjectInput {
 
 type LinkProjectPayload {
   project: Project
+  taskUnit: TaskUnit
   viewer: User
   clientMutationId: String
 }

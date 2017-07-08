@@ -3,7 +3,7 @@ import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { first } from 'lodash';
 
 export default function defineGraphQLLinkProjectMutation({
-  queries: { GraphQLProject, GraphQLUser },
+  queries: { GraphQLProject, GraphQLTaskUnit, GraphQLUser },
   models: { TaskUnit },
 }) {
   const GraphQLLinkProjectMutation = mutationWithClientMutationId({
@@ -16,6 +16,10 @@ export default function defineGraphQLLinkProjectMutation({
       project: {
         type: GraphQLProject,
         resolve: ({ project }) => project,
+      },
+      taskUnit: {
+        type: GraphQLTaskUnit,
+        resolve: ({ taskUnit }) => taskUnit,
       },
       viewer: {
         type: GraphQLUser,
@@ -43,7 +47,7 @@ export default function defineGraphQLLinkProjectMutation({
 
       await taskUnit.setProject(project);
 
-      return { project, user };
+      return { project, taskUnit, user };
     },
   });
 
