@@ -2,7 +2,10 @@ import { GraphQLInt, GraphQLObjectType } from 'graphql';
 import { attributeFields, relay } from 'graphql-sequelize';
 const { sequelizeConnection } = relay;
 
-export default function defineGraphQLTimeUnit({ TimeUnit, GraphQLTaskUnit }) {
+export default function defineGraphQLTimeUnit({
+  models: { TimeUnit },
+  GraphQLTaskUnit,
+}) {
   const GraphQLTimeUnitTaskUnitConnection = sequelizeConnection({
     name: 'TimeUnitTaskUnit',
     nodeType: GraphQLTaskUnit,

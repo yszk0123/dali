@@ -12,37 +12,24 @@ export default function defineQuery({
   nodeField,
   nodeTypeMapper,
 }) {
-  const {
-    DailyReport,
-    DailySchedule,
-    Project,
-    TaskUnit,
-    TimeUnit,
-    User,
-  } = models;
+  const { GraphQLProject } = defineGraphQLProject({ models });
 
-  const { GraphQLProject } = defineGraphQLProject({ Project });
-
-  const { GraphQLTaskUnit } = defineGraphQLTaskUnit({ TaskUnit });
+  const { GraphQLTaskUnit } = defineGraphQLTaskUnit({ models });
 
   const {
     GraphQLTimeUnit,
     GraphQLTimeUnitTaskUnitConnection,
-  } = defineGraphQLTimeUnit({
-    TimeUnit,
-    GraphQLTaskUnit,
-  });
+  } = defineGraphQLTimeUnit({ models, GraphQLTaskUnit });
 
-  const { GraphQLDailyReport } = defineGraphQLDailyReport({ DailyReport });
+  const { GraphQLDailyReport } = defineGraphQLDailyReport({ models });
 
   const {
     GraphQLDailySchedule,
     GraphQLDailyScheduleTimeUnitConnection,
   } = defineGraphQLDailySchedule({
-    DailySchedule,
     GraphQLDailyReport,
     GraphQLTimeUnit,
-    DailyReport,
+    models,
   });
 
   const {
@@ -50,11 +37,10 @@ export default function defineQuery({
     GraphQLUserProjectConnection,
     GraphQLUserTaskUnitConnection,
   } = defineGraphQLUser({
-    DailySchedule,
     GraphQLDailySchedule,
     GraphQLProject,
     GraphQLTaskUnit,
-    User,
+    models,
     nodeInterface,
   });
 

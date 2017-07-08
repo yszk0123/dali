@@ -3,10 +3,9 @@ import { attributeFields, relay, resolver } from 'graphql-sequelize';
 const { sequelizeConnection } = relay;
 
 export default function defineGraphQLDailySchedule({
-  DailySchedule,
   GraphQLDailyReport,
   GraphQLTimeUnit,
-  DailyReport,
+  models: { DailySchedule, DailyReport },
 }) {
   const GraphQLDailyScheduleTimeUnitConnection = sequelizeConnection({
     name: 'DailyScheduleTimeUnit',

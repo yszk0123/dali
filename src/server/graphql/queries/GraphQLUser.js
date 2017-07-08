@@ -6,11 +6,10 @@ import { startOfDay } from '../../shared/utils/DateUtils';
 const { sequelizeConnection } = relay;
 
 export default function defineGraphQLDailySchedule({
-  DailySchedule,
   GraphQLDailySchedule,
   GraphQLProject,
   GraphQLTaskUnit,
-  User,
+  models: { DailySchedule, User },
   nodeInterface,
 }) {
   const GraphQLUserProjectConnection = sequelizeConnection({
