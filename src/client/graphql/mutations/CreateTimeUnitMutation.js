@@ -10,16 +10,7 @@ const mutation = graphql`
     createTimeUnit(input: $input) {
       timeUnitEdge {
         node {
-          id
-          position
-          taskUnits {
-            edges {
-              node {
-                id
-                title
-              }
-            }
-          }
+          ...TimeUnitItem_timeUnit
         }
       }
     }
