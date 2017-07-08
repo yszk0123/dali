@@ -3,11 +3,11 @@ import { ConnectionHandler } from 'relay-runtime';
 import makeIdGenerator from '../../shared/utils/makeIdGenerator';
 
 const generateId = makeIdGenerator();
-const generateOptimisticId = makeIdGenerator('client:newAddTaskUnit');
+const generateOptimisticId = makeIdGenerator('client:newLinkTaskUnit');
 
 const mutation = graphql`
-  mutation AddTaskUnitMutation($input: AddTaskUnitInput!) {
-    addTaskUnit(input: $input) {
+  mutation LinkTaskUnitMutation($input: LinkTaskUnitInput!) {
+    linkTaskUnit(input: $input) {
       taskUnitEdge {
         node {
           id
@@ -40,19 +40,19 @@ function commit(environment, taskUnit, timeUnit, dailySchedule) {
       },
     },
     updater: store => {
-      const payload = store.getRootField('addTaskUnit');
+      const payload = store.getRootField('linkTaskUnit');
       const newEdge = payload.getLinkedRecord('taskUnitEdge');
 
       sharedUpdater(store, timeUnit, newEdge);
     },
     optimisticUpdater: store => {
-      const payload = store.getRootField('addTaskUnit');
+      const payload = store.getRootField('linkTaskUnit');
       const newEdge = payload.getLinkedRecord('taskUnitEdge');
 
       sharedUpdater(store, timeUnit, newEdge);
     },
     optimisticResponse: {
-      addTaskUnit: {
+      linkTaskUnit: {
         taskUnitEdge: {
           node: {
             id: generateOptimisticId(),

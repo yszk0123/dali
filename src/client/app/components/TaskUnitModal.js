@@ -2,7 +2,7 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import Modal from 'react-modal';
-import AddTaskUnitMutation from '../../graphql/mutations/AddTaskUnitMutation';
+import LinkTaskUnitMutation from '../../graphql/mutations/LinkTaskUnitMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import type { TaskUnitModal_dailySchedule } from './__generated__/TaskUnitModal_dailySchedule.graphql';
 import type { TaskUnitModal_timeUnit } from './__generated__/TaskUnitModal_timeUnit.graphql';
@@ -23,7 +23,7 @@ export class TaskUnitModal extends React.Component {
   _add(taskUnit) {
     const { relay, timeUnit, dailySchedule, onClose } = this.props;
 
-    AddTaskUnitMutation.commit(
+    LinkTaskUnitMutation.commit(
       relay.environment,
       taskUnit,
       timeUnit,

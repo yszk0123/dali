@@ -24,11 +24,11 @@ export class TaskUnitList extends React.Component {
     };
   }
 
-  _handleAddTaskUnitClick = (event: Event) => {
+  _handleLinkTaskUnitClick = (event: Event) => {
     const { title } = this.state;
 
     if (title) {
-      this._addTaskUnit(title);
+      this._linkTaskUnit(title);
       this.setState({
         title: '',
       });
@@ -45,7 +45,7 @@ export class TaskUnitList extends React.Component {
     });
   };
 
-  _addTaskUnit(title: string) {
+  _linkTaskUnit(title: string) {
     CreateTaskUnitMutation.commit(
       this.props.relay.environment,
       { title },
@@ -73,7 +73,7 @@ export class TaskUnitList extends React.Component {
           {this._renderTaskUnits()}
         </ul>
         <input type="text" value={title} onChange={this._handleTitleChange} />
-        <button onClick={this._handleAddTaskUnitClick}>Add</button>
+        <button onClick={this._handleLinkTaskUnitClick}>Add</button>
       </div>
     );
   }

@@ -2,7 +2,7 @@ import { GraphQLNonNull, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { first } from 'lodash';
 
-export default function defineGraphQLAddTaskUnitMutation({
+export default function defineGraphQLLinkTaskUnitMutation({
   queries: {
     GraphQLTaskUnitEdge,
     GraphQLUser,
@@ -10,8 +10,8 @@ export default function defineGraphQLAddTaskUnitMutation({
   },
   models: { TaskUnit },
 }) {
-  const GraphQLAddTaskUnitMutation = mutationWithClientMutationId({
-    name: 'AddTaskUnit',
+  const GraphQLLinkTaskUnitMutation = mutationWithClientMutationId({
+    name: 'LinkTaskUnit',
     inputFields: {
       dailyScheduleId: { type: new GraphQLNonNull(GraphQLID) },
       taskUnitId: { type: new GraphQLNonNull(GraphQLID) },
@@ -66,6 +66,6 @@ export default function defineGraphQLAddTaskUnitMutation({
   });
 
   return {
-    GraphQLAddTaskUnitMutation,
+    GraphQLLinkTaskUnitMutation,
   };
 }

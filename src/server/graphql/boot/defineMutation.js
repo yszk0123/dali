@@ -1,6 +1,6 @@
 import { GraphQLObjectType } from 'graphql';
 import { globalIdField, mutationWithClientMutationId } from 'graphql-relay';
-import defineGraphQLAddTaskUnitMutation from '../mutations/GraphQLAddTaskUnitMutation';
+import defineGraphQLLinkTaskUnitMutation from '../mutations/GraphQLLinkTaskUnitMutation';
 import defineGraphQLCreateTimeUnitMutation from '../mutations/GraphQLCreateTimeUnitMutation';
 import defineGraphQLCreateProjectMutation from '../mutations/GraphQLCreateProjectMutation';
 import defineGraphQLCreateTaskUnitMutation from '../mutations/GraphQLCreateTaskUnitMutation';
@@ -34,7 +34,7 @@ export default function defineMutation({ models, queries }) {
     queries,
   });
 
-  const { GraphQLAddTaskUnitMutation } = defineGraphQLAddTaskUnitMutation({
+  const { GraphQLLinkTaskUnitMutation } = defineGraphQLLinkTaskUnitMutation({
     models,
     queries,
   });
@@ -72,7 +72,7 @@ export default function defineMutation({ models, queries }) {
         'UpdateTaskUnit',
         'UpdateTimeUnit',
       ]),
-      addTaskUnit: GraphQLAddTaskUnitMutation,
+      linkTaskUnit: GraphQLLinkTaskUnitMutation,
       createTimeUnit: GraphQLCreateTimeUnitMutation,
       createProject: GraphQLCreateProjectMutation,
       createTaskUnit: GraphQLCreateTaskUnitMutation,

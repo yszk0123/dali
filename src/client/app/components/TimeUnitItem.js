@@ -29,7 +29,7 @@ export function TimeRange({ position }) {
   );
 }
 
-export function AddTaskUnitButton({ onClick }) {
+export function LinkTaskUnitButton({ onClick }) {
   return (
     <div>
       <button onClick={onClick}>Add TaskUnit Here</button>
@@ -45,7 +45,7 @@ export class TimeUnitItem extends React.Component {
     };
   }
 
-  _handleAddTaskUnitButtonClick = event => {
+  _handleLinkTaskUnitButtonClick = event => {
     this.setState({ isModalOpen: true });
   };
 
@@ -61,7 +61,7 @@ export class TimeUnitItem extends React.Component {
     return (
       <div>
         <TaskSummary taskUnits={taskUnits} />
-        <AddTaskUnitButton onClick={this._handleAddTaskUnitButtonClick} />
+        <LinkTaskUnitButton onClick={this._handleLinkTaskUnitButtonClick} />
         <TimeRange position={timeUnit.position} />
         <TaskUnitModal
           dailySchedule={dailySchedule}
