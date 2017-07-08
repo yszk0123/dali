@@ -62,11 +62,11 @@ export class TaskUnitModal extends React.Component {
 export default createFragmentContainer(
   TaskUnitModal,
   graphql`
-    fragment TaskUnitModal_timeUnit on TimeUnit {
+    fragment LinkTaskUnitModal_timeUnit on TimeUnit {
       id
     }
 
-    fragment TaskUnitModal_viewer on User {
+    fragment LinkTaskUnitModal_viewer on User {
       taskUnits(first: 100) {
         edges {
           node {

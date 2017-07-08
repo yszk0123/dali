@@ -1,7 +1,7 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
-import TaskUnitModal from './TaskUnitModal';
+import LinkTaskUnitModal from './LinkTaskUnitModal';
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -63,7 +63,7 @@ export class TimeUnitItem extends React.Component {
         <TaskSummary taskUnits={taskUnits} />
         <LinkTaskUnitButton onClick={this._handleLinkTaskUnitButtonClick} />
         <TimeRange position={timeUnit.position} />
-        <TaskUnitModal
+        <LinkTaskUnitModal
           isOpen={isModalOpen}
           onClose={this._handleModalClose}
           timeUnit={timeUnit}
@@ -87,11 +87,11 @@ export default createFragmentContainer(
           }
         }
       }
-      ...TaskUnitModal_timeUnit
+      ...LinkTaskUnitModal_timeUnit
     }
 
     fragment TimeUnitItem_viewer on User {
-      ...TaskUnitModal_viewer
+      ...LinkTaskUnitModal_viewer
     }
   `,
 );
