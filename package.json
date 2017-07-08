@@ -44,6 +44,7 @@
     "pg-hstore": "^2.3.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-modal": "^2.2.1",
     "react-relay": "^1.0.0",
     "react-router-dom": "^4.1.1",
     "sequelize": "^4.2.0",
