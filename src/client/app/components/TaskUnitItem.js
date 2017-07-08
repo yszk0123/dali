@@ -18,6 +18,7 @@ type State = {
 
 export class TaskUnitItem extends React.Component {
   props: Props;
+  state: State;
 
   constructor(props: Props) {
     super(props);
