@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import AddTimeUnitMutation from '../../graphql/mutations/AddTimeUnitMutation';
+import CreateTimeUnitMutation from '../../graphql/mutations/CreateTimeUnitMutation';
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -32,14 +32,14 @@ export function TimeRange({ position }) {
 }
 
 export class EmptyTimeUnitItem extends React.Component {
-  _handleAddTimeUnitButtonClick = event => {
-    this._addTimeUnit();
+  _handleCreateTimeUnitButtonClick = event => {
+    this._createTimeUnit();
   };
 
-  _addTimeUnit(positioin) {
+  _createTimeUnit(positioin) {
     const { relay, position, dailySchedule } = this.props;
 
-    AddTimeUnitMutation.commit(relay.environment, { position }, dailySchedule);
+    CreateTimeUnitMutation.commit(relay.environment, { position }, dailySchedule);
   }
 
   render() {
@@ -47,7 +47,7 @@ export class EmptyTimeUnitItem extends React.Component {
 
     return (
       <div>
-        <TaskSummary onClick={this._handleAddTimeUnitButtonClick} />
+        <TaskSummary onClick={this._handleCreateTimeUnitButtonClick} />
         <TimeRange position={position} />
       </div>
     );

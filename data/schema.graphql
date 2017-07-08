@@ -11,18 +11,6 @@ type AddTaskUnitPayload {
   clientMutationId: String
 }
 
-input AddTimeUnitInput {
-  dailyScheduleId: ID!
-  position: Int!
-  clientMutationId: String
-}
-
-type AddTimeUnitPayload {
-  timeUnitEdge: DailyScheduleTimeUnitEdge
-  viewer: User
-  clientMutationId: String
-}
-
 input CreateDailyReportInput {
   clientMutationId: String
 }
@@ -61,6 +49,18 @@ input CreateTaskUnitInput {
 
 type CreateTaskUnitPayload {
   taskUnitEdge: UserTaskUnitEdge
+  viewer: User
+  clientMutationId: String
+}
+
+input CreateTimeUnitInput {
+  dailyScheduleId: ID!
+  position: Int!
+  clientMutationId: String
+}
+
+type CreateTimeUnitPayload {
+  timeUnitEdge: DailyScheduleTimeUnitEdge
   viewer: User
   clientMutationId: String
 }
@@ -123,7 +123,7 @@ type Mutation {
   updateTaskUnit(input: UpdateTaskUnitInput!): UpdateTaskUnitPayload
   updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
   addTaskUnit(input: AddTaskUnitInput!): AddTaskUnitPayload
-  addTimeUnit(input: AddTimeUnitInput!): AddTimeUnitPayload
+  createTimeUnit(input: CreateTimeUnitInput!): CreateTimeUnitPayload
   createProject(input: CreateProjectInput!): CreateProjectPayload
   createTaskUnit(input: CreateTaskUnitInput!): CreateTaskUnitPayload
   removeProject(input: RemoveProjectInput!): RemoveProjectPayload

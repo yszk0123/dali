@@ -2,7 +2,7 @@ import { GraphQLNonNull, GraphQLInt, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { first } from 'lodash';
 
-export default function defineGraphQLAddTimeUnitMutation({
+export default function defineGraphQLCreateTimeUnitMutation({
   queries: {
     GraphQLTimeUnitEdge,
     GraphQLUser,
@@ -10,8 +10,8 @@ export default function defineGraphQLAddTimeUnitMutation({
   },
   models: { TimeUnit },
 }) {
-  const GraphQLAddTimeUnitMutation = mutationWithClientMutationId({
-    name: 'AddTimeUnit',
+  const GraphQLCreateTimeUnitMutation = mutationWithClientMutationId({
+    name: 'CreateTimeUnit',
     inputFields: {
       dailyScheduleId: { type: new GraphQLNonNull(GraphQLID) },
       position: { type: new GraphQLNonNull(GraphQLInt) },
@@ -41,13 +41,13 @@ export default function defineGraphQLAddTimeUnitMutation({
       );
 
       const timeUnit = await TimeUnit.create({ position });
-      await dailySchedule.addTimeUnit(timeUnit);
+      await dailySchedule.createTimeUnit(timeUnit);
 
       return { timeUnit, user };
     },
   });
 
   return {
-    GraphQLAddTimeUnitMutation,
+    GraphQLCreateTimeUnitMutation,
   };
 }

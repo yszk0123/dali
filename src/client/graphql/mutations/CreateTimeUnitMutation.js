@@ -6,8 +6,8 @@ const generateId = makeIdGenerator();
 const generateOptimisticId = makeIdGenerator('client:newTimeUnit');
 
 const mutation = graphql`
-  mutation AddTimeUnitMutation($input: AddTimeUnitInput!) {
-    addTimeUnit(input: $input) {
+  mutation CreateTimeUnitMutation($input: CreateTimeUnitInput!) {
+    createTimeUnit(input: $input) {
       timeUnitEdge {
         node {
           id
@@ -47,19 +47,19 @@ function commit(environment, { position }, dailySchedule) {
       },
     },
     updater: store => {
-      const payload = store.getRootField('addTimeUnit');
+      const payload = store.getRootField('createTimeUnit');
       const newEdge = payload.getLinkedRecord('timeUnitEdge');
 
       sharedUpdater(store, dailySchedule, newEdge);
     },
     optimisticUpdater: store => {
-      const payload = store.getRootField('addTimeUnit');
+      const payload = store.getRootField('createTimeUnit');
       const newEdge = payload.getLinkedRecord('timeUnitEdge');
 
       sharedUpdater(store, dailySchedule, newEdge);
     },
     optimisticResponse: {
-      addTimeUnit: {
+      createTimeUnit: {
         timeUnitEdge: {
           node: {
             id: generateOptimisticId(),
