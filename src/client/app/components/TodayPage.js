@@ -14,6 +14,7 @@ export default createFragmentContainer(
         date
         ...TimeUnitList_dailySchedule
       }
+      ...TimeUnitList_viewer
     }
   `,
 );

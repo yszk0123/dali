@@ -1,5 +1,7 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
+import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
+import TaskUnitModal from './TaskUnitModal';
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -11,10 +13,10 @@ function mapPositionToTimeRange(position) {
   return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
 }
 
-export function TaskSummary({ tasks }) {
+export function TaskSummary({ taskUnits }) {
   return (
     <div>
-      {tasks.map(task => task.title).join(', ')}
+      {taskUnits.map(taskUnit => taskUnit.title).join(', ')}
     </div>
   );
 }
@@ -27,15 +29,40 @@ export function TimeRange({ position }) {
   );
 }
 
-export function TimeUnitItem({ timeUnit }) {
-  const tasks = timeUnit.taskUnits.edges.map(edge => edge.node);
-
+export function AddTaskUnitButton({ onClick }) {
   return (
     <div>
-      <TaskSummary tasks={tasks} />
-      <TimeRange position={timeUnit.position} />
+      <button onClick={onClick}>Add TaskUnit Here</button>
     </div>
   );
+}
+
+export class TimeUnitItem extends React.Component {
+  _handleAddTaskUnitButtonClick = event => {
+    this._addTaskUnit();
+  };
+
+  _addTaskUnit() {
+    // TODO
+  }
+
+  render() {
+    const { timeUnit, viewer, dailySchedule } = this.props;
+    const taskUnits = getNodesFromConnection(timeUnit.taskUnits);
+
+    return (
+      <div>
+        <TaskSummary taskUnits={taskUnits} />
+        <AddTaskUnitButton onClick={this._handleAddTaskUnitButtonClick} />
+        <TimeRange position={timeUnit.position} />
+        <TaskUnitModal
+          timeUnit={timeUnit}
+          viewer={viewer}
+          dailySchedule={dailySchedule}
+        />
+      </div>
+    );
+  }
 }
 
 export default createFragmentContainer(
@@ -43,7 +70,7 @@ export default createFragmentContainer(
   graphql`
     fragment TimeUnitItem_timeUnit on TimeUnit {
       position
-      taskUnits {
+      taskUnits(first: 100) @connection(key: "TimeUnitItem_taskUnits") {
         edges {
           node {
             id
@@ -51,6 +78,16 @@ export default createFragmentContainer(
           }
         }
       }
+      ...TaskUnitModal_timeUnit
+    }
+
+    fragment TimeUnitItem_dailySchedule on DailySchedule {
+      id
+      ...TaskUnitModal_dailySchedule
+    }
+
+    fragment TimeUnitItem_viewer on User {
+      ...TaskUnitModal_viewer
     }
   `,
 );

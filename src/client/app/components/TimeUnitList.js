@@ -1,6 +1,5 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import { times } from 'lodash';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection.js';
 import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 import TimeUnitItem from './TimeUnitItem';
@@ -26,7 +25,7 @@ export class TimeUnitList extends React.Component {
   }
 
   _renderTimeUnits() {
-    const { dailySchedule } = this.props;
+    const { dailySchedule, viewer } = this.props;
     const timeUnits = getSparseTimeUnits(
       getNodesFromConnection(dailySchedule.timeUnits),
     );
@@ -34,7 +33,11 @@ export class TimeUnitList extends React.Component {
     return timeUnits.map((timeUnit, position) =>
       <li key={position}>
         {timeUnit
-          ? <TimeUnitItem timeUnit={timeUnit} />
+          ? <TimeUnitItem
+              timeUnit={timeUnit}
+              viewer={viewer}
+              dailySchedule={dailySchedule}
+            />
           : <EmptyTimeUnitItem
               position={position}
               dailySchedule={dailySchedule}
@@ -70,6 +73,11 @@ export default createFragmentContainer(
         }
       }
       ...EmptyTimeUnitItem_dailySchedule
+      ...TimeUnitItem_dailySchedule
+    }
+
+    fragment TimeUnitList_viewer on User {
+      ...TimeUnitItem_viewer
     }
   `,
 );

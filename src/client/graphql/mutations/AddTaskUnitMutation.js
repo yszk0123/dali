@@ -1,27 +1,66 @@
 import { commitMutation, graphql } from 'react-relay';
+import { ConnectionHandler } from 'relay-runtime';
 import makeIdGenerator from '../../shared/utils/makeIdGenerator';
 
 const generateId = makeIdGenerator();
-// const generateOptimisticId = makeIdGenerator('client:newAddTaskUnit');
+const generateOptimisticId = makeIdGenerator('client:newAddTaskUnit');
 
 const mutation = graphql`
   mutation AddTaskUnitMutation($input: AddTaskUnitInput!) {
     addTaskUnit(input: $input) {
-      id
+      taskUnitEdge {
+        node {
+          id
+          title
+        }
+      }
     }
   }
 `;
 
-function commit(environment, data, user) {
+function sharedUpdater(store, timeUnit, newEdge) {
+  const timeUnitProxy = store.get(timeUnit.id);
+  const connection = ConnectionHandler.getConnection(
+    timeUnitProxy,
+    'TimeUnitItem_taskUnits',
+  );
+
+  ConnectionHandler.insertEdgeAfter(connection, newEdge);
+}
+
+function commit(environment, taskUnit, timeUnit, dailySchedule) {
   return commitMutation(environment, {
     mutation,
     variables: {
       input: {
         clientMutationId: generateId(),
+        dailyScheduleId: dailySchedule.id,
+        taskUnitId: taskUnit.id,
+        timeUnitId: timeUnit.id,
       },
     },
-    updater: store => {},
-    optimisticUpdater: store => {},
+    updater: store => {
+      const payload = store.getRootField('addTaskUnit');
+      const newEdge = payload.getLinkedRecord('taskUnitEdge');
+
+      sharedUpdater(store, timeUnit, newEdge);
+    },
+    optimisticUpdater: store => {
+      const payload = store.getRootField('addTaskUnit');
+      const newEdge = payload.getLinkedRecord('taskUnitEdge');
+
+      sharedUpdater(store, timeUnit, newEdge);
+    },
+    optimisticResponse: {
+      addTaskUnit: {
+        taskUnitEdge: {
+          node: {
+            id: generateOptimisticId(),
+            title: taskUnit.title,
+          },
+        },
+      },
+    },
   });
 }
 

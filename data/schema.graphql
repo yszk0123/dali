@@ -1,10 +1,13 @@
 input AddTaskUnitInput {
+  dailyScheduleId: ID!
+  taskUnitId: ID!
+  timeUnitId: ID!
   clientMutationId: String
 }
 
 type AddTaskUnitPayload {
-  # The ID of an object
-  id: ID!
+  taskUnitEdge: TimeUnitTaskUnitEdge
+  viewer: User
   clientMutationId: String
 }
 
@@ -119,7 +122,6 @@ type DailyScheduleTimeUnitEdge {
 scalar Date
 
 type Mutation {
-  addTaskUnit(input: AddTaskUnitInput!): AddTaskUnitPayload
   createDailyReport(input: CreateDailyReportInput!): CreateDailyReportPayload
   createDailyReportTemplate(input: CreateDailyReportTemplateInput!): CreateDailyReportTemplatePayload
   createTimeUnit(input: CreateTimeUnitInput!): CreateTimeUnitPayload
@@ -131,6 +133,7 @@ type Mutation {
   updateProject(input: UpdateProjectInput!): UpdateProjectPayload
   updateTaskUnit(input: UpdateTaskUnitInput!): UpdateTaskUnitPayload
   updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
+  addTaskUnit(input: AddTaskUnitInput!): AddTaskUnitPayload
   addTimeUnit(input: AddTimeUnitInput!): AddTimeUnitPayload
   createProject(input: CreateProjectInput!): CreateProjectPayload
   createTaskUnit(input: CreateTaskUnitInput!): CreateTaskUnitPayload
@@ -255,6 +258,7 @@ type TimeUnit {
   createdAt: String!
   updatedAt: String!
   dailyScheduleId: Int
+  userId: Int
   taskUnits(after: String, first: Int, before: String, last: Int, orderBy: [TimeUnitTaskUnitConnectionOrder]): TimeUnitTaskUnitConnection
 }
 
