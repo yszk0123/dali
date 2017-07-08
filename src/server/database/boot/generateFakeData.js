@@ -1,3 +1,5 @@
+import { startOfDay } from '../../shared/utils/DateUtils';
+
 export default async function generateFakeData({ models }) {
   const {
     DailyReport,
@@ -23,7 +25,9 @@ export default async function generateFakeData({ models }) {
     TimeUnit.build({ position: 1 }),
     TimeUnit.build({ position: 2 }),
   ]);
-  const dailySchedule = await DailySchedule.create({ date: new Date() });
+  const dailySchedule = await DailySchedule.create({
+    date: startOfDay(new Date()),
+  });
   const dailyReport = await DailyReport.create({});
   await Promise.all([
     dailySchedule.addTimeUnits(timeUnits),
