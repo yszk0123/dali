@@ -1,10 +1,8 @@
-/* @flow */
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection.js';
 import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 import TimeUnitItem from './TimeUnitItem';
-import type { TimeUnitList_viewer } from './__generated__/TimeUnitList_viewer.graphql';
 
 const MAX_TIME_UNITS = 48;
 
@@ -18,15 +16,8 @@ function getSparseTimeUnits(timeUnits) {
   return sparseTimeUnits;
 }
 
-type Props = {
-  scheduleDate: Date,
-  viewer: TimeUnitList_viewer,
-};
-
 export class TimeUnitList extends React.Component {
-  props: Props;
-
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       position: '',
@@ -34,23 +25,22 @@ export class TimeUnitList extends React.Component {
   }
 
   _renderTimeUnits() {
-    const { scheduleDate, viewer } = this.props;
+    const { dailySchedule, viewer } = this.props;
     const timeUnits = getSparseTimeUnits(
-      getNodesFromConnection(viewer.timeUnits),
+      getNodesFromConnection(dailySchedule.timeUnits),
     );
 
     return timeUnits.map((timeUnit, position) =>
       <li key={position}>
         {timeUnit
           ? <TimeUnitItem
-              scheduleDate={scheduleDate}
               timeUnit={timeUnit}
               viewer={viewer}
+              dailySchedule={dailySchedule}
             />
           : <EmptyTimeUnitItem
               position={position}
-              scheduleDate={scheduleDate}
-              viewer={viewer}
+              dailySchedule={dailySchedule}
             />}
       </li>,
     );
@@ -71,7 +61,8 @@ export class TimeUnitList extends React.Component {
 export default createFragmentContainer(
   TimeUnitList,
   graphql`
-    fragment TimeUnitList_viewer on User {
+    fragment TimeUnitList_dailySchedule on DailySchedule {
+      id
       timeUnits(first: 100) @connection(key: "TimeUnitList_timeUnits") {
         edges {
           node {
@@ -81,8 +72,12 @@ export default createFragmentContainer(
           }
         }
       }
+      ...EmptyTimeUnitItem_dailySchedule
+      ...TimeUnitItem_dailySchedule
+    }
+
+    fragment TimeUnitList_viewer on User {
       ...TimeUnitItem_viewer
-      ...EmptyTimeUnitItem_viewer
     }
   `,
 );

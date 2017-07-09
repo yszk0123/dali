@@ -1,15 +1,15 @@
 import { GraphQLInt, GraphQLObjectType } from 'graphql';
 import GraphQLDate from 'graphql-date';
-import { attributeFields, relay, resolver } from 'graphql-sequelize';
+import { attributeFields, relay } from 'graphql-sequelize';
+import { first } from 'lodash';
 import { startOfDay } from '../../shared/utils/DateUtils';
 const { sequelizeConnection } = relay;
 
-export default function defineGraphQLUser({
-  GraphQLDailyReport,
+export default function defineGraphQLDailySchedule({
+  GraphQLDailySchedule,
   GraphQLProject,
   GraphQLTaskUnit,
-  GraphQLTimeUnit,
-  models: { User, DailyReport },
+  models: { DailySchedule, User },
   nodeInterface,
 }) {
   const GraphQLUserProjectConnection = sequelizeConnection({
@@ -36,25 +36,6 @@ export default function defineGraphQLUser({
     },
   });
 
-  const GraphQLUserTimeUnitConnection = sequelizeConnection({
-    name: 'UserTimeUnit',
-    nodeType: GraphQLTimeUnit,
-    target: User.TimeUnits,
-    where: (key, value) => {
-      if (key === 'scheduleDate' && !value) {
-        return { scheduleDate: startOfDay(new Date()) };
-      }
-
-      return { [key]: value };
-    },
-    connectionFields: {
-      total: {
-        type: GraphQLInt,
-        resolve: ({ source }) => source.countTimeUnits(),
-      },
-    },
-  });
-
   const GraphQLUser = new GraphQLObjectType({
     name: 'User',
     fields: {
@@ -66,24 +47,29 @@ export default function defineGraphQLUser({
         args: GraphQLUserProjectConnection.connectionArgs,
         resolve: GraphQLUserProjectConnection.resolve,
       },
+      dailySchedule: {
+        type: GraphQLDailySchedule,
+        args: {
+          date: {
+            type: GraphQLDate,
+          },
+        },
+        resolve: async (user, args) => {
+          const date = args.date || new Date();
+
+          const schedules = await user.getDailySchedules({
+            where: {
+              date: startOfDay(date),
+            },
+          });
+
+          return first(schedules);
+        },
+      },
       taskUnits: {
         type: GraphQLUserTaskUnitConnection.connectionType,
         args: GraphQLUserTaskUnitConnection.connectionArgs,
         resolve: GraphQLUserTaskUnitConnection.resolve,
-      },
-      timeUnits: {
-        type: GraphQLUserTimeUnitConnection.connectionType,
-        args: {
-          ...GraphQLUserTimeUnitConnection.connectionArgs,
-          scheduleDate: {
-            type: GraphQLDate,
-          },
-        },
-        resolve: GraphQLUserTimeUnitConnection.resolve,
-      },
-      dailyReport: {
-        type: GraphQLDailyReport,
-        resolve: resolver(DailyReport),
       },
     },
     interfaces: [nodeInterface],
@@ -93,6 +79,5 @@ export default function defineGraphQLUser({
     GraphQLUser,
     GraphQLUserProjectConnection,
     GraphQLUserTaskUnitConnection,
-    GraphQLUserTimeUnitConnection,
   };
 }

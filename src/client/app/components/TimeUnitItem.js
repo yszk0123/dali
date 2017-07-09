@@ -54,7 +54,7 @@ export class TimeUnitItem extends React.Component {
   };
 
   render() {
-    const { timeUnit, viewer } = this.props;
+    const { timeUnit, viewer, dailySchedule } = this.props;
     const { isModalOpen } = this.state;
     const taskUnits = getNodesFromConnection(timeUnit.taskUnits);
 
@@ -64,6 +64,7 @@ export class TimeUnitItem extends React.Component {
         <LinkTaskUnitButton onClick={this._handleLinkTaskUnitButtonClick} />
         <TimeRange position={timeUnit.position} />
         <LinkTaskUnitModal
+          dailySchedule={dailySchedule}
           isOpen={isModalOpen}
           onClose={this._handleModalClose}
           timeUnit={timeUnit}
@@ -88,6 +89,11 @@ export default createFragmentContainer(
         }
       }
       ...LinkTaskUnitModal_timeUnit
+    }
+
+    fragment TimeUnitItem_dailySchedule on DailySchedule {
+      id
+      ...LinkTaskUnitModal_dailySchedule
     }
 
     fragment TimeUnitItem_viewer on User {

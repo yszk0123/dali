@@ -28,13 +28,13 @@ function sharedUpdater(store, timeUnit, newEdge) {
   ConnectionHandler.insertEdgeAfter(connection, newEdge);
 }
 
-function commit(environment, { scheduleDate, taskUnit }, timeUnit) {
+function commit(environment, taskUnit, timeUnit, dailySchedule) {
   return commitMutation(environment, {
     mutation,
     variables: {
       input: {
         clientMutationId: generateId(),
-        scheduleDate,
+        dailyScheduleId: dailySchedule.id,
         taskUnitId: taskUnit.id,
         timeUnitId: timeUnit.id,
       },
