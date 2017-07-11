@@ -55,7 +55,7 @@ function commit(environment, { position }, dailySchedule) {
           node: {
             id: generateOptimisticId(),
             position,
-            taskUnits: {
+            taskSets: {
               edges: [],
             },
           },

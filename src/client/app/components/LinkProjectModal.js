@@ -4,14 +4,14 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import Modal from 'react-modal';
 import LinkProjectMutation from '../../graphql/mutations/LinkProjectMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
-import type { LinkProjectModal_taskUnit } from './__generated__/LinkProjectModal_taskUnit.graphql';
+import type { LinkProjectModal_taskSet } from './__generated__/LinkProjectModal_taskSet.graphql';
 import type { LinkProjectModal_viewer } from './__generated__/LinkProjectModal_viewer.graphql';
 
 type Props = {
   isOpen: boolean,
   onClose: () => mixed,
   relay: any,
-  taskUnit: LinkProjectModal_taskUnit,
+  taskSet: LinkProjectModal_taskSet,
   viewer: LinkProjectModal_viewer,
 };
 
@@ -19,9 +19,9 @@ export class LinkProjectModal extends React.Component {
   props: Props;
 
   _add(project) {
-    const { relay, taskUnit, onClose } = this.props;
+    const { relay, taskSet, onClose } = this.props;
 
-    LinkProjectMutation.commit(relay.environment, { project }, taskUnit);
+    LinkProjectMutation.commit(relay.environment, { project }, taskSet);
 
     onClose();
   }
@@ -57,7 +57,7 @@ export class LinkProjectModal extends React.Component {
 export default createFragmentContainer(
   LinkProjectModal,
   graphql.experimental`
-    fragment LinkProjectModal_taskUnit on TaskUnit {
+    fragment LinkProjectModal_taskSet on TaskSet {
       id
     }
 

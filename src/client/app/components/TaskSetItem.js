@@ -1,14 +1,14 @@
 /* @flow */
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import RemoveTaskUnitMutation from '../../graphql/mutations/RemoveTaskUnitMutation';
-import type { TaskUnitItem_taskUnit } from './__generated__/TaskUnitItem_taskUnit.graphql';
-import type { TaskUnitItem_viewer } from './__generated__/TaskUnitItem_viewer.graphql';
+import RemoveTaskSetMutation from '../../graphql/mutations/RemoveTaskSetMutation';
+import type { TaskSetItem_taskSet } from './__generated__/TaskSetItem_taskSet.graphql';
+import type { TaskSetItem_viewer } from './__generated__/TaskSetItem_viewer.graphql';
 import LinkProjectModal from './LinkProjectModal';
 
 type Props = {
-  taskUnit: TaskUnitItem_taskUnit,
-  viewer: TaskUnitItem_viewer,
+  taskSet: TaskSetItem_taskSet,
+  viewer: TaskSetItem_viewer,
   relay: any,
 };
 
@@ -16,7 +16,7 @@ type State = {
   isModalOpen: boolean,
 };
 
-export class TaskUnitItem extends React.Component {
+export class TaskSetItem extends React.Component {
   props: Props;
   state: State;
 
@@ -40,22 +40,22 @@ export class TaskUnitItem extends React.Component {
   };
 
   _remove() {
-    RemoveTaskUnitMutation.commit(
+    RemoveTaskSetMutation.commit(
       this.props.relay.environment,
-      this.props.taskUnit,
+      this.props.taskSet,
       this.props.viewer,
     );
   }
 
   render() {
-    const { taskUnit, viewer } = this.props;
+    const { taskSet, viewer } = this.props;
     const { isModalOpen } = this.state;
-    const projectTitle = taskUnit.project && taskUnit.project.title;
+    const projectTitle = taskSet.project && taskSet.project.title;
 
     return (
       <div>
         <span>
-          {taskUnit.title}
+          {taskSet.title}
         </span>
         {projectTitle &&
           <span>
@@ -68,7 +68,7 @@ export class TaskUnitItem extends React.Component {
         <LinkProjectModal
           isOpen={isModalOpen}
           onClose={this._handleModalClose}
-          taskUnit={taskUnit}
+          taskSet={taskSet}
           viewer={viewer}
         />
       </div>
@@ -77,18 +77,18 @@ export class TaskUnitItem extends React.Component {
 }
 
 export default createFragmentContainer(
-  TaskUnitItem,
+  TaskSetItem,
   graphql`
-    fragment TaskUnitItem_taskUnit on TaskUnit {
+    fragment TaskSetItem_taskSet on TaskSet {
       id
       title
       project {
         title
       }
-      ...LinkProjectModal_taskUnit
+      ...LinkProjectModal_taskSet
     }
 
-    fragment TaskUnitItem_viewer on User {
+    fragment TaskSetItem_viewer on User {
       id
       ...LinkProjectModal_viewer
     }

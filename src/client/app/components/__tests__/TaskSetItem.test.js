@@ -1,14 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { TaskUnitItem } from '../TaskUnitItem';
+import { TaskSetItem } from '../TaskSetItem';
 
 const relay = { environment: {} };
-const taskUnit = {
+const taskSet = {
   title: 'foo',
 };
 
 test('renders', () => {
-  const wrapper = shallow(<TaskUnitItem relay={relay} taskUnit={taskUnit} />);
+  const wrapper = shallow(<TaskSetItem relay={relay} taskSet={taskSet} />);
 
   expect(wrapper).toBeDefined();
 });

@@ -46,8 +46,8 @@ export default createRefetchContainer(
           }
         }
       }
-      todoTaskUnits: taskUnits(first: $count)
-        @connection(key: "DailyReportPage_todoTaskUnits") {
+      todoTaskSets: taskSets(first: $count)
+        @connection(key: "DailyReportPage_todoTaskSets") {
         edges {
           node {
             id
@@ -64,7 +64,10 @@ export default createRefetchContainer(
                 edges {
                   node {
                     id
-                    title
+                    taskSet {
+                      id
+                      title
+                    }
                   }
                 }
               }

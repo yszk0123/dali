@@ -1,17 +1,17 @@
 /* @flow */
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import CreateTaskUnitMutation from '../../graphql/mutations/CreateTaskUnitMutation';
+import CreateTaskSetMutation from '../../graphql/mutations/CreateTaskSetMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
-import TaskUnitItem from './TaskUnitItem';
-import type { TaskUnitList_viewer } from './__generated__/TaskUnitList_viewer.graphql';
+import TaskSetItem from './TaskSetItem';
+import type { TaskSetList_viewer } from './__generated__/TaskSetList_viewer.graphql';
 
 type Props = {
-  viewer: TaskUnitList_viewer,
+  viewer: TaskSetList_viewer,
   relay: any,
 };
 
-export class TaskUnitList extends React.Component {
+export class TaskSetList extends React.Component {
   props: Props;
   state: {
     title: string,
@@ -24,11 +24,11 @@ export class TaskUnitList extends React.Component {
     };
   }
 
-  _handleLinkTaskUnitClick = (event: Event) => {
+  _handleAddTaskUnitClick = (event: Event) => {
     const { title } = this.state;
 
     if (title) {
-      this._linkTaskUnit(title);
+      this._linkTaskSet(title);
       this.setState({
         title: '',
       });
@@ -45,20 +45,20 @@ export class TaskUnitList extends React.Component {
     });
   };
 
-  _linkTaskUnit(title: string) {
-    CreateTaskUnitMutation.commit(
+  _linkTaskSet(title: string) {
+    CreateTaskSetMutation.commit(
       this.props.relay.environment,
       { title },
       this.props.viewer,
     );
   }
 
-  _renderTaskUnits() {
+  _renderTaskSets() {
     const { viewer } = this.props;
 
-    return getNodesFromConnection(viewer.taskUnits).map(taskUnit =>
-      <li key={taskUnit.id}>
-        <TaskUnitItem taskUnit={taskUnit} viewer={viewer} />
+    return getNodesFromConnection(viewer.taskSets).map(taskSet =>
+      <li key={taskSet.id}>
+        <TaskSetItem taskSet={taskSet} viewer={viewer} />
       </li>,
     );
   }
@@ -68,32 +68,32 @@ export class TaskUnitList extends React.Component {
 
     return (
       <div>
-        <h1>TaskUnits</h1>
+        <h1>TaskSets</h1>
         <ul>
-          {this._renderTaskUnits()}
+          {this._renderTaskSets()}
         </ul>
         <input type="text" value={title} onChange={this._handleTitleChange} />
-        <button onClick={this._handleLinkTaskUnitClick}>Add</button>
+        <button onClick={this._handleAddTaskUnitClick}>Add</button>
       </div>
     );
   }
 }
 
 export default createFragmentContainer(
-  TaskUnitList,
+  TaskSetList,
   graphql.experimental`
-    fragment TaskUnitList_viewer on User
+    fragment TaskSetList_viewer on User
       @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
       id
-      taskUnits(first: $count) @connection(key: "TaskUnitList_taskUnits") {
+      taskSets(first: $count) @connection(key: "TaskSetList_taskSets") {
         edges {
           node {
             id
-            ...TaskUnitItem_taskUnit
+            ...TaskSetItem_taskSet
           }
         }
       }
-      ...TaskUnitItem_viewer
+      ...TaskSetItem_viewer
     }
   `,
 );

@@ -3,58 +3,66 @@ import { ConnectionHandler } from 'relay-runtime';
 import makeIdGenerator from '../../shared/utils/makeIdGenerator';
 
 const generateId = makeIdGenerator();
-const generateOptimisticId = makeIdGenerator('client:newCreateTaskUnit');
+const generateOptimisticId = makeIdGenerator('client:newAddTaskUnit');
 
 const mutation = graphql`
-  mutation CreateTaskUnitMutation($input: CreateTaskUnitInput!) {
-    createTaskUnit(input: $input) {
+  mutation AddTaskUnitMutation($input: AddTaskUnitInput!) {
+    addTaskUnit(input: $input) {
       taskUnitEdge {
         node {
           id
-          title
+          taskSet {
+            id
+            title
+          }
         }
       }
     }
   }
 `;
 
-function sharedUpdater(store, user, newEdge) {
-  const userProxy = store.get(user.id);
+function sharedUpdater(store, timeUnit, newEdge) {
+  const timeUnitProxy = store.get(timeUnit.id);
   const connection = ConnectionHandler.getConnection(
-    userProxy,
-    'TaskUnitList_todoTaskUnits',
+    timeUnitProxy,
+    'TimeUnitItem_taskUnits',
   );
 
   ConnectionHandler.insertEdgeAfter(connection, newEdge);
 }
 
-function commit(environment, { title }, user) {
+function commit(environment, taskSet, timeUnit, dailySchedule) {
   return commitMutation(environment, {
     mutation,
     variables: {
       input: {
-        title,
         clientMutationId: generateId(),
+        dailyScheduleId: dailySchedule.id,
+        taskSetId: taskSet.id,
+        timeUnitId: timeUnit.id,
       },
     },
     updater: store => {
-      const payload = store.getRootField('createTaskUnit');
+      const payload = store.getRootField('addTaskUnit');
       const newEdge = payload.getLinkedRecord('taskUnitEdge');
 
-      sharedUpdater(store, user, newEdge);
+      sharedUpdater(store, timeUnit, newEdge);
     },
     optimisticUpdater: store => {
-      const payload = store.getRootField('createTaskUnit');
+      const payload = store.getRootField('addTaskUnit');
       const newEdge = payload.getLinkedRecord('taskUnitEdge');
 
-      sharedUpdater(store, user, newEdge);
+      sharedUpdater(store, timeUnit, newEdge);
     },
     optimisticResponse: {
-      createTaskUnit: {
+      addTaskUnit: {
         taskUnitEdge: {
           node: {
             id: generateOptimisticId(),
-            title,
+            taskSet: {
+              id: generateOptimisticId(),
+              title: taskSet.title,
+            },
           },
         },
       },

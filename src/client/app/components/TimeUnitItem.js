@@ -1,7 +1,7 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
-import LinkTaskUnitModal from './LinkTaskUnitModal';
+import AddTaskUnitModal from './AddTaskUnitModal';
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -16,7 +16,7 @@ function mapPositionToTimeRange(position) {
 export function TaskSummary({ taskUnits }) {
   return (
     <div>
-      {taskUnits.map(taskUnit => taskUnit.title).join(', ')}
+      {taskUnits.map(taskUnit => taskUnit.taskSet.title).join(', ')}
     </div>
   );
 }
@@ -29,10 +29,10 @@ export function TimeRange({ position }) {
   );
 }
 
-export function LinkTaskUnitButton({ onClick }) {
+export function AddTaskUnitButton({ onClick }) {
   return (
     <div>
-      <button onClick={onClick}>Add TaskUnit Here</button>
+      <button onClick={onClick}>Add TaskSet Here</button>
     </div>
   );
 }
@@ -45,7 +45,7 @@ export class TimeUnitItem extends React.Component {
     };
   }
 
-  _handleLinkTaskUnitButtonClick = event => {
+  _handleAddTaskUnitButtonClick = event => {
     this.setState({ isModalOpen: true });
   };
 
@@ -61,9 +61,9 @@ export class TimeUnitItem extends React.Component {
     return (
       <div>
         <TaskSummary taskUnits={taskUnits} />
-        <LinkTaskUnitButton onClick={this._handleLinkTaskUnitButtonClick} />
+        <AddTaskUnitButton onClick={this._handleAddTaskUnitButtonClick} />
         <TimeRange position={timeUnit.position} />
-        <LinkTaskUnitModal
+        <AddTaskUnitModal
           dailySchedule={dailySchedule}
           isOpen={isModalOpen}
           onClose={this._handleModalClose}
@@ -85,20 +85,23 @@ export default createFragmentContainer(
         edges {
           node {
             id
-            title
+            taskSet {
+              id
+              title
+            }
           }
         }
       }
-      ...LinkTaskUnitModal_timeUnit
+      ...AddTaskUnitModal_timeUnit
     }
 
     fragment TimeUnitItem_dailySchedule on DailySchedule {
       id
-      ...LinkTaskUnitModal_dailySchedule
+      ...AddTaskUnitModal_dailySchedule
     }
 
     fragment TimeUnitItem_viewer on User {
-      ...LinkTaskUnitModal_viewer
+      ...AddTaskUnitModal_viewer
     }
   `,
 );
