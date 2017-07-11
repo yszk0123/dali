@@ -60,10 +60,11 @@ export class TimeUnitList extends React.Component {
 
 export default createFragmentContainer(
   TimeUnitList,
-  graphql`
-    fragment TimeUnitList_dailySchedule on DailySchedule {
+  graphql.experimental`
+    fragment TimeUnitList_dailySchedule on DailySchedule
+      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
       id
-      timeUnits(first: 100) @connection(key: "TimeUnitList_timeUnits") {
+      timeUnits(first: $count) @connection(key: "TimeUnitList_timeUnits") {
         edges {
           node {
             id

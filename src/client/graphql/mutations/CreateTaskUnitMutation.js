@@ -22,7 +22,7 @@ function sharedUpdater(store, user, newEdge) {
   const userProxy = store.get(user.id);
   const connection = ConnectionHandler.getConnection(
     userProxy,
-    'TaskUnitList_taskUnits',
+    'TaskUnitList_todoTaskUnits',
   );
 
   ConnectionHandler.insertEdgeAfter(connection, newEdge);
@@ -44,15 +44,20 @@ function commit(environment, { title }, user) {
       sharedUpdater(store, user, newEdge);
     },
     optimisticUpdater: store => {
-      const id = generateOptimisticId();
-      const node = store.create(id, 'TaskUnit');
-      const newEdge = store.create(generateOptimisticId(), 'TaskUnitEdge');
-
-      node.setValue(title, 'title');
-      node.setValue(id, 'id');
-      newEdge.setLinkedRecord(node, 'node');
+      const payload = store.getRootField('createTaskUnit');
+      const newEdge = payload.getLinkedRecord('taskUnitEdge');
 
       sharedUpdater(store, user, newEdge);
+    },
+    optimisticResponse: {
+      createTaskUnit: {
+        taskUnitEdge: {
+          node: {
+            id: generateOptimisticId(),
+            title,
+          },
+        },
+      },
     },
   });
 }

@@ -1,4 +1,4 @@
-import { GraphQLInt, GraphQLObjectType } from 'graphql';
+import { GraphQLInt, GraphQLEnumType, GraphQLObjectType } from 'graphql';
 import GraphQLDate from 'graphql-date';
 import { attributeFields, relay } from 'graphql-sequelize';
 import { first } from 'lodash';
@@ -28,6 +28,36 @@ export default function defineGraphQLDailySchedule({
     name: 'UserTaskUnit',
     nodeType: GraphQLTaskUnit,
     target: User.TaskUnits,
+    where: (key, value) => {
+      if (key === 'status') {
+        return {};
+      }
+      return { [key]: value };
+    },
+    before: (options, { status, date = startOfDay(new Date()) }) => {
+      if (status === 'TODO') {
+        options.where = {
+          ...options.where,
+          startAt: {
+            $lte: date,
+          },
+          endAt: {
+            $gt: date,
+          },
+        };
+      }
+
+      if (status === 'DONE') {
+        options.where = {
+          ...options.where,
+          endAt: {
+            $lte: date,
+          },
+        };
+      }
+
+      return options;
+    },
     connectionFields: {
       total: {
         type: GraphQLInt,
@@ -68,7 +98,25 @@ export default function defineGraphQLDailySchedule({
       },
       taskUnits: {
         type: GraphQLUserTaskUnitConnection.connectionType,
-        args: GraphQLUserTaskUnitConnection.connectionArgs,
+        args: {
+          ...GraphQLUserTaskUnitConnection.connectionArgs,
+          startAt: {
+            type: GraphQLDate,
+          },
+          endAt: {
+            type: GraphQLDate,
+          },
+          status: {
+            type: new GraphQLEnumType({
+              name: 'UserTaskUnitStatus',
+              values: {
+                TODO: { value: 'TODO' },
+                DONE: { value: 'DONE' },
+              },
+            }),
+            defaultValue: 'TODO',
+          },
+        },
         resolve: GraphQLUserTaskUnitConnection.resolve,
       },
     },

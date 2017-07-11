@@ -3,10 +3,15 @@ export default function createTaskUnit(sequelize, DataTypes) {
     'taskUnit',
     {
       title: DataTypes.TEXT,
-      doneAt: {
+      startAt: {
         type: DataTypes.DATE,
         allowNull: true,
         defaultValue: null,
+      },
+      endAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: new Date(10000, 0, 0, 0),
       },
       routine: {
         type: DataTypes.ENUM,

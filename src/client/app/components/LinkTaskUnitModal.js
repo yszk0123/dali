@@ -63,7 +63,7 @@ export class TaskUnitModal extends React.Component {
 
 export default createFragmentContainer(
   TaskUnitModal,
-  graphql`
+  graphql.experimental`
     fragment LinkTaskUnitModal_timeUnit on TimeUnit {
       id
     }
@@ -72,8 +72,9 @@ export default createFragmentContainer(
       id
     }
 
-    fragment LinkTaskUnitModal_viewer on User {
-      taskUnits(first: 100) {
+    fragment LinkTaskUnitModal_viewer on User
+      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
+      taskUnits(first: $count) @connection(key: "LinkTaskUnitModal_taskUnits") {
         edges {
           node {
             id

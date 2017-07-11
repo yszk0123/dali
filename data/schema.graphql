@@ -240,7 +240,8 @@ type TaskUnit {
   # The ID of an object
   id: ID!
   title: String
-  doneAt: String
+  startAt: String
+  endAt: String
   routine: taskUnitroutineEnumType
   priority: taskUnitpriorityEnumType
   createdAt: String
@@ -355,7 +356,7 @@ type User implements Node {
   updatedAt: String!
   projects(after: String, first: Int, before: String, last: Int, orderBy: [UserProjectConnectionOrder]): UserProjectConnection
   dailySchedule(date: Date): DailySchedule
-  taskUnits(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskUnitConnectionOrder]): UserTaskUnitConnection
+  taskUnits(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskUnitConnectionOrder], startAt: Date, endAt: Date, status: UserTaskUnitStatus): UserTaskUnitConnection
 }
 
 # A connection to a list of items.
@@ -402,4 +403,9 @@ type UserTaskUnitEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+enum UserTaskUnitStatus {
+  TODO
+  DONE
 }

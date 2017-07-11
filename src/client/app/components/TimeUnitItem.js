@@ -77,10 +77,11 @@ export class TimeUnitItem extends React.Component {
 
 export default createFragmentContainer(
   TimeUnitItem,
-  graphql`
-    fragment TimeUnitItem_timeUnit on TimeUnit {
+  graphql.experimental`
+    fragment TimeUnitItem_timeUnit on TimeUnit
+      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
       position
-      taskUnits(first: 100) @connection(key: "TimeUnitItem_taskUnits") {
+      taskUnits(first: $count) @connection(key: "TimeUnitItem_taskUnits") {
         edges {
           node {
             id

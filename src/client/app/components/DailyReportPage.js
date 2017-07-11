@@ -46,6 +46,32 @@ export default createRefetchContainer(
           }
         }
       }
+      todoTaskUnits: taskUnits(first: $count)
+        @connection(key: "DailyReportPage_todoTaskUnits") {
+        edges {
+          node {
+            id
+            title
+          }
+        }
+      }
+      dailySchedule {
+        timeUnits(first: $count) @connection(key: "DailyReportPage_timeUnits") {
+          edges {
+            node {
+              doneTaskUnits: taskUnits(first: $count)
+                @connection(key: "DailyReportPage_doneTaskUnits") {
+                edges {
+                  node {
+                    id
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   `,
   graphql.experimental`

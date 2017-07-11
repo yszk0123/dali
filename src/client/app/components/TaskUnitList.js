@@ -81,10 +81,11 @@ export class TaskUnitList extends React.Component {
 
 export default createFragmentContainer(
   TaskUnitList,
-  graphql`
-    fragment TaskUnitList_viewer on User {
+  graphql.experimental`
+    fragment TaskUnitList_viewer on User
+      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
       id
-      taskUnits(first: 100) @connection(key: "TaskUnitList_taskUnits") {
+      taskUnits(first: $count) @connection(key: "TaskUnitList_taskUnits") {
         edges {
           node {
             id
