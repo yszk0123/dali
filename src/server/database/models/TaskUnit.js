@@ -2,15 +2,13 @@ export default function createTaskUnit(sequelize, DataTypes) {
   const TaskUnit = sequelize.define(
     'taskUnit',
     {
-      title: DataTypes.TEXT,
       done: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
-      createdAt: DataTypes.DATE,
-      modifiedAt: DataTypes.DATE,
     },
     {
+      tableName: 'TaskUnit',
       timestamps: true,
     },
   );

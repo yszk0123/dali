@@ -5,6 +5,7 @@ export default function createDailyReport(sequelize, DataTypes) {
       text: DataTypes.TEXT,
     },
     {
+      tableName: 'DailyReport',
       timestamps: true,
     },
   );

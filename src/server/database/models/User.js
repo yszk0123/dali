@@ -5,6 +5,7 @@ export default function createUser(sequelize, DataTypes) {
       name: DataTypes.STRING,
     },
     {
+      tableName: 'User',
       timestamps: true,
     },
   );

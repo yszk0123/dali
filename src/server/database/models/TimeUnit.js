@@ -5,6 +5,7 @@ export default function createTimeUnit(sequelize, DataTypes) {
       position: DataTypes.INTEGER,
     },
     {
+      tableName: 'TimeUnit',
       timestamps: true,
     },
   );

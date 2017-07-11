@@ -25,10 +25,9 @@ export default function createTaskSet(sequelize, DataTypes) {
         allowNull: true,
         defaultValue: null,
       },
-      createdAt: DataTypes.DATE,
-      modifiedAt: DataTypes.DATE,
     },
     {
+      tableName: 'TaskSet',
       timestamps: true,
     },
   );

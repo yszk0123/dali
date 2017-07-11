@@ -5,6 +5,7 @@ export default function createProject(sequelize, DataTypes) {
       title: DataTypes.TEXT,
     },
     {
+      tableName: 'Project',
       timestamps: true,
     },
   );

@@ -5,6 +5,7 @@ export default function createDailySchedule(sequelize, DataTypes) {
       date: DataTypes.DATE,
     },
     {
+      tableName: 'DailySchedule',
       timestamps: true,
     },
   );

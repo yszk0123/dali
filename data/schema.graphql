@@ -244,8 +244,7 @@ type TaskSet {
   endAt: String
   routine: taskSetroutineEnumType
   priority: taskSetpriorityEnumType
-  createdAt: String
-  modifiedAt: String
+  createdAt: String!
   updatedAt: String!
   projectId: Int
   userId: Int
@@ -267,10 +266,8 @@ enum taskSetroutineEnumType {
 type TaskUnit {
   # The ID of an object
   id: ID!
-  title: String
   done: Boolean
-  createdAt: String
-  modifiedAt: String
+  createdAt: String!
   updatedAt: String!
   taskSetId: Int
   timeUnitId: Int
