@@ -2,7 +2,7 @@ import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 
 export default function defineGraphQLCreateTaskSetMutation({
-  queries: { GraphQLTaskSetEdge, GraphQLUser, GraphQLUserTaskSetConnection },
+  queries: { GraphQLUser, GraphQLUserTaskSetConnection },
   models: { TaskSet },
 }) {
   const GraphQLCreateTaskSetMutation = mutationWithClientMutationId({

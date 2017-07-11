@@ -2,26 +2,22 @@ import { GraphQLNonNull, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { first } from 'lodash';
 
-export default function defineGraphQLLinkTaskSetMutation({
-  queries: {
-    GraphQLTaskSetEdge,
-    GraphQLUser,
-    GraphQLTimeUnitTaskSetConnection,
-  },
-  models: { TaskSet },
+export default function defineGraphQLAddTaskUnitMutation({
+  queries: { GraphQLUser, GraphQLTimeUnitTaskUnitConnection },
+  models: { TaskUnit },
 }) {
-  const GraphQLLinkTaskSetMutation = mutationWithClientMutationId({
-    name: 'LinkTaskSet',
+  const GraphQLAddTaskUnitMutation = mutationWithClientMutationId({
+    name: 'AddTaskUnit',
     inputFields: {
       dailyScheduleId: { type: new GraphQLNonNull(GraphQLID) },
       taskSetId: { type: new GraphQLNonNull(GraphQLID) },
       timeUnitId: { type: new GraphQLNonNull(GraphQLID) },
     },
     outputFields: {
-      taskSetEdge: {
-        type: GraphQLTimeUnitTaskSetConnection.edgeType,
-        resolve: ({ taskSet }) => {
-          return GraphQLTimeUnitTaskSetConnection.resolveEdge(taskSet);
+      taskUnitEdge: {
+        type: GraphQLTimeUnitTaskUnitConnection.edgeType,
+        resolve: ({ taskUnit }) => {
+          return GraphQLTimeUnitTaskUnitConnection.resolveEdge(taskUnit);
         },
       },
       viewer: {
@@ -59,13 +55,17 @@ export default function defineGraphQLLinkTaskSetMutation({
         }),
       );
 
-      await timeUnit.addTaskSet(taskSet);
+      const taskUnit = await TaskUnit.create();
+      await Promise.all([
+        taskUnit.setTaskSet(taskSet),
+        taskUnit.setTimeUnit(timeUnit),
+      ]);
 
-      return { taskSet, user };
+      return { taskUnit, user };
     },
   });
 
   return {
-    GraphQLLinkTaskSetMutation,
+    GraphQLAddTaskUnitMutation,
   };
 }

@@ -7,6 +7,7 @@ const modelNames = [
   'DailySchedule',
   'Project',
   'TaskSet',
+  'TaskUnit',
   'TimeUnit',
   'User',
 ];

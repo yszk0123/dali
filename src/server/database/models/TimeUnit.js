@@ -9,11 +9,9 @@ export default function createTimeUnit(sequelize, DataTypes) {
     },
   );
 
-  TimeUnit.associate = ({ DailySchedule, TaskSet }) => {
+  TimeUnit.associate = ({ DailySchedule, TaskUnit }) => {
     TimeUnit.DailySchedule = TimeUnit.belongsTo(DailySchedule);
-    TimeUnit.TaskSets = TimeUnit.belongsToMany(TaskSet, {
-      through: 'timeUnitTaskSet',
-    });
+    TimeUnit.TaskUnits = TimeUnit.hasMany(TaskUnit);
   };
 
   return TimeUnit;

@@ -33,11 +33,9 @@ export default function createTaskSet(sequelize, DataTypes) {
     },
   );
 
-  TaskSet.associate = ({ TimeUnit, Project }) => {
+  TaskSet.associate = ({ TaskUnit, Project }) => {
     TaskSet.Project = TaskSet.belongsTo(Project);
-    TaskSet.TimeUnits = TaskSet.belongsToMany(TimeUnit, {
-      through: 'timeUnitTaskSet',
-    });
+    TaskSet.TaskUnits = TaskSet.hasMany(TaskUnit);
   };
 
   return TaskSet;

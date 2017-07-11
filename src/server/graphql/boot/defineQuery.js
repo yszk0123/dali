@@ -1,6 +1,7 @@
 import { GraphQLObjectType } from 'graphql';
 import defineGraphQLProject from '../queries/GraphQLProject';
 import defineGraphQLTaskSet from '../queries/GraphQLTaskSet';
+import defineGraphQLTaskUnit from '../queries/GraphQLTaskUnit';
 import defineGraphQLTimeUnit from '../queries/GraphQLTimeUnit';
 import defineGraphQLDailyReport from '../queries/GraphQLDailyReport';
 import defineGraphQLDailySchedule from '../queries/GraphQLDailySchedule';
@@ -14,12 +15,20 @@ export default function defineQuery({
 }) {
   const { GraphQLProject } = defineGraphQLProject({ models });
 
-  const { GraphQLTaskSet } = defineGraphQLTaskSet({ GraphQLProject, models });
+  const {
+    GraphQLTaskSet,
+    // GraphQLTaskSetTaskUnitConnection,
+  } = defineGraphQLTaskSet({ GraphQLProject, models });
+
+  const { GraphQLTaskUnit } = defineGraphQLTaskUnit({
+    GraphQLTaskSet,
+    models,
+  });
 
   const {
     GraphQLTimeUnit,
-    GraphQLTimeUnitTaskSetConnection,
-  } = defineGraphQLTimeUnit({ models, GraphQLTaskSet });
+    GraphQLTimeUnitTaskUnitConnection,
+  } = defineGraphQLTimeUnit({ models, GraphQLTaskUnit });
 
   const { GraphQLDailyReport } = defineGraphQLDailyReport({ models });
 
@@ -49,6 +58,7 @@ export default function defineQuery({
     DailySchedule: GraphQLDailySchedule,
     Project: GraphQLProject,
     TaskSet: GraphQLTaskSet,
+    TaskUnit: GraphQLTaskUnit,
     TimeUnit: GraphQLTimeUnit,
     User: GraphQLUser,
   });
@@ -71,8 +81,10 @@ export default function defineQuery({
     GraphQLProject,
     GraphQLQuery,
     GraphQLTaskSet,
+    // GraphQLTaskSetTaskUnitConnection,
+    GraphQLTaskUnit,
     GraphQLTimeUnit,
-    GraphQLTimeUnitTaskSetConnection,
+    GraphQLTimeUnitTaskUnitConnection,
     GraphQLUser,
     GraphQLUserProjectConnection,
     GraphQLUserTaskSetConnection,
