@@ -2,17 +2,17 @@ import { GraphQLNonNull, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { first } from 'lodash';
 
-export default function defineGraphQLRemoveTaskUnitMutation({
-  queries: { GraphQLTaskUnitEdge, GraphQLUser, GraphQLUserTaskUnitConnection },
-  models: { TaskUnit },
+export default function defineGraphQLRemoveTaskSetMutation({
+  queries: { GraphQLTaskSetEdge, GraphQLUser, GraphQLUserTaskSetConnection },
+  models: { TaskSet },
 }) {
-  const GraphQLRemoveTaskUnitMutation = mutationWithClientMutationId({
-    name: 'RemoveTaskUnit',
+  const GraphQLRemoveTaskSetMutation = mutationWithClientMutationId({
+    name: 'RemoveTaskSet',
     inputFields: {
       id: { type: new GraphQLNonNull(GraphQLID) },
     },
     outputFields: {
-      deletedTaskUnitId: {
+      deletedTaskSetId: {
         type: GraphQLID,
         resolve: ({ id }) => id,
       },
@@ -24,21 +24,21 @@ export default function defineGraphQLRemoveTaskUnitMutation({
     mutateAndGetPayload: async ({ id: globalId }, { user }) => {
       const { id: localId } = fromGlobalId(globalId);
 
-      // TODO: Implement User#getTaskUnit which throws Error
-      // when the taskUnit is not found.
-      const taskUnit = first(
-        await user.getTaskUnits({
+      // TODO: Implement User#getTaskSet which throws Error
+      // when the taskSet is not found.
+      const taskSet = first(
+        await user.getTaskSets({
           where: { id: localId },
           rejectOnEmpty: true,
         }),
       );
-      taskUnit.destroy();
+      taskSet.destroy();
 
       return { id: globalId, user };
     },
   });
 
   return {
-    GraphQLRemoveTaskUnitMutation,
+    GraphQLRemoveTaskSetMutation,
   };
 }

@@ -8,7 +8,7 @@ const { sequelizeConnection } = relay;
 export default function defineGraphQLDailySchedule({
   GraphQLDailySchedule,
   GraphQLProject,
-  GraphQLTaskUnit,
+  GraphQLTaskSet,
   models: { DailySchedule, User },
   nodeInterface,
 }) {
@@ -24,10 +24,10 @@ export default function defineGraphQLDailySchedule({
     },
   });
 
-  const GraphQLUserTaskUnitConnection = sequelizeConnection({
-    name: 'UserTaskUnit',
-    nodeType: GraphQLTaskUnit,
-    target: User.TaskUnits,
+  const GraphQLUserTaskSetConnection = sequelizeConnection({
+    name: 'UserTaskSet',
+    nodeType: GraphQLTaskSet,
+    target: User.TaskSets,
     where: (key, value) => {
       if (key === 'status') {
         return {};
@@ -61,7 +61,7 @@ export default function defineGraphQLDailySchedule({
     connectionFields: {
       total: {
         type: GraphQLInt,
-        resolve: ({ source }) => source.countTaskUnits(),
+        resolve: ({ source }) => source.countTaskSets(),
       },
     },
   });
@@ -96,10 +96,10 @@ export default function defineGraphQLDailySchedule({
           return first(schedules);
         },
       },
-      taskUnits: {
-        type: GraphQLUserTaskUnitConnection.connectionType,
+      taskSets: {
+        type: GraphQLUserTaskSetConnection.connectionType,
         args: {
-          ...GraphQLUserTaskUnitConnection.connectionArgs,
+          ...GraphQLUserTaskSetConnection.connectionArgs,
           startAt: {
             type: GraphQLDate,
           },
@@ -108,7 +108,7 @@ export default function defineGraphQLDailySchedule({
           },
           status: {
             type: new GraphQLEnumType({
-              name: 'UserTaskUnitStatus',
+              name: 'UserTaskSetStatus',
               values: {
                 TODO: { value: 'TODO' },
                 DONE: { value: 'DONE' },
@@ -117,7 +117,7 @@ export default function defineGraphQLDailySchedule({
             defaultValue: 'TODO',
           },
         },
-        resolve: GraphQLUserTaskUnitConnection.resolve,
+        resolve: GraphQLUserTaskSetConnection.resolve,
       },
     },
     interfaces: [nodeInterface],
@@ -126,6 +126,6 @@ export default function defineGraphQLDailySchedule({
   return {
     GraphQLUser,
     GraphQLUserProjectConnection,
-    GraphQLUserTaskUnitConnection,
+    GraphQLUserTaskSetConnection,
   };
 }

@@ -1,6 +1,6 @@
 import { GraphQLObjectType } from 'graphql';
 import defineGraphQLProject from '../queries/GraphQLProject';
-import defineGraphQLTaskUnit from '../queries/GraphQLTaskUnit';
+import defineGraphQLTaskSet from '../queries/GraphQLTaskSet';
 import defineGraphQLTimeUnit from '../queries/GraphQLTimeUnit';
 import defineGraphQLDailyReport from '../queries/GraphQLDailyReport';
 import defineGraphQLDailySchedule from '../queries/GraphQLDailySchedule';
@@ -14,12 +14,12 @@ export default function defineQuery({
 }) {
   const { GraphQLProject } = defineGraphQLProject({ models });
 
-  const { GraphQLTaskUnit } = defineGraphQLTaskUnit({ GraphQLProject, models });
+  const { GraphQLTaskSet } = defineGraphQLTaskSet({ GraphQLProject, models });
 
   const {
     GraphQLTimeUnit,
-    GraphQLTimeUnitTaskUnitConnection,
-  } = defineGraphQLTimeUnit({ models, GraphQLTaskUnit });
+    GraphQLTimeUnitTaskSetConnection,
+  } = defineGraphQLTimeUnit({ models, GraphQLTaskSet });
 
   const { GraphQLDailyReport } = defineGraphQLDailyReport({ models });
 
@@ -35,11 +35,11 @@ export default function defineQuery({
   const {
     GraphQLUser,
     GraphQLUserProjectConnection,
-    GraphQLUserTaskUnitConnection,
+    GraphQLUserTaskSetConnection,
   } = defineGraphQLUser({
     GraphQLDailySchedule,
     GraphQLProject,
-    GraphQLTaskUnit,
+    GraphQLTaskSet,
     models,
     nodeInterface,
   });
@@ -48,7 +48,7 @@ export default function defineQuery({
     DailyReport: GraphQLDailyReport,
     DailySchedule: GraphQLDailySchedule,
     Project: GraphQLProject,
-    TaskUnit: GraphQLTaskUnit,
+    TaskSet: GraphQLTaskSet,
     TimeUnit: GraphQLTimeUnit,
     User: GraphQLUser,
   });
@@ -70,11 +70,11 @@ export default function defineQuery({
     GraphQLDailyScheduleTimeUnitConnection,
     GraphQLProject,
     GraphQLQuery,
-    GraphQLTaskUnit,
+    GraphQLTaskSet,
     GraphQLTimeUnit,
-    GraphQLTimeUnitTaskUnitConnection,
+    GraphQLTimeUnitTaskSetConnection,
     GraphQLUser,
     GraphQLUserProjectConnection,
-    GraphQLUserTaskUnitConnection,
+    GraphQLUserTaskSetConnection,
   };
 }

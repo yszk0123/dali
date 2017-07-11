@@ -2,26 +2,26 @@ import { GraphQLNonNull, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { first } from 'lodash';
 
-export default function defineGraphQLLinkTaskUnitMutation({
+export default function defineGraphQLLinkTaskSetMutation({
   queries: {
-    GraphQLTaskUnitEdge,
+    GraphQLTaskSetEdge,
     GraphQLUser,
-    GraphQLTimeUnitTaskUnitConnection,
+    GraphQLTimeUnitTaskSetConnection,
   },
-  models: { TaskUnit },
+  models: { TaskSet },
 }) {
-  const GraphQLLinkTaskUnitMutation = mutationWithClientMutationId({
-    name: 'LinkTaskUnit',
+  const GraphQLLinkTaskSetMutation = mutationWithClientMutationId({
+    name: 'LinkTaskSet',
     inputFields: {
       dailyScheduleId: { type: new GraphQLNonNull(GraphQLID) },
-      taskUnitId: { type: new GraphQLNonNull(GraphQLID) },
+      taskSetId: { type: new GraphQLNonNull(GraphQLID) },
       timeUnitId: { type: new GraphQLNonNull(GraphQLID) },
     },
     outputFields: {
-      taskUnitEdge: {
-        type: GraphQLTimeUnitTaskUnitConnection.edgeType,
-        resolve: ({ taskUnit }) => {
-          return GraphQLTimeUnitTaskUnitConnection.resolveEdge(taskUnit);
+      taskSetEdge: {
+        type: GraphQLTimeUnitTaskSetConnection.edgeType,
+        resolve: ({ taskSet }) => {
+          return GraphQLTimeUnitTaskSetConnection.resolveEdge(taskSet);
         },
       },
       viewer: {
@@ -32,13 +32,13 @@ export default function defineGraphQLLinkTaskUnitMutation({
     mutateAndGetPayload: async (
       {
         dailyScheduleId: globalDailyScheduleId,
-        taskUnitId: globalTaskUnitId,
+        taskSetId: globalTaskSetId,
         timeUnitId: globalTimeUnitId,
       },
       { user },
     ) => {
       const { id: localTimeUnitId } = fromGlobalId(globalTimeUnitId);
-      const { id: localTaskUnitId } = fromGlobalId(globalTaskUnitId);
+      const { id: localTaskSetId } = fromGlobalId(globalTaskSetId);
       const { id: localDailyScheduleId } = fromGlobalId(globalDailyScheduleId);
       const dailySchedule = first(
         await user.getDailySchedules({
@@ -52,20 +52,20 @@ export default function defineGraphQLLinkTaskUnitMutation({
           rejectOnEmpty: true,
         }),
       );
-      const taskUnit = first(
-        await user.getTaskUnits({
-          where: { id: localTaskUnitId },
+      const taskSet = first(
+        await user.getTaskSets({
+          where: { id: localTaskSetId },
           rejectOnEmpty: true,
         }),
       );
 
-      await timeUnit.addTaskUnit(taskUnit);
+      await timeUnit.addTaskSet(taskSet);
 
-      return { taskUnit, user };
+      return { taskSet, user };
     },
   });
 
   return {
-    GraphQLLinkTaskUnitMutation,
+    GraphQLLinkTaskSetMutation,
   };
 }

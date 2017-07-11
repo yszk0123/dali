@@ -1,6 +1,6 @@
-export default function createTaskUnit(sequelize, DataTypes) {
-  const TaskUnit = sequelize.define(
-    'taskUnit',
+export default function createTaskSet(sequelize, DataTypes) {
+  const TaskSet = sequelize.define(
+    'taskSet',
     {
       title: DataTypes.TEXT,
       startAt: {
@@ -33,12 +33,12 @@ export default function createTaskUnit(sequelize, DataTypes) {
     },
   );
 
-  TaskUnit.associate = ({ TimeUnit, Project }) => {
-    TaskUnit.Project = TaskUnit.belongsTo(Project);
-    TaskUnit.TimeUnits = TaskUnit.belongsToMany(TimeUnit, {
-      through: 'timeUnitTaskUnit',
+  TaskSet.associate = ({ TimeUnit, Project }) => {
+    TaskSet.Project = TaskSet.belongsTo(Project);
+    TaskSet.TimeUnits = TaskSet.belongsToMany(TimeUnit, {
+      through: 'timeUnitTaskSet',
     });
   };
 
-  return TaskUnit;
+  return TaskSet;
 }

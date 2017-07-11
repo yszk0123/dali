@@ -19,10 +19,10 @@ export default async function generateFakeData({ models }) {
   await Promise.all([
     user.createProject({ title: 'Private' }),
     user.createProject({ title: 'Work' }),
-    user.createTaskUnit({ title: 'Breakfast', startAt: today }),
-    user.createTaskUnit({ title: 'Lunch', endAt: today }),
-    user.createTaskUnit({ title: 'Dinner', startAt: today, endAt: today }),
-    user.createTaskUnit({ title: 'Other' }),
+    user.createTaskSet({ title: 'Breakfast', startAt: today }),
+    user.createTaskSet({ title: 'Lunch', endAt: today }),
+    user.createTaskSet({ title: 'Dinner', startAt: today, endAt: today }),
+    user.createTaskSet({ title: 'Other' }),
     user.addDailySchedule(dailySchedule),
   ]);
 }

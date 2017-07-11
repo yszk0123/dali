@@ -4,16 +4,16 @@ const { sequelizeConnection } = relay;
 
 export default function defineGraphQLTimeUnit({
   models: { TimeUnit },
-  GraphQLTaskUnit,
+  GraphQLTaskSet,
 }) {
-  const GraphQLTimeUnitTaskUnitConnection = sequelizeConnection({
-    name: 'TimeUnitTaskUnit',
-    nodeType: GraphQLTaskUnit,
-    target: TimeUnit.TaskUnits,
+  const GraphQLTimeUnitTaskSetConnection = sequelizeConnection({
+    name: 'TimeUnitTaskSet',
+    nodeType: GraphQLTaskSet,
+    target: TimeUnit.TaskSets,
     connectionFields: {
       total: {
         type: GraphQLInt,
-        resolve: ({ source }) => source.countTaskUnits(),
+        resolve: ({ source }) => source.countTaskSets(),
       },
     },
   });
@@ -24,13 +24,13 @@ export default function defineGraphQLTimeUnit({
       ...attributeFields(TimeUnit, {
         globalId: true,
       }),
-      taskUnits: {
-        type: GraphQLTimeUnitTaskUnitConnection.connectionType,
-        args: GraphQLTimeUnitTaskUnitConnection.connectionArgs,
-        resolve: GraphQLTimeUnitTaskUnitConnection.resolve,
+      taskSets: {
+        type: GraphQLTimeUnitTaskSetConnection.connectionType,
+        args: GraphQLTimeUnitTaskSetConnection.connectionArgs,
+        resolve: GraphQLTimeUnitTaskSetConnection.resolve,
       },
     },
   });
 
-  return { GraphQLTimeUnit, GraphQLTimeUnitTaskUnitConnection };
+  return { GraphQLTimeUnit, GraphQLTimeUnitTaskSetConnection };
 }
