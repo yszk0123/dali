@@ -22,13 +22,20 @@ function sharedUpdater(store, user, newEdge) {
   const userProxy = store.get(user.id);
   const connection = ConnectionHandler.getConnection(
     userProxy,
-    'TaskSetList_todoTaskSets',
+    'TaskSetList_taskSets',
   );
 
   ConnectionHandler.insertEdgeAfter(connection, newEdge);
 }
 
 function commit(environment, { title }, user) {
+  function updater(store) {
+    const payload = store.getRootField('createTaskSet');
+    const newEdge = payload.getLinkedRecord('taskSetEdge');
+
+    sharedUpdater(store, user, newEdge);
+  }
+
   return commitMutation(environment, {
     mutation,
     variables: {
@@ -37,18 +44,8 @@ function commit(environment, { title }, user) {
         clientMutationId: generateId(),
       },
     },
-    updater: store => {
-      const payload = store.getRootField('createTaskSet');
-      const newEdge = payload.getLinkedRecord('taskSetEdge');
-
-      sharedUpdater(store, user, newEdge);
-    },
-    optimisticUpdater: store => {
-      const payload = store.getRootField('createTaskSet');
-      const newEdge = payload.getLinkedRecord('taskSetEdge');
-
-      sharedUpdater(store, user, newEdge);
-    },
+    updater,
+    optimisticUpdater: updater,
     optimisticResponse: {
       createTaskSet: {
         taskSetEdge: {
