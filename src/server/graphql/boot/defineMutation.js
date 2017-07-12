@@ -1,12 +1,13 @@
 import { GraphQLObjectType } from 'graphql';
 import { globalIdField, mutationWithClientMutationId } from 'graphql-relay';
+import defineGraphQLAddTaskUnitMutation from '../mutations/GraphQLAddTaskUnitMutation';
 import defineGraphQLCreateProjectMutation from '../mutations/GraphQLCreateProjectMutation';
-import defineGraphQLCreateTaskUnitMutation from '../mutations/GraphQLCreateTaskUnitMutation';
+import defineGraphQLCreateTaskSetMutation from '../mutations/GraphQLCreateTaskSetMutation';
 import defineGraphQLCreateTimeUnitMutation from '../mutations/GraphQLCreateTimeUnitMutation';
 import defineGraphQLLinkProjectMutation from '../mutations/GraphQLLinkProjectMutation';
-import defineGraphQLLinkTaskUnitMutation from '../mutations/GraphQLLinkTaskUnitMutation';
 import defineGraphQLRemoveProjectMutation from '../mutations/GraphQLRemoveProjectMutation';
-import defineGraphQLRemoveTaskUnitMutation from '../mutations/GraphQLRemoveTaskUnitMutation';
+import defineGraphQLRemoveTaskSetMutation from '../mutations/GraphQLRemoveTaskSetMutation';
+import defineGraphQLRemoveTimeUnitMutation from '../mutations/GraphQLRemoveTimeUnitMutation';
 
 function getLowerCamelCase(s) {
   return `${s[0].toLowerCase()}${s.slice(1)}`;
@@ -37,7 +38,7 @@ export default function defineMutation({ models, queries }) {
     queries,
   });
 
-  const { GraphQLLinkTaskUnitMutation } = defineGraphQLLinkTaskUnitMutation({
+  const { GraphQLAddTaskUnitMutation } = defineGraphQLAddTaskUnitMutation({
     models,
     queries,
   });
@@ -47,13 +48,22 @@ export default function defineMutation({ models, queries }) {
     queries,
   });
 
-  const {
-    GraphQLCreateTaskUnitMutation,
-  } = defineGraphQLCreateTaskUnitMutation({ models, queries });
+  const { GraphQLCreateTaskSetMutation } = defineGraphQLCreateTaskSetMutation({
+    models,
+    queries,
+  });
+
+  const { GraphQLRemoveTaskSetMutation } = defineGraphQLRemoveTaskSetMutation({
+    models,
+    queries,
+  });
 
   const {
-    GraphQLRemoveTaskUnitMutation,
-  } = defineGraphQLRemoveTaskUnitMutation({ models, queries });
+    GraphQLRemoveTimeUnitMutation,
+  } = defineGraphQLRemoveTimeUnitMutation({
+    models,
+    queries,
+  });
 
   const { GraphQLCreateProjectMutation } = defineGraphQLCreateProjectMutation({
     models,
@@ -73,20 +83,20 @@ export default function defineMutation({ models, queries }) {
         'CreateDailyReportTemplate',
         'RemoveDailyReport',
         'RemoveDailyReportTemplate',
-        'RemoveTimeUnit',
         'UpdateDailyReport',
         'UpdateDailyReportTemplate',
         'UpdateProject',
-        'UpdateTaskUnit',
+        'UpdateTaskSet',
         'UpdateTimeUnit',
       ]),
+      addTaskUnit: GraphQLAddTaskUnitMutation,
       createProject: GraphQLCreateProjectMutation,
-      createTaskUnit: GraphQLCreateTaskUnitMutation,
+      createTaskSet: GraphQLCreateTaskSetMutation,
       createTimeUnit: GraphQLCreateTimeUnitMutation,
       linkProject: GraphQLLinkProjectMutation,
-      linkTaskUnit: GraphQLLinkTaskUnitMutation,
       removeProject: GraphQLRemoveProjectMutation,
-      removeTaskUnit: GraphQLRemoveTaskUnitMutation,
+      removeTaskSet: GraphQLRemoveTaskSetMutation,
+      removeTimeUnit: GraphQLRemoveTimeUnitMutation,
     },
   });
 

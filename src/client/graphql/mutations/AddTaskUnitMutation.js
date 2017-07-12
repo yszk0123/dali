@@ -3,15 +3,18 @@ import { ConnectionHandler } from 'relay-runtime';
 import makeIdGenerator from '../../shared/utils/makeIdGenerator';
 
 const generateId = makeIdGenerator();
-const generateOptimisticId = makeIdGenerator('client:newLinkTaskUnit');
+const generateOptimisticId = makeIdGenerator('client:newAddTaskUnit');
 
 const mutation = graphql`
-  mutation LinkTaskUnitMutation($input: LinkTaskUnitInput!) {
-    linkTaskUnit(input: $input) {
+  mutation AddTaskUnitMutation($input: AddTaskUnitInput!) {
+    addTaskUnit(input: $input) {
       taskUnitEdge {
         node {
           id
-          title
+          taskSet {
+            id
+            title
+          }
         }
       }
     }
@@ -28,35 +31,38 @@ function sharedUpdater(store, timeUnit, newEdge) {
   ConnectionHandler.insertEdgeAfter(connection, newEdge);
 }
 
-function commit(environment, { scheduleDate, taskUnit }, timeUnit) {
+function commit(environment, taskSet, timeUnit, dailySchedule) {
   return commitMutation(environment, {
     mutation,
     variables: {
       input: {
         clientMutationId: generateId(),
-        scheduleDate,
-        taskUnitId: taskUnit.id,
+        dailyScheduleId: dailySchedule.id,
+        taskSetId: taskSet.id,
         timeUnitId: timeUnit.id,
       },
     },
     updater: store => {
-      const payload = store.getRootField('linkTaskUnit');
+      const payload = store.getRootField('addTaskUnit');
       const newEdge = payload.getLinkedRecord('taskUnitEdge');
 
       sharedUpdater(store, timeUnit, newEdge);
     },
     optimisticUpdater: store => {
-      const payload = store.getRootField('linkTaskUnit');
+      const payload = store.getRootField('addTaskUnit');
       const newEdge = payload.getLinkedRecord('taskUnitEdge');
 
       sharedUpdater(store, timeUnit, newEdge);
     },
     optimisticResponse: {
-      linkTaskUnit: {
+      addTaskUnit: {
         taskUnitEdge: {
           node: {
             id: generateOptimisticId(),
-            title: taskUnit.title,
+            taskSet: {
+              id: generateOptimisticId(),
+              title: taskSet.title,
+            },
           },
         },
       },

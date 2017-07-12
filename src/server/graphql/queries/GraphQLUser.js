@@ -1,15 +1,15 @@
-import { GraphQLInt, GraphQLObjectType } from 'graphql';
+import { GraphQLInt, GraphQLEnumType, GraphQLObjectType } from 'graphql';
 import GraphQLDate from 'graphql-date';
-import { attributeFields, relay, resolver } from 'graphql-sequelize';
+import { attributeFields, relay } from 'graphql-sequelize';
+import { first } from 'lodash';
 import { startOfDay } from '../../shared/utils/DateUtils';
 const { sequelizeConnection } = relay;
 
-export default function defineGraphQLUser({
-  GraphQLDailyReport,
+export default function defineGraphQLDailySchedule({
+  GraphQLDailySchedule,
   GraphQLProject,
-  GraphQLTaskUnit,
-  GraphQLTimeUnit,
-  models: { User, DailyReport },
+  GraphQLTaskSet,
+  models: { DailySchedule, User },
   nodeInterface,
 }) {
   const GraphQLUserProjectConnection = sequelizeConnection({
@@ -24,33 +24,44 @@ export default function defineGraphQLUser({
     },
   });
 
-  const GraphQLUserTaskUnitConnection = sequelizeConnection({
-    name: 'UserTaskUnit',
-    nodeType: GraphQLTaskUnit,
-    target: User.TaskUnits,
-    connectionFields: {
-      total: {
-        type: GraphQLInt,
-        resolve: ({ source }) => source.countTaskUnits(),
-      },
-    },
-  });
-
-  const GraphQLUserTimeUnitConnection = sequelizeConnection({
-    name: 'UserTimeUnit',
-    nodeType: GraphQLTimeUnit,
-    target: User.TimeUnits,
+  const GraphQLUserTaskSetConnection = sequelizeConnection({
+    name: 'UserTaskSet',
+    nodeType: GraphQLTaskSet,
+    target: User.TaskSets,
     where: (key, value) => {
-      if (key === 'scheduleDate' && !value) {
-        return { scheduleDate: startOfDay(new Date()) };
+      if (key === 'status') {
+        return {};
       }
-
       return { [key]: value };
     },
+    before: (options, { status, date = startOfDay(new Date()) }) => {
+      if (status === 'TODO') {
+        options.where = {
+          ...options.where,
+          startAt: {
+            $lte: date,
+          },
+          endAt: {
+            $gt: date,
+          },
+        };
+      }
+
+      if (status === 'DONE') {
+        options.where = {
+          ...options.where,
+          endAt: {
+            $lte: date,
+          },
+        };
+      }
+
+      return options;
+    },
     connectionFields: {
       total: {
         type: GraphQLInt,
-        resolve: ({ source }) => source.countTimeUnits(),
+        resolve: ({ source }) => source.countTaskSets(),
       },
     },
   });
@@ -66,24 +77,47 @@ export default function defineGraphQLUser({
         args: GraphQLUserProjectConnection.connectionArgs,
         resolve: GraphQLUserProjectConnection.resolve,
       },
-      taskUnits: {
-        type: GraphQLUserTaskUnitConnection.connectionType,
-        args: GraphQLUserTaskUnitConnection.connectionArgs,
-        resolve: GraphQLUserTaskUnitConnection.resolve,
-      },
-      timeUnits: {
-        type: GraphQLUserTimeUnitConnection.connectionType,
+      dailySchedule: {
+        type: GraphQLDailySchedule,
         args: {
-          ...GraphQLUserTimeUnitConnection.connectionArgs,
-          scheduleDate: {
+          date: {
             type: GraphQLDate,
           },
         },
-        resolve: GraphQLUserTimeUnitConnection.resolve,
+        resolve: async (user, args) => {
+          const date = args.date || new Date();
+
+          const schedules = await user.getDailySchedules({
+            where: {
+              date: startOfDay(date),
+            },
+          });
+
+          return first(schedules);
+        },
       },
-      dailyReport: {
-        type: GraphQLDailyReport,
-        resolve: resolver(DailyReport),
+      taskSets: {
+        type: GraphQLUserTaskSetConnection.connectionType,
+        args: {
+          ...GraphQLUserTaskSetConnection.connectionArgs,
+          startAt: {
+            type: GraphQLDate,
+          },
+          endAt: {
+            type: GraphQLDate,
+          },
+          status: {
+            type: new GraphQLEnumType({
+              name: 'UserTaskSetStatus',
+              values: {
+                TODO: { value: 'TODO' },
+                DONE: { value: 'DONE' },
+              },
+            }),
+            defaultValue: 'TODO',
+          },
+        },
+        resolve: GraphQLUserTaskSetConnection.resolve,
       },
     },
     interfaces: [nodeInterface],
@@ -92,7 +126,6 @@ export default function defineGraphQLUser({
   return {
     GraphQLUser,
     GraphQLUserProjectConnection,
-    GraphQLUserTaskUnitConnection,
-    GraphQLUserTimeUnitConnection,
+    GraphQLUserTaskSetConnection,
   };
 }

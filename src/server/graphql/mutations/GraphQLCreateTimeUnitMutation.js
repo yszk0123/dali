@@ -1,23 +1,26 @@
-import { GraphQLNonNull, GraphQLInt } from 'graphql';
-import GraphQLDate from 'graphql-date';
-import { mutationWithClientMutationId } from 'graphql-relay';
-import { startOfDay } from '../../shared/utils/DateUtils';
+import { GraphQLNonNull, GraphQLInt, GraphQLID } from 'graphql';
+import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
+import { first } from 'lodash';
 
 export default function defineGraphQLCreateTimeUnitMutation({
-  queries: { GraphQLTimeUnitEdge, GraphQLUser, GraphQLUserTimeUnitConnection },
+  queries: {
+    GraphQLTimeUnitEdge,
+    GraphQLUser,
+    GraphQLDailyScheduleTimeUnitConnection,
+  },
   models: { TimeUnit },
 }) {
   const GraphQLCreateTimeUnitMutation = mutationWithClientMutationId({
     name: 'CreateTimeUnit',
     inputFields: {
-      scheduleDate: { type: GraphQLDate },
+      dailyScheduleId: { type: new GraphQLNonNull(GraphQLID) },
       position: { type: new GraphQLNonNull(GraphQLInt) },
     },
     outputFields: {
       timeUnitEdge: {
-        type: GraphQLUserTimeUnitConnection.edgeType,
+        type: GraphQLDailyScheduleTimeUnitConnection.edgeType,
         resolve: ({ timeUnit }) => {
-          return GraphQLUserTimeUnitConnection.resolveEdge(timeUnit);
+          return GraphQLDailyScheduleTimeUnitConnection.resolveEdge(timeUnit);
         },
       },
       viewer: {
@@ -26,11 +29,19 @@ export default function defineGraphQLCreateTimeUnitMutation({
       },
     },
     mutateAndGetPayload: async (
-      { scheduleDate = startOfDay(new Date()), position },
+      { dailyScheduleId: globalId, position },
       { user },
     ) => {
-      const timeUnit = await TimeUnit.create({ scheduleDate, position });
-      await user.addTimeUnit(timeUnit);
+      const { id: localId } = fromGlobalId(globalId);
+      const dailySchedule = first(
+        await user.getDailySchedules({
+          where: { id: localId },
+          rejectOnEmpty: true,
+        }),
+      );
+
+      const timeUnit = await TimeUnit.create({ position });
+      await dailySchedule.addTimeUnit(timeUnit);
 
       return { timeUnit, user };
     },

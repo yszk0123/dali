@@ -2,26 +2,20 @@ export default function createTaskUnit(sequelize, DataTypes) {
   const TaskUnit = sequelize.define(
     'taskUnit',
     {
-      createdAt: DataTypes.DATE,
-      modifiedAt: DataTypes.DATE,
-      title: DataTypes.TEXT,
-      priority: {
-        type: DataTypes.ENUM,
-        values: ['EMERGENCY', 'HIGH', 'LOW'],
-        allowNull: true,
-        defaultValue: null,
+      done: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     {
+      tableName: 'TaskUnit',
       timestamps: true,
     },
   );
 
-  TaskUnit.associate = ({ TimeUnit, Project }) => {
-    TaskUnit.Project = TaskUnit.belongsTo(Project);
-    TaskUnit.TimeUnits = TaskUnit.belongsToMany(TimeUnit, {
-      through: 'timeUnitTaskUnit',
-    });
+  TaskUnit.associate = ({ TimeUnit, TaskSet }) => {
+    TaskUnit.TimeUnit = TaskUnit.belongsTo(TimeUnit);
+    TaskUnit.TaskSet = TaskUnit.belongsTo(TaskSet);
   };
 
   return TaskUnit;

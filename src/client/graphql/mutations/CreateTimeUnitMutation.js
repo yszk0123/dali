@@ -17,8 +17,8 @@ const mutation = graphql`
   }
 `;
 
-function sharedUpdater(store, user, newEdge) {
-  const userProxy = store.get(user.id);
+function sharedUpdater(store, dailySchedule, newEdge) {
+  const userProxy = store.get(dailySchedule.id);
   const connection = ConnectionHandler.getConnection(
     userProxy,
     'TimeUnitList_timeUnits',
@@ -27,13 +27,13 @@ function sharedUpdater(store, user, newEdge) {
   ConnectionHandler.insertEdgeAfter(connection, newEdge);
 }
 
-function commit(environment, { position, scheduleDate }, user) {
+function commit(environment, { position }, dailySchedule) {
   return commitMutation(environment, {
     mutation,
     variables: {
       input: {
         clientMutationId: generateId(),
-        scheduleDate,
+        dailyScheduleId: dailySchedule.id,
         position,
       },
     },
@@ -41,13 +41,13 @@ function commit(environment, { position, scheduleDate }, user) {
       const payload = store.getRootField('createTimeUnit');
       const newEdge = payload.getLinkedRecord('timeUnitEdge');
 
-      sharedUpdater(store, user, newEdge);
+      sharedUpdater(store, dailySchedule, newEdge);
     },
     optimisticUpdater: store => {
       const payload = store.getRootField('createTimeUnit');
       const newEdge = payload.getLinkedRecord('timeUnitEdge');
 
-      sharedUpdater(store, user, newEdge);
+      sharedUpdater(store, dailySchedule, newEdge);
     },
     optimisticResponse: {
       createTimeUnit: {
@@ -55,7 +55,7 @@ function commit(environment, { position, scheduleDate }, user) {
           node: {
             id: generateOptimisticId(),
             position,
-            taskUnits: {
+            taskSets: {
               edges: [],
             },
           },

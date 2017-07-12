@@ -2,7 +2,7 @@ import { GraphQLObjectType } from 'graphql';
 import { attributeFields, resolver } from 'graphql-sequelize';
 
 export default function defineGraphQLTaskUnit({
-  GraphQLProject,
+  GraphQLTaskSet,
   models: { TaskUnit },
 }) {
   const GraphQLTaskUnit = new GraphQLObjectType({
@@ -11,9 +11,9 @@ export default function defineGraphQLTaskUnit({
       ...attributeFields(TaskUnit, {
         globalId: true,
       }),
-      project: {
-        type: GraphQLProject,
-        resolve: resolver(TaskUnit.Project),
+      taskSet: {
+        type: GraphQLTaskSet,
+        resolve: resolver(TaskUnit.TaskSet),
       },
     },
   });

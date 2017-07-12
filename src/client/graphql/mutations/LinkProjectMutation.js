@@ -16,9 +16,9 @@
  *   updater: store => {
  *     const payload = store.getRootField('linkProject');
  *     const newProject = payload.getLinkedRecord('project');
- *     const taskUnitProxy = store.get(taskUnit.id);
+ *     const taskSetProxy = store.get(taskSet.id);
  *
- *     taskUnitProxy.setLinkedRecord(newProject, 'project');
+ *     taskSetProxy.setLinkedRecord(newProject, 'project');
  *   },
  */
 import { commitMutation, graphql } from 'react-relay';
@@ -30,26 +30,26 @@ const generateOptimisticId = makeIdGenerator('client:newLinkProject');
 const mutation = graphql`
   mutation LinkProjectMutation($input: LinkProjectInput!) {
     linkProject(input: $input) {
-      taskUnit {
-        ...TaskUnitItem_taskUnit
+      taskSet {
+        ...TaskSetItem_taskSet
       }
     }
   }
 `;
 
-function commit(environment, { project }, taskUnit) {
+function commit(environment, { project }, taskSet) {
   return commitMutation(environment, {
     mutation,
     variables: {
       input: {
         clientMutationId: generateId(),
         projectId: project.id,
-        taskUnitId: taskUnit.id,
+        taskSetId: taskSet.id,
       },
     },
     optimisticResponse: {
       linkProject: {
-        taskUnit: {
+        taskSet: {
           edges: [
             {
               node: {

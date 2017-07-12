@@ -3,12 +3,12 @@ import { ConnectionHandler } from 'relay-runtime';
 import makeIdGenerator from '../../shared/utils/makeIdGenerator';
 
 const generateId = makeIdGenerator();
-const generateOptimisticId = makeIdGenerator('client:newCreateTaskUnit');
+const generateOptimisticId = makeIdGenerator('client:newCreateTaskSet');
 
 const mutation = graphql`
-  mutation CreateTaskUnitMutation($input: CreateTaskUnitInput!) {
-    createTaskUnit(input: $input) {
-      taskUnitEdge {
+  mutation CreateTaskSetMutation($input: CreateTaskSetInput!) {
+    createTaskSet(input: $input) {
+      taskSetEdge {
         node {
           id
           title
@@ -22,7 +22,7 @@ function sharedUpdater(store, user, newEdge) {
   const userProxy = store.get(user.id);
   const connection = ConnectionHandler.getConnection(
     userProxy,
-    'TaskUnitList_taskUnits',
+    'TaskSetList_todoTaskSets',
   );
 
   ConnectionHandler.insertEdgeAfter(connection, newEdge);
@@ -38,21 +38,26 @@ function commit(environment, { title }, user) {
       },
     },
     updater: store => {
-      const payload = store.getRootField('createTaskUnit');
-      const newEdge = payload.getLinkedRecord('taskUnitEdge');
+      const payload = store.getRootField('createTaskSet');
+      const newEdge = payload.getLinkedRecord('taskSetEdge');
 
       sharedUpdater(store, user, newEdge);
     },
     optimisticUpdater: store => {
-      const id = generateOptimisticId();
-      const node = store.create(id, 'TaskUnit');
-      const newEdge = store.create(generateOptimisticId(), 'TaskUnitEdge');
-
-      node.setValue(title, 'title');
-      node.setValue(id, 'id');
-      newEdge.setLinkedRecord(node, 'node');
+      const payload = store.getRootField('createTaskSet');
+      const newEdge = payload.getLinkedRecord('taskSetEdge');
 
       sharedUpdater(store, user, newEdge);
+    },
+    optimisticResponse: {
+      createTaskSet: {
+        taskSetEdge: {
+          node: {
+            id: generateOptimisticId(),
+            title,
+          },
+        },
+      },
     },
   });
 }

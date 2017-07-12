@@ -1,4 +1,5 @@
 /* @flow */
+import { uniqBy } from 'lodash';
 
 type Connection<T> = ?{
   +edges: ?$ReadOnlyArray<Edge<T>>,
@@ -18,7 +19,10 @@ function getNodeFromEdges<T>(edges: $ReadOnlyArray<?Edge<T>>): Array<T> {
     }
   }
 
-  return result;
+  // FIXME: workaround for duplicate node issue
+  const uniqueResult = uniqBy(result, 'id');
+
+  return uniqueResult;
 }
 
 export default function getNodesFromConnection<T>(

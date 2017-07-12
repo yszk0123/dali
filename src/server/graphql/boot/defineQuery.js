@@ -1,8 +1,10 @@
 import { GraphQLObjectType } from 'graphql';
 import defineGraphQLProject from '../queries/GraphQLProject';
+import defineGraphQLTaskSet from '../queries/GraphQLTaskSet';
 import defineGraphQLTaskUnit from '../queries/GraphQLTaskUnit';
 import defineGraphQLTimeUnit from '../queries/GraphQLTimeUnit';
 import defineGraphQLDailyReport from '../queries/GraphQLDailyReport';
+import defineGraphQLDailySchedule from '../queries/GraphQLDailySchedule';
 import defineGraphQLUser from '../queries/GraphQLUser';
 
 export default function defineQuery({
@@ -13,7 +15,15 @@ export default function defineQuery({
 }) {
   const { GraphQLProject } = defineGraphQLProject({ models });
 
-  const { GraphQLTaskUnit } = defineGraphQLTaskUnit({ GraphQLProject, models });
+  const {
+    GraphQLTaskSet,
+    // GraphQLTaskSetTaskUnitConnection,
+  } = defineGraphQLTaskSet({ GraphQLProject, models });
+
+  const { GraphQLTaskUnit } = defineGraphQLTaskUnit({
+    GraphQLTaskSet,
+    models,
+  });
 
   const {
     GraphQLTimeUnit,
@@ -23,22 +33,31 @@ export default function defineQuery({
   const { GraphQLDailyReport } = defineGraphQLDailyReport({ models });
 
   const {
+    GraphQLDailySchedule,
+    GraphQLDailyScheduleTimeUnitConnection,
+  } = defineGraphQLDailySchedule({
+    GraphQLDailyReport,
+    GraphQLTimeUnit,
+    models,
+  });
+
+  const {
     GraphQLUser,
     GraphQLUserProjectConnection,
-    GraphQLUserTaskUnitConnection,
-    GraphQLUserTimeUnitConnection,
+    GraphQLUserTaskSetConnection,
   } = defineGraphQLUser({
-    GraphQLDailyReport,
+    GraphQLDailySchedule,
     GraphQLProject,
-    GraphQLTaskUnit,
-    GraphQLTimeUnit,
+    GraphQLTaskSet,
     models,
     nodeInterface,
   });
 
   nodeTypeMapper.mapTypes({
     DailyReport: GraphQLDailyReport,
+    DailySchedule: GraphQLDailySchedule,
     Project: GraphQLProject,
+    TaskSet: GraphQLTaskSet,
     TaskUnit: GraphQLTaskUnit,
     TimeUnit: GraphQLTimeUnit,
     User: GraphQLUser,
@@ -57,14 +76,17 @@ export default function defineQuery({
 
   return {
     GraphQLDailyReport,
+    GraphQLDailySchedule,
+    GraphQLDailyScheduleTimeUnitConnection,
     GraphQLProject,
     GraphQLQuery,
+    GraphQLTaskSet,
+    // GraphQLTaskSetTaskUnitConnection,
     GraphQLTaskUnit,
     GraphQLTimeUnit,
     GraphQLTimeUnitTaskUnitConnection,
     GraphQLUser,
     GraphQLUserProjectConnection,
-    GraphQLUserTaskUnitConnection,
-    GraphQLUserTimeUnitConnection,
+    GraphQLUserTaskSetConnection,
   };
 }

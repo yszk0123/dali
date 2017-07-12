@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import TaskUnitForm from '../TaskUnitForm';
+import TaskSetForm from '../TaskSetForm';
 
 test('renders', () => {
-  const wrapper = shallow(<TaskUnitForm />);
+  const wrapper = shallow(<TaskSetForm />);
 
   expect(wrapper).toBeDefined();
 });

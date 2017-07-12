@@ -1,7 +1,8 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
-import LinkTaskUnitModal from './LinkTaskUnitModal';
+import RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
+import AddTaskUnitModal from './AddTaskUnitModal';
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -16,7 +17,7 @@ function mapPositionToTimeRange(position) {
 export function TaskSummary({ taskUnits }) {
   return (
     <div>
-      {taskUnits.map(taskUnit => taskUnit.title).join(', ')}
+      {taskUnits.map(taskUnit => taskUnit.taskSet.title).join(', ')}
     </div>
   );
 }
@@ -29,10 +30,18 @@ export function TimeRange({ position }) {
   );
 }
 
-export function LinkTaskUnitButton({ onClick }) {
+export function AddTaskUnitButton({ onClick }) {
   return (
     <div>
-      <button onClick={onClick}>Add TaskUnit Here</button>
+      <button onClick={onClick}>Add TaskSet Here</button>
+    </div>
+  );
+}
+
+function RemoveTimeUnitButton({ onClick }) {
+  return (
+    <div>
+      <button onClick={onClick}>Remove TimeUnit</button>
     </div>
   );
 }
@@ -45,7 +54,7 @@ export class TimeUnitItem extends React.Component {
     };
   }
 
-  _handleLinkTaskUnitButtonClick = event => {
+  _handleAddTaskUnitButtonClick = event => {
     this.setState({ isModalOpen: true });
   };
 
@@ -53,22 +62,34 @@ export class TimeUnitItem extends React.Component {
     this.setState({ isModalOpen: false });
   };
 
+  _handleRemoveTimeUnitButtonClick = () => {
+    this._removeTimeUnit();
+  };
+
+  _removeTimeUnit() {
+    const { relay, timeUnit, dailySchedule } = this.props;
+
+    RemoveTimeUnitMutation.commit(relay.environment, timeUnit, dailySchedule);
+  }
+
   render() {
-    const { timeUnit, viewer } = this.props;
+    const { timeUnit, viewer, dailySchedule } = this.props;
     const { isModalOpen } = this.state;
     const taskUnits = getNodesFromConnection(timeUnit.taskUnits);
 
     return (
       <div>
         <TaskSummary taskUnits={taskUnits} />
-        <LinkTaskUnitButton onClick={this._handleLinkTaskUnitButtonClick} />
+        <AddTaskUnitButton onClick={this._handleAddTaskUnitButtonClick} />
         <TimeRange position={timeUnit.position} />
-        <LinkTaskUnitModal
+        <AddTaskUnitModal
+          dailySchedule={dailySchedule}
           isOpen={isModalOpen}
           onClose={this._handleModalClose}
           timeUnit={timeUnit}
           viewer={viewer}
         />
+        <RemoveTimeUnitButton onClick={this._handleRemoveTimeUnitButtonClick} />
       </div>
     );
   }
@@ -76,22 +97,32 @@ export class TimeUnitItem extends React.Component {
 
 export default createFragmentContainer(
   TimeUnitItem,
-  graphql`
-    fragment TimeUnitItem_timeUnit on TimeUnit {
+  graphql.experimental`
+    fragment TimeUnitItem_timeUnit on TimeUnit
+      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
+      id
       position
-      taskUnits(first: 100) @connection(key: "TimeUnitItem_taskUnits") {
+      taskUnits(first: $count) @connection(key: "TimeUnitItem_taskUnits") {
         edges {
           node {
             id
-            title
+            taskSet {
+              id
+              title
+            }
           }
         }
       }
-      ...LinkTaskUnitModal_timeUnit
+      ...AddTaskUnitModal_timeUnit
+    }
+
+    fragment TimeUnitItem_dailySchedule on DailySchedule {
+      id
+      ...AddTaskUnitModal_dailySchedule
     }
 
     fragment TimeUnitItem_viewer on User {
-      ...LinkTaskUnitModal_viewer
+      ...AddTaskUnitModal_viewer
     }
   `,
 );

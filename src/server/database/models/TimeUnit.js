@@ -5,14 +5,14 @@ export default function createTimeUnit(sequelize, DataTypes) {
       position: DataTypes.INTEGER,
     },
     {
+      tableName: 'TimeUnit',
       timestamps: true,
     },
   );
 
-  TimeUnit.associate = ({ TaskUnit }) => {
-    TimeUnit.TaskUnits = TimeUnit.belongsToMany(TaskUnit, {
-      through: 'timeUnitTaskUnit',
-    });
+  TimeUnit.associate = ({ DailySchedule, TaskUnit }) => {
+    TimeUnit.DailySchedule = TimeUnit.belongsTo(DailySchedule);
+    TimeUnit.TaskUnits = TimeUnit.hasMany(TaskUnit);
   };
 
   return TimeUnit;

@@ -1,3 +1,16 @@
+input AddTaskUnitInput {
+  dailyScheduleId: ID!
+  taskSetId: ID!
+  timeUnitId: ID!
+  clientMutationId: String
+}
+
+type AddTaskUnitPayload {
+  taskUnitEdge: TimeUnitTaskUnitEdge
+  viewer: User
+  clientMutationId: String
+}
+
 input CreateDailyReportInput {
   clientMutationId: String
 }
@@ -29,25 +42,25 @@ type CreateProjectPayload {
   clientMutationId: String
 }
 
-input CreateTaskUnitInput {
+input CreateTaskSetInput {
   title: String!
   clientMutationId: String
 }
 
-type CreateTaskUnitPayload {
-  taskUnitEdge: UserTaskUnitEdge
+type CreateTaskSetPayload {
+  taskSetEdge: UserTaskSetEdge
   viewer: User
   clientMutationId: String
 }
 
 input CreateTimeUnitInput {
-  scheduleDate: Date
+  dailyScheduleId: ID!
   position: Int!
   clientMutationId: String
 }
 
 type CreateTimeUnitPayload {
-  timeUnitEdge: UserTimeUnitEdge
+  timeUnitEdge: DailyScheduleTimeUnitEdge
   viewer: User
   clientMutationId: String
 }
@@ -58,32 +71,55 @@ type DailyReport {
   text: String
   createdAt: String!
   updatedAt: String!
+  dailyScheduleId: Int
   userId: Int
+}
+
+type DailySchedule {
+  # The ID of an object
+  id: ID!
+  date: String
+  createdAt: String!
+  updatedAt: String!
+  userId: Int
+  dailyReport: DailyReport
+  timeUnits(after: String, first: Int, before: String, last: Int, orderBy: [DailyScheduleTimeUnitConnectionOrder]): DailyScheduleTimeUnitConnection
+}
+
+# A connection to a list of items.
+type DailyScheduleTimeUnitConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [DailyScheduleTimeUnitEdge]
+  total: Int
+}
+
+enum DailyScheduleTimeUnitConnectionOrder {
+  ID
+}
+
+# An edge in a connection.
+type DailyScheduleTimeUnitEdge {
+  # The item at the end of the edge
+  node: TimeUnit
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 scalar Date
 
 input LinkProjectInput {
   projectId: ID!
-  taskUnitId: ID!
+  taskSetId: ID!
   clientMutationId: String
 }
 
 type LinkProjectPayload {
   project: Project
-  taskUnit: TaskUnit
-  viewer: User
-  clientMutationId: String
-}
-
-input LinkTaskUnitInput {
-  taskUnitId: ID!
-  timeUnitId: ID!
-  clientMutationId: String
-}
-
-type LinkTaskUnitPayload {
-  taskUnitEdge: TimeUnitTaskUnitEdge
+  taskSet: TaskSet
   viewer: User
   clientMutationId: String
 }
@@ -93,19 +129,19 @@ type Mutation {
   createDailyReportTemplate(input: CreateDailyReportTemplateInput!): CreateDailyReportTemplatePayload
   removeDailyReport(input: RemoveDailyReportInput!): RemoveDailyReportPayload
   removeDailyReportTemplate(input: RemoveDailyReportTemplateInput!): RemoveDailyReportTemplatePayload
-  removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
   updateDailyReport(input: UpdateDailyReportInput!): UpdateDailyReportPayload
   updateDailyReportTemplate(input: UpdateDailyReportTemplateInput!): UpdateDailyReportTemplatePayload
   updateProject(input: UpdateProjectInput!): UpdateProjectPayload
-  updateTaskUnit(input: UpdateTaskUnitInput!): UpdateTaskUnitPayload
+  updateTaskSet(input: UpdateTaskSetInput!): UpdateTaskSetPayload
   updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
+  addTaskUnit(input: AddTaskUnitInput!): AddTaskUnitPayload
   createProject(input: CreateProjectInput!): CreateProjectPayload
-  createTaskUnit(input: CreateTaskUnitInput!): CreateTaskUnitPayload
+  createTaskSet(input: CreateTaskSetInput!): CreateTaskSetPayload
   createTimeUnit(input: CreateTimeUnitInput!): CreateTimeUnitPayload
   linkProject(input: LinkProjectInput!): LinkProjectPayload
-  linkTaskUnit(input: LinkTaskUnitInput!): LinkTaskUnitPayload
   removeProject(input: RemoveProjectInput!): RemoveProjectPayload
-  removeTaskUnit(input: RemoveTaskUnitInput!): RemoveTaskUnitPayload
+  removeTaskSet(input: RemoveTaskSetInput!): RemoveTaskSetPayload
+  removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
 }
 
 # An object with an ID
@@ -179,44 +215,65 @@ type RemoveProjectPayload {
   clientMutationId: String
 }
 
-input RemoveTaskUnitInput {
+input RemoveTaskSetInput {
   id: ID!
   clientMutationId: String
 }
 
-type RemoveTaskUnitPayload {
-  deletedTaskUnitId: ID
+type RemoveTaskSetPayload {
+  deletedTaskSetId: ID
   viewer: User
   clientMutationId: String
 }
 
 input RemoveTimeUnitInput {
+  dailyScheduleId: ID!
+  timeUnitId: ID!
   clientMutationId: String
 }
 
 type RemoveTimeUnitPayload {
-  # The ID of an object
-  id: ID!
+  deletedTimeUnitId: ID
+  viewer: User
   clientMutationId: String
 }
 
-type TaskUnit {
+type TaskSet {
   # The ID of an object
   id: ID!
-  createdAt: String
-  modifiedAt: String
   title: String
-  priority: taskUnitpriorityEnumType
+  startAt: String
+  endAt: String
+  routine: taskSetroutineEnumType
+  priority: taskSetpriorityEnumType
+  createdAt: String!
   updatedAt: String!
   projectId: Int
   userId: Int
   project: Project
 }
 
-enum taskUnitpriorityEnumType {
+enum taskSetpriorityEnumType {
   EMERGENCY
   HIGH
   LOW
+}
+
+enum taskSetroutineEnumType {
+  EVERYDAY
+  WEEKDAY
+  WEEKEND
+}
+
+type TaskUnit {
+  # The ID of an object
+  id: ID!
+  done: Boolean
+  createdAt: String!
+  updatedAt: String!
+  taskSetId: Int
+  timeUnitId: Int
+  taskSet: TaskSet
 }
 
 type TimeUnit {
@@ -225,6 +282,7 @@ type TimeUnit {
   position: Int
   createdAt: String!
   updatedAt: String!
+  dailyScheduleId: Int
   userId: Int
   taskUnits(after: String, first: Int, before: String, last: Int, orderBy: [TimeUnitTaskUnitConnectionOrder]): TimeUnitTaskUnitConnection
 }
@@ -282,11 +340,11 @@ type UpdateProjectPayload {
   clientMutationId: String
 }
 
-input UpdateTaskUnitInput {
+input UpdateTaskSetInput {
   clientMutationId: String
 }
 
-type UpdateTaskUnitPayload {
+type UpdateTaskSetPayload {
   # The ID of an object
   id: ID!
   clientMutationId: String
@@ -309,9 +367,8 @@ type User implements Node {
   createdAt: String!
   updatedAt: String!
   projects(after: String, first: Int, before: String, last: Int, orderBy: [UserProjectConnectionOrder]): UserProjectConnection
-  taskUnits(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskUnitConnectionOrder]): UserTaskUnitConnection
-  timeUnits(after: String, first: Int, before: String, last: Int, orderBy: [UserTimeUnitConnectionOrder], scheduleDate: Date): UserTimeUnitConnection
-  dailyReport: DailyReport
+  dailySchedule(date: Date): DailySchedule
+  taskSets(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskSetConnectionOrder], startAt: Date, endAt: Date, status: UserTaskSetStatus = TODO): UserTaskSetConnection
 }
 
 # A connection to a list of items.
@@ -338,47 +395,29 @@ type UserProjectEdge {
 }
 
 # A connection to a list of items.
-type UserTaskUnitConnection {
+type UserTaskSetConnection {
   # Information to aid in pagination.
   pageInfo: PageInfo!
 
   # A list of edges.
-  edges: [UserTaskUnitEdge]
+  edges: [UserTaskSetEdge]
   total: Int
 }
 
-enum UserTaskUnitConnectionOrder {
+enum UserTaskSetConnectionOrder {
   ID
 }
 
 # An edge in a connection.
-type UserTaskUnitEdge {
+type UserTaskSetEdge {
   # The item at the end of the edge
-  node: TaskUnit
+  node: TaskSet
 
   # A cursor for use in pagination
   cursor: String!
 }
 
-# A connection to a list of items.
-type UserTimeUnitConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # A list of edges.
-  edges: [UserTimeUnitEdge]
-  total: Int
-}
-
-enum UserTimeUnitConnectionOrder {
-  ID
-}
-
-# An edge in a connection.
-type UserTimeUnitEdge {
-  # The item at the end of the edge
-  node: TimeUnit
-
-  # A cursor for use in pagination
-  cursor: String!
+enum UserTaskSetStatus {
+  TODO
+  DONE
 }

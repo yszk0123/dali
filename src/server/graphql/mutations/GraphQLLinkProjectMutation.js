@@ -3,23 +3,23 @@ import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { first } from 'lodash';
 
 export default function defineGraphQLLinkProjectMutation({
-  queries: { GraphQLProject, GraphQLTaskUnit, GraphQLUser },
-  models: { TaskUnit },
+  queries: { GraphQLProject, GraphQLTaskSet, GraphQLUser },
+  models: { TaskSet },
 }) {
   const GraphQLLinkProjectMutation = mutationWithClientMutationId({
     name: 'LinkProject',
     inputFields: {
       projectId: { type: new GraphQLNonNull(GraphQLID) },
-      taskUnitId: { type: new GraphQLNonNull(GraphQLID) },
+      taskSetId: { type: new GraphQLNonNull(GraphQLID) },
     },
     outputFields: {
       project: {
         type: GraphQLProject,
         resolve: ({ project }) => project,
       },
-      taskUnit: {
-        type: GraphQLTaskUnit,
-        resolve: ({ taskUnit }) => taskUnit,
+      taskSet: {
+        type: GraphQLTaskSet,
+        resolve: ({ taskSet }) => taskSet,
       },
       viewer: {
         type: GraphQLUser,
@@ -27,14 +27,14 @@ export default function defineGraphQLLinkProjectMutation({
       },
     },
     mutateAndGetPayload: async (
-      { taskUnitId: globalTaskUnitId, projectId: globalProjectId },
+      { taskSetId: globalTaskSetId, projectId: globalProjectId },
       { user },
     ) => {
-      const { id: localTaskUnitId } = fromGlobalId(globalTaskUnitId);
+      const { id: localTaskSetId } = fromGlobalId(globalTaskSetId);
       const { id: localProjectId } = fromGlobalId(globalProjectId);
-      const taskUnit = first(
-        await user.getTaskUnits({
-          where: { id: localTaskUnitId },
+      const taskSet = first(
+        await user.getTaskSets({
+          where: { id: localTaskSetId },
           rejectOnEmpty: true,
         }),
       );
@@ -45,9 +45,9 @@ export default function defineGraphQLLinkProjectMutation({
         }),
       );
 
-      await taskUnit.setProject(project);
+      await taskSet.setProject(project);
 
-      return { project, taskUnit, user };
+      return { project, taskSet, user };
     },
   });
 

@@ -5,12 +5,13 @@ export default function createProject(sequelize, DataTypes) {
       title: DataTypes.TEXT,
     },
     {
+      tableName: 'Project',
       timestamps: true,
     },
   );
 
-  Project.associate = ({ TaskUnit }) => {
-    Project.TaskUnits = Project.hasMany(TaskUnit);
+  Project.associate = ({ TaskSet }) => {
+    Project.TaskSets = Project.hasMany(TaskSet);
   };
 
   return Project;

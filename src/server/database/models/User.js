@@ -5,14 +5,22 @@ export default function createUser(sequelize, DataTypes) {
       name: DataTypes.STRING,
     },
     {
+      tableName: 'User',
       timestamps: true,
     },
   );
 
-  User.associate = ({ TaskUnit, TimeUnit, Project, DailyReport }) => {
+  User.associate = ({
+    TaskSet,
+    TimeUnit,
+    Project,
+    DailySchedule,
+    DailyReport,
+  }) => {
     User.DailyReports = User.hasMany(DailyReport);
+    User.DailySchedules = User.hasMany(DailySchedule);
     User.Projects = User.hasMany(Project);
-    User.TaskUnits = User.hasMany(TaskUnit);
+    User.TaskSets = User.hasMany(TaskSet);
     User.TimeUnits = User.hasMany(TimeUnit);
   };
 

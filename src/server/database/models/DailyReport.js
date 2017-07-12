@@ -5,12 +5,13 @@ export default function createDailyReport(sequelize, DataTypes) {
       text: DataTypes.TEXT,
     },
     {
+      tableName: 'DailyReport',
       timestamps: true,
     },
   );
 
-  DailyReport.associate = ({ User }) => {
-    DailyReport.User = DailyReport.belongsTo(User);
+  DailyReport.associate = ({ DailySchedule }) => {
+    DailyReport.DailySchedule = DailyReport.belongsTo(DailySchedule);
   };
 
   return DailyReport;
