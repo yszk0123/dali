@@ -1,6 +1,7 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
+import RemoveTaskUnitMutation from '../../graphql/mutations/RemoveTaskUnitMutation';
 import RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
 import AddTaskUnitModal from './AddTaskUnitModal';
 
@@ -14,10 +15,14 @@ function mapPositionToTimeRange(position) {
   return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
 }
 
-export function TaskSummary({ taskUnits }) {
+export function TaskSummary({ taskUnits, onTaskUnitClick }) {
   return (
     <div>
-      {taskUnits.map(taskUnit => taskUnit.taskSet.title).join(', ')}
+      {taskUnits.map(taskUnit =>
+        <span key={taskUnit.id} onClick={() => onTaskUnitClick(taskUnit)}>
+          {taskUnit.taskSet.title}
+        </span>,
+      )}
     </div>
   );
 }
@@ -66,10 +71,25 @@ export class TimeUnitItem extends React.Component {
     this._removeTimeUnit();
   };
 
+  _handleTaskUnitClick = taskUnit => {
+    this._removeTaskUnit(taskUnit);
+  };
+
   _removeTimeUnit() {
     const { relay, timeUnit, dailySchedule } = this.props;
 
     RemoveTimeUnitMutation.commit(relay.environment, timeUnit, dailySchedule);
+  }
+
+  _removeTaskUnit(taskUnit) {
+    const { relay, timeUnit, dailySchedule } = this.props;
+
+    RemoveTaskUnitMutation.commit(
+      relay.environment,
+      taskUnit,
+      timeUnit,
+      dailySchedule,
+    );
   }
 
   render() {
@@ -79,7 +99,10 @@ export class TimeUnitItem extends React.Component {
 
     return (
       <div>
-        <TaskSummary taskUnits={taskUnits} />
+        <TaskSummary
+          taskUnits={taskUnits}
+          onTaskUnitClick={this._handleTaskUnitClick}
+        />
         <AddTaskUnitButton onClick={this._handleAddTaskUnitButtonClick} />
         <TimeRange position={timeUnit.position} />
         <AddTaskUnitModal

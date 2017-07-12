@@ -141,6 +141,7 @@ type Mutation {
   linkProject(input: LinkProjectInput!): LinkProjectPayload
   removeProject(input: RemoveProjectInput!): RemoveProjectPayload
   removeTaskSet(input: RemoveTaskSetInput!): RemoveTaskSetPayload
+  removeTaskUnit(input: RemoveTaskUnitInput!): RemoveTaskUnitPayload
   removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
 }
 
@@ -222,6 +223,19 @@ input RemoveTaskSetInput {
 
 type RemoveTaskSetPayload {
   deletedTaskSetId: ID
+  viewer: User
+  clientMutationId: String
+}
+
+input RemoveTaskUnitInput {
+  dailyScheduleId: ID!
+  timeUnitId: ID!
+  taskUnitId: ID!
+  clientMutationId: String
+}
+
+type RemoveTaskUnitPayload {
+  deletedTaskUnitId: ID
   viewer: User
   clientMutationId: String
 }
