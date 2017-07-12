@@ -1,6 +1,7 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
+import RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
 import AddTaskUnitModal from './AddTaskUnitModal';
 
 function mapPositionToTimeRange(position) {
@@ -37,6 +38,14 @@ export function AddTaskUnitButton({ onClick }) {
   );
 }
 
+function RemoveTimeUnitButton({ onClick }) {
+  return (
+    <div>
+      <button onClick={onClick}>Remove TimeUnit</button>
+    </div>
+  );
+}
+
 export class TimeUnitItem extends React.Component {
   constructor(props) {
     super(props);
@@ -52,6 +61,16 @@ export class TimeUnitItem extends React.Component {
   _handleModalClose = () => {
     this.setState({ isModalOpen: false });
   };
+
+  _handleRemoveTimeUnitButtonClick = () => {
+    this._removeTimeUnit();
+  };
+
+  _removeTimeUnit() {
+    const { relay, timeUnit, dailySchedule } = this.props;
+
+    RemoveTimeUnitMutation.commit(relay.environment, timeUnit, dailySchedule);
+  }
 
   render() {
     const { timeUnit, viewer, dailySchedule } = this.props;
@@ -70,6 +89,7 @@ export class TimeUnitItem extends React.Component {
           timeUnit={timeUnit}
           viewer={viewer}
         />
+        <RemoveTimeUnitButton onClick={this._handleRemoveTimeUnitButtonClick} />
       </div>
     );
   }
@@ -80,6 +100,7 @@ export default createFragmentContainer(
   graphql.experimental`
     fragment TimeUnitItem_timeUnit on TimeUnit
       @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
+      id
       position
       taskUnits(first: $count) @connection(key: "TimeUnitItem_taskUnits") {
         edges {

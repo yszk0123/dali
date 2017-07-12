@@ -129,7 +129,6 @@ type Mutation {
   createDailyReportTemplate(input: CreateDailyReportTemplateInput!): CreateDailyReportTemplatePayload
   removeDailyReport(input: RemoveDailyReportInput!): RemoveDailyReportPayload
   removeDailyReportTemplate(input: RemoveDailyReportTemplateInput!): RemoveDailyReportTemplatePayload
-  removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
   updateDailyReport(input: UpdateDailyReportInput!): UpdateDailyReportPayload
   updateDailyReportTemplate(input: UpdateDailyReportTemplateInput!): UpdateDailyReportTemplatePayload
   updateProject(input: UpdateProjectInput!): UpdateProjectPayload
@@ -142,6 +141,7 @@ type Mutation {
   linkProject(input: LinkProjectInput!): LinkProjectPayload
   removeProject(input: RemoveProjectInput!): RemoveProjectPayload
   removeTaskSet(input: RemoveTaskSetInput!): RemoveTaskSetPayload
+  removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
 }
 
 # An object with an ID
@@ -227,12 +227,14 @@ type RemoveTaskSetPayload {
 }
 
 input RemoveTimeUnitInput {
+  dailyScheduleId: ID!
+  timeUnitId: ID!
   clientMutationId: String
 }
 
 type RemoveTimeUnitPayload {
-  # The ID of an object
-  id: ID!
+  deletedTimeUnitId: ID
+  viewer: User
   clientMutationId: String
 }
 
