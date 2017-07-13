@@ -130,14 +130,14 @@ export class TimeUnitItem extends React.Component {
         <AddTaskUnitModal
           dailySchedule={dailySchedule}
           isOpen={isAddTaskUnitModalOpen}
-          onClose={this._handleModalClose}
+          onRequestClose={this._handleModalClose}
           timeUnit={timeUnit}
           viewer={viewer}
         />
         <UpdateTimeUnitTitleModal
           dailySchedule={dailySchedule}
           isOpen={isUpdateTimeUnitTitleModalOpen}
-          onClose={this._handleModalClose}
+          onRequestClose={this._handleModalClose}
           timeUnit={timeUnit}
         />
         <RemoveTimeUnitButton onClick={this._handleRemoveTimeUnitButtonClick} />

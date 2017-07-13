@@ -1,8 +1,8 @@
 /* @flow */
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import Modal from 'react-modal';
 import UpdateTimeUnitMutation from '../../graphql/mutations/UpdateTimeUnitMutation';
+import UpdateTitleModal from './UpdateTitleModal';
 
 type Props = {
   dailySchedule: any,
@@ -10,33 +10,11 @@ type Props = {
   timeUnit: any,
 };
 
-export class TaskSetModal extends React.Component {
+export class UpdateTimeUnitTitleModal extends React.Component {
   props: Props;
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      title: props.timeUnit.title || '',
-    };
-  }
-
-  _handleTitleChange = event => {
-    this.setState({
-      title: event.target.value,
-    });
-  };
-
-  _handleUpdateTitleButtonClick = () => {
-    this._updateTitle();
-  };
-
-  _updateTitle() {
-    const { relay, timeUnit, dailySchedule, onClose } = this.props;
-    const { title } = this.state;
-
-    if (!title) {
-      return;
-    }
+  _handleTitleSubmit = ({ title }) => {
+    const { relay, timeUnit, dailySchedule, onRequestClose } = this.props;
 
     UpdateTimeUnitMutation.commit(
       relay.environment,
@@ -45,25 +23,25 @@ export class TaskSetModal extends React.Component {
       dailySchedule,
     );
 
-    onClose();
-  }
+    onRequestClose();
+  };
 
   render() {
-    const { isOpen, onClose } = this.props;
-    const { title } = this.state;
+    const { isOpen, timeUnit, onRequestClose } = this.props;
 
     return (
-      <Modal contentLabel="modal" isOpen={isOpen} onRequestClose={onClose}>
-        <h2>Title</h2>
-        <input type="text" value={title} onChange={this._handleTitleChange} />
-        <button onClick={this._handleUpdateTitleButtonClick}>OK</button>
-      </Modal>
+      <UpdateTitleModal
+        isOpen={isOpen}
+        title={timeUnit.title}
+        onRequestClose={onRequestClose}
+        onSubmit={this._handleTitleSubmit}
+      />
     );
   }
 }
 
 export default createFragmentContainer(
-  TaskSetModal,
+  UpdateTimeUnitTitleModal,
   graphql.experimental`
     fragment UpdateTimeUnitTitleModal_timeUnit on TimeUnit {
       id
