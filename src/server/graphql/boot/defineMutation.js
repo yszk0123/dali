@@ -1,6 +1,7 @@
 import { GraphQLObjectType } from 'graphql';
 import { globalIdField, mutationWithClientMutationId } from 'graphql-relay';
 import defineGraphQLAddTaskUnitMutation from '../mutations/GraphQLAddTaskUnitMutation';
+import defineGraphQLCreateDailyScheduleMutation from '../mutations/GraphQLCreateDailyScheduleMutation';
 import defineGraphQLCreateProjectMutation from '../mutations/GraphQLCreateProjectMutation';
 import defineGraphQLCreateTaskSetMutation from '../mutations/GraphQLCreateTaskSetMutation';
 import defineGraphQLCreateTimeUnitMutation from '../mutations/GraphQLCreateTimeUnitMutation';
@@ -70,6 +71,10 @@ export default function defineMutation({ models, queries }) {
     GraphQLRemoveTaskUnitMutation,
   } = defineGraphQLRemoveTaskUnitMutation({ models, queries });
 
+  const {
+    GraphQLCreateDailyScheduleMutation,
+  } = defineGraphQLCreateDailyScheduleMutation({ models, queries });
+
   const { GraphQLCreateProjectMutation } = defineGraphQLCreateProjectMutation({
     models,
     queries,
@@ -106,6 +111,7 @@ export default function defineMutation({ models, queries }) {
         'UpdateDailyReportTemplate',
       ]),
       addTaskUnit: GraphQLAddTaskUnitMutation,
+      createDailySchedule: GraphQLCreateDailyScheduleMutation,
       createProject: GraphQLCreateProjectMutation,
       createTaskSet: GraphQLCreateTaskSetMutation,
       createTimeUnit: GraphQLCreateTimeUnitMutation,

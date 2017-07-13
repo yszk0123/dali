@@ -31,6 +31,17 @@ type CreateDailyReportTemplatePayload {
   clientMutationId: String
 }
 
+input CreateDailyScheduleInput {
+  date: Date!
+  clientMutationId: String
+}
+
+type CreateDailySchedulePayload {
+  dailySchedule: DailySchedule
+  viewer: User
+  clientMutationId: String
+}
+
 input CreateProjectInput {
   title: String!
   clientMutationId: String
@@ -132,6 +143,7 @@ type Mutation {
   updateDailyReport(input: UpdateDailyReportInput!): UpdateDailyReportPayload
   updateDailyReportTemplate(input: UpdateDailyReportTemplateInput!): UpdateDailyReportTemplatePayload
   addTaskUnit(input: AddTaskUnitInput!): AddTaskUnitPayload
+  createDailySchedule(input: CreateDailyScheduleInput!): CreateDailySchedulePayload
   createProject(input: CreateProjectInput!): CreateProjectPayload
   createTaskSet(input: CreateTaskSetInput!): CreateTaskSetPayload
   createTimeUnit(input: CreateTimeUnitInput!): CreateTimeUnitPayload

@@ -36,7 +36,10 @@ export default createRefetchContainer(
   DailyReportPage,
   graphql.experimental`
     fragment DailyReportPage_viewer on User
-      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 100 }
+        date: { type: "Date" }
+      ) {
       id
       projects(first: $count) @connection(key: "DailyReportPage_projects") {
         edges {
@@ -55,7 +58,7 @@ export default createRefetchContainer(
           }
         }
       }
-      dailySchedule {
+      dailySchedule(date: $date) {
         timeUnits(first: $count) @connection(key: "DailyReportPage_timeUnits") {
           edges {
             node {
