@@ -9,6 +9,7 @@ import defineGraphQLRemoveProjectMutation from '../mutations/GraphQLRemoveProjec
 import defineGraphQLRemoveTaskSetMutation from '../mutations/GraphQLRemoveTaskSetMutation';
 import defineGraphQLRemoveTaskUnitMutation from '../mutations/GraphQLRemoveTaskUnitMutation';
 import defineGraphQLRemoveTimeUnitMutation from '../mutations/GraphQLRemoveTimeUnitMutation';
+import defineGraphQLUpdateProjectMutation from '../mutations/GraphQLUpdateProjectMutation';
 import defineGraphQLUpdateTaskSetMutation from '../mutations/GraphQLUpdateTaskSetMutation';
 import defineGraphQLUpdateTimeUnitMutation from '../mutations/GraphQLUpdateTimeUnitMutation';
 
@@ -88,6 +89,11 @@ export default function defineMutation({ models, queries }) {
     queries,
   });
 
+  const { GraphQLUpdateProjectMutation } = defineGraphQLUpdateProjectMutation({
+    models,
+    queries,
+  });
+
   const GraphQLMutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
@@ -98,7 +104,6 @@ export default function defineMutation({ models, queries }) {
         'RemoveDailyReportTemplate',
         'UpdateDailyReport',
         'UpdateDailyReportTemplate',
-        'UpdateProject',
       ]),
       addTaskUnit: GraphQLAddTaskUnitMutation,
       createProject: GraphQLCreateProjectMutation,
@@ -109,6 +114,7 @@ export default function defineMutation({ models, queries }) {
       removeTaskSet: GraphQLRemoveTaskSetMutation,
       removeTaskUnit: GraphQLRemoveTaskUnitMutation,
       removeTimeUnit: GraphQLRemoveTimeUnitMutation,
+      updateProject: GraphQLUpdateProjectMutation,
       updateTaskSet: GraphQLUpdateTaskSetMutation,
       updateTimeUnit: GraphQLUpdateTimeUnitMutation,
     },
