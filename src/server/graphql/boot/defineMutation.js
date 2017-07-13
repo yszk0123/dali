@@ -9,6 +9,7 @@ import defineGraphQLRemoveProjectMutation from '../mutations/GraphQLRemoveProjec
 import defineGraphQLRemoveTaskSetMutation from '../mutations/GraphQLRemoveTaskSetMutation';
 import defineGraphQLRemoveTaskUnitMutation from '../mutations/GraphQLRemoveTaskUnitMutation';
 import defineGraphQLRemoveTimeUnitMutation from '../mutations/GraphQLRemoveTimeUnitMutation';
+import defineGraphQLUpdateTimeUnitMutation from '../mutations/GraphQLUpdateTimeUnitMutation';
 
 function getLowerCamelCase(s) {
   return `${s[0].toLowerCase()}${s.slice(1)}`;
@@ -77,6 +78,10 @@ export default function defineMutation({ models, queries }) {
     queries,
   });
 
+  const {
+    GraphQLUpdateTimeUnitMutation,
+  } = defineGraphQLUpdateTimeUnitMutation({ models, queries });
+
   const GraphQLMutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
@@ -89,7 +94,6 @@ export default function defineMutation({ models, queries }) {
         'UpdateDailyReportTemplate',
         'UpdateProject',
         'UpdateTaskSet',
-        'UpdateTimeUnit',
       ]),
       addTaskUnit: GraphQLAddTaskUnitMutation,
       createProject: GraphQLCreateProjectMutation,
@@ -100,6 +104,7 @@ export default function defineMutation({ models, queries }) {
       removeTaskSet: GraphQLRemoveTaskSetMutation,
       removeTaskUnit: GraphQLRemoveTaskUnitMutation,
       removeTimeUnit: GraphQLRemoveTimeUnitMutation,
+      updateTimeUnit: GraphQLUpdateTimeUnitMutation,
     },
   });
 

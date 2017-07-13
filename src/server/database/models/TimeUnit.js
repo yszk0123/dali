@@ -2,6 +2,7 @@ export default function createTimeUnit(sequelize, DataTypes) {
   const TimeUnit = sequelize.define(
     'timeUnit',
     {
+      title: DataTypes.STRING,
       position: DataTypes.INTEGER,
     },
     {

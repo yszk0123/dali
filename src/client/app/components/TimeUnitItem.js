@@ -4,6 +4,7 @@ import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import RemoveTaskUnitMutation from '../../graphql/mutations/RemoveTaskUnitMutation';
 import RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
 import AddTaskUnitModal from './AddTaskUnitModal';
+import UpdateTimeUnitTitleModal from './UpdateTimeUnitTitleModal';
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -43,6 +44,10 @@ export function AddTaskUnitButton({ onClick }) {
   );
 }
 
+export function UpdateTimeUnitTitleButton({ onClick }) {
+  return <button onClick={onClick}>Update Title</button>;
+}
+
 function RemoveTimeUnitButton({ onClick }) {
   return (
     <div>
@@ -55,16 +60,24 @@ export class TimeUnitItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModalOpen: false,
+      isAddTaskUnitModalOpen: false,
+      isUpdateTimeUnitTitleModalOpen: false,
     };
   }
 
   _handleAddTaskUnitButtonClick = event => {
-    this.setState({ isModalOpen: true });
+    this.setState({ isAddTaskUnitModalOpen: true });
+  };
+
+  _handleUpdateTimeUnitTitleButtonClick = event => {
+    this.setState({ isUpdateTimeUnitTitleModalOpen: true });
   };
 
   _handleModalClose = () => {
-    this.setState({ isModalOpen: false });
+    this.setState({
+      isAddTaskUnitModalOpen: false,
+      isUpdateTimeUnitTitleModalOpen: false,
+    });
   };
 
   _handleRemoveTimeUnitButtonClick = () => {
@@ -94,23 +107,38 @@ export class TimeUnitItem extends React.Component {
 
   render() {
     const { timeUnit, viewer, dailySchedule } = this.props;
-    const { isModalOpen } = this.state;
+    const {
+      isAddTaskUnitModalOpen,
+      isUpdateTimeUnitTitleModalOpen,
+    } = this.state;
     const taskUnits = getNodesFromConnection(timeUnit.taskUnits);
 
     return (
       <div>
+        <h2>
+          {timeUnit.title}
+        </h2>
         <TaskSummary
           taskUnits={taskUnits}
           onTaskUnitClick={this._handleTaskUnitClick}
         />
         <AddTaskUnitButton onClick={this._handleAddTaskUnitButtonClick} />
+        <UpdateTimeUnitTitleButton
+          onClick={this._handleUpdateTimeUnitTitleButtonClick}
+        />
         <TimeRange position={timeUnit.position} />
         <AddTaskUnitModal
           dailySchedule={dailySchedule}
-          isOpen={isModalOpen}
+          isOpen={isAddTaskUnitModalOpen}
           onClose={this._handleModalClose}
           timeUnit={timeUnit}
           viewer={viewer}
+        />
+        <UpdateTimeUnitTitleModal
+          dailySchedule={dailySchedule}
+          isOpen={isUpdateTimeUnitTitleModalOpen}
+          onClose={this._handleModalClose}
+          timeUnit={timeUnit}
         />
         <RemoveTimeUnitButton onClick={this._handleRemoveTimeUnitButtonClick} />
       </div>
@@ -124,6 +152,7 @@ export default createFragmentContainer(
     fragment TimeUnitItem_timeUnit on TimeUnit
       @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
       id
+      title
       position
       taskUnits(first: $count) @connection(key: "TimeUnitItem_taskUnits") {
         edges {
@@ -137,11 +166,13 @@ export default createFragmentContainer(
         }
       }
       ...AddTaskUnitModal_timeUnit
+      ...UpdateTimeUnitTitleModal_timeUnit
     }
 
     fragment TimeUnitItem_dailySchedule on DailySchedule {
       id
       ...AddTaskUnitModal_dailySchedule
+      ...UpdateTimeUnitTitleModal_dailySchedule
     }
 
     fragment TimeUnitItem_viewer on User {
