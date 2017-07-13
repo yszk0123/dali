@@ -2,14 +2,14 @@ import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import TimeUnitList from './TimeUnitList';
 
-export function TodayPage({ viewer }) {
+export function DailySchedulePage({ viewer }) {
   return <TimeUnitList viewer={viewer} dailySchedule={viewer.dailySchedule} />;
 }
 
 export default createFragmentContainer(
-  TodayPage,
+  DailySchedulePage,
   graphql`
-    fragment TodayPage_viewer on User {
+    fragment DailySchedulePage_viewer on User {
       dailySchedule {
         date
         ...TimeUnitList_dailySchedule

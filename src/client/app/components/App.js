@@ -8,7 +8,7 @@ import type { App_viewer } from './__generated__/App_viewer.graphql';
 import DailyReportPage from './DailyReportPage';
 import DashboardPage from './DashboardPage';
 import ProjectsPage from './ProjectsPage';
-import TodayPage from './TodayPage';
+import DailySchedulePage from './DailySchedulePage';
 import WorkspacePage from './WorkspacePage';
 
 const Wrapper = styled.div`padding: 1.5rem;`;
@@ -22,7 +22,7 @@ export function App({ viewer }: Props) {
           <Link to="/">Dashboard</Link>
         </li>
         <li>
-          <Link to="/today">Today</Link>
+          <Link to="/dailySchedule">DailySchedule</Link>
         </li>
         <li>
           <Link to="/projects">Projects</Link>
@@ -44,7 +44,7 @@ export function App({ viewer }: Props) {
         </li>
       </ul>
       <PropsRoute exact path="/" component={DashboardPage} viewer={viewer} />
-      <PropsRoute path="/today" component={TodayPage} viewer={viewer} />
+      <PropsRoute path="/dailySchedule" component={DailySchedulePage} viewer={viewer} />
       <PropsRoute path="/projects" component={ProjectsPage} viewer={viewer} />
       <PropsRoute path="/workspace" component={WorkspacePage} viewer={viewer} />
       <PropsRoute
@@ -64,7 +64,7 @@ export default withRouter(
         id
         ...DailyReportPage_viewer
         ...ProjectsPage_viewer
-        ...TodayPage_viewer
+        ...DailySchedulePage_viewer
         ...WorkspacePage_viewer
       }
     `,
