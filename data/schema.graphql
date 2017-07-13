@@ -132,7 +132,6 @@ type Mutation {
   updateDailyReport(input: UpdateDailyReportInput!): UpdateDailyReportPayload
   updateDailyReportTemplate(input: UpdateDailyReportTemplateInput!): UpdateDailyReportTemplatePayload
   updateProject(input: UpdateProjectInput!): UpdateProjectPayload
-  updateTaskSet(input: UpdateTaskSetInput!): UpdateTaskSetPayload
   addTaskUnit(input: AddTaskUnitInput!): AddTaskUnitPayload
   createProject(input: CreateProjectInput!): CreateProjectPayload
   createTaskSet(input: CreateTaskSetInput!): CreateTaskSetPayload
@@ -142,6 +141,7 @@ type Mutation {
   removeTaskSet(input: RemoveTaskSetInput!): RemoveTaskSetPayload
   removeTaskUnit(input: RemoveTaskUnitInput!): RemoveTaskUnitPayload
   removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
+  updateTaskSet(input: UpdateTaskSetInput!): UpdateTaskSetPayload
   updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
 }
 
@@ -356,12 +356,14 @@ type UpdateProjectPayload {
 }
 
 input UpdateTaskSetInput {
+  taskSetId: ID!
+  title: String
   clientMutationId: String
 }
 
 type UpdateTaskSetPayload {
-  # The ID of an object
-  id: ID!
+  taskSet: TaskSet
+  viewer: User
   clientMutationId: String
 }
 
