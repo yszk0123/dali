@@ -54,7 +54,7 @@
     "styled-components": "^2.0.0"
   },
   "devDependencies": {
-    "autodll-webpack-plugin": "^0.0.6",
+    "autodll-webpack-plugin": "^0.2.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
