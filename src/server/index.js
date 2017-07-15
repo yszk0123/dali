@@ -1,6 +1,5 @@
 import bootstrapGraphQLServer from './express/boot/bootstrapGraphQLServer';
 import bootstrapAppServer from './express/boot/bootstrapAppServer';
-import generateFakeData from './database/boot/generateFakeData';
 import prepareBackend from './express/boot/prepareBackend';
 import AuthService from './express/services/AuthService';
 
@@ -14,8 +13,6 @@ async function main() {
   try {
     const { models, schema } = await prepareBackend();
     const services = composeServices();
-
-    await generateFakeData({ models });
 
     await bootstrapGraphQLServer({
       services,

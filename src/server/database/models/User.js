@@ -2,9 +2,15 @@ export default function createUser(sequelize, DataTypes) {
   const User = sequelize.define(
     'user',
     {
-      email: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+      },
       password: DataTypes.STRING,
-      nickname: DataTypes.STRING,
+      nickname: {
+        type: DataTypes.STRING,
+        unique: true,
+      },
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
     },
@@ -21,7 +27,6 @@ export default function createUser(sequelize, DataTypes) {
     DailySchedule,
     DailyReport,
   }) => {
-    User.DailyReports = User.hasMany(DailyReport);
     User.DailySchedules = User.hasMany(DailySchedule);
     User.Projects = User.hasMany(Project);
     User.TaskSets = User.hasMany(TaskSet);

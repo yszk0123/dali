@@ -2,7 +2,10 @@ export default function createDailySchedule(sequelize, DataTypes) {
   const DailySchedule = sequelize.define(
     'dailySchedule',
     {
-      date: DataTypes.DATE,
+      date: {
+        type: DataTypes.DATE,
+        unique: true,
+      },
     },
     {
       tableName: 'DailySchedule',
