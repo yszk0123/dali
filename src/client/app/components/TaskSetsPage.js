@@ -2,14 +2,14 @@ import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import TaskSetList from './TaskSetList';
 
-export function WorkspacePage({ viewer }) {
+export function TaskSetsPage({ viewer }) {
   return <TaskSetList viewer={viewer} />;
 }
 
 export default createFragmentContainer(
-  WorkspacePage,
+  TaskSetsPage,
   graphql`
-    fragment WorkspacePage_viewer on User {
+    fragment TaskSetsPage_viewer on User {
       ...TaskSetList_viewer
     }
   `,

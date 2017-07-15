@@ -10,7 +10,7 @@ import DailyReportPage from './DailyReportPage';
 import DashboardPage from './DashboardPage';
 import ProjectsPage from './ProjectsPage';
 import DailySchedulePage from './DailySchedulePage';
-import WorkspacePage from './WorkspacePage';
+import TaskSetsPage from './TaskSetsPage';
 
 const Wrapper = styled.div`padding: 1.5rem;`;
 
@@ -92,7 +92,7 @@ export class App extends React.Component {
             <Link to="/projects">Projects</Link>
           </li>
           <li>
-            <Link to="/workspace">Workspace</Link>
+            <Link to="/taskSets">TaskSets</Link>
           </li>
           <li>
             <Link to="/dailyReport">DailyReport</Link>
@@ -117,11 +117,7 @@ export class App extends React.Component {
           viewer={viewer}
         />
         <PropsRoute path="/projects" component={ProjectsPage} viewer={viewer} />
-        <PropsRoute
-          path="/workspace"
-          component={WorkspacePage}
-          viewer={viewer}
-        />
+        <PropsRoute path="/taskSets" component={TaskSetsPage} viewer={viewer} />
         <PropsRoute
           path="/dailyReport"
           component={DailyReportPage}
@@ -141,7 +137,7 @@ export default withRouter(
         ...DailyReportPage_viewer @arguments(date: $date)
         ...ProjectsPage_viewer
         ...DailySchedulePage_viewer @arguments(date: $date)
-        ...WorkspacePage_viewer
+        ...TaskSetsPage_viewer
       }
     `,
     graphql.experimental`

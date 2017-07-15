@@ -4,7 +4,7 @@ import { App } from '../App';
 import { DashboardPage } from '../DashboardPage';
 import { ProjectsPage } from '../ProjectsPage';
 import { DailySchedulePage } from '../DailySchedulePage';
-import { WorkspacePage } from '../WorkspacePage';
+import { TaskSetsPage } from '../TaskSetsPage';
 import { DailyReportPage } from '../DailyReportPage';
 
 const relay = { environment: {} };
@@ -16,6 +16,6 @@ test('renders', () => {
   expect(wrapper.find(DashboardPage)).toBeDefined();
   expect(wrapper.find(ProjectsPage)).toBeDefined();
   expect(wrapper.find(DailySchedulePage)).toBeDefined();
-  expect(wrapper.find(WorkspacePage)).toBeDefined();
+  expect(wrapper.find(TaskSetsPage)).toBeDefined();
   expect(wrapper.find(DailyReportPage)).toBeDefined();
 });
