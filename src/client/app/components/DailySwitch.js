@@ -3,7 +3,7 @@ import React from 'react';
 import { createRefetchContainer, graphql } from 'react-relay';
 import { Switch, withRouter } from 'react-router-dom';
 import { startOfDay } from '../../../server/shared/utils/DateUtils';
-import PropsRoute from '../../shared/components/PropsRoute';
+import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import DailySchedulePage from './DailySchedulePage';
 import DailyReportPage from './DailyReportPage';
 
@@ -77,13 +77,13 @@ export class DailySwitch extends React.Component {
         <button onClick={this._handleGoToPreviousDayClick}>Previous Day</button>
         <button onClick={this._handleGoToNextDayClick}>Next Day</button>
         <Switch>
-          <PropsRoute
+          <PropsPrivateRoute
             path="/daily/schedule"
             component={DailySchedulePage}
             defaultDate={currentDate}
             viewer={viewer}
           />
-          <PropsRoute
+          <PropsPrivateRoute
             path="/daily/report"
             component={DailyReportPage}
             viewer={viewer}

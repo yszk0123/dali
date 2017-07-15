@@ -4,39 +4,58 @@ import { Switch, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import PropsRoute from '../../shared/components/PropsRoute';
+import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import DailySwitch from './DailySwitch';
 import DashboardPage from './DashboardPage';
+import LoginPage from './LoginPage';
 import NavBar from './NavBar';
 import ProjectsPage from './ProjectsPage';
+import SignupPage from './SignupPage';
 import TaskSetsPage from './TaskSetsPage';
 
 const Wrapper = styled.div`padding: 1.5rem;`;
 
 export class App extends React.Component {
   render() {
-    const { viewer } = this.props;
+    const { viewer, relay } = this.props;
 
     return (
       <Wrapper>
         <NavBar />
         <Switch>
-          <PropsRoute
+          <PropsPrivateRoute
             exact
             path="/"
             component={DashboardPage}
             viewer={viewer}
           />
-          <PropsRoute
+          <PropsPrivateRoute
             path="/projects"
             component={ProjectsPage}
             viewer={viewer}
           />
-          <PropsRoute
+          <PropsPrivateRoute
             path="/taskSets"
             component={TaskSetsPage}
             viewer={viewer}
           />
-          <PropsRoute path="/daily" component={DailySwitch} viewer={viewer} />
+          <PropsPrivateRoute
+            path="/daily"
+            component={DailySwitch}
+            viewer={viewer}
+          />
+          <PropsRoute
+            path="/login"
+            component={LoginPage}
+            viewer={viewer}
+            relay={relay}
+          />
+          <PropsRoute
+            path="/signup"
+            component={SignupPage}
+            viewer={viewer}
+            relay={relay}
+          />
         </Switch>
       </Wrapper>
     );

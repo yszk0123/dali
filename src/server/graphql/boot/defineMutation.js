@@ -6,10 +6,13 @@ import defineGraphQLCreateProjectMutation from '../mutations/GraphQLCreateProjec
 import defineGraphQLCreateTaskSetMutation from '../mutations/GraphQLCreateTaskSetMutation';
 import defineGraphQLCreateTimeUnitMutation from '../mutations/GraphQLCreateTimeUnitMutation';
 import defineGraphQLLinkProjectMutation from '../mutations/GraphQLLinkProjectMutation';
+import defineGraphQLLoginMutation from '../mutations/GraphQLLoginMutation';
+import defineGraphQLLogoutMutation from '../mutations/GraphQLLogoutMutation';
 import defineGraphQLRemoveProjectMutation from '../mutations/GraphQLRemoveProjectMutation';
 import defineGraphQLRemoveTaskSetMutation from '../mutations/GraphQLRemoveTaskSetMutation';
 import defineGraphQLRemoveTaskUnitMutation from '../mutations/GraphQLRemoveTaskUnitMutation';
 import defineGraphQLRemoveTimeUnitMutation from '../mutations/GraphQLRemoveTimeUnitMutation';
+import defineGraphQLSignupMutation from '../mutations/GraphQLSignupMutation';
 import defineGraphQLUpdateProjectMutation from '../mutations/GraphQLUpdateProjectMutation';
 import defineGraphQLUpdateTaskSetMutation from '../mutations/GraphQLUpdateTaskSetMutation';
 import defineGraphQLUpdateTimeUnitMutation from '../mutations/GraphQLUpdateTimeUnitMutation';
@@ -99,6 +102,21 @@ export default function defineMutation({ models, queries }) {
     queries,
   });
 
+  const { GraphQLSignupMutation } = defineGraphQLSignupMutation({
+    models,
+    queries,
+  });
+
+  const { GraphQLLoginMutation } = defineGraphQLLoginMutation({
+    models,
+    queries,
+  });
+
+  const { GraphQLLogoutMutation } = defineGraphQLLogoutMutation({
+    models,
+    queries,
+  });
+
   const GraphQLMutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
@@ -116,10 +134,13 @@ export default function defineMutation({ models, queries }) {
       createTaskSet: GraphQLCreateTaskSetMutation,
       createTimeUnit: GraphQLCreateTimeUnitMutation,
       linkProject: GraphQLLinkProjectMutation,
+      login: GraphQLLoginMutation,
+      logout: GraphQLLogoutMutation,
       removeProject: GraphQLRemoveProjectMutation,
       removeTaskSet: GraphQLRemoveTaskSetMutation,
       removeTaskUnit: GraphQLRemoveTaskUnitMutation,
       removeTimeUnit: GraphQLRemoveTimeUnitMutation,
+      signup: GraphQLSignupMutation,
       updateProject: GraphQLUpdateProjectMutation,
       updateTaskSet: GraphQLUpdateTaskSetMutation,
       updateTimeUnit: GraphQLUpdateTimeUnitMutation,

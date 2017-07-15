@@ -135,6 +135,26 @@ type LinkProjectPayload {
   clientMutationId: String
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+type LoginPayload {
+  viewer: User
+  clientMutationId: String
+}
+
+input LogoutInput {
+  clientMutationId: String
+}
+
+type LogoutPayload {
+  viewer: User
+  clientMutationId: String
+}
+
 type Mutation {
   createDailyReport(input: CreateDailyReportInput!): CreateDailyReportPayload
   createDailyReportTemplate(input: CreateDailyReportTemplateInput!): CreateDailyReportTemplatePayload
@@ -148,10 +168,13 @@ type Mutation {
   createTaskSet(input: CreateTaskSetInput!): CreateTaskSetPayload
   createTimeUnit(input: CreateTimeUnitInput!): CreateTimeUnitPayload
   linkProject(input: LinkProjectInput!): LinkProjectPayload
+  login(input: LoginInput!): LoginPayload
+  logout(input: LogoutInput!): LogoutPayload
   removeProject(input: RemoveProjectInput!): RemoveProjectPayload
   removeTaskSet(input: RemoveTaskSetInput!): RemoveTaskSetPayload
   removeTaskUnit(input: RemoveTaskUnitInput!): RemoveTaskUnitPayload
   removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
+  signup(input: SignupInput!): SignupPayload
   updateProject(input: UpdateProjectInput!): UpdateProjectPayload
   updateTaskSet(input: UpdateTaskSetInput!): UpdateTaskSetPayload
   updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
@@ -260,6 +283,20 @@ input RemoveTimeUnitInput {
 
 type RemoveTimeUnitPayload {
   deletedTimeUnitId: ID
+  viewer: User
+  clientMutationId: String
+}
+
+input SignupInput {
+  email: String!
+  password: String!
+  nickname: String!
+  firstName: String!
+  lastName: String!
+  clientMutationId: String
+}
+
+type SignupPayload {
   viewer: User
   clientMutationId: String
 }
@@ -397,7 +434,11 @@ type UpdateTimeUnitPayload {
 type User implements Node {
   # The ID of an object
   id: ID!
-  name: String
+  email: String
+  password: String
+  nickname: String
+  firstName: String
+  lastName: String
   createdAt: String!
   updatedAt: String!
   projects(after: String, first: Int, before: String, last: Int, orderBy: [UserProjectConnectionOrder]): UserProjectConnection
