@@ -7,6 +7,7 @@ import Loading from './components/Loading';
 import ErrorOutput from './components/ErrorOutput';
 import createEnvironment from './boot/createEnvironment';
 import injectMountNodeIfNeeded from './boot/injectMountNodeIfNeeded';
+import setupClipboard from './boot/setupClipboard';
 
 function renderRoot({ error, props }) {
   if (error) {
@@ -33,6 +34,8 @@ const query = graphql`
 `;
 
 const variables = {};
+
+setupClipboard();
 
 ReactDOM.render(
   <QueryRenderer
