@@ -11,7 +11,7 @@ import type { TaskSetModal_viewer } from './__generated__/TaskSetModal_viewer.gr
 type Props = {
   dailySchedule: TaskSetModal_dailySchedule,
   isOpen: boolean,
-  onClose: () => mixed,
+  onRequestClose: () => mixed,
   relay: any,
   timeUnit: TaskSetModal_timeUnit,
   viewer: TaskSetModal_viewer,
@@ -21,7 +21,7 @@ export class TaskSetModal extends React.Component {
   props: Props;
 
   _add(taskSet) {
-    const { relay, timeUnit, dailySchedule, onClose } = this.props;
+    const { relay, timeUnit, dailySchedule, onRequestClose } = this.props;
 
     AddTaskUnitMutation.commit(
       relay.environment,
@@ -30,7 +30,7 @@ export class TaskSetModal extends React.Component {
       dailySchedule,
     );
 
-    onClose();
+    onRequestClose();
   }
 
   _renderTaskSets() {
@@ -48,10 +48,14 @@ export class TaskSetModal extends React.Component {
   }
 
   render() {
-    const { isOpen, onClose } = this.props;
+    const { isOpen, onRequestClose } = this.props;
 
     return (
-      <Modal contentLabel="modal" isOpen={isOpen} onRequestClose={onClose}>
+      <Modal
+        contentLabel="modal"
+        isOpen={isOpen}
+        onRequestClose={onRequestClose}
+      >
         <h2>TaskSets</h2>
         <ul>
           {this._renderTaskSets()}

@@ -9,7 +9,7 @@ import type { LinkProjectModal_viewer } from './__generated__/LinkProjectModal_v
 
 type Props = {
   isOpen: boolean,
-  onClose: () => mixed,
+  onRequestClose: () => mixed,
   relay: any,
   taskSet: LinkProjectModal_taskSet,
   viewer: LinkProjectModal_viewer,
@@ -19,11 +19,11 @@ export class LinkProjectModal extends React.Component {
   props: Props;
 
   _add(project) {
-    const { relay, taskSet, onClose } = this.props;
+    const { relay, taskSet, onRequestClose } = this.props;
 
     LinkProjectMutation.commit(relay.environment, { project }, taskSet);
 
-    onClose();
+    onRequestClose();
   }
 
   _renderProjects() {
@@ -41,10 +41,14 @@ export class LinkProjectModal extends React.Component {
   }
 
   render() {
-    const { isOpen, onClose } = this.props;
+    const { isOpen, onRequestClose } = this.props;
 
     return (
-      <Modal contentLabel="modal" isOpen={isOpen} onRequestClose={onClose}>
+      <Modal
+        contentLabel="modal"
+        isOpen={isOpen}
+        onRequestClose={onRequestClose}
+      >
         <h2>Projects</h2>
         <ul>
           {this._renderProjects()}

@@ -80,7 +80,7 @@ export class TaskSetItem extends React.Component {
         </button>
         <LinkProjectModal
           isOpen={isLinkProjectModalOpen}
-          onClose={this._handleModalClose}
+          onRequestClose={this._handleModalClose}
           taskSet={taskSet}
           viewer={viewer}
         />
