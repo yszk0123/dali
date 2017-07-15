@@ -4,6 +4,9 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import CreateTimeUnitMutation from '../../graphql/mutations/CreateTimeUnitMutation';
+import Card from './Card';
+import IconButton from './IconButton';
+import IconButtonGroup from './IconButtonGroup';
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -13,14 +16,6 @@ function mapPositionToTimeRange(position) {
   const endMinute = !odd ? '00' : '30';
 
   return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
-}
-
-export function TaskSummary({ onClick }) {
-  return (
-    <div>
-      <button onClick={onClick}>Create TimeUnit Here</button>
-    </div>
-  );
 }
 
 export function TimeRange({ position }) {
@@ -50,10 +45,15 @@ export class EmptyTimeUnitItem extends React.Component {
     const { position } = this.props;
 
     return (
-      <div>
-        <TaskSummary onClick={this._handleCreateTimeUnitButtonClick} />
-        <TimeRange position={position} />
-      </div>
+      <Card title={<TimeRange position={position} />}>
+        <IconButtonGroup>
+          <IconButton
+            icon="plus"
+            label="Create TimeUnit"
+            onClick={this._handleCreateTimeUnitButtonClick}
+          />
+        </IconButtonGroup>
+      </Card>
     );
   }
 }

@@ -1,10 +1,24 @@
 import React from 'react';
+import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import RemoveTaskUnitMutation from '../../graphql/mutations/RemoveTaskUnitMutation';
 import RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
 import AddTaskUnitModal from './AddTaskUnitModal';
+import Card from './Card';
+import IconButton from './IconButton';
+import IconButtonGroup from './IconButtonGroup';
 import UpdateTimeUnitTitleModal from './UpdateTimeUnitTitleModal';
+
+const Tag = styled.span`
+  display: inline-block;
+  margin: 2px;
+`;
+
+const TagList = styled.div`
+  margin: 2px;
+  padding: 0.3rem;
+`;
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -18,13 +32,13 @@ function mapPositionToTimeRange(position) {
 
 export function TaskSummary({ taskUnits, onTaskUnitClick }) {
   return (
-    <div>
+    <TagList>
       {taskUnits.map(taskUnit =>
-        <span key={taskUnit.id} onClick={() => onTaskUnitClick(taskUnit)}>
+        <Tag key={taskUnit.id} onClick={() => onTaskUnitClick(taskUnit)}>
           {taskUnit.taskSet.title}
-        </span>,
+        </Tag>,
       )}
-    </div>
+    </TagList>
   );
 }
 
@@ -37,23 +51,15 @@ export function TimeRange({ position }) {
 }
 
 export function AddTaskUnitButton({ onClick }) {
-  return (
-    <div>
-      <button onClick={onClick}>Add TaskSet Here</button>
-    </div>
-  );
+  return <IconButton icon="plus" label="TaskUnit" onClick={onClick} />;
 }
 
-export function UpdateTimeUnitTitleButton({ onClick }) {
-  return <button onClick={onClick}>Update Title</button>;
+export function UpdateTitleButton({ onClick }) {
+  return <IconButton icon="edit" label="Update Title" onClick={onClick} />;
 }
 
-function RemoveTimeUnitButton({ onClick }) {
-  return (
-    <div>
-      <button onClick={onClick}>Remove TimeUnit</button>
-    </div>
-  );
+function RemoveButton({ onClick }) {
+  return <IconButton icon="trash" label="Remove TimeUnit" onClick={onClick} />;
 }
 
 export class TimeUnitItem extends React.Component {
@@ -61,7 +67,7 @@ export class TimeUnitItem extends React.Component {
     super(props);
     this.state = {
       isAddTaskUnitModalOpen: false,
-      isUpdateTimeUnitTitleModalOpen: false,
+      isUpdateTitleModalOpen: false,
     };
   }
 
@@ -69,18 +75,18 @@ export class TimeUnitItem extends React.Component {
     this.setState({ isAddTaskUnitModalOpen: true });
   };
 
-  _handleUpdateTimeUnitTitleButtonClick = event => {
-    this.setState({ isUpdateTimeUnitTitleModalOpen: true });
+  _handleUpdateTitleButtonClick = event => {
+    this.setState({ isUpdateTitleModalOpen: true });
   };
 
   _handleModalClose = () => {
     this.setState({
       isAddTaskUnitModalOpen: false,
-      isUpdateTimeUnitTitleModalOpen: false,
+      isUpdateTitleModalOpen: false,
     });
   };
 
-  _handleRemoveTimeUnitButtonClick = () => {
+  _handleRemoveButtonClick = () => {
     this._removeTimeUnit();
   };
 
@@ -107,26 +113,27 @@ export class TimeUnitItem extends React.Component {
 
   render() {
     const { timeUnit, viewer, dailySchedule } = this.props;
-    const {
-      isAddTaskUnitModalOpen,
-      isUpdateTimeUnitTitleModalOpen,
-    } = this.state;
+    const { isAddTaskUnitModalOpen, isUpdateTitleModalOpen } = this.state;
     const taskUnits = getNodesFromConnection(timeUnit.taskUnits);
 
     return (
-      <div>
-        <h2>
-          {timeUnit.title}
-        </h2>
+      <Card
+        title={
+          <div>
+            <TimeRange position={timeUnit.position} />
+            {timeUnit.title}
+          </div>
+        }
+      >
         <TaskSummary
           taskUnits={taskUnits}
           onTaskUnitClick={this._handleTaskUnitClick}
         />
-        <AddTaskUnitButton onClick={this._handleAddTaskUnitButtonClick} />
-        <UpdateTimeUnitTitleButton
-          onClick={this._handleUpdateTimeUnitTitleButtonClick}
-        />
-        <TimeRange position={timeUnit.position} />
+        <IconButtonGroup>
+          <AddTaskUnitButton onClick={this._handleAddTaskUnitButtonClick} />
+          <UpdateTitleButton onClick={this._handleUpdateTitleButtonClick} />
+          <RemoveButton onClick={this._handleRemoveButtonClick} />
+        </IconButtonGroup>
         <AddTaskUnitModal
           dailySchedule={dailySchedule}
           isOpen={isAddTaskUnitModalOpen}
@@ -136,12 +143,11 @@ export class TimeUnitItem extends React.Component {
         />
         <UpdateTimeUnitTitleModal
           dailySchedule={dailySchedule}
-          isOpen={isUpdateTimeUnitTitleModalOpen}
+          isOpen={isUpdateTitleModalOpen}
           onRequestClose={this._handleModalClose}
           timeUnit={timeUnit}
         />
-        <RemoveTimeUnitButton onClick={this._handleRemoveTimeUnitButtonClick} />
-      </div>
+      </Card>
     );
   }
 }
