@@ -1,8 +1,8 @@
-import bootstrapGraphQLServer from './src/server/express/boot/bootstrapGraphQLServer';
-import bootstrapAppServer from './src/server/express/boot/bootstrapAppServer';
-import generateFakeData from './src/server/database/boot/generateFakeData';
-import prepareBackend from './src/server/express/boot/prepareBackend';
-import FakeAuthService from './src/server/express/services/FakeAuthService';
+import bootstrapGraphQLServer from './express/boot/bootstrapGraphQLServer';
+import bootstrapDevAppServer from './express/boot/bootstrapDevAppServer';
+import generateFakeData from './database/boot/generateFakeData';
+import prepareBackend from './express/boot/prepareBackend';
+import FakeAuthService from './express/services/FakeAuthService';
 
 function composeServices() {
   return {
@@ -23,7 +23,7 @@ async function main() {
       schema,
     });
 
-    await bootstrapAppServer();
+    await bootstrapDevAppServer();
   } catch (error) {
     console.error(error);
     process.exit(1);
