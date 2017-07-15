@@ -39,7 +39,11 @@ export class EmptyTimeUnitItem extends React.Component {
   _createTimeUnit(positioin) {
     const { relay, position, dailySchedule } = this.props;
 
-    CreateTimeUnitMutation.commit(relay.environment, { position }, dailySchedule);
+    CreateTimeUnitMutation.commit(
+      relay.environment,
+      { position },
+      dailySchedule,
+    );
   }
 
   render() {
