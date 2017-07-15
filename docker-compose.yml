@@ -1,0 +1,23 @@
+version: "3"
+services:
+  dali-app:
+    container_name: dali-app
+    build: .
+    env_file: .env
+    ports:
+      - 3000:3000
+    volumes:
+      - volume-dali-app:/app:cached
+    depends_on:
+      - dali-database
+  dali-database:
+    container_name: dali-database
+    image: postgres:9-alpine
+    env_file: .env
+    ports:
+      - 5432
+    volumes:
+      - volume-dali-database:/var/lib/postgresql/data:cached
+volumes:
+  volume-dali-app:
+  volume-dali-database:
