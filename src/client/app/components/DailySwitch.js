@@ -86,6 +86,7 @@ export class DailySwitch extends React.Component {
           <PropsPrivateRoute
             path="/daily/report"
             component={DailyReportPage}
+            defaultDate={currentDate}
             viewer={viewer}
           />
         </Switch>

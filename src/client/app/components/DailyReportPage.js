@@ -3,6 +3,7 @@ import { createRefetchContainer, graphql } from 'react-relay';
 import { flatten, uniqBy, groupBy, toPairs } from 'lodash';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import ClipboardButton from './ClipboardButton';
+import Day from './Day';
 
 const DEFAULT_PROJECT_NAME = 'Default';
 
@@ -70,19 +71,35 @@ export class DailyReportPage extends React.Component {
   }
 
   render() {
-    const tasksByProject = this._calculateTasksByProject();
+    const { viewer, defaultDate } = this.props;
+    let date = defaultDate;
+    let report = null;
+
+    if (viewer.dailySchedule) {
+      const tasksByProject = this._calculateTasksByProject();
+      date = viewer.dailySchedule.date;
+
+      report = (
+        <ul>
+          {this._renderAsList(tasksByProject)}
+          <textarea
+            id="dailyReportAsMarkdown"
+            readOnly
+            value={this._renderAsMarkdown(tasksByProject)}
+          />
+          <ClipboardButton target="#dailyReportAsMarkdown" />
+          <button onClick={this._handleUpdateButtonClick}>Update</button>
+        </ul>
+      );
+    }
 
     return (
-      <ul>
-        {this._renderAsList(tasksByProject)}
-        <textarea
-          id="dailyReportAsMarkdown"
-          readOnly
-          value={this._renderAsMarkdown(tasksByProject)}
-        />
-        <ClipboardButton target="#dailyReportAsMarkdown" />
-        <button onClick={this._handleUpdateButtonClick}>Update</button>
-      </ul>
+      <div>
+        <h2>
+          <Day date={date} />
+        </h2>
+        {report}
+      </div>
     );
   }
 }
@@ -106,6 +123,7 @@ export default createRefetchContainer(
         }
       }
       dailySchedule(date: $date) {
+        date
         timeUnits(first: $count) @connection(key: "DailyReportPage_timeUnits") {
           edges {
             node {
