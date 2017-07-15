@@ -2,7 +2,7 @@ export default function createTaskSet(sequelize, DataTypes) {
   const TaskSet = sequelize.define(
     'taskSet',
     {
-      title: DataTypes.TEXT,
+      title: DataTypes.STRING,
       startAt: {
         type: DataTypes.DATE,
         defaultValue: new Date(0),

@@ -12,7 +12,7 @@ const modelNames = [
   'User',
 ];
 
-export default async function connectDatabase({ noSync } = {}) {
+export default async function connectDatabase() {
   const sequelize = new Sequelize(serverConfig.databaseUrl, {
     dialect: 'postgres',
   });
@@ -31,10 +31,6 @@ export default async function connectDatabase({ noSync } = {}) {
       associate(models);
     }
   });
-
-  if (!noSync) {
-    await sequelize.sync({ force: true });
-  }
 
   return { models, sequelize };
 }

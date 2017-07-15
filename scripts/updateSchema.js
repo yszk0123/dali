@@ -7,7 +7,7 @@ import connectDatabase from '../src/server/database/boot/connectDatabase';
 const schemaPath = path.resolve(__dirname, '../data/schema.graphql');
 
 async function updateSchema() {
-  const { models, sequelize } = await connectDatabase({ noSync: true });
+  const { models, sequelize } = await connectDatabase();
   const schema = defineSchema({ models, sequelize });
   fs.writeFileSync(schemaPath, printSchema(schema));
   console.log('Wrote ' + schemaPath);

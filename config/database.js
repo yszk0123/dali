@@ -1,6 +1,6 @@
 module.exports = {
   development: {
-    use_env_variable: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL,
   },
   test: {
     username: 'root',
