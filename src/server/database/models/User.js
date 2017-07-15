@@ -2,7 +2,11 @@ export default function createUser(sequelize, DataTypes) {
   const User = sequelize.define(
     'user',
     {
-      name: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      nickname: DataTypes.STRING,
+      firstName: DataTypes.STRING,
+      lastName: DataTypes.STRING,
     },
     {
       tableName: 'User',

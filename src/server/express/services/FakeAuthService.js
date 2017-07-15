@@ -9,6 +9,16 @@ async function authenticate({ User }, context) {
   context.user = await User.findOne();
 }
 
+async function signup({ User }, context) {
+  const user = await User.findOne();
+
+  if (user) {
+    context.session.token = createToken(user);
+  }
+
+  return { user };
+}
+
 async function login({ User }, context) {
   const user = await User.findOne();
 
@@ -27,4 +37,4 @@ async function logout(data, context) {
   return { user };
 }
 
-export default { authenticate, login, logout };
+export default { authenticate, signup, login, logout };

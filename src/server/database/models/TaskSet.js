@@ -5,12 +5,10 @@ export default function createTaskSet(sequelize, DataTypes) {
       title: DataTypes.TEXT,
       startAt: {
         type: DataTypes.DATE,
-        allowNull: true,
-        defaultValue: null,
+        defaultValue: new Date(0),
       },
       endAt: {
         type: DataTypes.DATE,
-        allowNull: true,
         defaultValue: new Date(10000, 0, 0, 0),
       },
       routine: {

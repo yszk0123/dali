@@ -85,11 +85,11 @@ export default function defineGraphQLDailySchedule({
           },
         },
         resolve: async (user, args) => {
-          const date = args.date || new Date();
+          const date = startOfDay(args.date || new Date());
 
           const schedules = await user.getDailySchedules({
             where: {
-              date: startOfDay(date),
+              date,
             },
           });
 

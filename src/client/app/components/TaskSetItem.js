@@ -2,18 +2,17 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import RemoveTaskSetMutation from '../../graphql/mutations/RemoveTaskSetMutation';
-import type { TaskSetItem_taskSet } from './__generated__/TaskSetItem_taskSet.graphql';
-import type { TaskSetItem_viewer } from './__generated__/TaskSetItem_viewer.graphql';
+import UpdateTaskSetTitleModal from './UpdateTaskSetTitleModal';
 import LinkProjectModal from './LinkProjectModal';
 
 type Props = {
-  taskSet: TaskSetItem_taskSet,
-  viewer: TaskSetItem_viewer,
+  taskSet: any,
+  viewer: any,
   relay: any,
 };
 
 type State = {
-  isModalOpen: boolean,
+  isLinkProjectModalOpen: boolean,
 };
 
 export class TaskSetItem extends React.Component {
@@ -23,7 +22,8 @@ export class TaskSetItem extends React.Component {
   constructor(props: Props) {
     super(props);
     this.state = {
-      isModalOpen: false,
+      isLinkProjectModalOpen: false,
+      isUpdateTaskSetTitleModalOpen: false,
     };
   }
 
@@ -32,11 +32,18 @@ export class TaskSetItem extends React.Component {
   };
 
   _handleLinkProjectButtonClick = () => {
-    this.setState({ isModalOpen: true });
+    this.setState({ isLinkProjectModalOpen: true });
+  };
+
+  _handleUpdateTaskSetTitleButtonClick = () => {
+    this.setState({ isUpdateTaskSetTitleModalOpen: true });
   };
 
   _handleModalClose = () => {
-    this.setState({ isModalOpen: false });
+    this.setState({
+      isLinkProjectModalOpen: false,
+      isUpdateTaskSetTitleModalOpen: false,
+    });
   };
 
   _remove() {
@@ -49,7 +56,10 @@ export class TaskSetItem extends React.Component {
 
   render() {
     const { taskSet, viewer } = this.props;
-    const { isModalOpen } = this.state;
+    const {
+      isLinkProjectModalOpen,
+      isUpdateTaskSetTitleModalOpen,
+    } = this.state;
     const projectTitle = taskSet.project && taskSet.project.title;
 
     return (
@@ -65,11 +75,19 @@ export class TaskSetItem extends React.Component {
         <button onClick={this._handleLinkProjectButtonClick}>
           Link Project
         </button>
+        <button onClick={this._handleUpdateTaskSetTitleButtonClick}>
+          Update Title
+        </button>
         <LinkProjectModal
-          isOpen={isModalOpen}
-          onClose={this._handleModalClose}
+          isOpen={isLinkProjectModalOpen}
+          onRequestClose={this._handleModalClose}
           taskSet={taskSet}
           viewer={viewer}
+        />
+        <UpdateTaskSetTitleModal
+          isOpen={isUpdateTaskSetTitleModalOpen}
+          onRequestClose={this._handleModalClose}
+          taskSet={taskSet}
         />
       </div>
     );
@@ -86,6 +104,7 @@ export default createFragmentContainer(
         title
       }
       ...LinkProjectModal_taskSet
+      ...UpdateTaskSetTitleModal_taskSet
     }
 
     fragment TaskSetItem_viewer on User {

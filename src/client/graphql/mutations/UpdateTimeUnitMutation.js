@@ -2,26 +2,36 @@ import { commitMutation, graphql } from 'react-relay';
 import makeIdGenerator from '../../shared/utils/makeIdGenerator';
 
 const generateId = makeIdGenerator();
-// const generateOptimisticId = makeIdGenerator('client:newUpdateTimeUnit');
 
 const mutation = graphql`
   mutation UpdateTimeUnitMutation($input: UpdateTimeUnitInput!) {
     updateTimeUnit(input: $input) {
-      id
+      timeUnit {
+        ...UpdateTimeUnitTitleModal_timeUnit
+      }
     }
   }
 `;
 
-function commit(environment, data, user) {
+function commit(environment, { title }, timeUnit, dailySchedule) {
   return commitMutation(environment, {
     mutation,
     variables: {
       input: {
         clientMutationId: generateId(),
+        dailyScheduleId: dailySchedule.id,
+        timeUnitId: timeUnit.id,
+        title,
       },
     },
-    updater: store => {},
-    optimisticUpdater: store => {},
+    optimisticResponse: {
+      updateTimeUnit: {
+        timeUnit: {
+          ...timeUnit,
+          title,
+        },
+      },
+    },
   });
 }
 

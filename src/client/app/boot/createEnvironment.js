@@ -8,7 +8,9 @@ async function fetchQuery(operation, variables) {
   try {
     const response = await fetch('/graphql', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

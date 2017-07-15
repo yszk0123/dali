@@ -7,10 +7,15 @@ const cookieMiddleware = cookieSession({
 
 export default function createAuthMiddleware({ User, AuthService }) {
   return (req, res, next) => {
-    cookieMiddleware(req, res, async () => {
-      await AuthService.authenticate({ User }, req);
+    req.AuthService = AuthService;
 
-      next();
+    cookieMiddleware(req, res, async () => {
+      try {
+        await AuthService.authenticate({ User }, req);
+        next();
+      } catch (error) {
+        next(error);
+      }
     });
   };
 }

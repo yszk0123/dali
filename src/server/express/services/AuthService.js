@@ -10,7 +10,7 @@ function createToken(user) {
 }
 
 async function authenticate({ User }, context) {
-  if (!context.session) {
+  if (!context.session || !context.session.token) {
     return;
   }
   const { userId } = decodeToken(context.session.token);
@@ -18,8 +18,27 @@ async function authenticate({ User }, context) {
   context.user = await User.findById(userId);
 }
 
+async function signup(
+  { email, password, nickname, firstName, lastName, User },
+  context,
+) {
+  const user = await User.create({
+    email,
+    password,
+    nickname,
+    firstName,
+    lastName,
+  });
+
+  if (user) {
+    context.session.token = createToken(user);
+  }
+
+  return { user };
+}
+
 async function login({ email, password, User }, context) {
-  const user = await User.findOne({ email, password });
+  const user = await User.findOne({ where: { email, password } });
 
   if (user) {
     context.session.token = createToken(user);
@@ -36,4 +55,4 @@ async function logout(data, context) {
   return { user };
 }
 
-export default { authenticate, login, logout };
+export default { authenticate, signup, login, logout };

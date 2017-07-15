@@ -31,6 +31,17 @@ type CreateDailyReportTemplatePayload {
   clientMutationId: String
 }
 
+input CreateDailyScheduleInput {
+  date: Date!
+  clientMutationId: String
+}
+
+type CreateDailySchedulePayload {
+  dailySchedule: DailySchedule
+  viewer: User
+  clientMutationId: String
+}
+
 input CreateProjectInput {
   title: String!
   clientMutationId: String
@@ -124,6 +135,26 @@ type LinkProjectPayload {
   clientMutationId: String
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+type LoginPayload {
+  viewer: User
+  clientMutationId: String
+}
+
+input LogoutInput {
+  clientMutationId: String
+}
+
+type LogoutPayload {
+  viewer: User
+  clientMutationId: String
+}
+
 type Mutation {
   createDailyReport(input: CreateDailyReportInput!): CreateDailyReportPayload
   createDailyReportTemplate(input: CreateDailyReportTemplateInput!): CreateDailyReportTemplatePayload
@@ -131,17 +162,22 @@ type Mutation {
   removeDailyReportTemplate(input: RemoveDailyReportTemplateInput!): RemoveDailyReportTemplatePayload
   updateDailyReport(input: UpdateDailyReportInput!): UpdateDailyReportPayload
   updateDailyReportTemplate(input: UpdateDailyReportTemplateInput!): UpdateDailyReportTemplatePayload
-  updateProject(input: UpdateProjectInput!): UpdateProjectPayload
-  updateTaskSet(input: UpdateTaskSetInput!): UpdateTaskSetPayload
-  updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
   addTaskUnit(input: AddTaskUnitInput!): AddTaskUnitPayload
+  createDailySchedule(input: CreateDailyScheduleInput!): CreateDailySchedulePayload
   createProject(input: CreateProjectInput!): CreateProjectPayload
   createTaskSet(input: CreateTaskSetInput!): CreateTaskSetPayload
   createTimeUnit(input: CreateTimeUnitInput!): CreateTimeUnitPayload
   linkProject(input: LinkProjectInput!): LinkProjectPayload
+  login(input: LoginInput!): LoginPayload
+  logout(input: LogoutInput!): LogoutPayload
   removeProject(input: RemoveProjectInput!): RemoveProjectPayload
   removeTaskSet(input: RemoveTaskSetInput!): RemoveTaskSetPayload
+  removeTaskUnit(input: RemoveTaskUnitInput!): RemoveTaskUnitPayload
   removeTimeUnit(input: RemoveTimeUnitInput!): RemoveTimeUnitPayload
+  signup(input: SignupInput!): SignupPayload
+  updateProject(input: UpdateProjectInput!): UpdateProjectPayload
+  updateTaskSet(input: UpdateTaskSetInput!): UpdateTaskSetPayload
+  updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
 }
 
 # An object with an ID
@@ -226,6 +262,19 @@ type RemoveTaskSetPayload {
   clientMutationId: String
 }
 
+input RemoveTaskUnitInput {
+  dailyScheduleId: ID!
+  timeUnitId: ID!
+  taskUnitId: ID!
+  clientMutationId: String
+}
+
+type RemoveTaskUnitPayload {
+  deletedTaskUnitId: ID
+  viewer: User
+  clientMutationId: String
+}
+
 input RemoveTimeUnitInput {
   dailyScheduleId: ID!
   timeUnitId: ID!
@@ -234,6 +283,20 @@ input RemoveTimeUnitInput {
 
 type RemoveTimeUnitPayload {
   deletedTimeUnitId: ID
+  viewer: User
+  clientMutationId: String
+}
+
+input SignupInput {
+  email: String!
+  password: String!
+  nickname: String!
+  firstName: String!
+  lastName: String!
+  clientMutationId: String
+}
+
+type SignupPayload {
   viewer: User
   clientMutationId: String
 }
@@ -279,6 +342,7 @@ type TaskUnit {
 type TimeUnit {
   # The ID of an object
   id: ID!
+  title: String
   position: Int
   createdAt: String!
   updatedAt: String!
@@ -331,39 +395,50 @@ type UpdateDailyReportTemplatePayload {
 }
 
 input UpdateProjectInput {
+  projectId: ID!
+  title: String
   clientMutationId: String
 }
 
 type UpdateProjectPayload {
-  # The ID of an object
-  id: ID!
+  project: Project
+  viewer: User
   clientMutationId: String
 }
 
 input UpdateTaskSetInput {
+  taskSetId: ID!
+  title: String
   clientMutationId: String
 }
 
 type UpdateTaskSetPayload {
-  # The ID of an object
-  id: ID!
+  taskSet: TaskSet
+  viewer: User
   clientMutationId: String
 }
 
 input UpdateTimeUnitInput {
+  dailyScheduleId: ID!
+  timeUnitId: ID!
+  title: String
   clientMutationId: String
 }
 
 type UpdateTimeUnitPayload {
-  # The ID of an object
-  id: ID!
+  timeUnit: TimeUnit
+  viewer: User
   clientMutationId: String
 }
 
 type User implements Node {
   # The ID of an object
   id: ID!
-  name: String
+  email: String
+  password: String
+  nickname: String
+  firstName: String
+  lastName: String
   createdAt: String!
   updatedAt: String!
   projects(after: String, first: Int, before: String, last: Int, orderBy: [UserProjectConnectionOrder]): UserProjectConnection
