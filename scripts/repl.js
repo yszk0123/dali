@@ -18,7 +18,7 @@ function print(value) {
   console.log(value);
 }
 
-connectDatabase({ noSync: true })
+connectDatabase()
   .then(async ({ models }) => {
     global.print = global.p = print;
 
