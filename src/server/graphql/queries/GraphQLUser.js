@@ -2,7 +2,7 @@ import { GraphQLInt, GraphQLEnumType, GraphQLObjectType } from 'graphql';
 import GraphQLDate from 'graphql-date';
 import { attributeFields, relay } from 'graphql-sequelize';
 import { first } from 'lodash';
-import { startOfDay } from '../../shared/utils/DateUtils';
+import { startOfDay } from 'date-fns';
 const { sequelizeConnection } = relay;
 
 export default function defineGraphQLDailySchedule({

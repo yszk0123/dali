@@ -1,7 +1,7 @@
 import { GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import GraphQLDate from 'graphql-date';
-import { startOfDay } from '../../shared/utils/DateUtils';
+import { startOfDay } from 'date-fns';
 
 export default function defineGraphQLCreateDailyScheduleMutation({
   queries: { GraphQLDailySchedule, GraphQLUser },

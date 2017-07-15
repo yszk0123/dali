@@ -1,8 +1,6 @@
 import { commitMutation, graphql } from 'react-relay';
+import { startOfDay } from 'date-fns';
 import makeIdGenerator from '../../shared/utils/makeIdGenerator';
-
-// TODO: move DateUtils to src/shared/utils
-import { startOfDay } from '../../../server/shared/utils/DateUtils';
 
 const generateId = makeIdGenerator();
 const generateOptimisticId = makeIdGenerator('client:newCreateDailySchedule');
