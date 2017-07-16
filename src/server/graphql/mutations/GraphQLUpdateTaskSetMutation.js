@@ -1,4 +1,9 @@
-import { GraphQLNonNull, GraphQLString, GraphQLID } from 'graphql';
+import {
+  GraphQLNonNull,
+  GraphQLBoolean,
+  GraphQLString,
+  GraphQLID,
+} from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { first, omitBy, isUndefined } from 'lodash';
 
@@ -9,6 +14,7 @@ export default function defineGraphQLUpdateTaskSetMutation({
   const GraphQLUpdateTaskSetMutation = mutationWithClientMutationId({
     name: 'UpdateTaskSet',
     inputFields: {
+      done: { type: GraphQLBoolean },
       taskSetId: { type: new GraphQLNonNull(GraphQLID) },
       title: { type: GraphQLString },
     },
@@ -23,7 +29,7 @@ export default function defineGraphQLUpdateTaskSetMutation({
       },
     },
     mutateAndGetPayload: async (
-      { taskSetId: globalTaskSetId, title },
+      { taskSetId: globalTaskSetId, title, done },
       { user },
     ) => {
       const { id: localTaskSetId } = fromGlobalId(globalTaskSetId);
@@ -34,7 +40,7 @@ export default function defineGraphQLUpdateTaskSetMutation({
         }),
       );
 
-      await taskSet.update(omitBy({ title }, isUndefined));
+      await taskSet.update(omitBy({ title, done }, isUndefined));
 
       return { taskSet, user };
     },

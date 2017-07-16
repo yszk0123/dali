@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import RemoveTaskSetMutation from '../../graphql/mutations/RemoveTaskSetMutation';
+import UpdateTaskSetMutation from '../../graphql/mutations/UpdateTaskSetMutation';
 import UpdateTaskSetTitleModal from './UpdateTaskSetTitleModal';
 import LinkProjectModal from './LinkProjectModal';
 import IconButton from './IconButton';
@@ -63,8 +64,13 @@ export class TaskSetItem extends React.Component {
   }
 
   _toggleDone() {
-    // TODO
-    throw new Error('To Be Implemented');
+    const { relay, taskSet } = this.props;
+
+    UpdateTaskSetMutation.commit(
+      relay.environment,
+      { done: !taskSet.done },
+      taskSet,
+    );
   }
 
   render() {
