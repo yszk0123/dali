@@ -43,6 +43,10 @@ export class TaskSetItem extends React.Component {
     this.setState({ isUpdateTaskSetTitleModalOpen: true });
   };
 
+  _handleDoneChange = () => {
+    this._toggleDone();
+  };
+
   _handleModalClose = () => {
     this.setState({
       isLinkProjectModalOpen: false,
@@ -58,6 +62,11 @@ export class TaskSetItem extends React.Component {
     );
   }
 
+  _toggleDone() {
+    // TODO
+    throw new Error('To Be Implemented');
+  }
+
   render() {
     const { taskSet, viewer } = this.props;
     const {
@@ -68,9 +77,12 @@ export class TaskSetItem extends React.Component {
 
     return (
       <Wrapper>
-        <span>
-          {taskSet.title}
-        </span>
+        <input
+          type="checkbox"
+          checked={taskSet.done}
+          onChange={this._handleDoneChange}
+        />
+        {taskSet.title}
         {projectTitle &&
           <span>
             ({projectTitle})
@@ -112,6 +124,7 @@ export default createFragmentContainer(
     fragment TaskSetItem_taskSet on TaskSet {
       id
       title
+      done
       project {
         title
       }

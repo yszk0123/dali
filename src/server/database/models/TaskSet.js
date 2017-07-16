@@ -3,25 +3,13 @@ export default function createTaskSet(sequelize, DataTypes) {
     'taskSet',
     {
       title: DataTypes.STRING,
-      startAt: {
-        type: DataTypes.DATE,
-        defaultValue: new Date(0),
-      },
-      endAt: {
-        type: DataTypes.DATE,
-        defaultValue: new Date(10000, 0, 0, 0),
-      },
-      routine: {
-        type: DataTypes.ENUM,
-        values: ['EVERYDAY', 'WEEKDAY', 'WEEKEND'],
-        allowNull: true,
-        defaultValue: null,
+      done: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       priority: {
-        type: DataTypes.ENUM,
-        values: ['EMERGENCY', 'HIGH', 'LOW'],
-        allowNull: true,
-        defaultValue: null,
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
     },
     {

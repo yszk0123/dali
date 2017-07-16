@@ -85,25 +85,13 @@ module.exports = {
         autoIncrement: true,
       },
       title: Sequelize.STRING,
-      startAt: {
-        type: Sequelize.DATE,
-        defaultValue: new Date(0),
-      },
-      endAt: {
-        type: Sequelize.DATE,
-        defaultValue: new Date(10000, 0, 0, 0),
-      },
-      routine: {
-        type: Sequelize.ENUM,
-        values: ['EVERYDAY', 'WEEKDAY', 'WEEKEND'],
-        allowNull: true,
-        defaultValue: null,
+      done: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       priority: {
-        type: Sequelize.ENUM,
-        values: ['EMERGENCY', 'HIGH', 'LOW'],
-        allowNull: true,
-        defaultValue: null,
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       projectId: {
         type: Sequelize.INTEGER,
