@@ -2,10 +2,11 @@ import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import CreateDailyScheduleMutation from '../../graphql/mutations/CreateDailyScheduleMutation';
 import TimeUnitList from './TimeUnitList';
+import Button from './Button';
 import Day from './Day';
 
 function CreateDailyScheduleButton({ onClick }) {
-  return <button onClick={onClick}>Create Daily Schedule</button>;
+  return <Button onClick={onClick}>Create Daily Schedule</Button>;
 }
 
 export class DailySchedulePage extends React.Component {

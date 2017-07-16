@@ -1,19 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
+import Button from './Button';
 
-const IconButtonWrapper = styled.span`
-  margin: 3px;
-  padding: 0.7rem;
-  border-radius: 4px;
-  background: #13c;
-  color: #eee;
-  cursor: pointer;
-`;
-
-export default function IconButton({ icon, label, ...rest }) {
+export default function IconButton({ icon, label, onIconClick, ...rest }) {
   return (
-    <IconButtonWrapper {...rest}>
-      <i className={`fa fa-${icon}`} /> {label}
-    </IconButtonWrapper>
+    <Button {...rest}>
+      <i className={`fa fa-${icon}`} onClick={onIconClick} /> {label}
+    </Button>
   );
 }

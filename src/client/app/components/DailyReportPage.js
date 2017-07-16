@@ -3,6 +3,7 @@ import { createRefetchContainer, graphql } from 'react-relay';
 import { flatten, uniqBy, groupBy, toPairs } from 'lodash';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import ClipboardButton from './ClipboardButton';
+import Button from './Button';
 import Day from './Day';
 
 const DEFAULT_PROJECT_NAME = 'Default';
@@ -88,7 +89,7 @@ export class DailyReportPage extends React.Component {
             value={this._renderAsMarkdown(tasksByProject)}
           />
           <ClipboardButton target="#dailyReportAsMarkdown" />
-          <button onClick={this._handleUpdateButtonClick}>Update</button>
+          <Button onClick={this._handleUpdateButtonClick}>Update</Button>
         </ul>
       );
     }

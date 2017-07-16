@@ -4,10 +4,10 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import CreateProjectMutation from '../../graphql/mutations/CreateProjectMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import ProjectItem from './ProjectItem';
-import type { ProjectList_viewer } from './__generated__/ProjectList_viewer.graphql';
+import Button from './Button';
 
 type Props = {
-  viewer: ProjectList_viewer,
+  viewer: any,
   relay: any,
 };
 
@@ -57,9 +57,9 @@ export class ProjectList extends React.Component {
     const { viewer } = this.props;
 
     return getNodesFromConnection(viewer.projects).map(project =>
-      <li key={project.id}>
+      <div key={project.id}>
         <ProjectItem project={project} viewer={viewer} />
-      </li>,
+      </div>,
     );
   }
 
@@ -69,11 +69,11 @@ export class ProjectList extends React.Component {
     return (
       <div>
         <h1>Projects</h1>
-        <ul>
+        <div>
           {this._renderProjects()}
-        </ul>
+        </div>
         <input type="text" value={title} onChange={this._handleTitleChange} />
-        <button onClick={this._handleAddProjectClick}>Add</button>
+        <Button onClick={this._handleAddProjectClick}>Add</Button>
       </div>
     );
   }

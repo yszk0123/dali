@@ -18,14 +18,6 @@ function mapPositionToTimeRange(position) {
   return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
 }
 
-export function TimeRange({ position }) {
-  return (
-    <div>
-      {mapPositionToTimeRange(position)}
-    </div>
-  );
-}
-
 export class EmptyTimeUnitItem extends React.Component {
   _handleCreateTimeUnitButtonClick = event => {
     this._createTimeUnit();
@@ -45,7 +37,7 @@ export class EmptyTimeUnitItem extends React.Component {
     const { position } = this.props;
 
     return (
-      <Card title={<TimeRange position={position} />}>
+      <Card title={mapPositionToTimeRange(position)}>
         <IconButtonGroup>
           <IconButton
             icon="plus"

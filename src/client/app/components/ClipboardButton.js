@@ -1,9 +1,10 @@
 import React from 'react';
+import Button from './Button';
 
 export default function ClipboardButton({ target }) {
   return (
-    <button className="ClipboardButton" data-clipboard-target={target}>
+    <Button className="ClipboardButton" data-clipboard-target={target}>
       Copy to clipboard
-    </button>
+    </Button>
   );
 }

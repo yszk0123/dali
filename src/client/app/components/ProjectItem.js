@@ -1,16 +1,18 @@
 /* @flow */
 import React from 'react';
+import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
-import type { ProjectItem_project } from './__generated__/ProjectItem_project.graphql';
-import type { ProjectItem_viewer } from './__generated__/ProjectItem_viewer.graphql';
 import UpdateProjectTitleModal from './UpdateProjectTitleModal';
+import IconButton from './IconButton';
 
 type Props = {
-  project: ProjectItem_project,
-  viewer: ProjectItem_viewer,
+  project: any,
+  viewer: any,
   relay: any,
 };
+
+const Wrapper = styled.div`margin: 2.5rem;`;
 
 export class ProjectItem extends React.Component {
   props: Props;
@@ -49,18 +51,26 @@ export class ProjectItem extends React.Component {
     const { isTitleModalOpen } = this.state;
 
     return (
-      <div>
+      <Wrapper>
         <span>
           {project.title}
         </span>
-        <button onClick={this._handleRemoveButtonClick}>Remove</button>
-        <button onClick={this._handleTitleButtonClick}>Update Title</button>
+        <IconButton
+          icon="trash"
+          label="Remove"
+          onClick={this._handleRemoveButtonClick}
+        />
+        <IconButton
+          icon="edit"
+          label="Update Title"
+          onClick={this._handleTitleButtonClick}
+        />
         <UpdateProjectTitleModal
           isOpen={isTitleModalOpen}
           onRequestClose={this._handleModalClose}
           project={project}
         />
-      </div>
+      </Wrapper>
     );
   }
 }

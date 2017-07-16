@@ -4,6 +4,7 @@ import { createRefetchContainer, graphql } from 'react-relay';
 import { Switch, withRouter } from 'react-router-dom';
 import { startOfDay, subDays, addDays } from 'date-fns';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
+import Button from './Button';
 import DailySchedulePage from './DailySchedulePage';
 import DailyReportPage from './DailyReportPage';
 
@@ -64,8 +65,8 @@ export class DailySwitch extends React.Component {
 
     return (
       <div>
-        <button onClick={this._handleGoToPreviousDayClick}>Previous Day</button>
-        <button onClick={this._handleGoToNextDayClick}>Next Day</button>
+        <Button onClick={this._handleGoToPreviousDayClick}>Previous Day</Button>
+        <Button onClick={this._handleGoToNextDayClick}>Next Day</Button>
         <Switch>
           <PropsPrivateRoute
             path="/daily/schedule"

@@ -1,24 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import RemoveTaskUnitMutation from '../../graphql/mutations/RemoveTaskUnitMutation';
 import RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
 import AddTaskUnitModal from './AddTaskUnitModal';
 import Card from './Card';
+import Icon from './Icon';
 import IconButton from './IconButton';
 import IconButtonGroup from './IconButtonGroup';
 import UpdateTimeUnitTitleModal from './UpdateTimeUnitTitleModal';
-
-const Tag = styled.span`
-  display: inline-block;
-  margin: 2px;
-`;
-
-const TagList = styled.div`
-  margin: 2px;
-  padding: 0.3rem;
-`;
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -30,28 +20,20 @@ function mapPositionToTimeRange(position) {
   return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
 }
 
-export function TaskSummary({ taskUnits, onTaskUnitClick }) {
+export function TaskSummary({ taskUnits, onTaskUnitClick, onAddTaskUnit }) {
   return (
-    <TagList>
+    <IconButtonGroup>
       {taskUnits.map(taskUnit =>
-        <Tag key={taskUnit.id} onClick={() => onTaskUnitClick(taskUnit)}>
-          {taskUnit.taskSet.title}
-        </Tag>,
+        <IconButton
+          key={taskUnit.id}
+          icon="times-circle"
+          label={taskUnit.taskSet.title}
+          onIconClick={() => onTaskUnitClick(taskUnit)}
+        />,
       )}
-    </TagList>
+      <Icon icon="plus" onClick={onAddTaskUnit} />
+    </IconButtonGroup>
   );
-}
-
-export function TimeRange({ position }) {
-  return (
-    <div>
-      {mapPositionToTimeRange(position)}
-    </div>
-  );
-}
-
-export function AddTaskUnitButton({ onClick }) {
-  return <IconButton icon="plus" label="TaskUnit" onClick={onClick} />;
 }
 
 export function UpdateTitleButton({ onClick }) {
@@ -120,17 +102,16 @@ export class TimeUnitItem extends React.Component {
       <Card
         title={
           <div>
-            <TimeRange position={timeUnit.position} />
-            {timeUnit.title}
+            {mapPositionToTimeRange(timeUnit.position)} {timeUnit.title}
           </div>
         }
       >
         <TaskSummary
           taskUnits={taskUnits}
           onTaskUnitClick={this._handleTaskUnitClick}
+          onAddTaskUnit={this._handleAddTaskUnitButtonClick}
         />
         <IconButtonGroup>
-          <AddTaskUnitButton onClick={this._handleAddTaskUnitButtonClick} />
           <UpdateTitleButton onClick={this._handleUpdateTitleButtonClick} />
           <RemoveButton onClick={this._handleRemoveButtonClick} />
         </IconButtonGroup>

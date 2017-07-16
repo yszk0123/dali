@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import LoginMutation from '../../graphql/mutations/LoginMutation';
+import Button from './Button';
 
 type Props = {
   viewer: any,
@@ -83,9 +84,9 @@ export default class LoginPage extends React.Component {
           value={password}
           onChange={this._handlePasswordChange}
         />
-        <button onClick={this._handleLoginButtonClick} disabled={!canLogin}>
+        <Button onClick={this._handleLoginButtonClick} disabled={!canLogin}>
           Login
-        </button>
+        </Button>
         <Link to="/signup">Signup</Link>
       </div>
     );

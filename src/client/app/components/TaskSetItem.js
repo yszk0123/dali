@@ -1,9 +1,11 @@
 /* @flow */
 import React from 'react';
+import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import RemoveTaskSetMutation from '../../graphql/mutations/RemoveTaskSetMutation';
 import UpdateTaskSetTitleModal from './UpdateTaskSetTitleModal';
 import LinkProjectModal from './LinkProjectModal';
+import IconButton from './IconButton';
 
 type Props = {
   taskSet: any,
@@ -14,6 +16,8 @@ type Props = {
 type State = {
   isLinkProjectModalOpen: boolean,
 };
+
+const Wrapper = styled.div`margin: 2.5rem;`;
 
 export class TaskSetItem extends React.Component {
   props: Props;
@@ -63,7 +67,7 @@ export class TaskSetItem extends React.Component {
     const projectTitle = taskSet.project && taskSet.project.title;
 
     return (
-      <div>
+      <Wrapper>
         <span>
           {taskSet.title}
         </span>
@@ -71,13 +75,21 @@ export class TaskSetItem extends React.Component {
           <span>
             ({projectTitle})
           </span>}
-        <button onClick={this._handleRemoveButtonClick}>Remove</button>
-        <button onClick={this._handleLinkProjectButtonClick}>
-          Link Project
-        </button>
-        <button onClick={this._handleUpdateTaskSetTitleButtonClick}>
-          Update Title
-        </button>
+        <IconButton
+          icon="times"
+          label="Remove"
+          onClick={this._handleRemoveButtonClick}
+        />
+        <IconButton
+          icon="plus"
+          label="Link Project"
+          onClick={this._handleLinkProjectButtonClick}
+        />
+        <IconButton
+          icon="edit"
+          label="Update Title"
+          onClick={this._handleUpdateTaskSetTitleButtonClick}
+        />
         <LinkProjectModal
           isOpen={isLinkProjectModalOpen}
           onRequestClose={this._handleModalClose}
@@ -89,7 +101,7 @@ export class TaskSetItem extends React.Component {
           onRequestClose={this._handleModalClose}
           taskSet={taskSet}
         />
-      </div>
+      </Wrapper>
     );
   }
 }

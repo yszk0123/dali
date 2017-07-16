@@ -4,10 +4,10 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import CreateTaskSetMutation from '../../graphql/mutations/CreateTaskSetMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import TaskSetItem from './TaskSetItem';
-import type { TaskSetList_viewer } from './__generated__/TaskSetList_viewer.graphql';
+import Button from './Button';
 
 type Props = {
-  viewer: TaskSetList_viewer,
+  viewer: any,
   relay: any,
 };
 
@@ -57,9 +57,9 @@ export class TaskSetList extends React.Component {
     const { viewer } = this.props;
 
     return getNodesFromConnection(viewer.taskSets).map(taskSet =>
-      <li key={taskSet.id}>
+      <div key={taskSet.id}>
         <TaskSetItem taskSet={taskSet} viewer={viewer} />
-      </li>,
+      </div>,
     );
   }
 
@@ -69,11 +69,11 @@ export class TaskSetList extends React.Component {
     return (
       <div>
         <h1>TaskSets</h1>
-        <ul>
+        <div>
           {this._renderTaskSets()}
-        </ul>
+        </div>
         <input type="text" value={title} onChange={this._handleTitleChange} />
-        <button onClick={this._handleAddTaskUnitClick}>Add</button>
+        <Button onClick={this._handleAddTaskUnitClick}>Add</Button>
       </div>
     );
   }
