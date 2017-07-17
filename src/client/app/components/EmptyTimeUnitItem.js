@@ -4,6 +4,9 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import CreateTimeUnitMutation from '../../graphql/mutations/CreateTimeUnitMutation';
+import Card from './Card';
+import IconButton from './IconButton';
+import IconButtonGroup from './IconButtonGroup';
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -15,41 +18,34 @@ function mapPositionToTimeRange(position) {
   return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
 }
 
-export function TaskSummary({ onClick }) {
-  return (
-    <div>
-      <button onClick={onClick}>Create TimeUnit Here</button>
-    </div>
-  );
-}
-
-export function TimeRange({ position }) {
-  return (
-    <div>
-      {mapPositionToTimeRange(position)}
-    </div>
-  );
-}
-
 export class EmptyTimeUnitItem extends React.Component {
   _handleCreateTimeUnitButtonClick = event => {
     this._createTimeUnit();
   };
 
-  _createTimeUnit(positioin) {
+  _createTimeUnit() {
     const { relay, position, dailySchedule } = this.props;
 
-    CreateTimeUnitMutation.commit(relay.environment, { position }, dailySchedule);
+    CreateTimeUnitMutation.commit(
+      relay.environment,
+      { position },
+      dailySchedule,
+    );
   }
 
   render() {
     const { position } = this.props;
 
     return (
-      <div>
-        <TaskSummary onClick={this._handleCreateTimeUnitButtonClick} />
-        <TimeRange position={position} />
-      </div>
+      <Card title={mapPositionToTimeRange(position)}>
+        <IconButtonGroup>
+          <IconButton
+            icon="plus"
+            label="Create TimeUnit"
+            onClick={this._handleCreateTimeUnitButtonClick}
+          />
+        </IconButtonGroup>
+      </Card>
     );
   }
 }

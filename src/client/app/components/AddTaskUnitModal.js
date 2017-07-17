@@ -4,17 +4,15 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import Modal from 'react-modal';
 import AddTaskUnitMutation from '../../graphql/mutations/AddTaskUnitMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
-import type { TaskSetModal_dailySchedule } from './__generated__/TaskSetModal_dailySchedule.graphql';
-import type { TaskSetModal_timeUnit } from './__generated__/TaskSetModal_timeUnit.graphql';
-import type { TaskSetModal_viewer } from './__generated__/TaskSetModal_viewer.graphql';
+import Icon from './Icon';
 
 type Props = {
-  dailySchedule: TaskSetModal_dailySchedule,
+  dailySchedule: any,
   isOpen: boolean,
   onRequestClose: () => mixed,
   relay: any,
-  timeUnit: TaskSetModal_timeUnit,
-  viewer: TaskSetModal_viewer,
+  timeUnit: any,
+  viewer: any,
 };
 
 export class TaskSetModal extends React.Component {
@@ -39,10 +37,7 @@ export class TaskSetModal extends React.Component {
 
     return taskSets.map(taskSet =>
       <li key={taskSet.id}>
-        <div>
-          {taskSet.title}
-        </div>
-        <button onClick={() => this._add(taskSet)}>Add This</button>
+        {taskSet.title} <Icon icon="plus" onClick={() => this._add(taskSet)} />
       </li>,
     );
   }

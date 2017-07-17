@@ -8,12 +8,13 @@ const mutation = graphql`
     updateTaskSet(input: $input) {
       taskSet {
         ...UpdateTaskSetTitleModal_taskSet
+        ...TaskSetItem_taskSet
       }
     }
   }
 `;
 
-function commit(environment, { title }, taskSet) {
+function commit(environment, { title, done }, taskSet) {
   return commitMutation(environment, {
     mutation,
     variables: {
@@ -21,6 +22,7 @@ function commit(environment, { title }, taskSet) {
         clientMutationId: generateId(),
         taskSetId: taskSet.id,
         title,
+        done,
       },
     },
     optimisticResponse: {
@@ -28,6 +30,7 @@ function commit(environment, { title }, taskSet) {
         taskSet: {
           ...taskSet,
           title,
+          done,
         },
       },
     },

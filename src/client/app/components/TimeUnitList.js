@@ -1,10 +1,23 @@
 import React from 'react';
+import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection.js';
 import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 import TimeUnitItem from './TimeUnitItem';
 
 const MAX_TIME_UNITS = 48;
+
+const List = styled.div`
+  minWidth: 300px;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ListItem = styled.div`
+  padding: 0.5rem;
+  align-content: center;
+`;
 
 function getSparseTimeUnits(timeUnits) {
   const sparseTimeUnits = Array.from(Array(MAX_TIME_UNITS));
@@ -31,7 +44,7 @@ export class TimeUnitList extends React.Component {
     );
 
     return timeUnits.map((timeUnit, position) =>
-      <li key={position}>
+      <ListItem key={position}>
         {timeUnit
           ? <TimeUnitItem
               timeUnit={timeUnit}
@@ -42,7 +55,7 @@ export class TimeUnitList extends React.Component {
               position={position}
               dailySchedule={dailySchedule}
             />}
-      </li>,
+      </ListItem>,
     );
   }
 
@@ -50,9 +63,9 @@ export class TimeUnitList extends React.Component {
     return (
       <div>
         <h1>TimeUnits</h1>
-        <ul>
+        <List>
           {this._renderTimeUnits()}
-        </ul>
+        </List>
       </div>
     );
   }

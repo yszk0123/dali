@@ -2,20 +2,11 @@
 import React from 'react';
 import { createRefetchContainer, graphql } from 'react-relay';
 import { Switch, withRouter } from 'react-router-dom';
-import { startOfDay } from '../../../server/shared/utils/DateUtils';
+import { startOfDay, subDays, addDays } from 'date-fns';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
+import Button from './Button';
 import DailySchedulePage from './DailySchedulePage';
 import DailyReportPage from './DailyReportPage';
-
-// TODO: Extract into other file
-function previousDay(date) {
-  return startOfDay(new Date(date.getTime() - 24 * 60 * 60 * 1000));
-}
-
-// TODO: Extract into other file
-function nextDay(date) {
-  return startOfDay(new Date(date.getTime() + 24 * 60 * 60 * 1000));
-}
 
 type Props = { viewer: any };
 
@@ -44,7 +35,7 @@ export class DailySwitch extends React.Component {
     const { relay } = this.props;
 
     this.setState(
-      ({ currentDate }) => ({ currentDate: previousDay(currentDate) }),
+      ({ currentDate }) => ({ currentDate: subDays(currentDate, 1) }),
       () => {
         const { currentDate } = this.state;
         const refetchVariables = () => ({ date: currentDate });
@@ -58,7 +49,7 @@ export class DailySwitch extends React.Component {
     const { relay } = this.props;
 
     this.setState(
-      ({ currentDate }) => ({ currentDate: nextDay(currentDate) }),
+      ({ currentDate }) => ({ currentDate: addDays(currentDate, 1) }),
       () => {
         const { currentDate } = this.state;
         const refetchVariables = () => ({ date: currentDate });
@@ -74,8 +65,8 @@ export class DailySwitch extends React.Component {
 
     return (
       <div>
-        <button onClick={this._handleGoToPreviousDayClick}>Previous Day</button>
-        <button onClick={this._handleGoToNextDayClick}>Next Day</button>
+        <Button onClick={this._handleGoToPreviousDayClick}>Previous Day</Button>
+        <Button onClick={this._handleGoToNextDayClick}>Next Day</Button>
         <Switch>
           <PropsPrivateRoute
             path="/daily/schedule"

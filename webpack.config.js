@@ -18,6 +18,7 @@ module.exports = (env = {}) => {
       app: [
         'whatwg-fetch',
         'normalize.css',
+        'font-awesome/css/font-awesome.min.css',
         env.autoReload && `webpack-dev-server/client?http://0.0.0.0:${appPort}`,
         './src/client/app/assets/app.css',
         './src/client/app/index.js',
@@ -82,6 +83,27 @@ module.exports = (env = {}) => {
             fallback: 'style-loader',
             use: 'css-loader',
           }),
+        },
+        {
+          test: /\.woff2?(\?\S*)?$/,
+          use: {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              mimetype: 'application/font-woff',
+            },
+          },
+        },
+        {
+          test: /\.(jpe?g|gif|png|svg|eot|otf|ttf|wav|mp3)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          use: {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'images/',
+              publicPath: '/assets/',
+            },
+          },
         },
         {
           test: /\.js$/,

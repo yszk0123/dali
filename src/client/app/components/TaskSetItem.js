@@ -1,9 +1,12 @@
 /* @flow */
 import React from 'react';
+import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import RemoveTaskSetMutation from '../../graphql/mutations/RemoveTaskSetMutation';
+import UpdateTaskSetMutation from '../../graphql/mutations/UpdateTaskSetMutation';
 import UpdateTaskSetTitleModal from './UpdateTaskSetTitleModal';
 import LinkProjectModal from './LinkProjectModal';
+import IconButton from './IconButton';
 
 type Props = {
   taskSet: any,
@@ -14,6 +17,8 @@ type Props = {
 type State = {
   isLinkProjectModalOpen: boolean,
 };
+
+const Wrapper = styled.div`margin: 2.5rem;`;
 
 export class TaskSetItem extends React.Component {
   props: Props;
@@ -39,6 +44,10 @@ export class TaskSetItem extends React.Component {
     this.setState({ isUpdateTaskSetTitleModalOpen: true });
   };
 
+  _handleDoneChange = () => {
+    this._toggleDone();
+  };
+
   _handleModalClose = () => {
     this.setState({
       isLinkProjectModalOpen: false,
@@ -54,6 +63,16 @@ export class TaskSetItem extends React.Component {
     );
   }
 
+  _toggleDone() {
+    const { relay, taskSet } = this.props;
+
+    UpdateTaskSetMutation.commit(
+      relay.environment,
+      { done: !taskSet.done },
+      taskSet,
+    );
+  }
+
   render() {
     const { taskSet, viewer } = this.props;
     const {
@@ -63,21 +82,32 @@ export class TaskSetItem extends React.Component {
     const projectTitle = taskSet.project && taskSet.project.title;
 
     return (
-      <div>
-        <span>
-          {taskSet.title}
-        </span>
+      <Wrapper>
+        <input
+          type="checkbox"
+          checked={taskSet.done}
+          onChange={this._handleDoneChange}
+        />
+        {taskSet.title}
         {projectTitle &&
           <span>
             ({projectTitle})
           </span>}
-        <button onClick={this._handleRemoveButtonClick}>Remove</button>
-        <button onClick={this._handleLinkProjectButtonClick}>
-          Link Project
-        </button>
-        <button onClick={this._handleUpdateTaskSetTitleButtonClick}>
-          Update Title
-        </button>
+        <IconButton
+          icon="times"
+          label="Remove"
+          onClick={this._handleRemoveButtonClick}
+        />
+        <IconButton
+          icon="plus"
+          label="Link Project"
+          onClick={this._handleLinkProjectButtonClick}
+        />
+        <IconButton
+          icon="edit"
+          label="Update Title"
+          onClick={this._handleUpdateTaskSetTitleButtonClick}
+        />
         <LinkProjectModal
           isOpen={isLinkProjectModalOpen}
           onRequestClose={this._handleModalClose}
@@ -89,7 +119,7 @@ export class TaskSetItem extends React.Component {
           onRequestClose={this._handleModalClose}
           taskSet={taskSet}
         />
-      </div>
+      </Wrapper>
     );
   }
 }
@@ -100,6 +130,7 @@ export default createFragmentContainer(
     fragment TaskSetItem_taskSet on TaskSet {
       id
       title
+      done
       project {
         title
       }

@@ -83,7 +83,6 @@ type DailyReport {
   createdAt: String!
   updatedAt: String!
   dailyScheduleId: Int
-  userId: Int
 }
 
 type DailySchedule {
@@ -95,6 +94,7 @@ type DailySchedule {
   userId: Int
   dailyReport: DailyReport
   timeUnits(after: String, first: Int, before: String, last: Int, orderBy: [DailyScheduleTimeUnitConnectionOrder]): DailyScheduleTimeUnitConnection
+  timeUnit(position: Int): TimeUnit
 }
 
 # A connection to a list of items.
@@ -305,27 +305,13 @@ type TaskSet {
   # The ID of an object
   id: ID!
   title: String
-  startAt: String
-  endAt: String
-  routine: taskSetroutineEnumType
-  priority: taskSetpriorityEnumType
+  done: Boolean
+  priority: Int
   createdAt: String!
   updatedAt: String!
   projectId: Int
   userId: Int
   project: Project
-}
-
-enum taskSetpriorityEnumType {
-  EMERGENCY
-  HIGH
-  LOW
-}
-
-enum taskSetroutineEnumType {
-  EVERYDAY
-  WEEKDAY
-  WEEKEND
 }
 
 type TaskUnit {
@@ -407,6 +393,7 @@ type UpdateProjectPayload {
 }
 
 input UpdateTaskSetInput {
+  done: Boolean
   taskSetId: ID!
   title: String
   clientMutationId: String
@@ -443,7 +430,7 @@ type User implements Node {
   updatedAt: String!
   projects(after: String, first: Int, before: String, last: Int, orderBy: [UserProjectConnectionOrder]): UserProjectConnection
   dailySchedule(date: Date): DailySchedule
-  taskSets(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskSetConnectionOrder], startAt: Date, endAt: Date, status: UserTaskSetStatus = TODO): UserTaskSetConnection
+  taskSets(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskSetConnectionOrder], done: Boolean): UserTaskSetConnection
 }
 
 # A connection to a list of items.
@@ -490,9 +477,4 @@ type UserTaskSetEdge {
 
   # A cursor for use in pagination
   cursor: String!
-}
-
-enum UserTaskSetStatus {
-  TODO
-  DONE
 }

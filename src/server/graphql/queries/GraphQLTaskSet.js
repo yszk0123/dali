@@ -1,23 +1,10 @@
-import { GraphQLObjectType, GraphQLInt } from 'graphql';
-import { attributeFields, relay, resolver } from 'graphql-sequelize';
-const { sequelizeConnection } = relay;
+import { GraphQLObjectType } from 'graphql';
+import { attributeFields, resolver } from 'graphql-sequelize';
 
 export default function defineGraphQLTaskSet({
   GraphQLProject,
   models: { TaskSet },
 }) {
-  // const GraphQLTaskSetTaskUnitConnection = sequelizeConnection({
-  //   name: 'TaskSetTaskUnit',
-  //   nodeType: GraphQLTaskUnit,
-  //   target: TaskSet.TaskUnits,
-  //   connectionFields: {
-  //     total: {
-  //       type: GraphQLInt,
-  //       resolve: ({ source }) => source.countTaskUnits(),
-  //     },
-  //   },
-  // });
-
   const GraphQLTaskSet = new GraphQLObjectType({
     name: 'TaskSet',
     fields: {
@@ -28,11 +15,6 @@ export default function defineGraphQLTaskSet({
         type: GraphQLProject,
         resolve: resolver(TaskSet.Project),
       },
-      // taskUnits: {
-      //   type: GraphQLTaskSetTaskUnitConnection.connectionType,
-      //   args: GraphQLTaskSetTaskUnitConnection.connectionArgs,
-      //   resolve: GraphQLTaskSetTaskUnitConnection.resolve,
-      // },
     },
   });
 

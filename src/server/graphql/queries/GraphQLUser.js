@@ -1,8 +1,8 @@
-import { GraphQLInt, GraphQLEnumType, GraphQLObjectType } from 'graphql';
+import { GraphQLInt, GraphQLBoolean, GraphQLObjectType } from 'graphql';
 import GraphQLDate from 'graphql-date';
 import { attributeFields, relay } from 'graphql-sequelize';
 import { first } from 'lodash';
-import { startOfDay } from '../../shared/utils/DateUtils';
+import { startOfDay } from 'date-fns';
 const { sequelizeConnection } = relay;
 
 export default function defineGraphQLDailySchedule({
@@ -28,36 +28,6 @@ export default function defineGraphQLDailySchedule({
     name: 'UserTaskSet',
     nodeType: GraphQLTaskSet,
     target: User.TaskSets,
-    where: (key, value) => {
-      if (key === 'status') {
-        return {};
-      }
-      return { [key]: value };
-    },
-    before: (options, { status, date = startOfDay(new Date()) }) => {
-      if (status === 'TODO') {
-        options.where = {
-          ...options.where,
-          startAt: {
-            $lte: date,
-          },
-          endAt: {
-            $gt: date,
-          },
-        };
-      }
-
-      if (status === 'DONE') {
-        options.where = {
-          ...options.where,
-          endAt: {
-            $lte: date,
-          },
-        };
-      }
-
-      return options;
-    },
     connectionFields: {
       total: {
         type: GraphQLInt,
@@ -87,34 +57,19 @@ export default function defineGraphQLDailySchedule({
         resolve: async (user, args) => {
           const date = startOfDay(args.date || new Date());
 
-          const schedules = await user.getDailySchedules({
-            where: {
-              date,
-            },
-          });
-
-          return first(schedules);
+          return first(
+            await user.getDailySchedules({
+              where: { date },
+            }),
+          );
         },
       },
       taskSets: {
         type: GraphQLUserTaskSetConnection.connectionType,
         args: {
           ...GraphQLUserTaskSetConnection.connectionArgs,
-          startAt: {
-            type: GraphQLDate,
-          },
-          endAt: {
-            type: GraphQLDate,
-          },
-          status: {
-            type: new GraphQLEnumType({
-              name: 'UserTaskSetStatus',
-              values: {
-                TODO: { value: 'TODO' },
-                DONE: { value: 'DONE' },
-              },
-            }),
-            defaultValue: 'TODO',
+          done: {
+            type: GraphQLBoolean,
           },
         },
         resolve: GraphQLUserTaskSetConnection.resolve,

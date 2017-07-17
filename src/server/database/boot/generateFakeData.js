@@ -1,4 +1,4 @@
-import { startOfDay } from '../../shared/utils/DateUtils';
+import { startOfDay } from 'date-fns';
 
 export default async function generateFakeData({ models }) {
   const { DailySchedule, User } = models;
