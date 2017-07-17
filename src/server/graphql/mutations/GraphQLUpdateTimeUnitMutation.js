@@ -1,4 +1,4 @@
-import { GraphQLNonNull, GraphQLInt, GraphQLString, GraphQLID } from 'graphql';
+import { GraphQLNonNull, GraphQLString, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { first, omitBy, isUndefined } from 'lodash';
 

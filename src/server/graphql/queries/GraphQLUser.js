@@ -57,13 +57,11 @@ export default function defineGraphQLDailySchedule({
         resolve: async (user, args) => {
           const date = startOfDay(args.date || new Date());
 
-          const schedules = await user.getDailySchedules({
-            where: {
-              date,
-            },
-          });
-
-          return first(schedules);
+          return first(
+            await user.getDailySchedules({
+              where: { date },
+            }),
+          );
         },
       },
       taskSets: {
