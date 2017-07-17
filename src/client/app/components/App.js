@@ -68,6 +68,7 @@ export default withRouter(
     graphql.experimental`
       fragment App_viewer on User {
         id
+        ...DashboardPage_viewer
         ...DailySwitch_viewer
         ...ProjectsPage_viewer
         ...TaskSetsPage_viewer

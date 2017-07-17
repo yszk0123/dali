@@ -137,6 +137,14 @@ module.exports = {
       updatedAt: Sequelize.DATE,
     });
 
+    await queryInterface.addConstraint(
+      'TimeUnit',
+      ['dailyScheduleId', 'position'],
+      {
+        type: 'unique',
+      },
+    );
+
     await queryInterface.createTable('TaskUnit', {
       id: {
         type: Sequelize.INTEGER,

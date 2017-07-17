@@ -8,6 +8,12 @@ export default function createTimeUnit(sequelize, DataTypes) {
     {
       tableName: 'TimeUnit',
       timestamps: true,
+      indexes: [
+        {
+          fields: ['dailyScheduleId', 'position'],
+          unique: true,
+        },
+      ],
     },
   );
 
