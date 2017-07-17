@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const AutoDllPlugin = require('autodll-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -7,6 +8,13 @@ const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const BabiliWebpackPlugin = require('babili-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
+
+const sharedPlugins = [
+  isProduction && new BabiliWebpackPlugin(),
+  new webpack.EnvironmentPlugin({
+    NODE_ENV: isProduction ? 'production' : 'development',
+  }),
+].filter(Boolean);
 
 module.exports = (env = {}) => {
   const appPort = env.appPort || process.env.APP_PORT || 3000;
@@ -68,13 +76,15 @@ module.exports = (env = {}) => {
             'styled-components',
           ],
         },
+        plugins: sharedPlugins,
       }),
       // new CopyWebpackPlugin([
       //   { from: 'src/manifest.json' },
       //   { from: '*.png', to: 'images', context: 'src/images' },
       // ]),
-      isProduction && new BabiliWebpackPlugin(),
-    ].filter(Boolean),
+    ]
+      .concat(sharedPlugins)
+      .filter(Boolean),
     module: {
       rules: [
         {

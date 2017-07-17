@@ -9,21 +9,30 @@ Create a `.env` file in the root directory.
 
 ```
 APP_PORT=3000
-DATABASE_URL="postgres://foobar:password@localhost:5432/dali"
+DATABASE_URL=postgres://foobar:password@localhost:5432/dali
 GRAPHQL_PORT=3001
-SECRET="secret"
+POSTGRES_DB=dali
+POSTGRES_PASSWORD=password
+POSTGRES_USER=foobar
+SECRET=secret
 ```
 
 # Development
 
-- `$ npm install` installs dependencies
-- `$ npm run watch` watches file change
-- `$ npm run serve:dev` starts the development server
-- `$ npm test` runs the complete test suite
+- `$ yarn` installs dependencies
+- `$ yarn dev:watch` watches file change
+- `$ yarn dev:start` starts the development server
+- `$ yarn test` runs the complete test suite
 
 ## How to Update Schema
 
-- `$ npm run update:schema` updates schema file
-- `$ npm run serve:dev` restarts the server
+- `$ yarn update:schema` updates schema file
+- `$ yarn dev:start` restarts the server
 
 Make sure to commit `schema.graphql` after update.
+
+# [WIP] Deploy
+
+1. `$ yarn release`
+1. `$ docker build -t yszk0123/dali-app .`
+1. `$ docker-compose -f docker-compose.production.yml up`

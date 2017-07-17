@@ -1,0 +1,18 @@
+version: "3"
+services:
+  dali-app:
+    container_name: dali-app
+    image: yszk0123/dali-app
+    env_file: .env
+    ports:
+      - 3000:3000
+    depends_on:
+      - dali-database
+  dali-database:
+    container_name: dali-database
+    image: postgres:9-alpine
+    env_file: .env
+    volumes:
+      - volume-dali-database:/var/lib/postgresql/data
+volumes:
+  volume-dali-database:
