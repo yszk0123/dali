@@ -10,11 +10,8 @@ export default createFragmentContainer(
   DashboardPage,
   graphql.experimental`
     fragment DashboardPage_viewer on User
-      @argumentDefinitions(
-        position: { type: "Int!" }
-        date: { type: "Date!" }
-      ) {
-      ...FocusedTimeUnitItem_viewer @arguments(position: $position, date: $date)
+      @argumentDefinitions(date: { type: "Date!" }) {
+      ...FocusedTimeUnitItem_viewer @arguments(date: $date)
     }
   `,
 );

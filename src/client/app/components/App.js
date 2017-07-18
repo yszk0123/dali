@@ -67,13 +67,10 @@ export default withRouter(
     App,
     graphql.experimental`
       fragment App_viewer on User
-        @argumentDefinitions(
-          date: { type: "Date!" }
-          position: { type: "Int!" }
-        ) {
+        @argumentDefinitions(date: { type: "Date!" }) {
         id
-        ...DashboardPage_viewer @arguments(date: $date, position: $position)
         ...DailySwitch_viewer @arguments(date: $date)
+        ...DashboardPage_viewer @arguments(date: $date)
         ...ProjectsPage_viewer
         ...TaskSetsPage_viewer
       }

@@ -94,7 +94,7 @@ type DailySchedule {
   userId: Int
   dailyReport: DailyReport
   timeUnits(after: String, first: Int, before: String, last: Int, orderBy: [DailyScheduleTimeUnitConnectionOrder]): DailyScheduleTimeUnitConnection
-  timeUnit(position: Int): TimeUnit
+  timeUnit(date: Date!): TimeUnit
 }
 
 # A connection to a list of items.

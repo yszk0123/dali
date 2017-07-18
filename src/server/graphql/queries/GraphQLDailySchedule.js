@@ -1,6 +1,8 @@
-import { GraphQLInt, GraphQLObjectType } from 'graphql';
+import { GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { attributeFields, relay, resolver } from 'graphql-sequelize';
 import { first } from 'lodash';
+import GraphQLDate from 'graphql-date';
+import getPositionFromDaliDate from '../../../shared/utils/getPositionFromDaliDate';
 const { sequelizeConnection } = relay;
 
 export default function defineGraphQLDailySchedule({
@@ -38,14 +40,13 @@ export default function defineGraphQLDailySchedule({
       timeUnit: {
         type: GraphQLTimeUnit,
         args: {
-          position: {
-            type: GraphQLInt,
+          date: {
+            type: new GraphQLNonNull(GraphQLDate),
           },
         },
-        resolve: async (
-          dailySchedule,
-          { position = getPositionFromDate(new Date()) },
-        ) => {
+        resolve: async (dailySchedule, { date }) => {
+          const position = getPositionFromDaliDate(date);
+
           return first(
             await dailySchedule.getTimeUnits({
               where: { position: { $gte: position } },
