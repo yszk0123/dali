@@ -21,7 +21,7 @@ export class App extends React.Component {
 
     return (
       <Wrapper>
-        <NavBar />
+        <NavBar viewer={viewer} />
         <Switch>
           <PropsPrivateRoute
             exact
@@ -71,6 +71,7 @@ export default withRouter(
         id
         ...DailySwitch_viewer @arguments(date: $date)
         ...DashboardPage_viewer @arguments(date: $date)
+        ...NavBar_viewer
         ...ProjectsPage_viewer
         ...TaskSetsPage_viewer
       }
