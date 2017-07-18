@@ -1,8 +1,8 @@
-import { startOfDay } from 'date-fns';
+import toDaliDate from '../../../shared/utils/toDaliDate';
 
 export default async function generateFakeData({ models }) {
   const { DailySchedule, User } = models;
-  const today = startOfDay(new Date());
+  const today = toDaliDate(new Date());
 
   const user = await User.create({ name: 'foo' });
 

@@ -94,7 +94,7 @@ type DailySchedule {
   userId: Int
   dailyReport: DailyReport
   timeUnits(after: String, first: Int, before: String, last: Int, orderBy: [DailyScheduleTimeUnitConnectionOrder]): DailyScheduleTimeUnitConnection
-  timeUnit(position: Int): TimeUnit
+  timeUnit(date: Date!): TimeUnit
 }
 
 # A connection to a list of items.
@@ -429,7 +429,7 @@ type User implements Node {
   createdAt: String!
   updatedAt: String!
   projects(after: String, first: Int, before: String, last: Int, orderBy: [UserProjectConnectionOrder]): UserProjectConnection
-  dailySchedule(date: Date): DailySchedule
+  dailySchedule(date: Date!): DailySchedule
   taskSets(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskSetConnectionOrder], done: Boolean): UserTaskSetConnection
 }
 

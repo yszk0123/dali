@@ -4,7 +4,7 @@ const AutoDllPlugin = require('autodll-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BabiliWebpackPlugin = require('babili-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -33,18 +33,12 @@ module.exports = (env = {}) => {
       ].filter(Boolean),
     },
     output: {
-      path: path.join(__dirname, 'dist'),
+      path: path.join(__dirname, 'dist', 'public'),
       filename: '[name].js',
       publicPath: '/',
     },
-    resolve: {
-      // alias: {
-      //   react: 'preact-compat',
-      //   'react-dom': 'preact-compat',
-      // },
-    },
     devServer: {
-      contentBase: path.join(__dirname, 'dist'),
+      contentBase: path.join(__dirname, 'dist', 'public'),
       proxy: { '/graphql': `http://localhost:${graphQLPort}` },
       publicPath: '/',
       historyApiFallback: true,
@@ -78,10 +72,7 @@ module.exports = (env = {}) => {
         },
         plugins: sharedPlugins,
       }),
-      // new CopyWebpackPlugin([
-      //   { from: 'src/manifest.json' },
-      //   { from: '*.png', to: 'images', context: 'src/images' },
-      // ]),
+      new CopyWebpackPlugin([{ from: 'src/public' }]),
     ]
       .concat(sharedPlugins)
       .filter(Boolean),

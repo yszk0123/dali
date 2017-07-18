@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { QueryRenderer, graphql } from 'react-relay';
 import { BrowserRouter as Router } from 'react-router-dom';
+import createRootVariables from '../shared/boot/createRootVariables';
 import App from './components/App';
 import Loading from './components/Loading';
 import ErrorOutput from './components/ErrorOutput';
@@ -25,15 +26,13 @@ function renderRoot({ error, props }) {
   );
 }
 
-const query = graphql`
-  query appQuery {
+const query = graphql.experimental`
+  query appQuery($defaultDate: Date!) {
     viewer {
-      ...App_viewer
+      ...App_viewer @arguments(date: $defaultDate)
     }
   }
 `;
-
-const variables = {};
 
 setupClipboard();
 
@@ -41,7 +40,7 @@ ReactDOM.render(
   <QueryRenderer
     environment={createEnvironment()}
     query={query}
-    variables={variables}
+    variables={createRootVariables()}
     render={renderRoot}
   />,
   injectMountNodeIfNeeded(),

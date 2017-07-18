@@ -1,5 +1,5 @@
 import { commitMutation, graphql } from 'react-relay';
-import { startOfDay } from 'date-fns';
+import toDaliDate from '../../../shared/utils/toDaliDate';
 import makeIdGenerator from '../../shared/utils/makeIdGenerator';
 
 const generateId = makeIdGenerator();
@@ -8,7 +8,7 @@ const generateOptimisticId = makeIdGenerator('client:newCreateDailySchedule');
 const mutation = graphql.experimental`
   mutation CreateDailyScheduleMutation(
     $input: CreateDailyScheduleInput!
-    $date: Date
+    $date: Date!
   ) {
     createDailySchedule(input: $input) {
       viewer {
@@ -19,7 +19,7 @@ const mutation = graphql.experimental`
 `;
 
 function commit(environment, { date: originalDate }, user) {
-  const date = startOfDay(originalDate);
+  const date = toDaliDate(originalDate);
 
   return commitMutation(environment, {
     mutation,

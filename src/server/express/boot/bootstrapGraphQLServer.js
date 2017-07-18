@@ -22,9 +22,7 @@ export default async function bootstrapGraphQLServer({
   const graphQLServer = express();
 
   graphQLServer.use(
-    favicon(
-      path.join(__dirname, '..', '..', '..', '..', 'public', 'favicon.ico'),
-    ),
+    favicon(path.join(__dirname, '..', '..', '..', 'public', 'favicon.ico')),
   );
   graphQLServer.use('/', authMiddleware, graphQLHTTPMiddleware);
   graphQLServer.listen(graphQLPort, () => {

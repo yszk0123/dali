@@ -2,7 +2,8 @@
 import React from 'react';
 import { createRefetchContainer, graphql } from 'react-relay';
 import { Switch, withRouter } from 'react-router-dom';
-import { startOfDay, subDays, addDays } from 'date-fns';
+import { subDays, addDays } from 'date-fns';
+import toDaliDate from '../../../shared/utils/toDaliDate';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import Button from './Button';
 import DailySchedulePage from './DailySchedulePage';
@@ -19,7 +20,7 @@ export class DailySwitch extends React.Component {
   constructor(props: Props) {
     super(props);
     this.state = {
-      currentDate: startOfDay(new Date()),
+      currentDate: toDaliDate(new Date()),
     };
   }
 
@@ -91,14 +92,14 @@ export default withRouter(
     DailySwitch,
     graphql.experimental`
       fragment DailySwitch_viewer on User
-        @argumentDefinitions(date: { type: "Date" }) {
+        @argumentDefinitions(date: { type: "Date!" }) {
         id
         ...DailyReportPage_viewer @arguments(date: $date)
         ...DailySchedulePage_viewer @arguments(date: $date)
       }
     `,
     graphql.experimental`
-      query DailySwitchRefetchQuery($date: Date) {
+      query DailySwitchRefetchQuery($date: Date!) {
         viewer {
           ...DailySwitch_viewer @arguments(date: $date)
         }

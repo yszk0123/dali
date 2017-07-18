@@ -49,7 +49,7 @@ export default createFragmentContainer(
   DailySchedulePage,
   graphql.experimental`
     fragment DailySchedulePage_viewer on User
-      @argumentDefinitions(date: { type: "Date" }) {
+      @argumentDefinitions(date: { type: "Date!" }) {
       dailySchedule(date: $date) {
         date
         ...TimeUnitList_dailySchedule
