@@ -35,4 +35,4 @@ Make sure to commit `schema.graphql` after update.
 
 1. `$ yarn release`
 1. `$ docker build -t yszk0123/dali-app .`
-1. `$ docker-compose -f docker-compose.production.yml up`
+1. `$ docker-compose -f docker-compose.production.yml up -d`
