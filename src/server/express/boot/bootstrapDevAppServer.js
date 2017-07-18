@@ -16,9 +16,7 @@ export default async function bootstrapDevAppServer() {
   const app = new WebpackDevServer(compiler, webpackConfig.devServer);
 
   app.use(
-    favicon(
-      path.join(__dirname, '..', '..', '..', '..', 'public', 'favicon.ico'),
-    ),
+    favicon(path.join(__dirname, '..', '..', '..', 'public', 'favicon.ico')),
   );
   app.listen(appPort, () => {
     console.log(`App is now running on http://localhost:${appPort}`);
