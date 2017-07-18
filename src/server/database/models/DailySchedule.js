@@ -3,13 +3,12 @@ export default function createDailySchedule(sequelize, DataTypes) {
     'dailySchedule',
     {
       date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         unique: true,
-        validate: {
-          isDateWithoutTime: value =>
-            !value.getMinutes() &&
-            !value.getSeconds() &&
-            !value.getMilliseconds(),
+        get() {
+          const date = this.getDataValue('date');
+
+          return new Date(date);
         },
       },
     },
