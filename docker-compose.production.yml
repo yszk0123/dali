@@ -5,7 +5,7 @@ services:
     image: yszk0123/dali-app
     env_file: .env
     ports:
-      - 3000:3000
+      - 80:3000
     depends_on:
       - dali-database
   dali-database:
