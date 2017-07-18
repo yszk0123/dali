@@ -5,10 +5,10 @@ import createRootVariables from '../../shared/boot/createRootVariables';
 const generateId = makeIdGenerator();
 
 const mutation = graphql.experimental`
-  mutation LogoutMutation($input: LogoutInput!, $date: Date!) {
+  mutation LogoutMutation($input: LogoutInput!, $defaultDate: Date!) {
     logout(input: $input) {
       viewer {
-        ...App_viewer @arguments(date: $date)
+        ...App_viewer @arguments(date: $defaultDate)
       }
     }
   }
@@ -22,6 +22,9 @@ function commit(environment) {
       input: {
         clientMutationId: generateId(),
       },
+    },
+    onCompleted: () => {
+      window.location.reload();
     },
   });
 }

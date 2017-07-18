@@ -13,7 +13,11 @@ import ProjectsPage from './ProjectsPage';
 import SignupPage from './SignupPage';
 import TaskSetsPage from './TaskSetsPage';
 
-const Wrapper = styled.div`padding: 1.5rem;`;
+const Wrapper = styled.div`padding: 0.5rem;`;
+const MainContent = styled.div`
+  margin: 0.5rem;
+  padding: 1.3rem;
+`;
 
 export class App extends React.Component {
   render() {
@@ -21,42 +25,44 @@ export class App extends React.Component {
 
     return (
       <Wrapper>
-        <NavBar />
-        <Switch>
-          <PropsPrivateRoute
-            exact
-            path="/"
-            component={DashboardPage}
-            viewer={viewer}
-          />
-          <PropsPrivateRoute
-            path="/projects"
-            component={ProjectsPage}
-            viewer={viewer}
-          />
-          <PropsPrivateRoute
-            path="/taskSets"
-            component={TaskSetsPage}
-            viewer={viewer}
-          />
-          <PropsPrivateRoute
-            path="/daily"
-            component={DailySwitch}
-            viewer={viewer}
-          />
-          <PropsRoute
-            path="/login"
-            component={LoginPage}
-            viewer={viewer}
-            relay={relay}
-          />
-          <PropsRoute
-            path="/signup"
-            component={SignupPage}
-            viewer={viewer}
-            relay={relay}
-          />
-        </Switch>
+        <NavBar viewer={viewer} />
+        <MainContent>
+          <Switch>
+            <PropsPrivateRoute
+              exact
+              path="/"
+              component={DashboardPage}
+              viewer={viewer}
+            />
+            <PropsPrivateRoute
+              path="/projects"
+              component={ProjectsPage}
+              viewer={viewer}
+            />
+            <PropsPrivateRoute
+              path="/taskSets"
+              component={TaskSetsPage}
+              viewer={viewer}
+            />
+            <PropsPrivateRoute
+              path="/daily"
+              component={DailySwitch}
+              viewer={viewer}
+            />
+            <PropsRoute
+              path="/login"
+              component={LoginPage}
+              viewer={viewer}
+              relay={relay}
+            />
+            <PropsRoute
+              path="/signup"
+              component={SignupPage}
+              viewer={viewer}
+              relay={relay}
+            />
+          </Switch>
+        </MainContent>
       </Wrapper>
     );
   }
@@ -71,6 +77,7 @@ export default withRouter(
         id
         ...DailySwitch_viewer @arguments(date: $date)
         ...DashboardPage_viewer @arguments(date: $date)
+        ...NavBar_viewer
         ...ProjectsPage_viewer
         ...TaskSetsPage_viewer
       }
