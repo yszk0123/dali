@@ -8,6 +8,7 @@ import ErrorOutput from './components/ErrorOutput';
 import createEnvironment from './boot/createEnvironment';
 import injectMountNodeIfNeeded from './boot/injectMountNodeIfNeeded';
 import setupClipboard from './boot/setupClipboard';
+import createRootVariables from './boot/createRootVariables';
 
 function renderRoot({ error, props }) {
   if (error) {
@@ -25,15 +26,13 @@ function renderRoot({ error, props }) {
   );
 }
 
-const query = graphql`
-  query appQuery {
+const query = graphql.experimental`
+  query appQuery($defaultDate: Date!, $defaultPosition: Int!) {
     viewer {
-      ...App_viewer
+      ...App_viewer @arguments(date: $defaultDate, position: $defaultPosition)
     }
   }
 `;
-
-const variables = {};
 
 setupClipboard();
 
@@ -41,7 +40,7 @@ ReactDOM.render(
   <QueryRenderer
     environment={createEnvironment()}
     query={query}
-    variables={variables}
+    variables={createRootVariables()}
     render={renderRoot}
   />,
   injectMountNodeIfNeeded(),

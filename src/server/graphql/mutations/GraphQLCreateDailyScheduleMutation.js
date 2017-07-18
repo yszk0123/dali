@@ -1,7 +1,6 @@
 import { GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import GraphQLDate from 'graphql-date';
-import { startOfDay } from 'date-fns';
 
 export default function defineGraphQLCreateDailyScheduleMutation({
   queries: { GraphQLDailySchedule, GraphQLUser },
@@ -24,7 +23,7 @@ export default function defineGraphQLCreateDailyScheduleMutation({
     },
     mutateAndGetPayload: async ({ date }, { user }) => {
       const dailySchedule = await DailySchedule.create({
-        date: startOfDay(date),
+        date,
       });
 
       await user.addDailySchedule(dailySchedule);

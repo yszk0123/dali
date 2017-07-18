@@ -1,16 +1,7 @@
 import { GraphQLInt, GraphQLObjectType } from 'graphql';
 import { attributeFields, relay, resolver } from 'graphql-sequelize';
 import { first } from 'lodash';
-import { startOfDay } from 'date-fns';
 const { sequelizeConnection } = relay;
-
-const THIRTY_MINUTES_IN_MILLISECONDS = 30 * 60 * 1000;
-
-function getPositionFromDate(date) {
-  const dt = date - startOfDay(date);
-
-  return Math.floor(dt / THIRTY_MINUTES_IN_MILLISECONDS);
-}
 
 export default function defineGraphQLDailySchedule({
   GraphQLDailyReport,

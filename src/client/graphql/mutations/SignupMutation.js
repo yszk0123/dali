@@ -3,7 +3,7 @@ import makeIdGenerator from '../../shared/utils/makeIdGenerator';
 
 const generateId = makeIdGenerator();
 
-const mutation = graphql`
+const mutation = graphql.experimental`
   mutation SignupMutation($input: SignupInput!) {
     signup(input: $input) {
       viewer {

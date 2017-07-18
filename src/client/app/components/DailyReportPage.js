@@ -14,7 +14,11 @@ export class DailyReportPage extends React.Component {
   };
 
   _update() {
-    const refetchVariables = ({ count }) => ({ count });
+    const { dailySchedule } = this.props;
+    const refetchVariables = ({ count }) => ({
+      count,
+      date: dailySchedule.date,
+    });
 
     this.props.relay.refetch(refetchVariables, null);
   }
@@ -111,7 +115,7 @@ export default createRefetchContainer(
     fragment DailyReportPage_viewer on User
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 100 }
-        date: { type: "Date" }
+        date: { type: "Date!" }
       ) {
       id
       todoTaskSets: taskSets(first: $count)
@@ -152,9 +156,9 @@ export default createRefetchContainer(
     }
   `,
   graphql.experimental`
-    query DailyReportPageRefetchQuery($count: Int) {
+    query DailyReportPageRefetchQuery($count: Int, $date: Date!) {
       viewer {
-        ...DailyReportPage_viewer @arguments(count: $count)
+        ...DailyReportPage_viewer @arguments(count: $count, date: $date)
       }
     }
   `,

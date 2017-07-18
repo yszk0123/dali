@@ -5,6 +5,12 @@ export default function createDailySchedule(sequelize, DataTypes) {
       date: {
         type: DataTypes.DATE,
         unique: true,
+        validate: {
+          isDateWithoutTime: value =>
+            !value.getMinutes() &&
+            !value.getSeconds() &&
+            !value.getMilliseconds(),
+        },
       },
     },
     {

@@ -63,8 +63,11 @@ export default createRefetchContainer(
   FocusedTimeUnitItem,
   graphql.experimental`
     fragment FocusedTimeUnitItem_viewer on User
-      @argumentDefinitions(position: { type: "Int" }) {
-      focused: dailySchedule {
+      @argumentDefinitions(
+        position: { type: "Int!" }
+        date: { type: "Date!" }
+      ) {
+      focused: dailySchedule(date: $date) {
         id
         date
         timeUnit(position: $position) {
@@ -79,9 +82,10 @@ export default createRefetchContainer(
     }
   `,
   graphql.experimental`
-    query FocusedTimeUnitItemRefetchQuery($position: Int) {
+    query FocusedTimeUnitItemRefetchQuery($position: Int!, $date: Date!) {
       viewer {
-        ...FocusedTimeUnitItem_viewer @arguments(position: $position)
+        ...FocusedTimeUnitItem_viewer
+          @arguments(position: $position, date: $date)
       }
     }
   `,
