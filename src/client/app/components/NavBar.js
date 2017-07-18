@@ -1,8 +1,20 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { createFragmentContainer, graphql } from 'react-relay';
 import LogoutMutation from '../../graphql/mutations/LogoutMutation';
 import Button from './Button';
+
+const NavBarWrapper = styled.div`
+  margin: 0.3rem;
+  padding: 0.2rem;
+  display: flex;
+`;
+
+const NavBarItem = styled.div`
+  padding: 0.5rem;
+  align-content: center;
+`;
 
 export class NavBar extends React.Component {
   _handleLogoutButtonClick = () => {
@@ -18,36 +30,36 @@ export class NavBar extends React.Component {
     const { viewer } = this.props;
 
     return (
-      <ul>
-        <li>
+      <NavBarWrapper>
+        <NavBarItem>
           <Link to="/">Dashboard</Link>
-        </li>
-        <li>
+        </NavBarItem>
+        <NavBarItem>
           <Link to="/daily/schedule">DailySchedule</Link>
-        </li>
-        <li>
+        </NavBarItem>
+        <NavBarItem>
           <Link to="/daily/report">DailyReport</Link>
-        </li>
-        <li>
+        </NavBarItem>
+        <NavBarItem>
           <Link to="/projects">Projects</Link>
-        </li>
-        <li>
+        </NavBarItem>
+        <NavBarItem>
           <Link to="/taskSets">TaskSets</Link>
-        </li>
-        <li>
+        </NavBarItem>
+        <NavBarItem>
           <Link to="/options">Options</Link>
-        </li>
-        <li>
+        </NavBarItem>
+        <NavBarItem>
           <Link to="/profile">Profile</Link>
-        </li>
-        <li>
+        </NavBarItem>
+        <NavBarItem>
           <Link to="/dailyReportTemplate">DailyReportTemplate</Link>
-        </li>
+        </NavBarItem>
         {viewer &&
-          <li>
+          <NavBarItem>
             <Button onClick={this._handleLogoutButtonClick}>Logout</Button>
-          </li>}
-      </ul>
+          </NavBarItem>}
+      </NavBarWrapper>
     );
   }
 }
