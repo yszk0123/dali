@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const IconButtonGroup = styled.div`
+const IconButtonGroup = styled.span`
   margin: 1rem;
   padding: 0.5rem;
 `;
