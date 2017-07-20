@@ -10,16 +10,10 @@ import Icon from './Icon';
 import IconButton from './IconButton';
 import IconButtonGroup from './IconButtonGroup';
 import UpdateTimeUnitTitleModal from './UpdateTimeUnitTitleModal';
+import TitlePlaceholder from './TitlePlaceholder';
 
 const SmallIconButtonGroup = styled(IconButtonGroup)`
   font-size: 0.75rem;
-`;
-
-const Placeholder = styled.span`
-  display: inline-block;
-  padding: 0.4rem;
-  border: 1px solid #ccc;
-  color: ${({ nolabel }) => (nolabel ? '#888' : '#111')};
 `;
 
 function mapPositionToTimeRange(position) {
@@ -45,22 +39,6 @@ export function TaskSummary({ taskUnits, onTaskUnitClick, onAddTaskUnit }) {
       )}
       <Icon icon="plus" onClick={onAddTaskUnit} />
     </IconButtonGroup>
-  );
-}
-
-function Title({ label, onClick }) {
-  if (!label) {
-    return (
-      <Placeholder nolabel onClick={onClick}>
-        No Title
-      </Placeholder>
-    );
-  }
-
-  return (
-    <Placeholder onClick={onClick}>
-      {label}
-    </Placeholder>
   );
 }
 
@@ -127,7 +105,10 @@ export class TimeUnitItem extends React.Component {
         title={
           <div>
             {mapPositionToTimeRange(timeUnit.position)}{' '}
-            <Title label={timeUnit.title} onClick={this._handleTitleClick} />
+            <TitlePlaceholder
+              label={timeUnit.title}
+              onClick={this._handleTitleClick}
+            />
             <SmallIconButtonGroup>
               <RemoveButton onClick={this._handleRemoveButtonClick} />
             </SmallIconButtonGroup>
