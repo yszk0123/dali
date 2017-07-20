@@ -7,6 +7,7 @@ import UpdateTaskSetMutation from '../../graphql/mutations/UpdateTaskSetMutation
 import UpdateTaskSetTitleModal from './UpdateTaskSetTitleModal';
 import LinkProjectModal from './LinkProjectModal';
 import IconButton from './IconButton';
+import TitlePlaceholder from './TitlePlaceholder';
 
 type Props = {
   taskSet: any,
@@ -36,11 +37,11 @@ export class TaskSetItem extends React.Component {
     this._remove();
   };
 
-  _handleLinkProjectButtonClick = () => {
+  _handleProjectTitleClick = () => {
     this.setState({ isLinkProjectModalOpen: true });
   };
 
-  _handleUpdateTaskSetTitleButtonClick = () => {
+  _handleTaskSetTitleClick = () => {
     this.setState({ isUpdateTaskSetTitleModalOpen: true });
   };
 
@@ -88,25 +89,19 @@ export class TaskSetItem extends React.Component {
           checked={taskSet.done}
           onChange={this._handleDoneChange}
         />
-        {taskSet.title}
-        {projectTitle &&
-          <span>
-            ({projectTitle})
-          </span>}
+        <TitlePlaceholder
+          label={taskSet.title}
+          onClick={this._handleTaskSetTitleClick}
+        />{' '}
+        (<TitlePlaceholder
+          label={projectTitle}
+          defaultLabel="No Project"
+          onClick={this._handleProjectTitleClick}
+        />)
         <IconButton
           icon="times"
           label="Remove"
           onClick={this._handleRemoveButtonClick}
-        />
-        <IconButton
-          icon="plus"
-          label="Link Project"
-          onClick={this._handleLinkProjectButtonClick}
-        />
-        <IconButton
-          icon="edit"
-          label="Update Title"
-          onClick={this._handleUpdateTaskSetTitleButtonClick}
         />
         <LinkProjectModal
           isOpen={isLinkProjectModalOpen}

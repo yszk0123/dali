@@ -5,6 +5,7 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
 import UpdateProjectTitleModal from './UpdateProjectTitleModal';
 import IconButton from './IconButton';
+import TitlePlaceholder from './TitlePlaceholder';
 
 type Props = {
   project: any,
@@ -24,7 +25,7 @@ export class ProjectItem extends React.Component {
     };
   }
 
-  _handleTitleButtonClick = () => {
+  _handleTitleClick = () => {
     this.setState({ isTitleModalOpen: true });
   };
 
@@ -52,18 +53,14 @@ export class ProjectItem extends React.Component {
 
     return (
       <Wrapper>
-        <span>
-          {project.title}
-        </span>
+        <TitlePlaceholder
+          label={project.title}
+          onClick={this._handleTitleClick}
+        />
         <IconButton
           icon="trash"
           label="Remove"
           onClick={this._handleRemoveButtonClick}
-        />
-        <IconButton
-          icon="edit"
-          label="Update Title"
-          onClick={this._handleTitleButtonClick}
         />
         <UpdateProjectTitleModal
           isOpen={isTitleModalOpen}
