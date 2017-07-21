@@ -177,6 +177,7 @@ type Mutation {
   signup(input: SignupInput!): SignupPayload
   updateProject(input: UpdateProjectInput!): UpdateProjectPayload
   updateTaskSet(input: UpdateTaskSetInput!): UpdateTaskSetPayload
+  updateTaskUnit(input: UpdateTaskUnitInput!): UpdateTaskUnitPayload
   updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
 }
 
@@ -401,6 +402,20 @@ input UpdateTaskSetInput {
 
 type UpdateTaskSetPayload {
   taskSet: TaskSet
+  viewer: User
+  clientMutationId: String
+}
+
+input UpdateTaskUnitInput {
+  dailyScheduleId: ID!
+  timeUnitId: ID!
+  taskUnitId: ID!
+  done: String
+  clientMutationId: String
+}
+
+type UpdateTaskUnitPayload {
+  taskUnit: TaskUnit
   viewer: User
   clientMutationId: String
 }
