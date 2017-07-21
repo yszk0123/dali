@@ -445,7 +445,7 @@ type User implements Node {
   updatedAt: String!
   projects(after: String, first: Int, before: String, last: Int, orderBy: [UserProjectConnectionOrder]): UserProjectConnection
   dailySchedule(date: Date!): DailySchedule
-  taskSets(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskSetConnectionOrder], done: Boolean): UserTaskSetConnection
+  taskSets(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskSetConnectionOrder], projectId: ID, done: Boolean): UserTaskSetConnection
 }
 
 # A connection to a list of items.

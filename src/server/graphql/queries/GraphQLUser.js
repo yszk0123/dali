@@ -1,10 +1,12 @@
 import {
+  GraphQLBoolean,
+  GraphQLID,
   GraphQLInt,
   GraphQLNonNull,
-  GraphQLBoolean,
   GraphQLObjectType,
 } from 'graphql';
 import GraphQLDate from 'graphql-date';
+import { fromGlobalId } from 'graphql-relay';
 import { attributeFields, relay } from 'graphql-sequelize';
 import { first } from 'lodash';
 const { sequelizeConnection } = relay;
@@ -32,6 +34,15 @@ export default function defineGraphQLDailySchedule({
     name: 'UserTaskSet',
     nodeType: GraphQLTaskSet,
     target: User.TaskSets,
+    where: (key, value) => {
+      if (key === 'projectId') {
+        const { id: localId } = fromGlobalId(value);
+
+        return { [key]: localId };
+      }
+
+      return { [key]: value };
+    },
     connectionFields: {
       total: {
         type: GraphQLInt,
@@ -70,6 +81,9 @@ export default function defineGraphQLDailySchedule({
         type: GraphQLUserTaskSetConnection.connectionType,
         args: {
           ...GraphQLUserTaskSetConnection.connectionArgs,
+          projectId: {
+            type: GraphQLID,
+          },
           done: {
             type: GraphQLBoolean,
           },
