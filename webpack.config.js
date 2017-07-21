@@ -54,6 +54,7 @@ module.exports = (env = {}) => {
         chunks: ['app'],
         filename: 'index.html',
         inject: true,
+        template: './src/public/index.ejs',
         title: 'Dali',
       }),
       new HtmlWebpackHarddiskPlugin(),
