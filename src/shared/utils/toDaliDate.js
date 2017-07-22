@@ -7,5 +7,5 @@ export default function toDaliDate(dirtyDate: Date): Date {
   const hours = dirtyDate.getHours();
   const minutes = dirtyDate.getMinutes();
 
-  return new Date(Date.UTC(year, month, date, hours, minutes));
+  return new Date(year, month, date, hours, minutes);
 }
