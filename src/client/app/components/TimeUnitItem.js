@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
+import UpdateTimeUnitMutation from '../../graphql/mutations/UpdateTimeUnitMutation';
 import openAddTaskUnitModal from '../../redux/actions/openAddTaskUnitModal';
 import Card from './Card';
 import Icon from './Icon';
 import IconButtonGroup from './IconButtonGroup';
 import TaskUnitItem from './TaskUnitItem';
-import TitlePlaceholder from './TitlePlaceholder';
-import UpdateTimeUnitTitleModal from './UpdateTimeUnitTitleModal';
+import TitleInput from './TitleInput';
 
 const SmallIconButtonGroup = styled(IconButtonGroup)`
   font-size: 0.75rem;
@@ -54,15 +54,8 @@ function RemoveButton({ onClick }) {
 }
 
 export class TimeUnitItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isUpdateTitleModalOpen: false,
-    };
-  }
-
-  _handleTitleClick = event => {
-    this.setState({ isUpdateTitleModalOpen: true });
+  _handleTitleChange = ({ title }) => {
+    this._updateTitle(title);
   };
 
   _handleAddTaskUnitButtonClick = () => {
@@ -71,15 +64,20 @@ export class TimeUnitItem extends React.Component {
     onAddTaskUnitButtonClick({ timeUnitId: timeUnit.id });
   };
 
-  _handleModalClose = () => {
-    this.setState({
-      isUpdateTitleModalOpen: false,
-    });
-  };
-
   _handleRemoveButtonClick = () => {
     this._removeTimeUnit();
   };
+
+  _updateTitle(title) {
+    const { relay, timeUnit, dailySchedule } = this.props;
+
+    UpdateTimeUnitMutation.commit(
+      relay.environment,
+      { title },
+      timeUnit,
+      dailySchedule,
+    );
+  }
 
   _removeTimeUnit() {
     const { relay, timeUnit, dailySchedule } = this.props;
@@ -89,7 +87,6 @@ export class TimeUnitItem extends React.Component {
 
   render() {
     const { timeUnit, viewer, dailySchedule } = this.props;
-    const { isUpdateTitleModalOpen } = this.state;
     const taskUnits = getNodesFromConnection(timeUnit.taskUnits);
 
     return (
@@ -97,9 +94,9 @@ export class TimeUnitItem extends React.Component {
         title={
           <div>
             {mapPositionToTimeRange(timeUnit.position)}{' '}
-            <TitlePlaceholder
-              label={timeUnit.title}
-              onClick={this._handleTitleClick}
+            <TitleInput
+              title={timeUnit.title}
+              onChange={this._handleTitleChange}
             />
             <SmallIconButtonGroup>
               <RemoveButton onClick={this._handleRemoveButtonClick} />
@@ -113,12 +110,6 @@ export class TimeUnitItem extends React.Component {
           taskUnits={taskUnits}
           timeUnit={timeUnit}
           viewer={viewer}
-        />
-        <UpdateTimeUnitTitleModal
-          dailySchedule={dailySchedule}
-          isOpen={isUpdateTitleModalOpen}
-          onRequestClose={this._handleModalClose}
-          timeUnit={timeUnit}
         />
       </Card>
     );
