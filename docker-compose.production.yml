@@ -1,18 +1,33 @@
 version: "3"
 services:
   dali-app:
-    container_name: dali-app
-    image: yszk0123/dali-app
-    env_file: .env
-    ports:
-      - 80:3000
     depends_on:
       - dali-database
+
   dali-database:
-    container_name: dali-database
-    image: postgres:9-alpine
-    env_file: .env
     volumes:
       - volume-dali-database:/var/lib/postgresql/data
-volumes:
-  volume-dali-database:
+
+  dali-proxy-letsencrypt:
+    container_name: dali-proxy-letsencrypt
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: unless-stopped
+    environment:
+      NGINX_DOCKER_GEN_CONTAINER: "dali-proxy-gen"
+      NGINX_PROXY_CONTAINER: "dali-proxy-nginx"
+    volumes:
+      - ${NGINX_FILES_PATH}/conf.d:/etc/nginx/conf.d
+      - ${NGINX_FILES_PATH}/vhost.d:/etc/nginx/vhost.d
+      - ${NGINX_FILES_PATH}/html:/usr/share/nginx/html
+      - ${NGINX_FILES_PATH}/certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - dali-proxy-gen
+      - dali-proxy-nginx
+    networks:
+      dali-proxy-network:
+
+  dali-proxy-nginx:
+    ports:
+      - "80:80"
+      - "443:443"
