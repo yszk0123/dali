@@ -140,5 +140,8 @@ module.exports = (env = {}) => {
         },
       ],
     },
+    stats: {
+      children: false,
+    },
   };
 };

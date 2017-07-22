@@ -31,7 +31,7 @@
     "typecheck": "flow",
     "update:schema": "node -r babel-register ./scripts/updateSchema.js",
     "watch": "run-p watch:*",
-    "watch:client": "yarn build:client -- --watch",
+    "watch:client": "yarn build:client -- --progress --watch",
     "watch:relay": "yarn build:relay -- --watch",
     "watch:server": "yarn build:server -- --watch"
   },
