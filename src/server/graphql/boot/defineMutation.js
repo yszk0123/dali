@@ -8,6 +8,7 @@ import defineGraphQLCreateTimeUnitMutation from '../mutations/GraphQLCreateTimeU
 import defineGraphQLLinkProjectMutation from '../mutations/GraphQLLinkProjectMutation';
 import defineGraphQLLoginMutation from '../mutations/GraphQLLoginMutation';
 import defineGraphQLLogoutMutation from '../mutations/GraphQLLogoutMutation';
+import defineGraphQLMoveTaskUnitMutation from '../mutations/GraphQLMoveTaskUnitMutation';
 import defineGraphQLRemoveProjectMutation from '../mutations/GraphQLRemoveProjectMutation';
 import defineGraphQLRemoveTaskSetMutation from '../mutations/GraphQLRemoveTaskSetMutation';
 import defineGraphQLRemoveTaskUnitMutation from '../mutations/GraphQLRemoveTaskUnitMutation';
@@ -122,6 +123,11 @@ export default function defineMutation({ models, queries }) {
     queries,
   });
 
+  const { GraphQLMoveTaskUnitMutation } = defineGraphQLMoveTaskUnitMutation({
+    models,
+    queries,
+  });
+
   const GraphQLMutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
@@ -141,6 +147,7 @@ export default function defineMutation({ models, queries }) {
       linkProject: GraphQLLinkProjectMutation,
       login: GraphQLLoginMutation,
       logout: GraphQLLogoutMutation,
+      moveTaskUnit: GraphQLMoveTaskUnitMutation,
       removeProject: GraphQLRemoveProjectMutation,
       removeTaskSet: GraphQLRemoveTaskSetMutation,
       removeTaskUnit: GraphQLRemoveTaskUnitMutation,
