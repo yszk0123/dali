@@ -1,6 +1,7 @@
 version: "3"
 services:
   dali-app:
+    command: yarn dev:start
     volumes:
       - .:/app:cached
 

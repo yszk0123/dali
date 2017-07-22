@@ -19,7 +19,7 @@
     "dev:build": "run-s build:relay build:client",
     "dev:repl": "node -r babel-register -r ./scripts/repl.js",
     "dev:serve": "node -r babel-register ./src/server/dev.js",
-    "dev:start": "nodemon --exec \"node -r babel-register\" --watch ./src/server ./src/shared ./src/server/index.js",
+    "dev:start": "nodemon --exec \"node -r babel-register\" --watch ./src/server --watch ./src/shared ./src/server/index.js",
     "dev:watch": "run-p watch:relay watch:client",
     "format": "prettier './src/**/*.js' --write --single-quote --trailing-comma all",
     "lint": "eslint ./src ./data",
