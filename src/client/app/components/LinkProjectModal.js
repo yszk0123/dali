@@ -1,16 +1,18 @@
 /* @flow */
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
+import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import LinkProjectMutation from '../../graphql/mutations/LinkProjectMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
+import closeLinkProjectModal from '../../redux/actions/closeLinkProjectModal';
 import Icon from './Icon';
 
 type Props = {
   isOpen: boolean,
   onRequestClose: () => mixed,
   relay: any,
-  taskSet: any,
+  taskSetId: any,
   viewer: any,
 };
 
@@ -18,9 +20,13 @@ export class LinkProjectModal extends React.Component {
   props: Props;
 
   _add(project) {
-    const { relay, taskSet, onRequestClose } = this.props;
+    const { relay, taskSetId, onRequestClose } = this.props;
 
-    LinkProjectMutation.commit(relay.environment, { project }, taskSet);
+    LinkProjectMutation.commit(
+      relay.environment,
+      { project },
+      { id: taskSetId },
+    );
 
     onRequestClose();
   }
@@ -54,13 +60,20 @@ export class LinkProjectModal extends React.Component {
   }
 }
 
-export default createFragmentContainer(
-  LinkProjectModal,
-  graphql.experimental`
-    fragment LinkProjectModal_taskSet on TaskSet {
-      id
-    }
+function mapStateToProps({ modals: { taskSetId } }) {
+  return {
+    isOpen: taskSetId != null,
+    taskSetId,
+  };
+}
 
+const mapDispatchToProps = {
+  onRequestClose: closeLinkProjectModal,
+};
+
+export default createFragmentContainer(
+  connect(mapStateToProps, mapDispatchToProps)(LinkProjectModal),
+  graphql.experimental`
     fragment LinkProjectModal_viewer on User
       @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
       projects(first: $count) {
