@@ -15,6 +15,7 @@ const List = styled.div`
 `;
 
 const ListItem = styled.div`
+  margin-bottom: 1rem;
   padding: 0.5rem;
   align-content: center;
 `;

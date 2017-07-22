@@ -155,6 +155,20 @@ type LogoutPayload {
   clientMutationId: String
 }
 
+input MoveTaskUnitInput {
+  dailyScheduleId: ID!
+  taskUnitId: ID!
+  fromTimeUnitId: ID!
+  toTimeUnitId: ID!
+  clientMutationId: String
+}
+
+type MoveTaskUnitPayload {
+  taskUnitEdge: TimeUnitTaskUnitEdge
+  viewer: User
+  clientMutationId: String
+}
+
 type Mutation {
   createDailyReport(input: CreateDailyReportInput!): CreateDailyReportPayload
   createDailyReportTemplate(input: CreateDailyReportTemplateInput!): CreateDailyReportTemplatePayload
@@ -170,6 +184,7 @@ type Mutation {
   linkProject(input: LinkProjectInput!): LinkProjectPayload
   login(input: LoginInput!): LoginPayload
   logout(input: LogoutInput!): LogoutPayload
+  moveTaskUnit(input: MoveTaskUnitInput!): MoveTaskUnitPayload
   removeProject(input: RemoveProjectInput!): RemoveProjectPayload
   removeTaskSet(input: RemoveTaskSetInput!): RemoveTaskSetPayload
   removeTaskUnit(input: RemoveTaskUnitInput!): RemoveTaskUnitPayload

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Placeholder = styled.span`
   display: inline-block;
   padding: 0.4rem;
-  border: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
   color: ${({ nolabel }) => (nolabel ? '#888' : '#111')};
 `;
 

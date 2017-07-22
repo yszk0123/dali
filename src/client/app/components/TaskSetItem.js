@@ -2,21 +2,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
+import { connect } from 'react-redux';
 import RemoveTaskSetMutation from '../../graphql/mutations/RemoveTaskSetMutation';
 import UpdateTaskSetMutation from '../../graphql/mutations/UpdateTaskSetMutation';
-import UpdateTaskSetTitleModal from './UpdateTaskSetTitleModal';
-import LinkProjectModal from './LinkProjectModal';
+import openLinkProjectModal from '../../redux/actions/openLinkProjectModal';
 import IconButton from './IconButton';
 import TitlePlaceholder from './TitlePlaceholder';
+import TitleInput from './TitleInput';
 
 type Props = {
   taskSet: any,
   viewer: any,
   relay: any,
-};
-
-type State = {
-  isLinkProjectModalOpen: boolean,
 };
 
 const Wrapper = styled.div`margin: 2.5rem;`;
@@ -25,35 +22,22 @@ export class TaskSetItem extends React.Component {
   props: Props;
   state: State;
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      isLinkProjectModalOpen: false,
-      isUpdateTaskSetTitleModalOpen: false,
-    };
-  }
-
   _handleRemoveButtonClick = (event: Event) => {
     this._remove();
   };
 
   _handleProjectTitleClick = () => {
-    this.setState({ isLinkProjectModalOpen: true });
-  };
+    const { taskSet, onLinkProject } = this.props;
 
-  _handleTaskSetTitleClick = () => {
-    this.setState({ isUpdateTaskSetTitleModalOpen: true });
+    onLinkProject({ taskSetId: taskSet.id });
   };
 
   _handleDoneChange = () => {
     this._toggleDone();
   };
 
-  _handleModalClose = () => {
-    this.setState({
-      isLinkProjectModalOpen: false,
-      isUpdateTaskSetTitleModalOpen: false,
-    });
+  _handleTaskSetTitleChange = ({ title }) => {
+    this._updateTitle(title);
   };
 
   _remove() {
@@ -74,12 +58,14 @@ export class TaskSetItem extends React.Component {
     );
   }
 
+  _updateTitle(title) {
+    const { relay, taskSet } = this.props;
+
+    UpdateTaskSetMutation.commit(relay.environment, { title }, taskSet);
+  }
+
   render() {
-    const { taskSet, viewer } = this.props;
-    const {
-      isLinkProjectModalOpen,
-      isUpdateTaskSetTitleModalOpen,
-    } = this.state;
+    const { taskSet } = this.props;
     const projectTitle = taskSet.project && taskSet.project.title;
 
     return (
@@ -89,9 +75,9 @@ export class TaskSetItem extends React.Component {
           checked={taskSet.done}
           onChange={this._handleDoneChange}
         />
-        <TitlePlaceholder
-          label={taskSet.title}
-          onClick={this._handleTaskSetTitleClick}
+        <TitleInput
+          title={taskSet.title}
+          onChange={this._handleTaskSetTitleChange}
         />{' '}
         (<TitlePlaceholder
           label={projectTitle}
@@ -103,24 +89,17 @@ export class TaskSetItem extends React.Component {
           label="Remove"
           onClick={this._handleRemoveButtonClick}
         />
-        <LinkProjectModal
-          isOpen={isLinkProjectModalOpen}
-          onRequestClose={this._handleModalClose}
-          taskSet={taskSet}
-          viewer={viewer}
-        />
-        <UpdateTaskSetTitleModal
-          isOpen={isUpdateTaskSetTitleModalOpen}
-          onRequestClose={this._handleModalClose}
-          taskSet={taskSet}
-        />
       </Wrapper>
     );
   }
 }
 
+const mapDispatchToProps = {
+  onLinkProject: openLinkProjectModal,
+};
+
 export default createFragmentContainer(
-  TaskSetItem,
+  connect(undefined, mapDispatchToProps)(TaskSetItem),
   graphql`
     fragment TaskSetItem_taskSet on TaskSet {
       id
@@ -129,8 +108,6 @@ export default createFragmentContainer(
       project {
         title
       }
-      ...LinkProjectModal_taskSet
-      ...UpdateTaskSetTitleModal_taskSet
     }
 
     fragment TaskSetItem_viewer on User {

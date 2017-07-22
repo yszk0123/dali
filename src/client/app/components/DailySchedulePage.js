@@ -1,9 +1,10 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import CreateDailyScheduleMutation from '../../graphql/mutations/CreateDailyScheduleMutation';
-import TimeUnitList from './TimeUnitList';
+import AddTaskUnitModal from './AddTaskUnitModal';
 import Button from './Button';
 import Day from './Day';
+import TimeUnitList from './TimeUnitList';
 
 function CreateDailyScheduleButton({ onClick }) {
   return <Button onClick={onClick}>Create Daily Schedule</Button>;
@@ -40,6 +41,10 @@ export class DailySchedulePage extends React.Component {
           <Day date={viewer.dailySchedule.date} />
         </h2>
         <TimeUnitList viewer={viewer} dailySchedule={viewer.dailySchedule} />
+        <AddTaskUnitModal
+          dailySchedule={viewer.dailySchedule}
+          viewer={viewer}
+        />
       </div>
     );
   }
@@ -52,8 +57,10 @@ export default createFragmentContainer(
       @argumentDefinitions(date: { type: "Date!" }) {
       dailySchedule(date: $date) {
         date
+        ...AddTaskUnitModal_dailySchedule
         ...TimeUnitList_dailySchedule
       }
+      ...AddTaskUnitModal_viewer
       ...TimeUnitList_viewer
     }
   `,
