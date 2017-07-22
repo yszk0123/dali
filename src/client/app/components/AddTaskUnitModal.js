@@ -1,8 +1,10 @@
 /* @flow */
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
+import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import AddTaskUnitMutation from '../../graphql/mutations/AddTaskUnitMutation';
+import closeAddTaskUnitModal from '../../redux/actions/closeAddTaskUnitModal';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import Icon from './Icon';
 
@@ -11,7 +13,7 @@ type Props = {
   isOpen: boolean,
   onRequestClose: () => mixed,
   relay: any,
-  timeUnit: any,
+  timeUnitId: any,
   viewer: any,
 };
 
@@ -19,12 +21,12 @@ export class TaskSetModal extends React.Component {
   props: Props;
 
   _add(taskSet) {
-    const { relay, timeUnit, dailySchedule, onRequestClose } = this.props;
+    const { relay, timeUnitId, dailySchedule, onRequestClose } = this.props;
 
     AddTaskUnitMutation.commit(
       relay.environment,
       taskSet,
-      timeUnit,
+      { id: timeUnitId },
       dailySchedule,
     );
 
@@ -60,13 +62,20 @@ export class TaskSetModal extends React.Component {
   }
 }
 
-export default createFragmentContainer(
-  TaskSetModal,
-  graphql.experimental`
-    fragment AddTaskUnitModal_timeUnit on TimeUnit {
-      id
-    }
+function mapStateToProps({ modals: { timeUnitId } }) {
+  return {
+    isOpen: timeUnitId != null,
+    timeUnitId,
+  };
+}
 
+const mapDispatchToProps = {
+  onRequestClose: closeAddTaskUnitModal,
+};
+
+export default createFragmentContainer(
+  connect(mapStateToProps, mapDispatchToProps)(TaskSetModal),
+  graphql.experimental`
     fragment AddTaskUnitModal_dailySchedule on DailySchedule {
       id
     }

@@ -51,9 +51,6 @@ export class TaskUnitItem extends React.Component {
           label={taskUnit.taskSet.title}
           onIconClick={this._handleTaskUnitClick}
         />
-        {/* TODO
-          <Icon icon="plus" onClick={onAddTaskUnit} />
-        */}
       </span>
     );
   }

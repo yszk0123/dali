@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
-import AddTaskUnitModal from './AddTaskUnitModal';
+import openAddTaskUnitModal from '../../redux/actions/openAddTaskUnitModal';
 import Card from './Card';
 import Icon from './Icon';
 import IconButtonGroup from './IconButtonGroup';
@@ -25,7 +26,13 @@ function mapPositionToTimeRange(position) {
   return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
 }
 
-export function TaskSummary({ dailySchedule, taskUnits, timeUnit, viewer }) {
+export function TaskSummary({
+  dailySchedule,
+  taskUnits,
+  timeUnit,
+  viewer,
+  onAddTaskUnitButtonClick,
+}) {
   return (
     <IconButtonGroup>
       {taskUnits.map(taskUnit =>
@@ -37,6 +44,7 @@ export function TaskSummary({ dailySchedule, taskUnits, timeUnit, viewer }) {
           viewer={viewer}
         />,
       )}
+      <Icon icon="plus" onClick={onAddTaskUnitButtonClick} />
     </IconButtonGroup>
   );
 }
@@ -49,22 +57,22 @@ export class TimeUnitItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isAddTaskUnitModalOpen: false,
       isUpdateTitleModalOpen: false,
     };
   }
-
-  _handleAddTaskUnitButtonClick = event => {
-    this.setState({ isAddTaskUnitModalOpen: true });
-  };
 
   _handleTitleClick = event => {
     this.setState({ isUpdateTitleModalOpen: true });
   };
 
+  _handleAddTaskUnitButtonClick = () => {
+    const { onAddTaskUnitButtonClick, timeUnit } = this.props;
+
+    onAddTaskUnitButtonClick({ timeUnitId: timeUnit.id });
+  };
+
   _handleModalClose = () => {
     this.setState({
-      isAddTaskUnitModalOpen: false,
       isUpdateTitleModalOpen: false,
     });
   };
@@ -81,7 +89,7 @@ export class TimeUnitItem extends React.Component {
 
   render() {
     const { timeUnit, viewer, dailySchedule } = this.props;
-    const { isAddTaskUnitModalOpen, isUpdateTitleModalOpen } = this.state;
+    const { isUpdateTitleModalOpen } = this.state;
     const taskUnits = getNodesFromConnection(timeUnit.taskUnits);
 
     return (
@@ -101,14 +109,8 @@ export class TimeUnitItem extends React.Component {
       >
         <TaskSummary
           dailySchedule={dailySchedule}
+          onAddTaskUnitButtonClick={this._handleAddTaskUnitButtonClick}
           taskUnits={taskUnits}
-          timeUnit={timeUnit}
-          viewer={viewer}
-        />
-        <AddTaskUnitModal
-          dailySchedule={dailySchedule}
-          isOpen={isAddTaskUnitModalOpen}
-          onRequestClose={this._handleModalClose}
           timeUnit={timeUnit}
           viewer={viewer}
         />
@@ -123,8 +125,12 @@ export class TimeUnitItem extends React.Component {
   }
 }
 
+const mapDispatchToProps = {
+  onAddTaskUnitButtonClick: openAddTaskUnitModal,
+};
+
 export default createFragmentContainer(
-  TimeUnitItem,
+  connect(undefined, mapDispatchToProps)(TimeUnitItem),
   graphql.experimental`
     fragment TimeUnitItem_timeUnit on TimeUnit
       @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
@@ -144,20 +150,17 @@ export default createFragmentContainer(
           }
         }
       }
-      ...AddTaskUnitModal_timeUnit
       ...UpdateTimeUnitTitleModal_timeUnit
       ...TaskUnitItem_timeUnit
     }
 
     fragment TimeUnitItem_dailySchedule on DailySchedule {
       id
-      ...AddTaskUnitModal_dailySchedule
       ...UpdateTimeUnitTitleModal_dailySchedule
       ...TaskUnitItem_dailySchedule
     }
 
     fragment TimeUnitItem_viewer on User {
-      ...AddTaskUnitModal_viewer
       ...TaskUnitItem_viewer
     }
   `,
