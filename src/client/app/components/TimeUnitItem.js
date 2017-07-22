@@ -2,16 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
-import RemoveTaskUnitMutation from '../../graphql/mutations/RemoveTaskUnitMutation';
 import RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
-import UpdateTaskUnitMutation from '../../graphql/mutations/UpdateTaskUnitMutation';
 import AddTaskUnitModal from './AddTaskUnitModal';
 import Card from './Card';
 import Icon from './Icon';
-import IconButton from './IconButton';
 import IconButtonGroup from './IconButtonGroup';
-import UpdateTimeUnitTitleModal from './UpdateTimeUnitTitleModal';
+import TaskUnitItem from './TaskUnitItem';
 import TitlePlaceholder from './TitlePlaceholder';
+import UpdateTimeUnitTitleModal from './UpdateTimeUnitTitleModal';
 
 const SmallIconButtonGroup = styled(IconButtonGroup)`
   font-size: 0.75rem;
@@ -27,29 +25,18 @@ function mapPositionToTimeRange(position) {
   return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
 }
 
-export function TaskSummary({
-  taskUnits,
-  onTaskUnitClick,
-  onTaskUnitDoneChange,
-  onAddTaskUnit,
-}) {
+export function TaskSummary({ dailySchedule, taskUnits, timeUnit, viewer }) {
   return (
     <IconButtonGroup>
       {taskUnits.map(taskUnit =>
-        <span key={taskUnit.id}>
-          <input
-            type="checkbox"
-            checked={taskUnit.done}
-            onChange={() => onTaskUnitDoneChange(taskUnit)}
-          />
-          <IconButton
-            icon="times-circle"
-            label={taskUnit.taskSet.title}
-            onIconClick={() => onTaskUnitClick(taskUnit)}
-          />
-        </span>,
+        <TaskUnitItem
+          key={taskUnit.id}
+          dailySchedule={dailySchedule}
+          taskUnit={taskUnit}
+          timeUnit={timeUnit}
+          viewer={viewer}
+        />,
       )}
-      <Icon icon="plus" onClick={onAddTaskUnit} />
     </IconButtonGroup>
   );
 }
@@ -86,41 +73,10 @@ export class TimeUnitItem extends React.Component {
     this._removeTimeUnit();
   };
 
-  _handleTaskUnitClick = taskUnit => {
-    this._removeTaskUnit(taskUnit);
-  };
-
-  _handleTaskUnitDoneChange = taskUnit => {
-    this._toggleTaskUnitDone(taskUnit);
-  };
-
-  _toggleTaskUnitDone(taskUnit) {
-    const { relay, timeUnit, dailySchedule } = this.props;
-
-    UpdateTaskUnitMutation.commit(
-      relay.environment,
-      { done: !taskUnit.done },
-      taskUnit,
-      timeUnit,
-      dailySchedule,
-    );
-  }
-
   _removeTimeUnit() {
     const { relay, timeUnit, dailySchedule } = this.props;
 
     RemoveTimeUnitMutation.commit(relay.environment, timeUnit, dailySchedule);
-  }
-
-  _removeTaskUnit(taskUnit) {
-    const { relay, timeUnit, dailySchedule } = this.props;
-
-    RemoveTaskUnitMutation.commit(
-      relay.environment,
-      taskUnit,
-      timeUnit,
-      dailySchedule,
-    );
   }
 
   render() {
@@ -144,10 +100,10 @@ export class TimeUnitItem extends React.Component {
         }
       >
         <TaskSummary
-          onAddTaskUnit={this._handleAddTaskUnitButtonClick}
-          onTaskUnitClick={this._handleTaskUnitClick}
-          onTaskUnitDoneChange={this._handleTaskUnitDoneChange}
+          dailySchedule={dailySchedule}
           taskUnits={taskUnits}
+          timeUnit={timeUnit}
+          viewer={viewer}
         />
         <AddTaskUnitModal
           dailySchedule={dailySchedule}
@@ -184,21 +140,25 @@ export default createFragmentContainer(
               id
               title
             }
+            ...TaskUnitItem_taskUnit
           }
         }
       }
       ...AddTaskUnitModal_timeUnit
       ...UpdateTimeUnitTitleModal_timeUnit
+      ...TaskUnitItem_timeUnit
     }
 
     fragment TimeUnitItem_dailySchedule on DailySchedule {
       id
       ...AddTaskUnitModal_dailySchedule
       ...UpdateTimeUnitTitleModal_dailySchedule
+      ...TaskUnitItem_dailySchedule
     }
 
     fragment TimeUnitItem_viewer on User {
       ...AddTaskUnitModal_viewer
+      ...TaskUnitItem_viewer
     }
   `,
 );
