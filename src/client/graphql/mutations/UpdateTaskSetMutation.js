@@ -7,7 +7,8 @@ const mutation = graphql`
   mutation UpdateTaskSetMutation($input: UpdateTaskSetInput!) {
     updateTaskSet(input: $input) {
       taskSet {
-        ...UpdateTaskSetTitleModal_taskSet
+        id
+        title
         ...TaskSetItem_taskSet
       }
     }
