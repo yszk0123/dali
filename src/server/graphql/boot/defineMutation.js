@@ -15,6 +15,7 @@ import defineGraphQLRemoveTimeUnitMutation from '../mutations/GraphQLRemoveTimeU
 import defineGraphQLSignupMutation from '../mutations/GraphQLSignupMutation';
 import defineGraphQLUpdateProjectMutation from '../mutations/GraphQLUpdateProjectMutation';
 import defineGraphQLUpdateTaskSetMutation from '../mutations/GraphQLUpdateTaskSetMutation';
+import defineGraphQLUpdateTaskUnitMutation from '../mutations/GraphQLUpdateTaskUnitMutation';
 import defineGraphQLUpdateTimeUnitMutation from '../mutations/GraphQLUpdateTimeUnitMutation';
 
 function getLowerCamelCase(s) {
@@ -89,6 +90,10 @@ export default function defineMutation({ models, queries }) {
   });
 
   const {
+    GraphQLUpdateTaskUnitMutation,
+  } = defineGraphQLUpdateTaskUnitMutation({ models, queries });
+
+  const {
     GraphQLUpdateTimeUnitMutation,
   } = defineGraphQLUpdateTimeUnitMutation({ models, queries });
 
@@ -143,6 +148,7 @@ export default function defineMutation({ models, queries }) {
       signup: GraphQLSignupMutation,
       updateProject: GraphQLUpdateProjectMutation,
       updateTaskSet: GraphQLUpdateTaskSetMutation,
+      updateTaskUnit: GraphQLUpdateTaskUnitMutation,
       updateTimeUnit: GraphQLUpdateTimeUnitMutation,
     },
   });

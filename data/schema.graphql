@@ -177,6 +177,7 @@ type Mutation {
   signup(input: SignupInput!): SignupPayload
   updateProject(input: UpdateProjectInput!): UpdateProjectPayload
   updateTaskSet(input: UpdateTaskSetInput!): UpdateTaskSetPayload
+  updateTaskUnit(input: UpdateTaskUnitInput!): UpdateTaskUnitPayload
   updateTimeUnit(input: UpdateTimeUnitInput!): UpdateTimeUnitPayload
 }
 
@@ -405,6 +406,20 @@ type UpdateTaskSetPayload {
   clientMutationId: String
 }
 
+input UpdateTaskUnitInput {
+  dailyScheduleId: ID!
+  timeUnitId: ID!
+  taskUnitId: ID!
+  done: String
+  clientMutationId: String
+}
+
+type UpdateTaskUnitPayload {
+  taskUnit: TaskUnit
+  viewer: User
+  clientMutationId: String
+}
+
 input UpdateTimeUnitInput {
   dailyScheduleId: ID!
   timeUnitId: ID!
@@ -430,7 +445,7 @@ type User implements Node {
   updatedAt: String!
   projects(after: String, first: Int, before: String, last: Int, orderBy: [UserProjectConnectionOrder]): UserProjectConnection
   dailySchedule(date: Date!): DailySchedule
-  taskSets(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskSetConnectionOrder], done: Boolean): UserTaskSetConnection
+  taskSets(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskSetConnectionOrder], projectId: ID, done: Boolean): UserTaskSetConnection
 }
 
 # A connection to a list of items.

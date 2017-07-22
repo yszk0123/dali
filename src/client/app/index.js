@@ -9,6 +9,7 @@ import ErrorOutput from './components/ErrorOutput';
 import createEnvironment from './boot/createEnvironment';
 import injectMountNodeIfNeeded from './boot/injectMountNodeIfNeeded';
 import setupClipboard from './boot/setupClipboard';
+import registerServiceWorker from './boot/registerServiceWorker';
 
 function renderRoot({ error, props }) {
   if (error) {
@@ -45,3 +46,5 @@ ReactDOM.render(
   />,
   injectMountNodeIfNeeded(),
 );
+
+registerServiceWorker();
