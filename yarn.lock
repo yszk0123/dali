@@ -3956,7 +3956,7 @@ invariant@2.2.1, invariant@^2.0.0, invariant@^2.1.0:
   dependencies:
     loose-envify "^1.0.0"
 
-invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
+invariant@^2.1.1, invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -6403,7 +6403,14 @@ react-dnd-html5-backend@^2.4.1:
   dependencies:
     lodash "^4.2.0"
 
-react-dnd@^2.4.0:
+react-dnd-touch-backend@^0.3.12:
+  version "0.3.12"
+  resolved "https://registry.yarnpkg.com/react-dnd-touch-backend/-/react-dnd-touch-backend-0.3.12.tgz#ff0c4506214ab0487d64b5dbb0c8569a16e9beac"
+  dependencies:
+    invariant "^2.1.1"
+    react-dnd "^2.0.0"
+
+react-dnd@^2.0.0, react-dnd@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-2.4.0.tgz#96f0042cd4cd375b4f0c3413f6ec84d267b7d792"
   dependencies:
