@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContextProvider } from 'react-dnd';
 import { QueryRenderer, graphql } from 'react-relay';
 import { BrowserRouter as Router } from 'react-router-dom';
 import createRootVariables from '../shared/boot/createRootVariables';
@@ -25,11 +27,13 @@ function renderRoot({ error, props }) {
   }
 
   return (
-    <Provider store={store}>
-      <Router>
-        <App {...props} />
-      </Router>
-    </Provider>
+    <DragDropContextProvider backend={HTML5Backend}>
+      <Provider store={store}>
+        <Router>
+          <App {...props} />
+        </Router>
+      </Provider>
+    </DragDropContextProvider>
   );
 }
 

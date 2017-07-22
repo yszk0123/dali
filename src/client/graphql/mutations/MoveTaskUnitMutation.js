@@ -21,23 +21,40 @@ const mutation = graphql`
   }
 `;
 
-function sharedUpdater(store, timeUnit, deletedTaskUnitId, newEdge) {
-  const timeUnitProxy = store.get(timeUnit.id);
-  const connection = ConnectionHandler.getConnection(
-    timeUnitProxy,
+function sharedUpdater(
+  store,
+  fromTimeUnit,
+  toTimeUnit,
+  deletedTaskUnitId,
+  newEdge,
+) {
+  const fromTimeUnitProxy = store.get(fromTimeUnit.id);
+  const toTimeUnitProxy = store.get(toTimeUnit.id);
+  const fromConnection = ConnectionHandler.getConnection(
+    fromTimeUnitProxy,
+    'TimeUnitItem_taskUnits',
+  );
+  const toConnection = ConnectionHandler.getConnection(
+    toTimeUnitProxy,
     'TimeUnitItem_taskUnits',
   );
 
-  ConnectionHandler.deleteNode(connection, deletedTaskUnitId);
-  ConnectionHandler.insertEdgeAfter(connection, newEdge);
+  ConnectionHandler.deleteNode(fromConnection, deletedTaskUnitId);
+  ConnectionHandler.insertEdgeAfter(toConnection, newEdge);
 }
 
-function commit(environment, taskUnit, timeUnit, dailySchedule) {
+function commit(
+  environment,
+  taskUnit,
+  fromTimeUnit,
+  toTimeUnit,
+  dailySchedule,
+) {
   function updater(store) {
     const payload = store.getRootField('moveTaskUnit');
     const newEdge = payload.getLinkedRecord('taskUnitEdge');
 
-    sharedUpdater(store, timeUnit, timeUnit.id, newEdge);
+    sharedUpdater(store, fromTimeUnit, toTimeUnit, taskUnit.id, newEdge);
   }
 
   return commitMutation(environment, {
@@ -47,7 +64,8 @@ function commit(environment, taskUnit, timeUnit, dailySchedule) {
         clientMutationId: generateId(),
         dailyScheduleId: dailySchedule.id,
         taskUnitId: taskUnit.id,
-        timeUnitId: timeUnit.id,
+        fromTimeUnitId: fromTimeUnit.id,
+        toTimeUnitId: toTimeUnit.id,
       },
     },
     updater,
