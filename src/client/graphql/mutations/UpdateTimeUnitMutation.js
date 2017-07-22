@@ -7,7 +7,8 @@ const mutation = graphql`
   mutation UpdateTimeUnitMutation($input: UpdateTimeUnitInput!) {
     updateTimeUnit(input: $input) {
       timeUnit {
-        ...UpdateTimeUnitTitleModal_timeUnit
+        id
+        title
       }
     }
   }

@@ -167,7 +167,6 @@ export default createFragmentContainer(
           }
         }
       }
-      ...UpdateTimeUnitTitleModal_timeUnit
       ...TaskUnitItem_timeUnit
     }
 
