@@ -1,8 +1,5 @@
 /* @flow */
 import React from 'react';
-import styled from 'styled-components';
-
-const Detail = styled.div`margin-left: 2rem;`;
 
 export default function Card({ title, children }) {
   return (
@@ -10,9 +7,7 @@ export default function Card({ title, children }) {
       <h2>
         {title}
       </h2>
-      <Detail>
-        {children}
-      </Detail>
+      {children}
     </div>
   );
 }
