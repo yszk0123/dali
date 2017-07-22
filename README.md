@@ -7,13 +7,21 @@ Create a `.env` file in the root directory.
 
 ## Example
 
+`.env`:
+
 ```
-APP_PORT=3000
-DATABASE_URL=postgres://foobar:password@localhost:5432/dali
-GRAPHQL_PORT=3001
+NGINX_FILES_PATH=./nginx
 POSTGRES_DB=dali
 POSTGRES_PASSWORD=password
 POSTGRES_USER=foobar
+```
+
+`app.env`:
+
+```
+APP_PORT=80
+DATABASE_URL=postgres://foobar:password@dali-database:5432/dali
+GRAPHQL_PORT=3001
 SECRET=secret
 ```
 
@@ -23,6 +31,7 @@ SECRET=secret
 - `$ yarn dev:watch` watches file change
 - `$ yarn dev:start` starts the development server
 - `$ yarn test` runs the complete test suite
+- `$ docker-compose -f docker-compose.yml -f docker-compose.development.yml up -d` prepares services
 
 ## How to Update Schema
 
@@ -35,4 +44,4 @@ Make sure to commit `schema.graphql` after update.
 
 1. `$ yarn release`
 1. `$ docker build -t yszk0123/dali-app .`
-1. `$ docker-compose -f docker-compose.production.yml up -d`
+1. `$ docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d`
