@@ -7,7 +7,8 @@ const mutation = graphql`
   mutation UpdateProjectMutation($input: UpdateProjectInput!) {
     updateProject(input: $input) {
       project {
-        ...UpdateProjectTitleModal_project
+        id
+        title
       }
     }
   }
