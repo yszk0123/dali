@@ -62,7 +62,6 @@ export class TimeUnitList extends React.Component {
   render() {
     return (
       <NoUserSelectArea>
-        <h1>TimeUnits</h1>
         <List>
           {this._renderTimeUnits()}
         </List>

@@ -13,7 +13,7 @@ import ProjectsPage from './ProjectsPage';
 import SignupPage from './SignupPage';
 import TaskSetsPage from './TaskSetsPage';
 
-const MainContent = styled.div`margin: 1rem;`;
+const MainContent = styled.div`margin: 1.8rem;`;
 
 export class App extends React.Component {
   render() {

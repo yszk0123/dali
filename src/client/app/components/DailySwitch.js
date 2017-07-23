@@ -1,17 +1,47 @@
 /* @flow */
 import React from 'react';
+import styled from 'styled-components';
 import { createRefetchContainer, graphql } from 'react-relay';
 import { Switch, withRouter } from 'react-router-dom';
 import { subDays, addDays } from 'date-fns';
 import toDaliDate from '../../../shared/utils/toDaliDate';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
-import Button from './Button';
 import DailySchedulePage from './DailySchedulePage';
 import DailyReportPage from './DailyReportPage';
 
 type Props = { viewer: any };
 
 type State = { currentDate: Date };
+
+const Clearfix = styled.span`
+  :before,
+  :after {
+    content: " ";
+    display: table;
+  }
+
+  :after {
+    clear: both;
+  }
+
+  *zoom: 1;
+`;
+
+function GoButton({ left, right, label, onClick }) {
+  let style;
+  if (left) {
+    style = { float: 'left' };
+  }
+  if (right) {
+    style = { float: 'right' };
+  }
+
+  return (
+    <span style={style} onClick={onClick}>
+      {label}
+    </span>
+  );
+}
 
 export class DailySwitch extends React.Component {
   props: Props;
@@ -66,8 +96,19 @@ export class DailySwitch extends React.Component {
 
     return (
       <div>
-        <Button onClick={this._handleGoToPreviousDayClick}>Previous Day</Button>
-        <Button onClick={this._handleGoToNextDayClick}>Next Day</Button>
+        <div>
+          <GoButton
+            left
+            label="&laquo; Previous"
+            onClick={this._handleGoToPreviousDayClick}
+          />
+          <GoButton
+            right
+            label="Next &raquo;"
+            onClick={this._handleGoToNextDayClick}
+          />
+        </div>
+        <Clearfix />
         <Switch>
           <PropsPrivateRoute
             path="/daily/schedule"

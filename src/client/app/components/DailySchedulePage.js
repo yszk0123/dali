@@ -37,9 +37,12 @@ export class DailySchedulePage extends React.Component {
 
     return (
       <div>
-        <h2>
-          <Day date={viewer.dailySchedule.date} />
-        </h2>
+        <div style={{ textAlign: 'center', width: '100%' }}>
+          <h2>TimeUnits</h2>
+          <h1>
+            <Day date={viewer.dailySchedule.date} />
+          </h1>
+        </div>
         <TimeUnitList viewer={viewer} dailySchedule={viewer.dailySchedule} />
         <AddTaskUnitModal
           dailySchedule={viewer.dailySchedule}
