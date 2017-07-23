@@ -1,5 +1,22 @@
 import React from 'react';
+import styled from 'styled-components';
 
-export default function IconButton({ icon, ...rest }) {
-  return <i className={`fa fa-${icon}`} {...rest} />;
+const I = styled.i`
+  color: ${({ theme, color }) => theme.icon[color].color};
+  font-size: ${({ large }) => (large ? '1.6rem' : 'inherit')};
+`;
+
+I.defaultProps = {
+  color: 'default',
+};
+
+export default function Icon({ icon, large, color, onClick }) {
+  return (
+    <I
+      color={color}
+      large={large}
+      className={`fa fa-${icon}`}
+      onClick={onClick}
+    />
+  );
 }
