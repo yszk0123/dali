@@ -4,6 +4,7 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection.js';
 import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 import TimeUnitItem from './TimeUnitItem';
+import NoUserSelectArea from './NoUserSelectArea';
 
 const MAX_TIME_UNITS = 48;
 
@@ -62,12 +63,12 @@ export class TimeUnitList extends React.Component {
 
   render() {
     return (
-      <div>
+      <NoUserSelectArea>
         <h1>TimeUnits</h1>
         <List>
           {this._renderTimeUnits()}
         </List>
-      </div>
+      </NoUserSelectArea>
     );
   }
 }
