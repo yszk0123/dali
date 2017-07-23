@@ -5,14 +5,14 @@ import RemoveTaskUnitMutation from '../../graphql/mutations/RemoveTaskUnitMutati
 import UpdateTaskUnitMutation from '../../graphql/mutations/UpdateTaskUnitMutation';
 import MoveTaskUnitMutation from '../../graphql/mutations/MoveTaskUnitMutation';
 import ItemTypes from '../constants/ItemTypes';
-import IconButton from './IconButton';
+import TaskLabel from './TaskLabel';
 
 export class TaskUnitItem extends React.Component {
-  _handleTaskUnitClick = () => {
+  _handleRemoveButtonClick = () => {
     this._removeTaskUnit();
   };
 
-  _handleTaskUnitDoneChange = () => {
+  _handleLabelClick = () => {
     this._toggleTaskUnitDone();
   };
 
@@ -44,15 +44,12 @@ export class TaskUnitItem extends React.Component {
 
     return connectDragSource(
       <span style={{ opacity: isDragging ? 0.5 : 1 }}>
-        <input
-          type="checkbox"
-          checked={taskUnit.done}
-          onChange={this._handleTaskUnitDoneChange}
-        />
-        <IconButton
+        <TaskLabel
           icon="times-circle"
           label={taskUnit.taskSet.title}
-          onIconClick={this._handleTaskUnitClick}
+          done={taskUnit.done}
+          onLabelClick={this._handleLabelClick}
+          onRemoveButtonClick={this._handleRemoveButtonClick}
         />
       </span>,
     );

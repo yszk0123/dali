@@ -55,6 +55,7 @@ type CreateProjectPayload {
 
 input CreateTaskSetInput {
   title: String!
+  done: Boolean
   clientMutationId: String
 }
 

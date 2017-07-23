@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Placeholder = styled.span`
   display: inline-block;
-  padding: 0.4rem;
+  padding: 0.4rem 1.2rem;
   border-bottom: 1px solid #ccc;
   color: ${({ nolabel }) => (nolabel ? '#888' : '#111')};
 `;

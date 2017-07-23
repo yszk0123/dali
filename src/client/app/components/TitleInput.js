@@ -21,7 +21,7 @@ export default class TitleInput extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.title !== this.state.title) {
       this.setState({
-        title: nextProps.title,
+        title: nextProps.title || '',
       });
     }
   }

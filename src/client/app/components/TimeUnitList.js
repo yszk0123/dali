@@ -10,14 +10,12 @@ const MAX_TIME_UNITS = 48;
 
 const List = styled.div`
   minWidth: 300px;
-  padding: 1.2rem;
   display: flex;
   flex-direction: column;
 `;
 
 const ListItem = styled.div`
   margin-bottom: 1rem;
-  padding: 0.5rem;
   align-content: center;
 `;
 
@@ -64,7 +62,6 @@ export class TimeUnitList extends React.Component {
   render() {
     return (
       <NoUserSelectArea>
-        <h1>TimeUnits</h1>
         <List>
           {this._renderTimeUnits()}
         </List>

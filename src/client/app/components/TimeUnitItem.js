@@ -9,14 +9,23 @@ import RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutati
 import UpdateTimeUnitMutation from '../../graphql/mutations/UpdateTimeUnitMutation';
 import openAddTaskUnitModal from '../../redux/actions/openAddTaskUnitModal';
 import ItemTypes from '../constants/ItemTypes';
-import Card from './Card';
 import Icon from './Icon';
 import IconButtonGroup from './IconButtonGroup';
 import TaskUnitItem from './TaskUnitItem';
 import TitleInput from './TitleInput';
 
 const SmallIconButtonGroup = styled(IconButtonGroup)`
-  font-size: 0.75rem;
+  margin-right: 1rem;
+  float: right;
+  font-size: 1.2rem;
+`;
+
+const Time = styled.span`color: #aaa;`;
+
+const Wrapper = styled.div`
+  padding-top: 0.4rem;
+  border-top: 1px solid #e4eaf7;
+  background: ${({ isOver }) => (isOver ? '#c0e3fb' : 'inherit')};
 `;
 
 function mapPositionToTimeRange(position) {
@@ -99,21 +108,20 @@ export class TimeUnitItem extends React.Component {
     const taskUnits = getNodesFromConnection(timeUnit.taskUnits);
 
     return connectDropTarget(
-      <div style={{ background: isOver ? '#ccf' : undefined }}>
-        <Card
-          title={
-            <div>
+      <div>
+        <Wrapper isOver={isOver}>
+          <div>
+            <Time>
               {mapPositionToTimeRange(timeUnit.position)}{' '}
-              <TitleInput
-                title={timeUnit.title}
-                onChange={this._handleTitleChange}
-              />
-              <SmallIconButtonGroup>
-                <RemoveButton onClick={this._handleRemoveButtonClick} />
-              </SmallIconButtonGroup>
-            </div>
-          }
-        >
+            </Time>
+            <TitleInput
+              title={timeUnit.title}
+              onChange={this._handleTitleChange}
+            />
+            <SmallIconButtonGroup>
+              <RemoveButton onClick={this._handleRemoveButtonClick} />
+            </SmallIconButtonGroup>
+          </div>
           <TaskSummary
             dailySchedule={dailySchedule}
             onAddTaskUnitButtonClick={this._handleAddTaskUnitButtonClick}
@@ -121,7 +129,7 @@ export class TimeUnitItem extends React.Component {
             timeUnit={timeUnit}
             viewer={viewer}
           />
-        </Card>
+        </Wrapper>
       </div>,
     );
   }
@@ -152,7 +160,7 @@ export default createFragmentContainer(
     connect(undefined, mapDispatchToProps),
     DropTarget(ItemTypes.TASK_UNIT, taskUnitTarget, (connect, monitor) => ({
       connectDropTarget: connect.dropTarget(),
-      isOver: monitor.isOver(),
+      isOver: monitor.isOver({ shallow: true }),
     })),
   )(TimeUnitItem),
   graphql.experimental`
@@ -179,7 +187,6 @@ export default createFragmentContainer(
 
     fragment TimeUnitItem_dailySchedule on DailySchedule {
       id
-      ...UpdateTimeUnitTitleModal_dailySchedule
       ...TaskUnitItem_dailySchedule
     }
 

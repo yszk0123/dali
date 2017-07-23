@@ -9,17 +9,20 @@ const mutation = graphql`
   }
 `;
 
-function sharedUpdater(store, user, deletedId) {
+function sharedUpdater(store, user, deletedId, filter) {
   const userProxy = store.get(user.id);
   const connection = ConnectionHandler.getConnection(
     userProxy,
     'TaskSetList_taskSets',
+    filter,
   );
 
   ConnectionHandler.deleteNode(connection, deletedId);
 }
 
 function commit(environment, taskSet, user) {
+  const filter = { done: taskSet.done };
+
   return commitMutation(environment, {
     mutation,
     variables: {
@@ -30,10 +33,10 @@ function commit(environment, taskSet, user) {
     updater: store => {
       const payload = store.getRootField('removeTaskSet');
 
-      sharedUpdater(store, user, payload.getValue('deletedTaskSetId'));
+      sharedUpdater(store, user, payload.getValue('deletedTaskSetId'), filter);
     },
     optimisticUpdater: store => {
-      sharedUpdater(store, user, taskSet.id);
+      sharedUpdater(store, user, taskSet.id, filter);
     },
   });
 }

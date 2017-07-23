@@ -118,7 +118,7 @@ export default createRefetchContainer(
         date: { type: "Date!" }
       ) {
       id
-      todoTaskSets: taskSets(first: $count)
+      todoTaskSets: taskSets(first: $count, done: false)
         @connection(key: "DailyReportPage_todoTaskSets") {
         edges {
           node {
