@@ -22,6 +22,12 @@ const SmallIconButtonGroup = styled(IconButtonGroup)`
 
 const Time = styled.span`color: #aaa;`;
 
+const SummaryWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
 const Wrapper = styled.div`
   padding-top: 0.4rem;
   border-top: 1px solid #e4eaf7;
@@ -46,7 +52,7 @@ export function TaskSummary({
   onAddTaskUnitButtonClick,
 }) {
   return (
-    <IconButtonGroup>
+    <SummaryWrapper>
       {taskUnits.map(taskUnit =>
         <TaskUnitItem
           key={taskUnit.id}
@@ -56,8 +62,8 @@ export function TaskSummary({
           viewer={viewer}
         />,
       )}
-      <Icon icon="plus" onClick={onAddTaskUnitButtonClick} />
-    </IconButtonGroup>
+      <Icon large icon="plus-circle" onClick={onAddTaskUnitButtonClick} />
+    </SummaryWrapper>
   );
 }
 

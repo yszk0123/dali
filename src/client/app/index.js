@@ -1,6 +1,7 @@
 import HTML5Backend from 'react-dnd-html5-backend';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ThemeProvider } from 'styled-components';
 import TouchBackend from 'react-dnd-touch-backend';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { DragDropContextProvider } from 'react-dnd';
@@ -9,6 +10,7 @@ import { QueryRenderer, graphql } from 'react-relay';
 import createRootVariables from '../shared/boot/createRootVariables';
 import isTouchSupported from '../shared/utils/isTouchSupported';
 import configureStore from '../redux/boot/configureStore';
+import Theme from './constants/Theme';
 import App from './components/App';
 import Loading from './components/Loading';
 import ErrorOutput from './components/ErrorOutput';
@@ -32,9 +34,11 @@ function renderRoot({ error, props }) {
   return (
     <DragDropContextProvider backend={dragDropBackend}>
       <Provider store={store}>
-        <Router>
-          <App {...props} />
-        </Router>
+        <ThemeProvider theme={Theme}>
+          <Router>
+            <App {...props} />
+          </Router>
+        </ThemeProvider>
       </Provider>
     </DragDropContextProvider>
   );
