@@ -1,10 +1,10 @@
 /* @flow */
 import React from 'react';
-import { createFragmentContainer, graphql } from 'react-relay';
+import { createRefetchContainer, graphql } from 'react-relay';
 import CreateTaskSetMutation from '../../graphql/mutations/CreateTaskSetMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import TaskSetItem from './TaskSetItem';
-import Button from './Button';
+import InputWithButton from './InputWithButton';
 
 type Props = {
   viewer: any,
@@ -14,41 +14,38 @@ type Props = {
 export class TaskSetList extends React.Component {
   props: Props;
   state: {
-    title: string,
+    done: boolean,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      title: '',
+      done: false,
     };
   }
 
-  _handleAddTaskUnitClick = (event: Event) => {
-    const { title } = this.state;
-
-    if (title) {
-      this._linkTaskSet(title);
-      this.setState({
-        title: '',
-      });
-    }
-  };
-
-  _handleTitleChange = (event: Event) => {
-    if (!(event.target instanceof HTMLInputElement)) {
+  _handleTitleSubmit = ({ value, isChanged }) => {
+    if (!isChanged || !value) {
       return;
     }
 
-    this.setState({
-      title: event.target.value,
+    this._linkTaskSet(value);
+  };
+
+  _handleDoneChange = (event: Event) => {
+    const done = !!event.target.checked;
+
+    this.setState({ done }, () => {
+      this.props.relay.refetch({ done }, null);
     });
   };
 
   _linkTaskSet(title: string) {
+    const { done } = this.state;
+
     CreateTaskSetMutation.commit(
       this.props.relay.environment,
-      { title },
+      { title, done },
       this.props.viewer,
     );
   }
@@ -64,28 +61,33 @@ export class TaskSetList extends React.Component {
   }
 
   render() {
-    const { title } = this.state;
+    const { done } = this.state;
 
     return (
       <div>
         <h1>TaskSets</h1>
+        <label htmlFor="taskSetDone">Done: </label>
+        <input type="checkbox" value={done} onChange={this._handleDoneChange} />
         <div>
           {this._renderTaskSets()}
         </div>
-        <input type="text" value={title} onChange={this._handleTitleChange} />
-        <Button onClick={this._handleAddTaskUnitClick}>Add</Button>
+        <InputWithButton onSubmit={this._handleTitleSubmit} />
       </div>
     );
   }
 }
 
-export default createFragmentContainer(
+export default createRefetchContainer(
   TaskSetList,
   graphql.experimental`
     fragment TaskSetList_viewer on User
-      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 100 }
+        done: { type: "Boolean", defaultValue: false }
+      ) {
       id
-      taskSets(first: $count) @connection(key: "TaskSetList_taskSets") {
+      taskSets(first: $count, done: $done)
+        @connection(key: "TaskSetList_taskSets") {
         edges {
           node {
             id
@@ -94,6 +96,13 @@ export default createFragmentContainer(
         }
       }
       ...TaskSetItem_viewer
+    }
+  `,
+  graphql.experimental`
+    query TaskSetListRefetchQuery($done: Boolean) {
+      viewer {
+        ...TaskSetList_viewer @arguments(done: $done)
+      }
     }
   `,
 );

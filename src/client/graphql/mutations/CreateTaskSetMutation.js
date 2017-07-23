@@ -11,29 +11,34 @@ const mutation = graphql`
       taskSetEdge {
         node {
           id
+          done
           title
+          ...TaskSetItem_taskSet
         }
       }
     }
   }
 `;
 
-function sharedUpdater(store, user, newEdge) {
+function sharedUpdater(store, user, newEdge, filter) {
   const userProxy = store.get(user.id);
   const connection = ConnectionHandler.getConnection(
     userProxy,
     'TaskSetList_taskSets',
+    filter,
   );
 
   ConnectionHandler.insertEdgeAfter(connection, newEdge);
 }
 
-function commit(environment, { title }, user) {
+function commit(environment, { title, done }, user) {
+  const filter = { done };
+
   function updater(store) {
     const payload = store.getRootField('createTaskSet');
     const newEdge = payload.getLinkedRecord('taskSetEdge');
 
-    sharedUpdater(store, user, newEdge);
+    sharedUpdater(store, user, newEdge, filter);
   }
 
   return commitMutation(environment, {
@@ -41,6 +46,7 @@ function commit(environment, { title }, user) {
     variables: {
       input: {
         title,
+        done,
         clientMutationId: generateId(),
       },
     },
@@ -51,6 +57,7 @@ function commit(environment, { title }, user) {
         taskSetEdge: {
           node: {
             id: generateOptimisticId(),
+            done,
             title,
           },
         },

@@ -81,8 +81,12 @@ export default createFragmentContainer(
     }
 
     fragment AddTaskUnitModal_viewer on User
-      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }) {
-      taskSets(first: $count) @connection(key: "AddTaskUnitModal_taskSets") {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 100 }
+        done: { type: "Boolean", defaultValue: false }
+      ) {
+      taskSets(first: $count, done: $done)
+        @connection(key: "AddTaskUnitModal_taskSets") {
         edges {
           node {
             id

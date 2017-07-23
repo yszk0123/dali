@@ -179,7 +179,6 @@ export default createFragmentContainer(
 
     fragment TimeUnitItem_dailySchedule on DailySchedule {
       id
-      ...UpdateTimeUnitTitleModal_dailySchedule
       ...TaskUnitItem_dailySchedule
     }
 
