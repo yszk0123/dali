@@ -2,9 +2,10 @@ version: "3"
 services:
   dali-app:
     command: yarn dev:start
+    environment:
+      APP_PORT: 3000
+    ports:
+      - "3000:3000"
+      - "3001:3001"
     volumes:
       - .:/app:cached
-
-  dali-proxy-nginx:
-    ports:
-      - "3000:80"
