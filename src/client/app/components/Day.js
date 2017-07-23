@@ -1,8 +1,10 @@
 import React from 'react';
-import { format } from 'date-fns';
+import formatDaliDate from '../../../shared/utils/formatDaliDate';
 
 export default function Day({ date }) {
-  const formattedDate = format(date, 'YYYY-MM-DD');
+  const formattedDate = formatDaliDate(
+    typeof date === 'string' ? new Date(date) : date,
+  );
 
   return (
     <div>

@@ -89,11 +89,17 @@ export class TimeUnitItem extends React.Component {
   }
 
   render() {
-    const { timeUnit, viewer, dailySchedule, connectDropTarget } = this.props;
+    const {
+      timeUnit,
+      viewer,
+      dailySchedule,
+      connectDropTarget,
+      isOver,
+    } = this.props;
     const taskUnits = getNodesFromConnection(timeUnit.taskUnits);
 
     return connectDropTarget(
-      <div>
+      <div style={{ background: isOver ? '#ccf' : undefined }}>
         <Card
           title={
             <div>
@@ -146,6 +152,7 @@ export default createFragmentContainer(
     connect(undefined, mapDispatchToProps),
     DropTarget(ItemTypes.TASK_UNIT, taskUnitTarget, (connect, monitor) => ({
       connectDropTarget: connect.dropTarget(),
+      isOver: monitor.isOver(),
     })),
   )(TimeUnitItem),
   graphql.experimental`
@@ -167,7 +174,6 @@ export default createFragmentContainer(
           }
         }
       }
-      ...UpdateTimeUnitTitleModal_timeUnit
       ...TaskUnitItem_timeUnit
     }
 

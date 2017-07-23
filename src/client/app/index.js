@@ -1,11 +1,13 @@
+import HTML5Backend from 'react-dnd-html5-backend';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContextProvider } from 'react-dnd';
-import { QueryRenderer, graphql } from 'react-relay';
+import TouchBackend from 'react-dnd-touch-backend';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { DragDropContextProvider } from 'react-dnd';
+import { Provider } from 'react-redux';
+import { QueryRenderer, graphql } from 'react-relay';
 import createRootVariables from '../shared/boot/createRootVariables';
+import isTouchSupported from '../shared/utils/isTouchSupported';
 import configureStore from '../redux/boot/configureStore';
 import App from './components/App';
 import Loading from './components/Loading';
@@ -16,6 +18,7 @@ import setupClipboard from './boot/setupClipboard';
 import registerServiceWorker from './boot/registerServiceWorker';
 
 const store = configureStore();
+const dragDropBackend = isTouchSupported() ? TouchBackend : HTML5Backend;
 
 function renderRoot({ error, props }) {
   if (error) {
@@ -27,7 +30,7 @@ function renderRoot({ error, props }) {
   }
 
   return (
-    <DragDropContextProvider backend={HTML5Backend}>
+    <DragDropContextProvider backend={dragDropBackend}>
       <Provider store={store}>
         <Router>
           <App {...props} />
