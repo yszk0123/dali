@@ -6,4 +6,5 @@ DATABASE_NAME="dali"
 $0 [FILE_PATH]
 EOS
 
-gunzip -c "$FILE_PATH" | psql "$DATABASE_NAME"
+gunzip -c "$FILE_PATH" \
+  | docker exec -it --user=postgres dali-database psql "$DATABASE_NAME"

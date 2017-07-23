@@ -45,3 +45,9 @@ Make sure to commit `schema.graphql` after update.
 1. `$ yarn release`
 1. `$ docker build -t yszk0123/dali-app .`
 1. `$ docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d`
+
+# Backup database
+
+- `$ <path/to/repo>/scripts/backup-database <path/to/backup/dir>`
+
+You might need execute the command as root.

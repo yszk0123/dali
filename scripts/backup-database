@@ -1,9 +1,11 @@
 #!/bin/bash -e
-FILE_NAME="$(date "+%Y-%m-%dT%H-%M-%S").gz"
+DIR="$1"
+FILE_NAME="dali-database-pg_dump-$(date "+%Y-%m-%dT%H-%M-%S").sql.gz"
 DATABASE_NAME="dali"
 
 [[ -z "$DIR" ]] && cat <<EOS >&2 && exit 1
 $0 [DIR]
 EOS
 
-pg_dump "$DATABASE_NAME" | gzip > "$DIR/$FILE_NAME"
+docker exec -it --user=postgres dali-database pg_dump "$DATABASE_NAME" \
+  | gzip > "$DIR/$FILE_NAME"
