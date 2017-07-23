@@ -14,10 +14,7 @@ import SignupPage from './SignupPage';
 import TaskSetsPage from './TaskSetsPage';
 
 const Wrapper = styled.div`padding: 0.5rem;`;
-const MainContent = styled.div`
-  margin: 0.5rem;
-  padding: 1.3rem;
-`;
+const MainContent = styled.div`margin: 1rem;`;
 
 export class App extends React.Component {
   render() {

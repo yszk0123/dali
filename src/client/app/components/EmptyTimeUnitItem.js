@@ -2,11 +2,10 @@
  * TODO: Extract sharable components
  */
 import React from 'react';
+import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import CreateTimeUnitMutation from '../../graphql/mutations/CreateTimeUnitMutation';
-import Card from './Card';
-import IconButton from './IconButton';
-import IconButtonGroup from './IconButtonGroup';
+import Icon from './Icon';
 
 function mapPositionToTimeRange(position) {
   const odd = position % 2 === 0;
@@ -17,6 +16,11 @@ function mapPositionToTimeRange(position) {
 
   return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
 }
+
+const Wrapper = styled.div`
+  color: #888;
+  cursor: pointer;
+`;
 
 export class EmptyTimeUnitItem extends React.Component {
   _handleCreateTimeUnitButtonClick = event => {
@@ -37,15 +41,11 @@ export class EmptyTimeUnitItem extends React.Component {
     const { position } = this.props;
 
     return (
-      <Card title={mapPositionToTimeRange(position)}>
-        <IconButtonGroup>
-          <IconButton
-            icon="plus"
-            label="Create TimeUnit"
-            onClick={this._handleCreateTimeUnitButtonClick}
-          />
-        </IconButtonGroup>
-      </Card>
+      <Wrapper>
+        <span onClick={this._handleCreateTimeUnitButtonClick}>
+          {mapPositionToTimeRange(position)} <Icon icon="plus" />
+        </span>
+      </Wrapper>
     );
   }
 }
