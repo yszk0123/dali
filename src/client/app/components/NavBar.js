@@ -6,14 +6,22 @@ import LogoutMutation from '../../graphql/mutations/LogoutMutation';
 import Button from './Button';
 
 const NavBarWrapper = styled.div`
-  margin: 0.3rem;
-  padding: 0.2rem;
   display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.8rem 0.2rem 0.3rem;
+  overflow-x: scroll;
+  background: #112ca5;
 `;
 
 const NavBarItem = styled.div`
-  padding: 0.5rem;
   align-content: center;
+  padding: 0.5rem;
+
+  a {
+    color: #c8cfef;
+    text-decoration: none;
+  }
 `;
 
 export class NavBar extends React.Component {

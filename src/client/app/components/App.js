@@ -13,7 +13,6 @@ import ProjectsPage from './ProjectsPage';
 import SignupPage from './SignupPage';
 import TaskSetsPage from './TaskSetsPage';
 
-const Wrapper = styled.div`padding: 0.5rem;`;
 const MainContent = styled.div`margin: 1rem;`;
 
 export class App extends React.Component {
@@ -21,7 +20,7 @@ export class App extends React.Component {
     const { viewer, relay } = this.props;
 
     return (
-      <Wrapper>
+      <div>
         <NavBar viewer={viewer} />
         <MainContent>
           <Switch>
@@ -60,7 +59,7 @@ export class App extends React.Component {
             />
           </Switch>
         </MainContent>
-      </Wrapper>
+      </div>
     );
   }
 }

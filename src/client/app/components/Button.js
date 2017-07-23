@@ -5,7 +5,7 @@ const Button = styled.span`
   margin: 3px;
   padding: 1rem;
   border-radius: 4px;
-  background: #13c;
+  background: #112ca5;
   color: #eee;
   cursor: pointer;
 `;
