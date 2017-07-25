@@ -1,6 +1,13 @@
 /* @flow */
 
 export default {
+  shared: {
+    fontSize: '1.6rem',
+    marginBottom: '1.6rem',
+  },
+  timeLabel: {
+    fontSize: '1.2rem',
+  },
   icon: {
     primary: {
       color: '#112ca5',

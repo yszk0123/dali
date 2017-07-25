@@ -8,20 +8,26 @@ import Button from './Button';
 const NavBarWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
-  padding: 0.8rem 0.2rem 0.3rem;
+  padding: 0 0.6rem;
   overflow-x: scroll;
   background: #112ca5;
 `;
 
 const NavBarItem = styled.div`
-  align-content: center;
-  padding: 0.5rem;
+  margin: 0.8rem 0.4rem;
 
   a {
     color: #c8cfef;
     text-decoration: none;
   }
+`;
+
+const NavBarLink = styled(Link)`
+  padding: 0.8rem 0.4rem;
+  color: #c8cfef;
+  text-decoration: none;
 `;
 
 export class NavBar extends React.Component {
@@ -39,30 +45,14 @@ export class NavBar extends React.Component {
 
     return (
       <NavBarWrapper>
-        <NavBarItem>
-          <Link to="/">Dashboard</Link>
-        </NavBarItem>
-        <NavBarItem>
-          <Link to="/daily/schedule">DailySchedule</Link>
-        </NavBarItem>
-        <NavBarItem>
-          <Link to="/daily/report">DailyReport</Link>
-        </NavBarItem>
-        <NavBarItem>
-          <Link to="/projects">Projects</Link>
-        </NavBarItem>
-        <NavBarItem>
-          <Link to="/taskSets">TaskSets</Link>
-        </NavBarItem>
-        <NavBarItem>
-          <Link to="/options">Options</Link>
-        </NavBarItem>
-        <NavBarItem>
-          <Link to="/profile">Profile</Link>
-        </NavBarItem>
-        <NavBarItem>
-          <Link to="/dailyReportTemplate">DailyReportTemplate</Link>
-        </NavBarItem>
+        <NavBarLink to="/">Dashboard</NavBarLink>
+        <NavBarLink to="/daily/schedule">DailySchedule</NavBarLink>
+        <NavBarLink to="/daily/report">DailyReport</NavBarLink>
+        <NavBarLink to="/projects">Projects</NavBarLink>
+        <NavBarLink to="/taskSets">TaskSets</NavBarLink>
+        <NavBarLink to="/options">Options</NavBarLink>
+        <NavBarLink to="/profile">Profile</NavBarLink>
+        <NavBarLink to="/dailyReportTemplate">DailyReportTemplate</NavBarLink>
         {viewer &&
           <NavBarItem>
             <Button onClick={this._handleLogoutButtonClick}>Logout</Button>

@@ -13,6 +13,7 @@ import Icon from './Icon';
 import IconButtonGroup from './IconButtonGroup';
 import TaskUnitItem from './TaskUnitItem';
 import TitleInput from './TitleInput';
+import TimeLabel from './TimeLabel';
 
 const SmallIconButtonGroup = styled(IconButtonGroup)`
   margin-right: 1rem;
@@ -20,12 +21,11 @@ const SmallIconButtonGroup = styled(IconButtonGroup)`
   font-size: 1.2rem;
 `;
 
-const Time = styled.span`color: #aaa;`;
-
 const SummaryWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const Wrapper = styled.div`
@@ -33,16 +33,6 @@ const Wrapper = styled.div`
   border-top: 1px solid #e4eaf7;
   background: ${({ isOver }) => (isOver ? '#c0e3fb' : 'inherit')};
 `;
-
-function mapPositionToTimeRange(position) {
-  const odd = position % 2 === 0;
-  const startHour = Math.floor(position / 2);
-  const endHour = odd ? startHour : startHour + 1;
-  const startMinute = odd ? '00' : '30';
-  const endMinute = !odd ? '00' : '30';
-
-  return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
-}
 
 export function TaskSummary({
   dailySchedule,
@@ -117,9 +107,7 @@ export class TimeUnitItem extends React.Component {
       <div>
         <Wrapper isOver={isOver}>
           <div>
-            <Time>
-              {mapPositionToTimeRange(timeUnit.position)}{' '}
-            </Time>
+            <TimeLabel position={timeUnit.position} />{' '}
             <TitleInput
               title={timeUnit.title}
               onChange={this._handleTitleChange}
