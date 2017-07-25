@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { createRefetchContainer, graphql } from 'react-relay';
 import { flatten, uniqBy, groupBy, toPairs, repeat } from 'lodash';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
-import ClipboardButton from "../components/ClipboardButton";
-import Button from "../components/Button";
-import Day from "../components/Day";
+import ClipboardButton from '../components/ClipboardButton';
+import Button from '../components/Button';
+import Day from '../components/Day';
 
 const DEFAULT_PROJECT_NAME = 'Default';
 const MAX_LEVEL = 5;

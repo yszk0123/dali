@@ -11,9 +11,9 @@ import openAddTaskUnitModal from '../../redux/actions/openAddTaskUnitModal';
 import ItemTypes from '../constants/ItemTypes';
 import Icon from '../components/Icon';
 import IconButtonGroup from '../components/IconButtonGroup';
-import TaskUnitItem from './TaskUnitItem';
 import TitleInput from '../components/TitleInput';
 import TimeLabel from '../components/TimeLabel';
+import TaskUnitItem from './TaskUnitItem';
 
 const SmallIconButtonGroup = styled(IconButtonGroup)`
   margin-right: 1rem;

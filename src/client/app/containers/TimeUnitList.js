@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection.js';
+import NoUserSelectArea from '../components/NoUserSelectArea';
 import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 import TimeUnitItem from './TimeUnitItem';
-import NoUserSelectArea from '../components/NoUserSelectArea';
 
 const MAX_TIME_UNITS = 48;
 

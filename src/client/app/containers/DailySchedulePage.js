@@ -1,9 +1,9 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import CreateDailyScheduleMutation from '../../graphql/mutations/CreateDailyScheduleMutation';
+import Button from '../components/Button';
+import Day from '../components/Day';
 import AddTaskUnitModal from './AddTaskUnitModal';
-import Button from "../components/Button";
-import Day from "../components/Day";
 import TimeUnitList from './TimeUnitList';
 
 function CreateDailyScheduleButton({ onClick }) {
