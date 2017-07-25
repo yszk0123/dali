@@ -6,10 +6,10 @@ import Modal from 'react-modal';
 import LinkProjectMutation from '../../graphql/mutations/LinkProjectMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import closeLinkProjectModal from '../../redux/actions/closeLinkProjectModal';
-import Icon from './Icon';
+import ModalTitle from '../components/ModalTitle';
+import Icon from '../components/Icon';
 import List from './List';
 import ListItem from './ListItem';
-import ModalTitle from './ModalTitle';
 
 type Props = {
   isOpen: boolean,

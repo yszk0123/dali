@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { createRefetchContainer, graphql } from 'react-relay';
 import { flatten, uniqBy, groupBy, toPairs, repeat } from 'lodash';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
-import ClipboardButton from './ClipboardButton';
-import Button from './Button';
-import Day from './Day';
+import ClipboardButton from '../components/ClipboardButton';
+import Button from '../components/Button';
+import Day from '../components/Day';
 
 const DEFAULT_PROJECT_NAME = 'Default';
 const MAX_LEVEL = 5;
@@ -37,10 +37,10 @@ export class DailyReportPage extends React.Component {
   };
 
   _update() {
-    const { dailySchedule } = this.props;
+    const { viewer } = this.props;
     const refetchVariables = ({ count }) => ({
       count,
-      date: dailySchedule.date,
+      date: viewer.dailySchedule.date,
     });
 
     this.props.relay.refetch(refetchVariables, null);

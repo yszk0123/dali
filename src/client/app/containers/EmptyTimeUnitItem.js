@@ -5,8 +5,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import CreateTimeUnitMutation from '../../graphql/mutations/CreateTimeUnitMutation';
-import Icon from './Icon';
-import TimeLabel from './TimeLabel';
+import Icon from '../components/Icon';
+import TimeLabel from '../components/TimeLabel';
 
 const Wrapper = styled.div`
   color: #888;

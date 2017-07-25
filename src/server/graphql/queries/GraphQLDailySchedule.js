@@ -1,4 +1,9 @@
-import { GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import {
+  GraphQLInt,
+  GraphQLEnumType,
+  GraphQLNonNull,
+  GraphQLObjectType,
+} from 'graphql';
 import { attributeFields, relay, resolver } from 'graphql-sequelize';
 import { first } from 'lodash';
 import GraphQLDate from 'graphql-date';
@@ -14,12 +19,13 @@ export default function defineGraphQLDailySchedule({
     name: 'DailyScheduleTimeUnit',
     nodeType: GraphQLTimeUnit,
     target: DailySchedule.TimeUnits,
-    connectionFields: {
-      total: {
-        type: GraphQLInt,
-        resolve: ({ source }) => source.countTimeUnits(),
+    orderBy: new GraphQLEnumType({
+      name: 'DailyScheduleTimeUnitOrderBy',
+      values: {
+        POSITION: { value: ['position', 'ASC'] },
+        TITLE: { value: ['title', 'ASC'] },
       },
-    },
+    }),
   });
 
   const GraphQLDailySchedule = new GraphQLObjectType({

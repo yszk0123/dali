@@ -9,11 +9,11 @@ import RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutati
 import UpdateTimeUnitMutation from '../../graphql/mutations/UpdateTimeUnitMutation';
 import openAddTaskUnitModal from '../../redux/actions/openAddTaskUnitModal';
 import ItemTypes from '../constants/ItemTypes';
-import Icon from './Icon';
-import IconButtonGroup from './IconButtonGroup';
+import Icon from '../components/Icon';
+import IconButtonGroup from '../components/IconButtonGroup';
+import TitleInput from '../components/TitleInput';
+import TimeLabel from '../components/TimeLabel';
 import TaskUnitItem from './TaskUnitItem';
-import TitleInput from './TitleInput';
-import TimeLabel from './TimeLabel';
 
 const SmallIconButtonGroup = styled(IconButtonGroup)`
   margin-right: 1rem;

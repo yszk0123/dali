@@ -1,8 +1,8 @@
 import React from 'react';
 import { createRefetchContainer, graphql } from 'react-relay';
+import Button from '../components/Button';
 import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 import TimeUnitItem from './TimeUnitItem';
-import Button from './Button';
 
 export class FocusedTimeUnitItem extends React.Component {
   _handlePreviousTimeUnitButtonClick = event => {

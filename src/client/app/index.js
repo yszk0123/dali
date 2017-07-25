@@ -11,8 +11,8 @@ import createRootVariables from '../shared/boot/createRootVariables';
 import isTouchSupported from '../shared/utils/isTouchSupported';
 import configureStore from '../redux/boot/configureStore';
 import Theme from './constants/Theme';
-import App from './components/App';
-import Loading from './components/Loading';
+import App from './containers/App';
+import LoadingIndicator from './components/LoadingIndicator';
 import ErrorOutput from './components/ErrorOutput';
 import createEnvironment from './boot/createEnvironment';
 import injectMountNodeIfNeeded from './boot/injectMountNodeIfNeeded';
@@ -28,7 +28,7 @@ function renderRoot({ error, props }) {
   }
 
   if (!props) {
-    return <Loading />;
+    return <LoadingIndicator />;
   }
 
   return (

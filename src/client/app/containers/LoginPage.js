@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import LoginMutation from '../../graphql/mutations/LoginMutation';
-import Button from './Button';
+import Button from '../components/Button';
 
 type Props = {
   viewer: any,

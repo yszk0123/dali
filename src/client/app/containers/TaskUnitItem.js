@@ -5,7 +5,7 @@ import RemoveTaskUnitMutation from '../../graphql/mutations/RemoveTaskUnitMutati
 import UpdateTaskUnitMutation from '../../graphql/mutations/UpdateTaskUnitMutation';
 import MoveTaskUnitMutation from '../../graphql/mutations/MoveTaskUnitMutation';
 import ItemTypes from '../constants/ItemTypes';
-import TaskLabel from './TaskLabel';
+import TaskLabel from '../components/TaskLabel';
 
 export class TaskUnitItem extends React.Component {
   _handleRemoveButtonClick = () => {
