@@ -2,6 +2,7 @@ import {
   GraphQLBoolean,
   GraphQLID,
   GraphQLInt,
+  GraphQLEnumType,
   GraphQLNonNull,
   GraphQLObjectType,
 } from 'graphql';
@@ -22,6 +23,14 @@ export default function defineGraphQLDailySchedule({
     name: 'UserProject',
     nodeType: GraphQLProject,
     target: User.Projects,
+    orderBy: new GraphQLEnumType({
+      name: 'UserProjectOrderBy',
+      values: {
+        TITLE: { value: ['title', 'ASC'] },
+        CREATED_AT: { value: ['createdAt', 'DESC'] },
+        UPDATED_AT: { value: ['updatedAt', 'DESC'] },
+      },
+    }),
     connectionFields: {
       total: {
         type: GraphQLInt,
@@ -43,6 +52,15 @@ export default function defineGraphQLDailySchedule({
 
       return { [key]: value };
     },
+    orderBy: new GraphQLEnumType({
+      name: 'UserTaskSetOrderBy',
+      values: {
+        TITLE: { value: ['title', 'ASC'] },
+        PRIORITY: { value: ['priority', 'DESC'] },
+        CREATED_AT: { value: ['createdAt', 'DESC'] },
+        UPDATED_AT: { value: ['updatedAt', 'DESC'] },
+      },
+    }),
     connectionFields: {
       total: {
         type: GraphQLInt,

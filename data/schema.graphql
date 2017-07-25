@@ -94,7 +94,7 @@ type DailySchedule {
   updatedAt: String!
   userId: Int
   dailyReport: DailyReport
-  timeUnits(after: String, first: Int, before: String, last: Int, orderBy: [DailyScheduleTimeUnitConnectionOrder]): DailyScheduleTimeUnitConnection
+  timeUnits(after: String, first: Int, before: String, last: Int, orderBy: [DailyScheduleTimeUnitOrderBy]): DailyScheduleTimeUnitConnection
   timeUnit(date: Date!): TimeUnit
 }
 
@@ -108,10 +108,6 @@ type DailyScheduleTimeUnitConnection {
   total: Int
 }
 
-enum DailyScheduleTimeUnitConnectionOrder {
-  ID
-}
-
 # An edge in a connection.
 type DailyScheduleTimeUnitEdge {
   # The item at the end of the edge
@@ -119,6 +115,11 @@ type DailyScheduleTimeUnitEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+enum DailyScheduleTimeUnitOrderBy {
+  POSITION
+  TITLE
 }
 
 scalar Date
@@ -459,9 +460,9 @@ type User implements Node {
   lastName: String
   createdAt: String!
   updatedAt: String!
-  projects(after: String, first: Int, before: String, last: Int, orderBy: [UserProjectConnectionOrder]): UserProjectConnection
+  projects(after: String, first: Int, before: String, last: Int, orderBy: [UserProjectOrderBy]): UserProjectConnection
   dailySchedule(date: Date!): DailySchedule
-  taskSets(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskSetConnectionOrder], projectId: ID, done: Boolean): UserTaskSetConnection
+  taskSets(after: String, first: Int, before: String, last: Int, orderBy: [UserTaskSetOrderBy], projectId: ID, done: Boolean): UserTaskSetConnection
 }
 
 # A connection to a list of items.
@@ -474,10 +475,6 @@ type UserProjectConnection {
   total: Int
 }
 
-enum UserProjectConnectionOrder {
-  ID
-}
-
 # An edge in a connection.
 type UserProjectEdge {
   # The item at the end of the edge
@@ -485,6 +482,12 @@ type UserProjectEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+enum UserProjectOrderBy {
+  TITLE
+  CREATED_AT
+  UPDATED_AT
 }
 
 # A connection to a list of items.
@@ -497,10 +500,6 @@ type UserTaskSetConnection {
   total: Int
 }
 
-enum UserTaskSetConnectionOrder {
-  ID
-}
-
 # An edge in a connection.
 type UserTaskSetEdge {
   # The item at the end of the edge
@@ -508,4 +507,11 @@ type UserTaskSetEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+enum UserTaskSetOrderBy {
+  TITLE
+  PRIORITY
+  CREATED_AT
+  UPDATED_AT
 }
