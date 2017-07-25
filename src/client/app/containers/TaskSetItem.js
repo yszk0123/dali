@@ -9,6 +9,7 @@ import openLinkProjectModal from '../../redux/actions/openLinkProjectModal';
 import Icon from '../components/Icon';
 import TitlePlaceholder from '../components/TitlePlaceholder';
 import TitleInput from '../components/TitleInput';
+import DoneCheckbox from '../components/DoneCheckbox';
 
 type Props = {
   taskSet: any,
@@ -70,11 +71,7 @@ export class TaskSetItem extends React.Component {
 
     return (
       <Wrapper>
-        <input
-          type="checkbox"
-          checked={taskSet.done}
-          onChange={this._handleDoneChange}
-        />
+        <DoneCheckbox done={taskSet.done} onChange={this._handleDoneChange} />
         <TitleInput
           title={taskSet.title}
           onChange={this._handleTaskSetTitleChange}
