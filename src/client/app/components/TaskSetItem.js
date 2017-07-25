@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import RemoveTaskSetMutation from '../../graphql/mutations/RemoveTaskSetMutation';
 import UpdateTaskSetMutation from '../../graphql/mutations/UpdateTaskSetMutation';
 import openLinkProjectModal from '../../redux/actions/openLinkProjectModal';
-import IconButton from './IconButton';
+import Icon from './Icon';
 import TitlePlaceholder from './TitlePlaceholder';
 import TitleInput from './TitleInput';
 
@@ -78,17 +78,15 @@ export class TaskSetItem extends React.Component {
         <TitleInput
           title={taskSet.title}
           onChange={this._handleTaskSetTitleChange}
-        />{' '}
-        (<TitlePlaceholder
+        />
+        {' ('}
+        <TitlePlaceholder
           label={projectTitle}
           defaultLabel="No Project"
           onClick={this._handleProjectTitleClick}
-        />)
-        <IconButton
-          icon="times"
-          label="Remove"
-          onClick={this._handleRemoveButtonClick}
         />
+        {') '}
+        <Icon icon="trash" onClick={this._handleRemoveButtonClick} />
       </Wrapper>
     );
   }
