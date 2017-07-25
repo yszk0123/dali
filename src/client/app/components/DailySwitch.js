@@ -1,6 +1,6 @@
 /* @flow */
 import React from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { createRefetchContainer, graphql } from 'react-relay';
 import { Switch, withRouter } from 'react-router-dom';
 import { subDays, addDays } from 'date-fns';
@@ -27,21 +27,35 @@ const Clearfix = styled.span`
   *zoom: 1;
 `;
 
-function GoButton({ left, right, label, onClick }) {
-  let style;
-  if (left) {
-    style = { float: 'left' };
-  }
-  if (right) {
-    style = { float: 'right' };
-  }
+const GoButton = withTheme(
+  ({ theme: { goButton }, left, right, label, onClick }) => {
+    let style;
+    if (left) {
+      style = {
+        float: 'left',
+        padding: goButton.space,
+        marginTop: `-${goButton.space}`,
+        marginLeft: `-${goButton.space}`,
+        cursor: 'pointer',
+      };
+    }
+    if (right) {
+      style = {
+        float: 'right',
+        padding: goButton.space,
+        marginTop: `-${goButton.space}`,
+        marginRight: goButton.space,
+        cursor: 'pointer',
+      };
+    }
 
-  return (
-    <span style={style} onClick={onClick}>
-      {label}
-    </span>
-  );
-}
+    return (
+      <span style={style} onClick={onClick}>
+        {label}
+      </span>
+    );
+  },
+);
 
 export class DailySwitch extends React.Component {
   props: Props;

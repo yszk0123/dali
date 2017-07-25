@@ -26,4 +26,7 @@ export default {
       color: '#e8f8ff',
     },
   },
+  goButton: {
+    space: '0.8rem',
+  },
 };
