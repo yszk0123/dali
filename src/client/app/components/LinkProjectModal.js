@@ -7,6 +7,8 @@ import LinkProjectMutation from '../../graphql/mutations/LinkProjectMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import closeLinkProjectModal from '../../redux/actions/closeLinkProjectModal';
 import Icon from './Icon';
+import List from './List';
+import ListItem from './ListItem';
 
 type Props = {
   isOpen: boolean,
@@ -36,9 +38,9 @@ export class LinkProjectModal extends React.Component {
     const projects = getNodesFromConnection(viewer.projects);
 
     return projects.map(project =>
-      <li key={project.id}>
+      <ListItem key={project.id}>
         {project.title} <Icon icon="plus" onClick={() => this._add(project)} />
-      </li>,
+      </ListItem>,
     );
   }
 
@@ -52,9 +54,9 @@ export class LinkProjectModal extends React.Component {
         onRequestClose={onRequestClose}
       >
         <h2>Projects</h2>
-        <ul>
+        <List>
           {this._renderProjects()}
-        </ul>
+        </List>
       </Modal>
     );
   }

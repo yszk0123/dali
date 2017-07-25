@@ -6,16 +6,7 @@ import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import CreateTimeUnitMutation from '../../graphql/mutations/CreateTimeUnitMutation';
 import Icon from './Icon';
-
-function mapPositionToTimeRange(position) {
-  const odd = position % 2 === 0;
-  const startHour = Math.floor(position / 2);
-  const endHour = odd ? startHour : startHour + 1;
-  const startMinute = odd ? '00' : '30';
-  const endMinute = !odd ? '00' : '30';
-
-  return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
-}
+import TimeLabel from './TimeLabel';
 
 const Wrapper = styled.div`
   color: #888;
@@ -43,7 +34,7 @@ export class EmptyTimeUnitItem extends React.Component {
     return (
       <Wrapper>
         <span onClick={this._handleCreateTimeUnitButtonClick}>
-          {mapPositionToTimeRange(position)} <Icon icon="plus" />
+          <TimeLabel position={position} /> <Icon icon="plus" />
         </span>
       </Wrapper>
     );
