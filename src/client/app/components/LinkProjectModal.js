@@ -9,6 +9,7 @@ import closeLinkProjectModal from '../../redux/actions/closeLinkProjectModal';
 import Icon from './Icon';
 import List from './List';
 import ListItem from './ListItem';
+import ModalTitle from './ModalTitle';
 
 type Props = {
   isOpen: boolean,
@@ -53,7 +54,7 @@ export class LinkProjectModal extends React.Component {
         isOpen={isOpen}
         onRequestClose={onRequestClose}
       >
-        <h2>Projects</h2>
+        <ModalTitle>Select Project To Link</ModalTitle>
         <List>
           {this._renderProjects()}
         </List>

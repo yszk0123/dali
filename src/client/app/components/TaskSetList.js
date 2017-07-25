@@ -29,7 +29,7 @@ export class TaskSetList extends React.Component {
       return;
     }
 
-    this._linkTaskSet(value);
+    this._createTaskSet(value);
   };
 
   _handleDoneChange = (event: Event) => {
@@ -40,7 +40,7 @@ export class TaskSetList extends React.Component {
     });
   };
 
-  _linkTaskSet(title: string) {
+  _createTaskSet(title: string) {
     const { done } = this.state;
 
     CreateTaskSetMutation.commit(
@@ -52,8 +52,9 @@ export class TaskSetList extends React.Component {
 
   _renderTaskSets() {
     const { viewer } = this.props;
+    const taskSets = getNodesFromConnection(viewer.taskSets);
 
-    return getNodesFromConnection(viewer.taskSets).map(taskSet =>
+    return taskSets.map(taskSet =>
       <div key={taskSet.id}>
         <TaskSetItem taskSet={taskSet} viewer={viewer} />
       </div>,
