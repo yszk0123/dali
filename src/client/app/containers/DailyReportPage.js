@@ -37,10 +37,10 @@ export class DailyReportPage extends React.Component {
   };
 
   _update() {
-    const { dailySchedule } = this.props;
+    const { viewer } = this.props;
     const refetchVariables = ({ count }) => ({
       count,
-      date: dailySchedule.date,
+      date: viewer.dailySchedule.date,
     });
 
     this.props.relay.refetch(refetchVariables, null);
