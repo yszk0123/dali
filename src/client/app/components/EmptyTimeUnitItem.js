@@ -34,7 +34,7 @@ export class EmptyTimeUnitItem extends React.Component {
     return (
       <Wrapper>
         <span onClick={this._handleCreateTimeUnitButtonClick}>
-          <TimeLabel position={position} /> <Icon icon="plus" />
+          <Icon icon="plus" /> <TimeLabel position={position} />
         </span>
       </Wrapper>
     );

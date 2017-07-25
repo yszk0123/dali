@@ -40,8 +40,8 @@ export class TaskSetModal extends React.Component {
     const taskSets = getNodesFromConnection(viewer.taskSets);
 
     return taskSets.map(taskSet =>
-      <ListItem key={taskSet.id}>
-        {taskSet.title} <Icon icon="plus" onClick={() => this._add(taskSet)} />
+      <ListItem key={taskSet.id} onClick={() => this._add(taskSet)}>
+        <Icon icon="plus" /> {taskSet.title}
       </ListItem>,
     );
   }
