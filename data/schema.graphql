@@ -105,7 +105,6 @@ type DailyScheduleTimeUnitConnection {
 
   # A list of edges.
   edges: [DailyScheduleTimeUnitEdge]
-  total: Int
 }
 
 # An edge in a connection.
@@ -362,7 +361,6 @@ type TimeUnitTaskUnitConnection {
 
   # A list of edges.
   edges: [TimeUnitTaskUnitEdge]
-  total: Int
 }
 
 enum TimeUnitTaskUnitConnectionOrder {

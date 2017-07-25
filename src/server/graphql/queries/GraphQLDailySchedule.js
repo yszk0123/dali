@@ -26,12 +26,6 @@ export default function defineGraphQLDailySchedule({
         TITLE: { value: ['title', 'ASC'] },
       },
     }),
-    connectionFields: {
-      total: {
-        type: GraphQLInt,
-        resolve: ({ source }) => source.countTimeUnits(),
-      },
-    },
   });
 
   const GraphQLDailySchedule = new GraphQLObjectType({

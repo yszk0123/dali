@@ -10,12 +10,6 @@ export default function defineGraphQLTimeUnit({
     name: 'TimeUnitTaskUnit',
     nodeType: GraphQLTaskUnit,
     target: TimeUnit.TaskUnits,
-    connectionFields: {
-      total: {
-        type: GraphQLInt,
-        resolve: ({ source }) => source.countTaskUnits(),
-      },
-    },
   });
 
   const GraphQLTimeUnit = new GraphQLObjectType({
