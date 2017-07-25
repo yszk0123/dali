@@ -4,7 +4,7 @@ import { createRefetchContainer, graphql } from 'react-relay';
 import CreateTaskSetMutation from '../../graphql/mutations/CreateTaskSetMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import TaskSetItem from './TaskSetItem';
-import InputWithButton from './InputWithButton';
+import InputWithButton from '../components/InputWithButton';
 
 type Props = {
   viewer: any,

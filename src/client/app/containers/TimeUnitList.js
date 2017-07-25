@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection.js';
 import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 import TimeUnitItem from './TimeUnitItem';
-import NoUserSelectArea from './NoUserSelectArea';
+import NoUserSelectArea from '../components/NoUserSelectArea';
 
 const MAX_TIME_UNITS = 48;
 

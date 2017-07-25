@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from 'react-relay';
 import CreateProjectMutation from '../../graphql/mutations/CreateProjectMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import ProjectItem from './ProjectItem';
-import Button from './Button';
+import Button from '../components/Button';
 
 type Props = {
   viewer: any,

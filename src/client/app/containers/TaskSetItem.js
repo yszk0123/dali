@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 import RemoveTaskSetMutation from '../../graphql/mutations/RemoveTaskSetMutation';
 import UpdateTaskSetMutation from '../../graphql/mutations/UpdateTaskSetMutation';
 import openLinkProjectModal from '../../redux/actions/openLinkProjectModal';
-import Icon from './Icon';
-import TitlePlaceholder from './TitlePlaceholder';
-import TitleInput from './TitleInput';
+import Icon from '../components/Icon';
+import TitlePlaceholder from '../components/TitlePlaceholder';
+import TitleInput from '../components/TitleInput';
 
 type Props = {
   taskSet: any,

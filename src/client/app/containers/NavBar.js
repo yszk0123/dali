@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { createFragmentContainer, graphql } from 'react-relay';
 import LogoutMutation from '../../graphql/mutations/LogoutMutation';
-import Button from './Button';
+import Button from '../components/Button';
 
 const NavBarWrapper = styled.div`
   display: flex;

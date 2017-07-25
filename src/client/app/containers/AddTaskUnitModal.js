@@ -6,10 +6,10 @@ import Modal from 'react-modal';
 import AddTaskUnitMutation from '../../graphql/mutations/AddTaskUnitMutation';
 import closeAddTaskUnitModal from '../../redux/actions/closeAddTaskUnitModal';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
-import Icon from './Icon';
+import Icon from '../components/Icon';
 import List from './List';
 import ListItem from './ListItem';
-import ModalTitle from './ModalTitle';
+import ModalTitle from '../components/ModalTitle';
 
 type Props = {
   dailySchedule: any,

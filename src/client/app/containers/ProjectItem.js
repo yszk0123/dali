@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
 import UpdateProjectMutation from '../../graphql/mutations/UpdateProjectMutation';
-import Icon from './Icon';
-import TitleInput from './TitleInput';
+import Icon from '../components/Icon';
+import TitleInput from '../components/TitleInput';
 
 type Props = {
   project: any,
