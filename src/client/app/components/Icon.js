@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const I = styled.i`
   color: ${({ theme, color }) => theme.icon[color].color};
   font-size: ${({ large }) => (large ? '1.6rem' : 'inherit')};
+  cursor: ${({ onClick }) => (onClick ? 'pointer' : 'initial')};
 `;
 
 I.defaultProps = {

@@ -9,6 +9,7 @@ import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import Icon from './Icon';
 import List from './List';
 import ListItem from './ListItem';
+import ModalTitle from './ModalTitle';
 
 type Props = {
   dailySchedule: any,
@@ -40,8 +41,8 @@ export class TaskSetModal extends React.Component {
     const taskSets = getNodesFromConnection(viewer.taskSets);
 
     return taskSets.map(taskSet =>
-      <ListItem key={taskSet.id}>
-        {taskSet.title} <Icon icon="plus" onClick={() => this._add(taskSet)} />
+      <ListItem key={taskSet.id} onClick={() => this._add(taskSet)}>
+        <Icon icon="plus" /> {taskSet.title}
       </ListItem>,
     );
   }
@@ -55,7 +56,7 @@ export class TaskSetModal extends React.Component {
         isOpen={isOpen}
         onRequestClose={onRequestClose}
       >
-        <h2>TaskSets</h2>
+        <ModalTitle>Select TaskSet To Add</ModalTitle>
         <List>
           {this._renderTaskSets()}
         </List>

@@ -18,7 +18,7 @@ import TimeLabel from './TimeLabel';
 const SmallIconButtonGroup = styled(IconButtonGroup)`
   margin-right: 1rem;
   float: right;
-  font-size: 1.2rem;
+  font-size: ${({ theme }) => theme.shared.fontSize};
 `;
 
 const SummaryWrapper = styled.div`

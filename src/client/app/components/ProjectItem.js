@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
 import UpdateProjectMutation from '../../graphql/mutations/UpdateProjectMutation';
-import IconButton from './IconButton';
+import Icon from './Icon';
 import TitleInput from './TitleInput';
 
 type Props = {
@@ -45,12 +45,8 @@ export class ProjectItem extends React.Component {
 
     return (
       <Wrapper>
-        <TitleInput title={project.title} onChange={this._handleTitleChange} />
-        <IconButton
-          icon="trash"
-          label="Remove"
-          onClick={this._handleRemoveButtonClick}
-        />
+        <TitleInput title={project.title} onChange={this._handleTitleChange} /> {' '}
+        <Icon icon="trash" onClick={this._handleRemoveButtonClick} />
       </Wrapper>
     );
   }
