@@ -1,38 +1,20 @@
-import { commitMutation, graphql } from 'react-relay';
-import makeIdGenerator from '../../shared/utils/makeIdGenerator';
+import query from '../mutationSchema/UpdateProjectMutation.graphql';
 
-const generateId = makeIdGenerator();
-
-const mutation = graphql`
-  mutation UpdateProjectMutation($input: UpdateProjectInput!) {
-    updateProject(input: $input) {
-      project {
-        id
-        title
-      }
-    }
-  }
-`;
-
-function commit(environment, { title }, project) {
-  return commitMutation(environment, {
-    mutation,
+async function commit(mutate, { title }, project) {
+  await mutate({
     variables: {
-      input: {
-        clientMutationId: generateId(),
-        projectId: project.id,
-        title,
-      },
+      projectId: project.id,
+      title,
     },
     optimisticResponse: {
+      __typename: 'Mutation',
       updateProject: {
-        project: {
-          ...project,
-          title,
-        },
+        __typename: 'Project',
+        ...project,
+        title,
       },
     },
   });
 }
 
-export default { commit };
+export default { commit, query };

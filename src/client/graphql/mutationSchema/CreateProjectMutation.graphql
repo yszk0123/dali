@@ -1,0 +1,7 @@
+mutation CreateProjectMutation($title: String!) {
+  createProject(title: $title) {
+    __typename
+    id
+    title
+  }
+}

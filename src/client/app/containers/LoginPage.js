@@ -1,11 +1,17 @@
 /* @flow */
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import LoginMutation from '../../graphql/mutations/LoginMutation';
+import type { OperationComponent, QueryProps } from 'react-apollo';
+import { graphql, compose, withApollo } from 'react-apollo';
+import type { LoginPageQuery } from 'schema.graphql';
+import LoginMutation from '../../graphql/typeDefs/LoginMutation';
+import loginPageQuery from '../../graphql/querySchema/LoginPage.graphql';
 import Button from '../components/Button';
 
-type Props = {
-  viewer: any,
+type Props = QueryProps & {
+  isLogin: boolean,
+  from: any,
+  onLogin: ({ email: string, password: string }) => mixed,
 };
 
 type State = {
@@ -13,7 +19,7 @@ type State = {
   password: string,
 };
 
-export default class LoginPage extends React.Component {
+export class LoginPage extends React.Component {
   props: Props;
   state: State;
 
@@ -29,27 +35,34 @@ export default class LoginPage extends React.Component {
     this._login();
   };
 
-  _handleEmailChange = event => {
+  _handleEmailChange = (event: Event) => {
+    if (!(event.target instanceof HTMLInputElement)) {
+      return;
+    }
+
     const email = event.target.value;
 
     this.setState({ email });
   };
 
-  _handlePasswordChange = event => {
+  _handlePasswordChange = (event: Event) => {
+    if (!(event.target instanceof HTMLInputElement)) {
+      return;
+    }
     const password = event.target.value;
 
     this.setState({ password });
   };
 
   _login() {
-    const { relay } = this.props;
+    const { onLogin } = this.props;
     const { email, password } = this.state;
 
     if (!this._isValid()) {
       return;
     }
 
-    LoginMutation.commit(relay.environment, { email, password });
+    onLogin({ email, password });
   }
 
   _isValid() {
@@ -59,12 +72,11 @@ export default class LoginPage extends React.Component {
   }
 
   render() {
-    const { viewer, location } = this.props;
+    const { isLogin, from } = this.props;
     const { email, password } = this.state;
-    const from = (location.state && location.state.from) || { pathname: '/' };
     const canLogin = this._isValid();
 
-    if (viewer) {
+    if (isLogin) {
       return <Redirect to={from} />;
     }
 
@@ -92,3 +104,27 @@ export default class LoginPage extends React.Component {
     );
   }
 }
+
+const withData: OperationComponent<
+  LoginPageQuery,
+  { location: any },
+  Props,
+> = compose(
+  graphql(loginPageQuery, {
+    props: ({ data }) => ({
+      isLogin: data && data.loading,
+    }),
+  }),
+  withApollo,
+  graphql(LoginMutation.query, {
+    props: ({ mutate, ownProps: { client }, ownProps: { location } }) => ({
+      from: (location.state && location.state.from) || { pathname: '/' },
+      onLogin: async ({ email, password }) => {
+        await LoginMutation.commit(mutate, { email, password });
+        await client.resetStore();
+      },
+    }),
+  }),
+);
+
+export default withData(LoginPage);

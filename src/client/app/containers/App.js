@@ -1,82 +1,55 @@
 /* @flow */
 import React from 'react';
-import { Switch, withRouter } from 'react-router-dom';
-import styled from 'styled-components';
-import { createFragmentContainer, graphql } from 'react-relay';
-import PropsRoute from '../../shared/components/PropsRoute';
-import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
-import DailySwitch from './DailySwitch';
-import DashboardPage from './DashboardPage';
-import LoginPage from './LoginPage';
-import NavBar from './NavBar';
-import ProjectsPage from './ProjectsPage';
-import SignupPage from './SignupPage';
-import TaskSetsPage from './TaskSetsPage';
+import { graphql } from 'react-apollo';
+import type { OperationComponent, QueryProps } from 'react-apollo';
+import type { AppQuery } from 'schema.graphql';
+import appQuery from '../../graphql/querySchema/App.graphql';
+import ErrorOutput from '../components/ErrorOutput';
+import LoadingIndicator from '../components/LoadingIndicator';
+import Routes from './Routes';
 
-const MainContent = styled.div`margin: 1.8rem;`;
+type Props = {
+  ...QueryProps,
+  ...AppQuery,
+  nickname: string,
+  isLogin: boolean,
+};
 
-export class App extends React.Component {
-  render() {
-    const { viewer, relay } = this.props;
+const withData: OperationComponent<AppQuery, {}, Props> = graphql(appQuery, {
+  props: ({ data }) => ({
+    ...data,
+    ...data.currentUser,
+    isLogin: data && data.currentUser,
+  }),
+});
 
-    return (
-      <div>
-        <NavBar viewer={viewer} />
-        <MainContent>
-          <Switch>
-            <PropsPrivateRoute
-              exact
-              path="/"
-              component={DashboardPage}
-              viewer={viewer}
-            />
-            <PropsPrivateRoute
-              path="/projects"
-              component={ProjectsPage}
-              viewer={viewer}
-            />
-            <PropsPrivateRoute
-              path="/taskSets"
-              component={TaskSetsPage}
-              viewer={viewer}
-            />
-            <PropsPrivateRoute
-              path="/daily"
-              component={DailySwitch}
-              viewer={viewer}
-            />
-            <PropsRoute
-              path="/login"
-              component={LoginPage}
-              viewer={viewer}
-              relay={relay}
-            />
-            <PropsRoute
-              path="/signup"
-              component={SignupPage}
-              viewer={viewer}
-              relay={relay}
-            />
-          </Switch>
-        </MainContent>
-      </div>
-    );
+export function App({
+  nickname,
+  error,
+  loading,
+  isLogin,
+  networkStatus,
+}: Props) {
+  if (error) {
+    return <ErrorOutput error={error} />;
   }
+
+  if (loading) {
+    return <LoadingIndicator />;
+  }
+
+  return (
+    <div>
+      <h1>
+        Hello {networkStatus}
+      </h1>
+      {isLogin &&
+        <h1>
+          Hello, {nickname}!
+        </h1>}
+      <Routes />
+    </div>
+  );
 }
 
-export default withRouter(
-  createFragmentContainer(
-    App,
-    graphql.experimental`
-      fragment App_viewer on User
-        @argumentDefinitions(date: { type: "Date!" }) {
-        id
-        ...DailySwitch_viewer @arguments(date: $date)
-        ...DashboardPage_viewer @arguments(date: $date)
-        ...NavBar_viewer
-        ...ProjectsPage_viewer
-        ...TaskSetsPage_viewer
-      }
-    `,
-  ),
-);
+export default withData(App);

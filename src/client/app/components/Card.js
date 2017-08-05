@@ -1,7 +1,12 @@
 /* @flow */
 import React from 'react';
 
-export default function Card({ title, children }) {
+type Props = {
+  title: string,
+  children: React.Element<*>,
+};
+
+export default function Card({ title, children }: Props) {
   return (
     <div>
       <h2>

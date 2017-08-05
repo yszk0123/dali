@@ -10,6 +10,9 @@ type Props = {
 
 export default class InputWithButton extends React.Component {
   props: Props;
+  state: {
+    value: string,
+  };
 
   constructor(props: Props) {
     super(props);
@@ -18,7 +21,7 @@ export default class InputWithButton extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.value !== this.state.value) {
       this.setState({
         value: nextProps.value || '',
@@ -26,7 +29,7 @@ export default class InputWithButton extends React.Component {
     }
   }
 
-  _handleChange = event => {
+  _handleChange = (event: Event) => {
     if (!(event.target instanceof HTMLInputElement)) {
       return;
     }
@@ -54,7 +57,7 @@ export default class InputWithButton extends React.Component {
     const { value } = this.state;
 
     onSubmit({ value, isChanged: value !== originalValue });
-    this.setState({ vlaue: '' });
+    this.setState({ value: '' });
   }
 
   render() {

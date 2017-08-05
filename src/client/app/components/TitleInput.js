@@ -9,6 +9,10 @@ type Props = {
 
 export default class TitleInput extends React.Component {
   props: Props;
+  state: {
+    title: string,
+    isEditing: boolean,
+  };
 
   constructor(props: Props) {
     super(props);
@@ -18,7 +22,7 @@ export default class TitleInput extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.title !== this.state.title) {
       this.setState({
         title: nextProps.title || '',
@@ -32,7 +36,11 @@ export default class TitleInput extends React.Component {
     });
   };
 
-  _handleTitleChange = event => {
+  _handleTitleChange = (event: Event) => {
+    if (!(event.target instanceof HTMLInputElement)) {
+      return;
+    }
+
     this.setState({
       title: event.target.value,
     });

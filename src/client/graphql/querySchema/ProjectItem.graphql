@@ -1,0 +1,8 @@
+fragment ProjectItem_project on Project {
+  id
+  title
+}
+
+fragment ProjectItem_currentUser on User {
+  id
+}

@@ -1,3 +1,4 @@
+/* @flow */
 import React from 'react';
 import styled from 'styled-components';
 
@@ -8,11 +9,17 @@ const Placeholder = styled.span`
   color: ${({ nolabel }) => (nolabel ? '#888' : '#111')};
 `;
 
+type Props = {
+  label: string,
+  defaultLabel?: string,
+  onClick: EventHandler,
+};
+
 export default function TitlePlaceholder({
   label,
   defaultLabel = 'No Title',
   onClick,
-}) {
+}: Props) {
   if (!label) {
     return (
       <Placeholder nolabel onClick={onClick}>
