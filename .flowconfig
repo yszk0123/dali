@@ -20,3 +20,4 @@
 defs/
 
 [options]
+module.name_mapper.extension='graphql' -> '<PROJECT_ROOT>/data/schema.js.flow'

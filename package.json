@@ -7,6 +7,10 @@
   "author": "Yuji Suzuki <y0suzuki0123@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "graphql:generate": "npm-run-all graphql:generate:*",
+    "graphql:generate:json": "apollo-codegen introspect-schema data/schema.graphql --output data/schema.json",
+    "graphql:generate:schema": "node -r babel-register ./scripts/generateSchema.js",
+    "graphql:generate:type": "apollo-codegen generate src/**/*.graphql --schema data/schema.json --target flow --output data/schema.js.flow",
     "build": "npm-run-all clean build:relay -p build:client build:server",
     "build:client": "webpack",
     "build:relay": "relay-compiler --src ./src/client/ --schema ./data/schema.graphql",
@@ -29,7 +33,6 @@
     "test": "jest",
     "test:ci": "yarn typecheck && jest --coverage && cat ./coverage/lcov.info | coveralls",
     "typecheck": "flow",
-    "update:schema": "node -r babel-register ./scripts/updateSchema.js",
     "watch": "run-p watch:*",
     "watch:client": "yarn build:client -- --progress --watch",
     "watch:relay": "yarn build:relay -- --watch",
