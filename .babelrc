@@ -3,8 +3,7 @@
     "transform-class-properties",
     "transform-object-rest-spread",
     "transform-runtime",
-    "lodash",
-    "relay"
+    "lodash"
   ],
   "presets": [
     "react",
@@ -16,5 +15,10 @@
         }
       }
     ]
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    }
+  }
 }

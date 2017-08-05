@@ -31,8 +31,8 @@ module.exports = (env = {}) => {
         'normalize.css',
         'font-awesome/css/font-awesome.min.css',
         env.autoReload && `webpack-dev-server/client?http://0.0.0.0:${appPort}`,
-        './src/client/app/assets/app.css',
-        './src/client/app/index.js',
+        './src/client/newApp/assets/app.css',
+        './src/client/newApp/index.js',
       ].filter(Boolean),
     },
     output: {
@@ -136,6 +136,11 @@ module.exports = (env = {}) => {
         {
           test: /\.js$/,
           loader: 'babel-loader',
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.graphql$/,
+          loader: 'graphql-tag/loader',
           exclude: /node_modules/,
         },
       ],

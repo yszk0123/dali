@@ -1,5 +1,7 @@
 /coverage
 /dist
+/flow-override
+/flow-typed
 /node_modules
 
 __generated__

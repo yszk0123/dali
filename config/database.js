@@ -1,13 +1,9 @@
 module.exports = {
   development: {
-    url: process.env.DATABASE_URL,
+    url: 'postgres://dali:365@dali-database:5432/dali',
   },
   test: {
-    username: 'test',
-    password: null,
-    database: 'database_test',
-    host: '127.0.0.1',
-    dialect: 'postgres',
+    url: 'postgres://dali:365@dali-database:5432/dali_test',
   },
   production: {
     url: process.env.DATABASE_URL,
