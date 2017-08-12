@@ -1,22 +1,28 @@
+/* @flow */
 import path from 'path';
 import Sequelize from 'sequelize';
 import serverConfig from '../../shared/config/serverConfig';
+import type { IModels } from '../../graphql/interfaces';
 
 const modelNames = [
-  'DailyReport',
-  'DailySchedule',
+  'Member',
   'Project',
-  'TaskSet',
-  'TaskUnit',
+  'Task',
+  'TaskGroup',
   'TimeUnit',
   'User',
 ];
 
-export default async function connectDatabase() {
+type Output = {
+  models: IModels,
+  sequelize: any,
+};
+
+export default async function connectDatabase(): Promise<Output> {
   const sequelize = new Sequelize(serverConfig.databaseUrl, {
     dialect: 'postgres',
   });
-  const models = {};
+  const models = ({}: any);
 
   modelNames.forEach(name => {
     models[name] = sequelize.import(
@@ -32,5 +38,7 @@ export default async function connectDatabase() {
     }
   });
 
-  return { models, sequelize };
+  await sequelize.sync({ force: true });
+
+  return { models: (models: IModels), sequelize };
 }

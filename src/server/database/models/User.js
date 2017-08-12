@@ -4,11 +4,16 @@ export default function createUser(sequelize, DataTypes) {
     {
       email: {
         type: DataTypes.STRING,
+        allowNull: false,
         unique: true,
       },
-      password: DataTypes.STRING,
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       nickname: {
         type: DataTypes.STRING,
+        allowNull: false,
         unique: true,
       },
       firstName: DataTypes.STRING,
@@ -20,17 +25,10 @@ export default function createUser(sequelize, DataTypes) {
     },
   );
 
-  User.associate = ({
-    TaskSet,
-    TimeUnit,
-    Project,
-    DailySchedule,
-    DailyReport,
-  }) => {
-    User.DailySchedules = User.hasMany(DailySchedule);
+  User.associate = ({ TimeUnit, Member, Project }) => {
     User.Projects = User.hasMany(Project);
-    User.TaskSets = User.hasMany(TaskSet);
     User.TimeUnits = User.hasMany(TimeUnit);
+    User.Members = User.belongsToMany(Project, { through: Member });
   };
 
   return User;
