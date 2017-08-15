@@ -22,8 +22,8 @@ async function setup() {
     // maskErrors(schema);
     await generateFakeData({ models });
 
-    await setupAppServer();
     await setupGraphQLServer({ services, models, schema });
+    await setupAppServer();
   } catch (error) {
     console.error(error);
     process.exit(1);

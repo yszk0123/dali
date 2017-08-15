@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import favicon from 'serve-favicon';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import serverConfig from '../../shared/config/serverConfig';
-import type { IModels, IServices, ISchema } from '../../newGraphql/interfaces';
+import type { IModels, IServices, ISchema } from '../../graphql/interfaces';
 import createAuthMiddleware from './createAuthMiddleware';
 const { graphQLPort } = serverConfig;
 
@@ -26,7 +26,7 @@ export default async function setupGraphQLServer({
   const server = express();
 
   server.use(
-    favicon(path.join(__dirname, '..', '..', 'public', 'favicon.ico')),
+    favicon(path.join(__dirname, '..', '..', '..', 'public', 'favicon.ico')),
   );
   server.use(
     '/graphql',

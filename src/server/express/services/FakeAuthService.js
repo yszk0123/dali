@@ -1,3 +1,4 @@
+// TODO: Move to __mocks__
 import jwt from 'jsonwebtoken';
 import serverConfig from '../../shared/config/serverConfig';
 
@@ -14,6 +15,7 @@ async function signup({ User }, context) {
 
   if (user) {
     context.session.token = createToken(user);
+    context.user = user;
   }
 
   return { user };
@@ -24,6 +26,7 @@ async function login({ User }, context) {
 
   if (user) {
     context.session.token = createToken(user);
+    context.user = user;
   }
 
   return { user };
