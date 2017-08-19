@@ -3,7 +3,7 @@ export default function createProject(sequelize, DataTypes) {
     'project',
     {
       name: DataTypes.STRING,
-      description: DataTypes.STRING,
+      description: DataTypes.TEXT,
       visibility: {
         type: DataTypes.ENUM('PRIVATE', 'MEMBER', 'PUBLIC'),
         allowNull: false,
@@ -22,7 +22,7 @@ export default function createProject(sequelize, DataTypes) {
   );
 
   Project.associate = ({ User, Member, TaskGroup }) => {
-    Project.User = Project.belongsTo(User, { as: 'owner' });
+    Project.Owner = Project.belongsTo(User, { as: 'owner' });
     Project.Members = Project.belongsToMany(User, { through: Member });
     Project.TaskGroups = Project.hasMany(TaskGroup);
   };

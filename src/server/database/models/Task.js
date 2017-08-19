@@ -6,7 +6,7 @@ export default function createTask(sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      description: DataTypes.STRING,
+      description: DataTypes.TEXT,
       done: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
@@ -20,16 +20,10 @@ export default function createTask(sequelize, DataTypes) {
   );
 
   Task.associate = ({ TimeUnit, TaskGroup, User }) => {
-    Task.Owner = Task.belongsTo(User, { as: 'owner', foreignKey: 'ownerId' });
-    Task.Assignee = Task.belongsTo(User, {
-      as: 'assignee',
-      foreignKey: 'assigneeId',
-    });
+    Task.Owner = Task.belongsTo(User, { as: 'owner' });
+    Task.Assignee = Task.belongsTo(User, { as: 'assignee' });
     Task.TaskGroup = Task.belongsTo(TaskGroup);
-    Task.TimeUnit = Task.belongsTo(TimeUnit, {
-      as: 'timeUnit',
-      foreignKey: 'timeUnitId',
-    });
+    Task.TimeUnit = Task.belongsTo(TimeUnit, { as: 'timeUnit' });
   };
 
   return Task;

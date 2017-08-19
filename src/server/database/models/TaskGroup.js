@@ -6,7 +6,7 @@ export default function createTaskGroup(sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      description: DataTypes.STRING,
+      description: DataTypes.TEXT,
       done: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
@@ -20,14 +20,9 @@ export default function createTaskGroup(sequelize, DataTypes) {
   );
 
   TaskGroup.associate = ({ Task, Project, User }) => {
-    TaskGroup.Owner = TaskGroup.belongsTo(User, {
-      as: 'owner',
-      foreignKey: 'ownerId',
-    });
+    TaskGroup.Owner = TaskGroup.belongsTo(User, { as: 'owner' });
     TaskGroup.Project = TaskGroup.belongsTo(Project);
-    TaskGroup.Tasks = TaskGroup.hasMany(Task, {
-      foreignKey: 'taskGroupId',
-    });
+    TaskGroup.Tasks = TaskGroup.hasMany(Task);
   };
 
   return TaskGroup;

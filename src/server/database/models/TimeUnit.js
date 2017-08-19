@@ -2,8 +2,12 @@ export default function createTimeUnit(sequelize, DataTypes) {
   const TimeUnit = sequelize.define(
     'timeUnit',
     {
-      description: DataTypes.STRING,
-      wholeDay: DataTypes.BOOLEAN,
+      description: DataTypes.TEXT,
+      wholeDay: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       startAt: DataTypes.DATE,
       endAt: DataTypes.DATE,
     },
@@ -14,10 +18,7 @@ export default function createTimeUnit(sequelize, DataTypes) {
   );
 
   TimeUnit.associate = ({ Task, User }) => {
-    TimeUnit.Owner = TimeUnit.belongsTo(User, {
-      as: 'Owner',
-      foreignKEy: 'ownerId',
-    });
+    TimeUnit.Owner = TimeUnit.belongsTo(User, { as: 'owner' });
     TimeUnit.Tasks = TimeUnit.hasMany(Task);
   };
 

@@ -13,5 +13,10 @@ export default function createMember(sequelize, DataTypes) {
     },
   );
 
+  Member.associate = ({ User, Project }) => {
+    Member.User = Member.belongsTo(User);
+    Member.Project = Member.belongsTo(Project);
+  };
+
   return Member;
 }

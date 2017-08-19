@@ -25,9 +25,11 @@ export default function createUser(sequelize, DataTypes) {
     },
   );
 
-  User.associate = ({ TimeUnit, Member, Project }) => {
-    User.Projects = User.hasMany(Project);
-    User.TimeUnits = User.hasMany(TimeUnit);
+  User.associate = ({ Task, TaskGroup, TimeUnit, Member, Project }) => {
+    User.Tasks = User.hasMany(Task, { foreignKey: 'ownerId' });
+    User.TaskGroups = User.hasMany(TaskGroup, { foreignKey: 'ownerId' });
+    User.Projects = User.hasMany(Project, { foreignKey: 'ownerId' });
+    User.TimeUnits = User.hasMany(TimeUnit, { foreignKey: 'ownerId' });
     User.Members = User.belongsToMany(Project, { through: Member });
   };
 

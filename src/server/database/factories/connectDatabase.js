@@ -38,7 +38,7 @@ export default async function connectDatabase(): Promise<Output> {
     }
   });
 
-  await sequelize.sync({ force: true });
+  await sequelize.sync();
 
   return { models: (models: IModels), sequelize };
 }
