@@ -2,5 +2,5 @@ language: node_js
 node_js: "6"
 cache: yarn
 script:
-  - yarn build:relay
+  - yarn build
   - yarn test:ci
