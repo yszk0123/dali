@@ -1,0 +1,49 @@
+type Task {
+  id: ID!
+  owner: User!
+  title: String!
+  description: String
+  done: Boolean
+  taskGroup: TaskGroup
+  timeUnit: TimeUnit
+  assignee: User
+}
+
+enum TaskOrderField {
+  TITLE
+  PRIORITY
+  CREATED_AT
+  UPDATED_AT
+}
+
+input TaskOrder {
+  field: TaskOrderField!
+  direction: OrderDirection!
+}
+
+type RemoveTaskPayload {
+  removedTaskId: ID
+}
+
+type AddTaskToTaskGroupPayload {
+  task: Task
+  taskGroup: TaskGroup
+}
+
+type Query {
+  tasks(
+    done: Boolean
+    taskGroupId: ID
+    timeUnitId: ID
+    limit: ListLimit
+    offset: ListOffset
+    orderBy: TaskOrder
+  ): [Task]
+}
+
+type Mutation {
+  createTask(title: String!, taskGroupId: ID, timeUnitId: ID): Task
+  updateTask(taskId: ID!, taskGroupId: ID, timeUnitId: ID): Task
+  removeTask(taskId: ID!): RemoveTaskPayload
+  addTaskToTaskGroup(taskId: ID!, taskGroupId: ID!): AddTaskToTaskGroupPayload
+}

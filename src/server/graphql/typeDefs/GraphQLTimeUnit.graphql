@@ -1,0 +1,50 @@
+type TimeUnit {
+  id: ID!
+  owner: User!
+  description: String
+  wholeDay: Boolean
+  startAt: Date
+  endAt: Date
+  tasks: [Task]
+}
+
+type RemoveTimeUnitPayload {
+  removedTimeUnitId: ID
+}
+
+enum TimeUnitOrderField {
+  DATE
+  TITLE
+}
+
+input TimeUnitOrder {
+  field: TimeUnitOrderField!
+  direction: OrderDirection!
+}
+
+type Query {
+  timeUnits(
+    after: Date
+    before: Date
+    limit: ListLimit
+    offset: ListOffset
+    order: TimeUnitOrder
+  ): [TimeUnit]
+}
+
+type Mutation {
+  createTimeUnit(
+    description: String
+    wholeDay: Boolean
+    startAt: Date
+    endAt: Date
+  ): TimeUnit
+  updateTimeUnit(
+    id: ID!
+    description: String
+    wholeDay: Boolean
+    startAt: Date
+    endAt: Date
+  ): TimeUnit
+  removeTimeUnit(id: ID!): RemoveTimeUnitPayload
+}

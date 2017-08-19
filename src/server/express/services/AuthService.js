@@ -32,6 +32,7 @@ async function signup(
 
   if (user) {
     context.session.token = createToken(user);
+    context.user = user;
   }
 
   return { user };
@@ -42,6 +43,7 @@ async function login({ email, password, User }, context) {
 
   if (user) {
     context.session.token = createToken(user);
+    context.user = user;
   }
 
   return { user };

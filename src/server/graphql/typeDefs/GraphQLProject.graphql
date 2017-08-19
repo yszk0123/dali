@@ -1,0 +1,44 @@
+enum ProjectVisibility {
+  PRIVATE
+  MEMBER
+  PUBLIC
+}
+
+type Project {
+  id: ID!
+  title: String!
+  description: String
+  owner: User!
+  visibility: ProjectVisibility
+  members: [Member]
+  taskGroups: [TaskGroup]
+}
+
+type RemoveProjectPayload {
+  removedProjectId: ID!
+}
+
+enum ProjectOrderField {
+  TITLE
+  CREATED_AT
+  UPDATED_AT
+}
+
+input ProjectOrder {
+  field: ProjectOrderField!
+  direction: OrderDirection!
+}
+
+type Query {
+  projects(
+    limit: ListLimit
+    offset: ListOffset
+    orderBy: ProjectOrder
+  ): [Project]
+}
+
+type Mutation {
+  createProject(title: String!): Project
+  updateProject(projectId: ID!, title: String!): Project
+  removeProject(projectId: ID!): RemoveProjectPayload
+}

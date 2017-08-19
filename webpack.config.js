@@ -138,6 +138,11 @@ module.exports = (env = {}) => {
           loader: 'babel-loader',
           exclude: /node_modules/,
         },
+        {
+          test: /\.graphql$/,
+          loader: 'graphql-tag/loader',
+          exclude: /node_modules/,
+        },
       ],
     },
     stats: {

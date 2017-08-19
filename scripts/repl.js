@@ -5,7 +5,7 @@
  * $ node -r babel-register -r ./repl.js
  * > User.findAll()
  */
-import connectDatabase from '../src/server/database/boot/connectDatabase';
+import { connectDatabase } from '../src/server/database';
 
 function print(value) {
   if (value && value.then) {

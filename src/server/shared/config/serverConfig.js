@@ -1,14 +1,10 @@
 import dotenv from 'dotenv';
+
 dotenv.config();
 
-const appPort = process.env.APP_PORT || 3000;
-const graphQLPort = process.env.GRAPHQL_PORT || 3001;
-const secret = process.env.SECRET;
-const databaseUrl = process.env.DATABASE_URL;
+const env = process.env.NODE_ENV || 'development';
 
-export default {
-  appPort,
-  databaseUrl,
-  graphQLPort,
-  secret,
+module.exports = {
+  ...require(`./serverConfig.${env}`).default,
+  databaseUrl: require('../../../../config/database')[env].url,
 };
