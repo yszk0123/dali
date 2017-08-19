@@ -33,7 +33,7 @@ describe('server', () => {
     const query = gql`
       query TestQuery {
         projects {
-          name
+          title
         }
       }
     `;
@@ -45,7 +45,7 @@ describe('server', () => {
 
     expect(data).toEqual({
       data: {
-        projects: [{ name: 'Work' }, { name: 'Private' }],
+        projects: [{ title: 'Work' }, { title: 'Private' }],
       },
     });
   });
@@ -66,10 +66,10 @@ describe('server', () => {
         schema,
         source: gql`
           mutation {
-            taskGroupA: createTaskGroup(name: "taskGroupA") {
+            taskGroupA: createTaskGroup(title: "taskGroupA") {
               id
             }
-            taskGroupB: createTaskGroup(name: "taskGroupB") {
+            taskGroupB: createTaskGroup(title: "taskGroupB") {
               id
             }
           }
@@ -81,7 +81,7 @@ describe('server', () => {
         schema,
         source: gql`
           mutation {
-            createTask(name: "task", taskGroupId: "${taskGroupA.id}") {
+            createTask(title: "task", taskGroupId: "${taskGroupA.id}") {
               id
               taskGroup {
                 id
@@ -134,13 +134,13 @@ describe('server', () => {
         schema,
         source: gql`
           mutation {
-            oldTaskGroup: createTaskGroup(name: "taskGroup") {
+            oldTaskGroup: createTaskGroup(title: "taskGroup") {
               id
               project {
                 id
               }
             }
-            oldProject: createProject(name: "project") {
+            oldProject: createProject(title: "project") {
               id
             }
           }
@@ -207,17 +207,17 @@ describe('server', () => {
     it('search tasks', async () => {
       const group = await models.TaskGroup.create({
         ownerId: user.id,
-        name: 'group',
+        title: 'group',
       });
 
       const { data: { task1, task2 } } = await graphql({
         schema,
         source: gql`
           mutation {
-            task2: createTask(name: "task2", taskGroupId: "${group.id}") {
+            task2: createTask(title: "task2", taskGroupId: "${group.id}") {
               id
             }
-            task1: createTask(name: "task1", taskGroupId: "${group.id}") {
+            task1: createTask(title: "task1", taskGroupId: "${group.id}") {
               id
             }
           }
@@ -229,7 +229,7 @@ describe('server', () => {
         schema,
         source: gql`
           query {
-            tasks(orderBy: { field: NAME, direction: ASC }) {
+            tasks(orderBy: { field: TITLE, direction: ASC }) {
               id
             }
           }
@@ -240,7 +240,7 @@ describe('server', () => {
         schema,
         source: gql`
           query {
-            tasks(orderBy: { field: NAME, direction: DESC }) {
+            tasks(orderBy: { field: TITLE, direction: DESC }) {
               id
             }
           }
@@ -254,15 +254,15 @@ describe('server', () => {
 
     it('adds task to task group', async () => {
       const [groupA, groupB] = await Promise.all([
-        models.TaskGroup.create({ ownerId: user.id, name: 'group a' }),
-        models.TaskGroup.create({ ownerId: user.id, name: 'group b' }),
+        models.TaskGroup.create({ ownerId: user.id, title: 'group a' }),
+        models.TaskGroup.create({ ownerId: user.id, title: 'group b' }),
       ]);
 
       const { data: { oldTask } } = await graphql({
         schema,
         source: gql`
           mutation {
-            oldTask: createTask(name: "task", taskGroupId: "${groupA.id}") {
+            oldTask: createTask(title: "task", taskGroupId: "${groupA.id}") {
               id
               taskGroup {
                 id

@@ -2,7 +2,7 @@ export default function createProject(sequelize, DataTypes) {
   const Project = sequelize.define(
     'project',
     {
-      name: DataTypes.STRING,
+      title: DataTypes.STRING,
       description: DataTypes.TEXT,
       visibility: {
         type: DataTypes.ENUM('PRIVATE', 'MEMBER', 'PUBLIC'),

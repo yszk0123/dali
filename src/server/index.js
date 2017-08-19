@@ -4,7 +4,6 @@ import { connectDatabase } from './database';
 import { createSchema } from './graphql';
 import { setupAppServer, setupGraphQLServer, AuthService } from './express';
 import type { IServices } from './graphql/interfaces';
-import generateFakeData from './generateFakeData';
 
 function composeServices(): IServices {
   return {
@@ -20,7 +19,6 @@ async function setup() {
 
     // TODO
     // maskErrors(schema);
-    await generateFakeData({ models });
 
     await setupGraphQLServer({ services, models, schema });
     await setupAppServer();

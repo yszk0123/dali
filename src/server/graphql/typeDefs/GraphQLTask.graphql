@@ -1,7 +1,7 @@
 type Task {
   id: ID!
   owner: User!
-  name: String!
+  title: String!
   description: String
   done: Boolean
   taskGroup: TaskGroup
@@ -10,7 +10,7 @@ type Task {
 }
 
 enum TaskOrderField {
-  NAME
+  TITLE
   PRIORITY
   CREATED_AT
   UPDATED_AT
@@ -42,7 +42,7 @@ type Query {
 }
 
 type Mutation {
-  createTask(name: String!, taskGroupId: ID, timeUnitId: ID): Task
+  createTask(title: String!, taskGroupId: ID, timeUnitId: ID): Task
   updateTask(taskId: ID!, taskGroupId: ID, timeUnitId: ID): Task
   removeTask(taskId: ID!): RemoveTaskPayload
   addTaskToTaskGroup(taskId: ID!, taskGroupId: ID!): AddTaskToTaskGroupPayload

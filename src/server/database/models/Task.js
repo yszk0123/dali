@@ -2,7 +2,7 @@ export default function createTask(sequelize, DataTypes) {
   const Task = sequelize.define(
     'task',
     {
-      name: {
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
       },

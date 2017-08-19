@@ -2,7 +2,7 @@ export default function createTaskGroup(sequelize, DataTypes) {
   const TaskGroup = sequelize.define(
     'taskGroup',
     {
-      name: {
+      title: {
         type: DataTypes.STRING,
         allowNull: false,
       },

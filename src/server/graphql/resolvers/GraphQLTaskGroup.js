@@ -31,12 +31,12 @@ export default function createResolvers({
     Mutation: {
       createTaskGroup: async (
         root,
-        { name, description, done, projectId },
+        { title, description, done, projectId },
         { user },
       ) => {
         return await TaskGroup.create({
           ownerId: user.id,
-          name,
+          title,
           description,
           done,
           projectId,
@@ -44,7 +44,7 @@ export default function createResolvers({
       },
       updateTaskGroup: async (
         root,
-        { taskGroupId, name, description, done, projectId },
+        { taskGroupId, title, description, done, projectId },
         { user },
       ) => {
         const taskGroup = await TaskGroup.findOne({
@@ -53,7 +53,7 @@ export default function createResolvers({
         });
 
         await taskGroup.update(
-          omitBy({ name, description, done, projectId }, isUndefined),
+          omitBy({ title, description, done, projectId }, isUndefined),
         );
 
         return taskGroup;

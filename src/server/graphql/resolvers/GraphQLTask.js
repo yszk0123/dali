@@ -32,11 +32,11 @@ export default function createResolvers({
     Mutation: {
       createTask: async (
         root,
-        { name, description, done, taskGroupId, timeUnitId, assigneeId },
+        { title, description, done, taskGroupId, timeUnitId, assigneeId },
         { user },
       ) => {
         return await Task.create({
-          name,
+          title,
           description,
           done,
           taskGroupId,
@@ -49,7 +49,7 @@ export default function createResolvers({
         root,
         {
           taskId,
-          name,
+          title,
           description,
           done,
           taskGroupId,
@@ -65,7 +65,7 @@ export default function createResolvers({
 
         await task.update(
           omitBy(
-            { name, description, done, taskGroupId, timeUnitId, assigneeId },
+            { title, description, done, taskGroupId, timeUnitId, assigneeId },
             isUndefined,
           ),
         );

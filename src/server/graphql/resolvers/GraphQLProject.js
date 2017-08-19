@@ -12,7 +12,7 @@ export default function createResolvers({
 }: Input): IResolvers {
   return {
     Project: {
-      owner: resolver(Project.User),
+      owner: resolver(Project.Owner),
       members: resolver(Project.Members),
       taskGroups: resolver(Project.TaskGroups),
     },
@@ -29,20 +29,19 @@ export default function createResolvers({
       }),
     },
     Mutation: {
-      createProject: async (root, { name }, { user }) => {
+      createProject: async (root, { title }, { user }) => {
         return await Project.create({
-          userId: user.id,
           ownerId: user.id,
-          name,
+          title,
         });
       },
-      updateProject: async (root, { projectId, name }, { user }) => {
+      updateProject: async (root, { projectId, title }, { user }) => {
         const project = await Project.findOne({
           where: { id: projectId, ownerId: user.id },
           rejectOnEmpty: true,
         });
 
-        await project.update(omitBy({ name }, isUndefined));
+        await project.update(omitBy({ title }, isUndefined));
 
         return project;
       },

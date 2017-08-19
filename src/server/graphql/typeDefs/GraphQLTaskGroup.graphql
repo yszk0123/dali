@@ -1,7 +1,7 @@
 type TaskGroup {
   id: ID!
   owner: User!
-  name: String!
+  title: String!
   description: String
   done: Boolean
   project: Project
@@ -34,14 +34,14 @@ type Query {
 
 type Mutation {
   createTaskGroup(
-    name: String
+    title: String
     description: String
     done: Boolean
     projectId: ID
   ): TaskGroup
   updateTaskGroup(
     taskGroupId: ID!
-    name: String
+    title: String
     description: String
     done: Boolean
     projectId: ID

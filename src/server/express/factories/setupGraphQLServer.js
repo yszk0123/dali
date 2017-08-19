@@ -45,3 +45,7 @@ export default async function setupGraphQLServer({
     );
   });
 }
+
+// throw new Error(
+//   'TODO: export express.Routes instead of server and rename to createGraphQLRoute.js',
+// );
