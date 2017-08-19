@@ -1,3 +1,4 @@
+/* @flow */
 import React from 'react';
 import styled from 'styled-components';
 import Icon from './Icon';
@@ -11,6 +12,14 @@ const Label = styled.span`
   cursor: pointer;
 `;
 
+type Props = {
+  icon: string,
+  label: boolean,
+  done: boolean,
+  onLabelClick: EventHandler,
+  onRemoveButtonClick: EventHandler,
+};
+
 export default function TaskLabel({
   icon,
   label,
@@ -18,7 +27,7 @@ export default function TaskLabel({
   onLabelClick,
   onRemoveButtonClick,
   ...rest
-}) {
+}: Props) {
   const displayText = done
     ? <del>
         {label}

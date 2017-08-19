@@ -8,12 +8,12 @@ function renderMergedProps(component, ...rest) {
   return React.createElement(component, finalProps);
 }
 
-export default function PropsPrivateRoute({ component, ...rest }) {
+export default function PropsPrivateRoute({ component, isLogin, ...rest }) {
   return (
     <Route
       {...rest}
       render={routeProps => {
-        if (!rest.viewer) {
+        if (!isLogin) {
           return (
             <Redirect
               to={{ pathname: '/login', state: { from: routeProps.location } }}

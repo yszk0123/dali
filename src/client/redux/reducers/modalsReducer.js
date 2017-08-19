@@ -6,7 +6,7 @@ import {
   OPEN_LINK_PROJECT_UNIT_MODAL,
 } from '../constants/ActionTypes';
 
-export default function modalsReducer(state = {}, action) {
+export default function modalsReducer(state: any = {}, action: any) {
   switch (action.type) {
     case OPEN_ADD_TASK_UNIT_MODAL: {
       const { timeUnitId } = action.payload;

@@ -1,41 +1,24 @@
-import { commitMutation, graphql } from 'react-relay';
-import { ConnectionHandler } from 'relay-runtime';
+import projectPageQuery from '../querySchema/ProjectsPage.graphql';
+import query from '../mutationSchema/RemoveProjectMutation.graphql';
 
-const mutation = graphql`
-  mutation RemoveProjectMutation($input: RemoveProjectInput!) {
-    removeProject(input: $input) {
-      deletedProjectId
-    }
-  }
-`;
-
-function sharedUpdater(store, user, deletedId) {
-  const userProxy = store.get(user.id);
-  const connection = ConnectionHandler.getConnection(
-    userProxy,
-    'ProjectList_projects',
-  );
-
-  ConnectionHandler.deleteNode(connection, deletedId);
-}
-
-function commit(environment, project, user) {
-  return commitMutation(environment, {
-    mutation,
+async function commit(mutate, { projectId }) {
+  await mutate({
     variables: {
-      input: {
-        id: project.id,
+      projectId,
+    },
+    optimisticResponse: {
+      __typename: 'Mutation',
+      removeProject: {
+        __typename: 'RemoveProjectPayload',
+        removedProjectId: projectId,
       },
     },
-    updater: store => {
-      const payload = store.getRootField('removeProject');
-
-      sharedUpdater(store, user, payload.getValue('deletedProjectId'));
-    },
-    optimisticUpdater: store => {
-      sharedUpdater(store, user, project.id);
+    update: (store, { data: { removeProject: { removedProjectId } } }) => {
+      const data = store.readQuery({ query: projectPageQuery });
+      data.projects = data.projects.filter(p => p.id !== removedProjectId);
+      store.writeQuery({ query: projectPageQuery, data });
     },
   });
 }
 
-export default { commit };
+export default { commit, query };

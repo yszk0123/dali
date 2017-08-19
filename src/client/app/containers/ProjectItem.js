@@ -1,67 +1,56 @@
 /* @flow */
 import React from 'react';
 import styled from 'styled-components';
-import { createFragmentContainer, graphql } from 'react-relay';
-import RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
-import UpdateProjectMutation from '../../graphql/mutations/UpdateProjectMutation';
+import { graphql, compose } from 'react-apollo';
+import type { OperationComponent, QueryProps } from 'react-apollo';
+import type {
+  ProjectItem_projectFragment,
+  ProjectItem_currentUserFragment,
+} from 'schema.graphql';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
-
-type Props = {
-  project: any,
-  viewer: any,
-  relay: any,
-};
+import RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
+import UpdateProjectMutation from '../../graphql/mutations/UpdateProjectMutation';
 
 const Wrapper = styled.div`margin: 2.5rem;`;
 
-export class ProjectItem extends React.Component {
-  props: Props;
+type OwnProps = {
+  project: ProjectItem_projectFragment,
+  currentUser: ProjectItem_currentUserFragment,
+};
 
-  _handleRemoveButtonClick = (event: Event) => {
-    this._remove();
-  };
+type Props = {
+  ...QueryProps,
+  ...OwnProps,
+  remove: () => mixed,
+  updateTitle: ({ title: string }) => mixed,
+};
 
-  _handleTitleChange = ({ title }) => {
-    this._updateTitle(title);
-  };
-
-  _updateTitle(title) {
-    const { relay, project } = this.props;
-
-    UpdateProjectMutation.commit(relay.environment, { title }, project);
-  }
-
-  _remove() {
-    RemoveProjectMutation.commit(
-      this.props.relay.environment,
-      this.props.project,
-      this.props.viewer,
-    );
-  }
-
-  render() {
-    const { project } = this.props;
-
-    return (
-      <Wrapper>
-        <TitleInput title={project.title} onChange={this._handleTitleChange} /> {' '}
-        <Icon icon="trash" onClick={this._handleRemoveButtonClick} />
-      </Wrapper>
-    );
-  }
+export function ProjectItem({ project, remove, updateTitle }: Props) {
+  return (
+    <Wrapper>
+      <TitleInput title={project.title} onChange={updateTitle} /> {' '}
+      <Icon icon="trash" onClick={remove} />
+    </Wrapper>
+  );
 }
 
-export default createFragmentContainer(
-  ProjectItem,
-  graphql`
-    fragment ProjectItem_project on Project {
-      id
-      title
-    }
-
-    fragment ProjectItem_viewer on User {
-      id
-    }
-  `,
+const withData: OperationComponent<{}, OwnProps, Props> = compose(
+  graphql(RemoveProjectMutation.query, {
+    props: ({ mutate, ownProps: { project, currentUser } }) => ({
+      remove: () =>
+        RemoveProjectMutation.commit(mutate, {
+          projectId: project.id,
+          currentUser,
+        }),
+    }),
+  }),
+  graphql(UpdateProjectMutation.query, {
+    props: ({ mutate, ownProps: { project, currentUser } }) => ({
+      updateTitle: ({ title }) =>
+        UpdateProjectMutation.commit(mutate, { title }, project),
+    }),
+  }),
 );
+
+export default withData(ProjectItem);

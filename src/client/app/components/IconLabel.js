@@ -1,3 +1,4 @@
+/* @flow */
 import React from 'react';
 import styled from 'styled-components';
 
@@ -11,7 +12,18 @@ const Label = styled.span`
   color: #111;
 `;
 
-export default function IconLabel({ icon, label, onIconClick, ...rest }) {
+type Props = {
+  icon: string,
+  label: boolean,
+  onIconClick: EventHandler,
+};
+
+export default function IconLabel({
+  icon,
+  label,
+  onIconClick,
+  ...rest
+}: Props) {
   return (
     <Label {...rest}>
       <i className={`fa fa-${icon}`} onClick={onIconClick} /> {label}

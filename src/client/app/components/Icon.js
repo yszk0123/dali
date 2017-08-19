@@ -1,3 +1,4 @@
+/* @flow */
 import React from 'react';
 import styled from 'styled-components';
 
@@ -11,7 +12,14 @@ I.defaultProps = {
   color: 'default',
 };
 
-export default function Icon({ icon, large, color, onClick }) {
+type Props = {
+  icon: string,
+  large?: boolean,
+  color?: string,
+  onClick: EventHandler,
+};
+
+export default function Icon({ icon, large, color, onClick }: Props) {
   return (
     <I
       color={color}

@@ -1,0 +1,17 @@
+mutation Signup(
+  $email: String!
+  $password: String!
+  $nickname: String!
+  $firstName: String
+  $lastName: String
+) {
+  signup(
+    email: $email
+    password: $password
+    nickname: $nickname
+    firstName: $firstName
+    lastName: $lastName
+  ) {
+    id
+  }
+}

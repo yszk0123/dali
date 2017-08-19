@@ -1,8 +1,13 @@
+/* @flow */
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { createFragmentContainer, graphql } from 'react-relay';
-import LogoutMutation from '../../graphql/mutations/LogoutMutation';
+import { graphql, compose, withApollo } from 'react-apollo';
+import type { OperationComponent, QueryProps } from 'react-apollo';
+import type { NavBarQuery } from 'schema.graphql';
+import LogoutMutation from '../../graphql/typeDefs/LogoutMutation';
+import LogoutMutationString from '../../graphql/typeDefs/LogoutMutation.graphql';
+import navBarQuery from '../../graphql/querySchema/NavBar.graphql';
 import Button from '../components/Button';
 
 const NavBarWrapper = styled.div`
@@ -30,18 +35,21 @@ const NavBarLink = styled(Link)`
   text-decoration: none;
 `;
 
+type Props = {
+  ...QueryProps,
+  isLogin: boolean,
+  onLogout: () => mixed,
+};
+
 export class NavBar extends React.Component {
+  props: Props;
+
   _handleLogoutButtonClick = () => {
-    this._logout();
+    this.props.onLogout();
   };
 
-  _logout() {
-    const { relay } = this.props;
-    LogoutMutation.commit(relay.environment);
-  }
-
   render() {
-    const { viewer } = this.props;
+    const { isLogin } = this.props;
 
     return (
       <NavBarWrapper>
@@ -53,7 +61,7 @@ export class NavBar extends React.Component {
         <NavBarLink to="/options">Options</NavBarLink>
         <NavBarLink to="/profile">Profile</NavBarLink>
         <NavBarLink to="/dailyReportTemplate">DailyReportTemplate</NavBarLink>
-        {viewer &&
+        {isLogin &&
           <NavBarItem>
             <Button onClick={this._handleLogoutButtonClick}>Logout</Button>
           </NavBarItem>}
@@ -62,11 +70,21 @@ export class NavBar extends React.Component {
   }
 }
 
-export default createFragmentContainer(
-  NavBar,
-  graphql.experimental`
-    fragment NavBar_viewer on User {
-      id
-    }
-  `,
+const withData: OperationComponent<NavBarQuery, {}, Props> = compose(
+  graphql(navBarQuery, {
+    props: ({ data }) => ({
+      isLogin: data && data.viewer,
+    }),
+  }),
+  withApollo,
+  graphql(LogoutMutationString, {
+    props: ({ data, mutate, ownProps: { client } }) => ({
+      onLogout: async () => {
+        await LogoutMutation.commit(mutate);
+        await client.resetStore();
+      },
+    }),
+  }),
 );
+
+export default withData(NavBar);

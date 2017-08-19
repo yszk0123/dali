@@ -1,0 +1,5 @@
+mutation RemoveProjectMutation($projectId: ID!) {
+  removeProject(projectId: $projectId) {
+    removedProjectId
+  }
+}

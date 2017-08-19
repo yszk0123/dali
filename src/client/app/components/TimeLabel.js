@@ -17,7 +17,11 @@ const Wrapper = styled.span`
   color: #aaa;
 `;
 
-export default function Time({ position }) {
+type Props = {
+  position: number,
+};
+
+export default function Time({ position }: Props) {
   return (
     <Wrapper>
       {mapPositionToTimeRange(position)}
