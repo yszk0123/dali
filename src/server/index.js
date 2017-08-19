@@ -2,7 +2,7 @@
 // import { maskErrors } from 'graphql-errors';
 import { connectDatabase } from './database';
 import { createSchema } from './graphql';
-import { setupAppServer, setupGraphQLServer, AuthService } from './express';
+import { setupAppServer, AuthService } from './express';
 import type { IServices } from './graphql/interfaces';
 
 function composeServices(): IServices {
@@ -20,8 +20,7 @@ async function setup() {
     // TODO
     // maskErrors(schema);
 
-    await setupGraphQLServer({ services, models, schema });
-    await setupAppServer();
+    await setupAppServer({ services, models, schema });
   } catch (error) {
     console.error(error);
     process.exit(1);
