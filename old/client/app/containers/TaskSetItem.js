@@ -1,5 +1,5 @@
 /* @flow */
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 import { createFragmentContainer, graphql } from 'react-relay';
 import { connect } from 'react-redux';
@@ -11,11 +11,11 @@ import TitlePlaceholder from '../components/TitlePlaceholder';
 import TitleInput from '../components/TitleInput';
 import DoneCheckbox from '../components/DoneCheckbox';
 
-type Props = {
+interface Props {
   taskSet: any,
   viewer: any,
   relay: any,
-};
+}
 
 const Wrapper = styled.div`margin: 2.5rem;`;
 

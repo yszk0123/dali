@@ -1,15 +1,15 @@
 /* @flow */
-import React from 'react';
+import * as React from 'react';
 import { createRefetchContainer, graphql } from 'react-relay';
 import CreateTaskSetMutation from '../../graphql/mutations/CreateTaskSetMutation';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import InputWithButton from '../components/InputWithButton';
 import TaskSetItem from './TaskSetItem';
 
-type Props = {
+interface Props {
   viewer: any,
   relay: any,
-};
+}
 
 export class TaskSetList extends React.Component {
   props: Props;

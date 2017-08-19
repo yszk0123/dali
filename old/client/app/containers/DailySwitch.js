@@ -1,5 +1,5 @@
 /* @flow */
-import React from 'react';
+import * as React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { createRefetchContainer, graphql } from 'react-relay';
 import { Switch, withRouter } from 'react-router-dom';
@@ -9,7 +9,7 @@ import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import DailySchedulePage from './DailySchedulePage';
 import DailyReportPage from './DailyReportPage';
 
-type Props = { viewer: any };
+interface Props { viewer: any }
 
 type State = { currentDate: Date };
 

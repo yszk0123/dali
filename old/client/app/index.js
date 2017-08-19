@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { QueryRenderer, graphql } from 'react-relay';
 import createRootVariables from '../shared/boot/createRootVariables';
 import App from './containers/App';

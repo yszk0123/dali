@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 import { createRefetchContainer, graphql } from 'react-relay';
 import { flatten, uniqBy, groupBy, toPairs, repeat } from 'lodash';

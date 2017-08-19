@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import CreateDailyScheduleMutation from '../../graphql/mutations/CreateDailyScheduleMutation';
 import Button from '../components/Button';

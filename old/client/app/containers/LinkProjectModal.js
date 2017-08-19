@@ -1,5 +1,5 @@
 /* @flow */
-import React from 'react';
+import * as React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
@@ -11,13 +11,13 @@ import Icon from '../components/Icon';
 import List from './List';
 import ListItem from './ListItem';
 
-type Props = {
+interface Props {
   isOpen: boolean,
   onRequestClose: () => mixed,
   relay: any,
   taskSetId: any,
   viewer: any,
-};
+}
 
 export class LinkProjectModal extends React.Component {
   props: Props;

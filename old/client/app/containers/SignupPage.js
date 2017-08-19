@@ -1,11 +1,11 @@
 /* @flow */
-import React from 'react';
+import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 import SignupMutation from '../../graphql/mutations/SignupMutation';
 
-type Props = {
+interface Props {
   viewer: any,
-};
+}
 
 type State = {
   email: string,
