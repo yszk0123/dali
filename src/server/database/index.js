@@ -1,4 +1,4 @@
 /* @flow */
-import connectDatabase from './boot/connectDatabase';
+import connectDatabase from './factories/connectDatabase';
 
 export { connectDatabase };
