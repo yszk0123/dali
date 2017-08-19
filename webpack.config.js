@@ -31,8 +31,8 @@ module.exports = (env = {}) => {
         'normalize.css',
         'font-awesome/css/font-awesome.min.css',
         env.autoReload && `webpack-dev-server/client?http://0.0.0.0:${appPort}`,
-        './src/client/newApp/assets/app.css',
-        './src/client/newApp/index.js',
+        './src/client/app/assets/app.css',
+        './src/client/app/index.js',
       ].filter(Boolean),
     },
     output: {
