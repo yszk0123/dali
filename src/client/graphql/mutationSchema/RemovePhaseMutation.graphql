@@ -1,0 +1,5 @@
+mutation RemovePhase($phaseId: ID!) {
+  removePhase(phaseId: $phaseId) {
+    removedPhaseId
+  }
+}

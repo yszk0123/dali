@@ -1,0 +1,5 @@
+fragment TaskItem_task on Task {
+  id
+  title
+  done
+}

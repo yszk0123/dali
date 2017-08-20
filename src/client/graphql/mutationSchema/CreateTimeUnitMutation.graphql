@@ -1,0 +1,16 @@
+#import "../querySchema/TimeUnitItem.graphql"
+
+mutation CreateTimeUnit(
+  $description: String
+  $date: DateOnly!
+  $position: Int
+) {
+  createTimeUnit(description: $description, date: $date, position: $position) {
+    id
+    tasks {
+      id
+      title
+    }
+    ...TimeUnitItem_timeUnit
+  }
+}

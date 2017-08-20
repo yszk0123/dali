@@ -2,7 +2,7 @@ import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { ProjectsPageQuery } from 'schema';
 import * as projectsPageQuery from '../../graphql/querySchema/ProjectsPage.graphql';
-import CreateProjectMutation from '../../graphql/mutations/CreateProjectMutation';
+import * as CreateProjectMutation from '../../graphql/mutations/CreateProjectMutation';
 import Button from '../components/Button';
 import ProjectItem from './ProjectItem';
 
@@ -82,10 +82,10 @@ const withData = compose(
     Response & ProjectsPageQuery,
     {},
     Props
-  >(CreateProjectMutation.query, {
+  >(CreateProjectMutation.mutation, {
     props: ({ mutate }) => ({
       createProject: (title: string) =>
-        CreateProjectMutation.commit(mutate, { title }),
+        mutate(CreateProjectMutation.buildMutationOptions({ title })),
     }),
   }),
 );

@@ -7,13 +7,13 @@ interface Input {
 }
 
 export default function createResolvers({
-  models: { Project },
+  models: { Project, Phase },
 }: Input): IResolvers {
   return {
     Project: {
       owner: resolver(Project.Owner),
       members: resolver(Project.Members),
-      taskGroups: resolver(Project.TaskGroups),
+      phases: resolver(Project.Phases),
     },
     Query: {
       projects: resolver(Project, {
@@ -53,6 +53,24 @@ export default function createResolvers({
         await project.destroy();
 
         return { removedProjectId: projectId };
+      },
+      addPhaseToProject: async (
+        root,
+        { phaseId, projectId },
+        { user },
+      ) => {
+        const phase = await Phase.findById(phaseId, {
+          where: { ownerId: user.id },
+          rejectOnEmpty: true,
+        });
+        const project = await Project.findById(projectId, {
+          where: { ownerId: user.id },
+          rejectOnEmpty: true,
+        });
+
+        await project.addPhase(phase);
+
+        return project;
       },
     },
   };

@@ -8,14 +8,14 @@ import {
   QueryProps,
 } from 'react-apollo';
 import { LoginPageQuery } from 'schema';
-import LoginMutation from '../../graphql/typeDefs/LoginMutation';
+import * as LoginMutation from '../../graphql/mutations/LoginMutation';
 import * as loginPageQuery from '../../graphql/querySchema/LoginPage.graphql';
 import Button from '../components/Button';
 
 interface LoginPageProps {
   isLogin: boolean;
   from: any;
-  onLogin(_: { email: string; password: string }): void;
+  login(_: { email: string; password: string }): void;
 }
 
 type Props = QueryProps & LoginPageProps;
@@ -56,14 +56,14 @@ export class LoginPage extends React.Component<
   };
 
   private login() {
-    const { onLogin } = this.props;
+    const { login } = this.props;
     const { email, password } = this.state;
 
     if (!this.isValid()) {
       return;
     }
 
-    onLogin({ email, password });
+    login({ email, password });
   }
 
   private isValid() {
@@ -73,7 +73,7 @@ export class LoginPage extends React.Component<
   }
 
   render() {
-    const { isLogin, from, onLogin } = this.props;
+    const { isLogin, from, login } = this.props;
     const { email, password } = this.state;
     const canLogin = this.isValid();
 
@@ -117,11 +117,11 @@ const withData = compose(
     Response,
     { client: any; location: any },
     Props
-  >(LoginMutation.query, {
+  >(LoginMutation.mutation, {
     props: ({ mutate, ownProps: { client, location } }) => ({
       from: (location.state && location.state.from) || { pathname: '/' },
-      onLogin: async (input: { email: string; password: string }) => {
-        await LoginMutation.commit(mutate, input);
+      login: async (input: { email: string; password: string }) => {
+        await mutate(LoginMutation.buildMutationOptions(input));
         await client.resetStore();
       },
     }),

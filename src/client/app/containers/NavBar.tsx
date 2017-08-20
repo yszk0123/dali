@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { graphql, compose, withApollo, QueryProps } from 'react-apollo';
 import { NavBarQuery } from 'schema';
-import LogoutMutation from '../../graphql/typeDefs/LogoutMutation';
-import * as LogoutMutationString from '../../graphql/typeDefs/LogoutMutation.graphql';
+import * as LogoutMutation from '../../graphql/mutations/LogoutMutation';
 import * as navBarQuery from '../../graphql/querySchema/NavBar.graphql';
 import Button from '../components/Button';
 
@@ -44,7 +43,7 @@ export function NavBar({ isLogin, onLogout }: Props) {
   return (
     <NavBarWrapper>
       <NavBarLink to="/">Dashboard</NavBarLink>
-      <NavBarLink to="/daily/schedule">DailySchedule</NavBarLink>
+      <NavBarLink to="/schedule">Schedule</NavBarLink>
       <NavBarLink to="/daily/report">DailyReport</NavBarLink>
       <NavBarLink to="/projects">Projects</NavBarLink>
       <NavBarLink to="/taskSets">TaskSets</NavBarLink>
@@ -66,10 +65,10 @@ const withData = compose(
     }),
   }),
   withApollo,
-  graphql<Response, { client: any }, Props>(LogoutMutationString, {
+  graphql<Response, { client: any }, Props>(LogoutMutation.mutation, {
     props: ({ data, mutate, ownProps: { client } }) => ({
       onLogout: async () => {
-        await LogoutMutation.commit(mutate);
+        await mutate(LogoutMutation.buildMutationOptions());
         await client.resetStore();
       },
     }),

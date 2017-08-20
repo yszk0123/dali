@@ -1,0 +1,8 @@
+#import "./TimeUnitItem.graphql"
+
+query SchedulePage($date: DateOnly) {
+  timeUnits(date: $date) {
+    id
+    ...TimeUnitItem_timeUnit
+  }
+}

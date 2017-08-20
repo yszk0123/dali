@@ -7,12 +7,12 @@ interface Input {
 }
 
 export default function createResolvers({
-  models: { Task, TaskGroup },
+  models: { Task, Phase },
 }: Input): IResolvers {
   return {
     Task: {
       owner: resolver(Task.Owner),
-      taskGroup: resolver(Task.TaskGroup),
+      phase: resolver(Task.Phase),
       timeUnit: resolver(Task.TimeUnit),
       assignee: resolver(Task.Assignee),
     },
@@ -31,14 +31,14 @@ export default function createResolvers({
     Mutation: {
       createTask: async (
         root,
-        { title, description, done, taskGroupId, timeUnitId, assigneeId },
+        { title, description, done, phaseId, timeUnitId, assigneeId },
         { user },
       ) => {
         return await Task.create({
           title,
           description,
           done,
-          taskGroupId,
+          phaseId,
           timeUnitId,
           assigneeId,
           ownerId: user.id,
@@ -51,7 +51,7 @@ export default function createResolvers({
           title,
           description,
           done,
-          taskGroupId,
+          phaseId,
           timeUnitId,
           assigneeId,
         },
@@ -64,7 +64,7 @@ export default function createResolvers({
 
         await task.update(
           omitBy(
-            { title, description, done, taskGroupId, timeUnitId, assigneeId },
+            { title, description, done, phaseId, timeUnitId, assigneeId },
             isUndefined,
           ),
         );
@@ -81,20 +81,20 @@ export default function createResolvers({
 
         return { removedTaskId: taskId };
       },
-      addTaskToTaskGroup: async (root, { taskId, taskGroupId }, { user }) => {
+      addTaskToPhase: async (root, { taskId, phaseId }, { user }) => {
         const task = await Task.findOne({
           where: { id: taskId, ownerId: user.id },
           rejectOnEmpty: true,
         });
-        const taskGroup = await TaskGroup.findOne({
-          where: { id: taskGroupId, ownerId: user.id },
+        const phase = await Phase.findOne({
+          where: { id: phaseId, ownerId: user.id },
           rejectOnEmpty: true,
         });
 
-        await taskGroup.addTask(task);
+        await phase.addTask(task);
         await task.reload();
 
-        return { task, taskGroup };
+        return { task, phase };
       },
     },
   };

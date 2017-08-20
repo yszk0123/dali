@@ -1,0 +1,12 @@
+#import "./PhaseItem.graphql"
+
+query TasksPage($done: Boolean) {
+  phases(limit: 100, done: $done) {
+    id
+    title
+    ...PhaseItem_phase
+  }
+  currentUser {
+    id
+  }
+}

@@ -1,10 +1,6 @@
 import * as React from 'react';
 
-interface Props {
-  children?: React.ReactChildren;
-}
-
-export default function Dummy({ children }: Props) {
+export default function Dummy({ children }: any) {
   return (
     <span>
       {children}

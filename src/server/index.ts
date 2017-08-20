@@ -1,12 +1,12 @@
 // import { maskErrors } from 'graphql-errors';
 import { connectDatabase } from './database';
 import { createSchema } from './graphql';
-import { setupAppServer, AuthService } from './express';
+import { setupAppServer, AuthService, FakeAuthService } from './express';
 import { IServices } from './graphql/interfaces';
 
 function composeServices(): IServices {
   return {
-    AuthService,
+    AuthService: FakeAuthService,
   };
 }
 

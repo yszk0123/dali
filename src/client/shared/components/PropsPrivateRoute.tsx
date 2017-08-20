@@ -3,11 +3,6 @@
 import * as React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-function renderMergedProps(component: any, ...rest: any[]) {
-  const finalProps = Object.assign({}, ...rest);
-  return React.createElement(component, finalProps);
-}
-
 interface Props {
   component: any;
   exact?: boolean;
@@ -15,11 +10,10 @@ interface Props {
   path: string;
 }
 
-export default function PropsPrivateRoute({
-  component,
-  isLogin,
-  ...rest,
-}: Props) {
+export default function PropsPrivateRoute<T>(props: Props & T) {
+  // FIXME: Avoid any
+  const { component, isLogin, ...rest } = props as any;
+
   return (
     <Route
       {...rest}
@@ -32,7 +26,7 @@ export default function PropsPrivateRoute({
           );
         }
 
-        return renderMergedProps(component, routeProps, rest);
+        return React.createElement(component, { ...routeProps, ...rest });
       }}
     />
   );

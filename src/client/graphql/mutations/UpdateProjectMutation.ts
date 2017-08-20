@@ -1,19 +1,25 @@
+import { MutationOptions } from 'apollo-client';
 import {
-  UpdateProjectMutationMutationVariables,
+  UpdateProjectMutationVariables as MutationVariables,
+  UpdateProjectMutation as Mutation,
   ProjectItem_projectFragment,
 } from 'schema';
-import * as query from '../mutationSchema/UpdateProjectMutation.graphql';
+import * as mutation from '../mutationSchema/UpdateProjectMutation.graphql';
 
-async function commit(
-  mutate: any,
-  { title }: { title: string },
+type QueryVariables = {};
+
+export { mutation, MutationVariables, Mutation };
+
+export function buildMutationOptions(
+  mutationVariables: MutationVariables,
+  variables: QueryVariables = {},
   project: ProjectItem_projectFragment,
-) {
-  await mutate({
-    variables: {
-      projectId: project.id,
-      title,
-    },
+): MutationOptions<Mutation> {
+  const { title } = mutationVariables;
+
+  return {
+    mutation,
+    variables: mutationVariables,
     optimisticResponse: {
       __typename: 'Mutation',
       updateProject: {
@@ -22,7 +28,5 @@ async function commit(
         title,
       },
     },
-  });
+  };
 }
-
-export default { commit, query };

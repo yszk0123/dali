@@ -13,7 +13,7 @@ const Label = styled.span`
 
 interface Props {
   icon: string;
-  label: boolean;
+  label: string;
   done: boolean;
   onLabelClick: React.MouseEventHandler<HTMLElement>;
   onRemoveButtonClick: React.MouseEventHandler<HTMLElement>;

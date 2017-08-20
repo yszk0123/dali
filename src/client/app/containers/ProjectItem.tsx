@@ -4,8 +4,8 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { ProjectItem_projectFragment } from 'schema';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
-import RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
-import UpdateProjectMutation from '../../graphql/mutations/UpdateProjectMutation';
+import * as RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
+import * as UpdateProjectMutation from '../../graphql/mutations/UpdateProjectMutation';
 
 const Wrapper = styled.div`margin: 2.5rem;`;
 
@@ -30,18 +30,24 @@ export function ProjectItem({ project, remove, updateTitle }: Props) {
 }
 
 const withData = compose(
-  graphql<Response, OwnProps, Props>(RemoveProjectMutation.query, {
+  graphql<Response, OwnProps, Props>(RemoveProjectMutation.mutation, {
     props: ({ mutate, ownProps: { project } }) => ({
       remove: () =>
-        RemoveProjectMutation.commit(mutate, {
-          projectId: project.id,
-        }),
+        mutate(
+          RemoveProjectMutation.buildMutationOptions({ projectId: project.id }),
+        ),
     }),
   }),
-  graphql<Response, OwnProps, Props>(UpdateProjectMutation.query, {
+  graphql<Response, OwnProps, Props>(UpdateProjectMutation.mutation, {
     props: ({ mutate, ownProps: { project } }) => ({
-      updateTitle: (input: { title: string }) =>
-        UpdateProjectMutation.commit(mutate, input, project),
+      updateTitle: ({ title }: { title: string }) =>
+        mutate(
+          UpdateProjectMutation.buildMutationOptions(
+            { title, projectId: project.id },
+            {},
+            project,
+          ),
+        ),
     }),
   }),
 );

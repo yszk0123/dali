@@ -7,7 +7,7 @@ const modelNames = [
   'Member',
   'Project',
   'Task',
-  'TaskGroup',
+  'Phase',
   'TimeUnit',
   'User',
 ];

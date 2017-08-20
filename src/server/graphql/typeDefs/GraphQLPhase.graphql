@@ -1,0 +1,51 @@
+type Phase {
+  id: ID!
+  owner: User!
+  title: String!
+  description: String
+  done: Boolean
+  project: Project
+  tasks: [Task]
+}
+
+type RemovePhasePayload {
+  removedPhaseId: ID
+}
+
+type MoveTaskToPhasePayload {
+  task: Task
+  sourcePhase: Phase
+  targetPhase: Phase
+}
+
+type Query {
+  phases(
+    projectId: ID
+    done: Boolean
+    limit: ListLimit
+    offset: ListOffset
+    orderBy: ListOrder
+  ): [Phase]
+}
+
+type Mutation {
+  createPhase(
+    title: String
+    description: String
+    done: Boolean
+    projectId: ID
+  ): Phase
+  updatePhase(
+    phaseId: ID!
+    title: String
+    description: String
+    done: Boolean
+    projectId: ID
+  ): Phase
+  removePhase(phaseId: ID!): RemovePhasePayload
+  moveTaskToPhase(taskId: ID!, phaseId: ID!): MoveTaskToPhasePayload
+  setProjectToPhase(
+    phaseId: ID!
+    projectId: ID!
+  ): Phase
+}

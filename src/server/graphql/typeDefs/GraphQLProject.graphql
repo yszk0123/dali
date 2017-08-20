@@ -11,7 +11,7 @@ type Project {
   owner: User!
   visibility: ProjectVisibility
   members: [Member]
-  taskGroups: [TaskGroup]
+  phases: [Phase]
 }
 
 type RemoveProjectPayload {
@@ -41,4 +41,8 @@ type Mutation {
   createProject(title: String!): Project
   updateProject(projectId: ID!, title: String!): Project
   removeProject(projectId: ID!): RemoveProjectPayload
+  addPhaseToProject(
+    phaseId: ID!
+    projectId: ID!
+  ): Project
 }

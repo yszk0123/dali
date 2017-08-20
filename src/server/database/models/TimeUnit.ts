@@ -9,13 +9,11 @@ export default function createTimeUnit(
     'timeUnit',
     {
       description: DataTypes.TEXT,
-      wholeDay: {
-        type: DataTypes.BOOLEAN,
+      date: {
+        type: DataTypes.DATEONLY,
         allowNull: false,
-        defaultValue: false,
       },
-      startAt: DataTypes.DATE,
-      endAt: DataTypes.DATE,
+      position: DataTypes.INTEGER,
     },
     {
       tableName: 'TimeUnit',

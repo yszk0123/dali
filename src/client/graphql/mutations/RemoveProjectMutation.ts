@@ -1,15 +1,25 @@
-import { RemoveProjectMutationMutationVariables } from 'schema';
-import * as projectPageQuery from '../querySchema/ProjectsPage.graphql';
-import * as query from '../mutationSchema/RemoveProjectMutation.graphql';
+import { MutationOptions } from 'apollo-client';
+import {
+  RemoveProjectMutationVariables as MutationVariables,
+  RemoveProjectMutation as Mutation,
+  ProjectsPageQuery as Query,
+} from 'schema';
+import * as query from '../querySchema/ProjectsPage.graphql';
+import * as mutation from '../mutationSchema/RemoveProjectMutation.graphql';
 
-async function commit(
-  mutate: any,
-  { projectId }: RemoveProjectMutationMutationVariables,
-) {
-  await mutate({
-    variables: {
-      projectId,
-    },
+type QueryVariables = {};
+
+export { mutation, MutationVariables, Mutation };
+
+export function buildMutationOptions(
+  mutationVariables: MutationVariables,
+  variables: QueryVariables = {},
+): MutationOptions<Mutation> {
+  const { projectId } = mutationVariables;
+
+  return {
+    mutation,
+    variables: mutationVariables,
     optimisticResponse: {
       __typename: 'Mutation',
       removeProject: {
@@ -17,17 +27,12 @@ async function commit(
         removedProjectId: projectId,
       },
     },
-    update: (
-      store: any,
-      { data: { removeProject: { removedProjectId } } }: any,
-    ) => {
-      const data = store.readQuery({ query: projectPageQuery });
+    update: (store, { data: { removeProject: { removedProjectId } } }) => {
+      const data = store.readQuery<Query>({ query, variables });
       data.projects = data.projects.filter(
         (p: any) => p.id !== removedProjectId,
       );
-      store.writeQuery({ query: projectPageQuery, data });
+      store.writeQuery({ query, data, variables });
     },
-  });
+  };
 }
-
-export default { commit, query };

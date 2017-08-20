@@ -16,7 +16,7 @@ interface Props {
   icon: string;
   large?: boolean;
   color?: string;
-  onClick: React.MouseEventHandler<HTMLElement>;
+  onClick?: React.MouseEventHandler<HTMLElement>;
 }
 
 export default function Icon({ icon, large, color, onClick }: Props) {

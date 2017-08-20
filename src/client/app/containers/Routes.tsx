@@ -7,17 +7,16 @@ import * as routesQuery from '../../graphql/querySchema/Routes.graphql';
 import PropsRoute from '../../shared/components/PropsRoute';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import Dummy from '../Dummy';
-// import DailySwitch from './DailySwitch';
+import DateSwitch from './DateSwitch';
 // import DashboardPage from './DashboardPage';
+// import SchedulePage from './SchedulePage';
 import LoginPage from './LoginPage';
 import NavBar from './NavBar';
 import ProjectsPage from './ProjectsPage';
-// import SignupPage from './SignupPage';
-// import TaskSetsPage from './TaskSetsPage';
-const DailySwitch = Dummy;
+import SignupPage from './SignupPage';
+import TasksPage from './TasksPage';
+import ProfilePage from './ProfilePage';
 const DashboardPage = Dummy;
-const SignupPage = Dummy;
-const TaskSetsPage = Dummy;
 
 const MainContent = styled.div`margin: 1.8rem;`;
 
@@ -46,14 +45,15 @@ export function Routes({ isLogin }: Props) {
           />
           <PropsPrivateRoute
             path="/taskSets"
-            component={TaskSetsPage}
+            component={TasksPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/daily"
-            component={DailySwitch}
+            path="/profile"
+            component={ProfilePage}
             isLogin={isLogin}
           />
+          <DateSwitch isLogin={isLogin} />
           <PropsRoute path="/login" component={LoginPage} />
           <PropsRoute path="/signup" component={SignupPage} />
         </Switch>

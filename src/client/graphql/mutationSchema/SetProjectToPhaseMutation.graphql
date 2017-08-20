@@ -1,0 +1,8 @@
+#import "../querySchema/PhaseItem.graphql"
+
+mutation SetProjectToPhase($phaseId: ID!, $projectId: ID!) {
+  setProjectToPhase(phaseId: $phaseId, projectId: $projectId) {
+    id
+    ...PhaseItem_phase
+  }
+}

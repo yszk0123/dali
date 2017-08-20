@@ -1,0 +1,29 @@
+import { MutationOptions } from 'apollo-client';
+import {
+  AddPhaseToProjectMutationVariables as MutationVariables,
+  AddPhaseToProjectMutation as Mutation,
+  ProjectsPageQuery as Query,
+} from 'schema';
+import * as query from '../querySchema/ProjectsPage.graphql';
+import * as mutation from '../mutationSchema/AddPhaseToProjectMutation.graphql';
+
+type QueryVariables = {};
+
+export { mutation, MutationVariables, Mutation };
+
+export function buildMutationOptions(
+  mutationVariables: MutationVariables,
+  variables: QueryVariables,
+): MutationOptions<Mutation> {
+  const { projectId, phaseId } = mutationVariables;
+
+  return {
+    mutation,
+    variables: mutationVariables,
+    update: (store, { data: { addPhaseToProject: project } }) => {
+      const data = store.readQuery<Query>({ query, variables });
+      data.projects.push(project);
+      store.writeQuery({ query, data, variables });
+    },
+  };
+}

@@ -1,5 +1,7 @@
 scalar Date
 
+scalar DateOnly
+
 enum OrderDirection {
   ASC
   DESC

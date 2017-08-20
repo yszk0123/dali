@@ -56,10 +56,11 @@ export class DailyReportPage extends React.Component {
           getNodesFromConnection(viewer.dailySchedule.timeUnits).map(timeUnit =>
             getNodesFromConnection(timeUnit.doneTaskUnits).map(taskUnit => ({
               id: taskUnit.id,
-              title: taskUnit.taskSet.title,
-              taskSetId: taskUnit.taskSet.id,
+              title: taskUnit.phase.title,
+              phaseId: taskUnit.phase.id,
               project:
-                (taskUnit.taskSet.project && taskUnit.taskSet.project.title) ||
+                (taskUnit.phase.project &&
+                  taskUnit.phase.project.title) ||
                 DEFAULT_PROJECT_NAME,
             })),
           ),
@@ -68,7 +69,7 @@ export class DailyReportPage extends React.Component {
       ),
     ).map(([project, tasks]) => ({
       project,
-      tasks: uniqBy(tasks, 'taskSetId'),
+      tasks: uniqBy(tasks, 'phaseId'),
     }));
   }
 
@@ -156,8 +157,8 @@ export default createRefetchContainer(
         date: { type: "Date!" }
       ) {
       id
-      todoTaskSets: taskSets(first: $count, done: false)
-        @connection(key: "DailyReportPage_todoTaskSets") {
+      todoPhases: phases(first: $count, done: false)
+        @connection(key: "DailyReportPage_todoPhases") {
         edges {
           node {
             id
@@ -176,7 +177,7 @@ export default createRefetchContainer(
                 edges {
                   node {
                     id
-                    taskSet {
+                    phase {
                       id
                       title
                       project {

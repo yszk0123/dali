@@ -11,7 +11,7 @@ const mutation = graphql`
       taskUnitEdge {
         node {
           id
-          taskSet {
+          phase {
             id
             title
           }
@@ -75,7 +75,7 @@ function commit(
         taskUnitEdge: {
           node: {
             id: generateOptimisticId(),
-            taskSet: taskUnit.taskSet,
+            phase: taskUnit.phase,
           },
         },
       },
