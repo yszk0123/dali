@@ -12,11 +12,11 @@ import {
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import isTouchSupported from '../shared/utils/isTouchSupported';
-import configureStore from '../redux/boot/configureStore';
+import configureStore from '../redux/factories/configureStore';
 import Theme from './constants/Theme';
-import injectMountNodeIfNeeded from './boot/injectMountNodeIfNeeded';
-import registerServiceWorker from './boot/registerServiceWorker';
-import setupClipboard from './boot/setupClipboard';
+import injectMountNodeIfNeeded from './factories/injectMountNodeIfNeeded';
+import registerServiceWorker from './factories/registerServiceWorker';
+import setupClipboard from './factories/setupClipboard';
 import App from './containers/App';
 
 const store = configureStore();
