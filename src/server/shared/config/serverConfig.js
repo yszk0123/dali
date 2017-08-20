@@ -1,10 +1,10 @@
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
 const env = process.env.NODE_ENV || 'development';
 
-module.exports = {
+export default {
   ...require(`./serverConfig.${env}`).default,
-  databaseUrl: require('../../../../config/database')[env].url,
+  databaseUrl: require('./database')[env].url,
 };

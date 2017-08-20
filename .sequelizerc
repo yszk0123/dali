@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 module.exports = {
-  config: path.resolve('config', 'database.js'),
+  config: path.resolve('src', 'server', 'shared', 'config', 'database.js'),
   models: path.resolve('src', 'server', 'database', 'models'),
   'migrations-path': path.resolve('db', 'migrate'),
 };

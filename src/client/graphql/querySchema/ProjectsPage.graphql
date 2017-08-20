@@ -7,6 +7,5 @@ query ProjectsPage {
   }
   currentUser {
     id
-    ...ProjectItem_currentUser
   }
 }
