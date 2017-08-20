@@ -14,31 +14,38 @@ NGINX_FILES_PATH=./nginx
 POSTGRES_DB=dali
 POSTGRES_PASSWORD=password
 POSTGRES_USER=foobar
+RUN_MIGRATE=false
 ```
 
 `app.env`:
 
 ```
 APP_PORT=80
-DATABASE_URL=postgres://foobar:password@dali-database:5432/dali
 GRAPHQL_PORT=3001
+DATABASE_URL=postgres://foobar:password@dali-database:5432/dali
 SECRET=secret
+VIRTUAL_HOST=localhost
+# VIRTUAL_HOST=app.example.com
+LETSENCRYPT_EMAIL=example@example.mail.com
+LETSENCRYPT_HOST=app.example.com
+# LETSENCRYPT_TEST=true
 ```
 
 # Development
 
 - `$ yarn` installs dependencies
-- `$ yarn dev:watch` watches file change
-- `$ yarn dev:start` starts the development server
+- `$ yarn watch` watches file change
+- `$ yarn watch:start` starts the development server
+- `$ yarn watch:test` runs test suite in watch mode
 - `$ yarn test` runs the complete test suite
 - `$ docker-compose -f docker-compose.yml -f docker-compose.development.yml up -d` prepares services
 
 ## How to Update Schema
 
-- `$ yarn update:schema` updates schema file
-- `$ yarn dev:start` restarts the server
+- `$ yarn graphql:generate` updates schema file
+- `$ yarn watch:start` restarts the server
 
-Make sure to commit `schema.graphql` after update.
+Make sure to commit `data/schema.*` after update.
 
 # [WIP] Deploy
 
