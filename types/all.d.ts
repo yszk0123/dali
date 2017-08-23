@@ -31,6 +31,15 @@ declare module 'jsonwebtoken' {
   export = value;
 }
 
+declare module 'assert-err' {
+  export default function assertError(
+    assertion: boolean,
+    errorType: any,
+    message: string,
+    _?: any[],
+  ): void;
+}
+
 declare module 'merge-graphql-schemas' {
   export function fileLoader(path: string): any[];
   export function mergeResolvers(_: any[]): any;
