@@ -9,7 +9,7 @@ type Project {
   title: String!
   description: String
   owner: User!
-  visibility: ProjectVisibility
+  visibility: ProjectVisibility!
   members: [Member]
   phases: [Phase]
 }
@@ -41,8 +41,5 @@ type Mutation {
   createProject(title: String!): Project
   updateProject(projectId: ID!, title: String!): Project
   removeProject(projectId: ID!): RemoveProjectPayload
-  addPhaseToProject(
-    phaseId: ID!
-    projectId: ID!
-  ): Project
+  addPhaseToProject(phaseId: ID!, projectId: ID!): Project
 }

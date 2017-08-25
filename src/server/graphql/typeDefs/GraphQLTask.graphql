@@ -3,7 +3,7 @@ type Task {
   owner: User!
   title: String!
   description: String
-  done: Boolean
+  done: Boolean!
   phase: Phase
   timeUnit: TimeUnit
   assignee: User

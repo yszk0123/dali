@@ -10,6 +10,7 @@ export default function createMember(
     {
       authority: {
         type: DataTypes.ENUM('OWNER', 'EDITABLE', 'READONLY'),
+        allowNull: false,
         defaultValue: 'READONLY',
       },
     },

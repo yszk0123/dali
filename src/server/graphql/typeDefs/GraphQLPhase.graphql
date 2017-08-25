@@ -3,7 +3,7 @@ type Phase {
   owner: User!
   title: String!
   description: String
-  done: Boolean
+  done: Boolean!
   project: Project
   tasks: [Task]
 }
@@ -44,8 +44,5 @@ type Mutation {
   ): Phase
   removePhase(phaseId: ID!): RemovePhasePayload
   moveTaskToPhase(taskId: ID!, phaseId: ID!): MoveTaskToPhasePayload
-  setProjectToPhase(
-    phaseId: ID!
-    projectId: ID!
-  ): Phase
+  setProjectToPhase(phaseId: ID!, projectId: ID!): Phase
 }
