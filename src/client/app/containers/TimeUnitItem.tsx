@@ -1,10 +1,10 @@
 import * as React from 'react';
-import styled, { ThemedProps } from '../styles/StyledComponents';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { TimeUnitItem_timeUnitFragment, TaskItem_taskFragment } from 'schema';
 import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
 import * as UpdateTimeUnitMutation from '../../graphql/mutations/UpdateTimeUnitMutation';
 import * as RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
+import styled, { ThemedProps } from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
 import TitlePlaceholder from '../components/TitlePlaceholder';
@@ -12,9 +12,9 @@ import DoneCheckbox from '../components/DoneCheckbox';
 import IconButtonGroup from '../components/IconButtonGroup';
 import TimeLabel from '../components/TimeLabel';
 import ItemTypes from '../constants/ItemTypes';
-import TaskItem from './TaskItem';
 import Theme from '../constants/Theme';
 import { DateOnly } from '../interfaces';
+import TaskItem from './TaskItem';
 
 // FIXME
 const noop: Function = (): any => null;

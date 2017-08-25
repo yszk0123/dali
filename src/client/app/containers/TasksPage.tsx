@@ -8,8 +8,8 @@ import {
 import * as tasksPageQuery from '../../graphql/querySchema/TasksPage.graphql';
 import * as CreatePhaseMutation from '../../graphql/mutations/CreatePhaseMutation';
 import Button from '../components/Button';
-import PhaseItem from './PhaseItem';
 import Dummy from '../Dummy';
+import PhaseItem from './PhaseItem';
 
 interface TasksPageProps {
   isLogin: boolean;
@@ -73,9 +73,7 @@ export class TasksPage extends React.Component<
           onChange={this.handleDoneChange}
         />
         <div>
-          {phases.map(phase =>
-            <PhaseItem key={phase.id} phase={phase} />,
-          )}
+          {phases.map(phase => <PhaseItem key={phase.id} phase={phase} />)}
         </div>
         <input type="text" value={title} onChange={this.handleTitleChange} />
         <Button onClick={this.handleAddTaskClick}>Add</Button>
@@ -94,18 +92,11 @@ const withData = compose(
       isLogin: data && data.currentUser,
     }),
   }),
-  graphql<
-    Response & TasksPageProps,
-    {},
-    Props
-  >(CreatePhaseMutation.mutation, {
+  graphql<Response & TasksPageProps, {}, Props>(CreatePhaseMutation.mutation, {
     props: ({ mutate }) => ({
       createPhase: (title: string) =>
         mutate(
-          CreatePhaseMutation.buildMutationOptions(
-            { title },
-            { done: false },
-          ),
+          CreatePhaseMutation.buildMutationOptions({ title }, { done: false }),
         ),
     }),
   }),

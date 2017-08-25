@@ -1,16 +1,16 @@
 /* @flow */
 import * as React from 'react';
-import styled, { withTheme, ThemedProps } from '../styles/StyledComponents';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { Switch, withRouter } from 'react-router-dom';
 import { subDays, addDays } from 'date-fns';
+import styled, { withTheme, ThemedProps } from '../styles/StyledComponents';
 import { DateOnly } from '../interfaces';
 import toDaliDate from '../utils/toDaliDate';
 import Day from '../components/Day';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
+import Dummy from '../Dummy';
 import SchedulePage from './SchedulePage';
 // import ReportPage from './DailyReportPage';
-import Dummy from '../Dummy';
 const ReportPage = Dummy;
 
 interface Props {
