@@ -23,7 +23,7 @@ export type CreatePhaseMutationVariables = {
 export type CreatePhaseMutation = {
   createPhase:  {
     id: string,
-    done: boolean | null,
+    done: boolean,
     title: string,
     project:  {
       id: string,
@@ -32,7 +32,7 @@ export type CreatePhaseMutation = {
     tasks:  Array< {
       id: string,
       title: string,
-      done: boolean | null,
+      done: boolean,
     } | null > | null,
   } | null,
 };
@@ -64,7 +64,7 @@ export type CreateTaskMutation = {
       title: string,
     } | null,
     title: string,
-    done: boolean | null,
+    done: boolean,
   } | null,
 };
 
@@ -80,7 +80,7 @@ export type CreateTimeUnitMutation = {
     tasks:  Array< {
       id: string,
       title: string,
-      done: boolean | null,
+      done: boolean,
     } | null > | null,
     description: string | null,
     date: string,
@@ -154,7 +154,7 @@ export type SetProjectToPhaseMutation = {
   setProjectToPhase:  {
     id: string,
     title: string,
-    done: boolean | null,
+    done: boolean,
     project:  {
       id: string,
       title: string,
@@ -162,7 +162,7 @@ export type SetProjectToPhaseMutation = {
     tasks:  Array< {
       id: string,
       title: string,
-      done: boolean | null,
+      done: boolean,
     } | null > | null,
   } | null,
 };
@@ -193,7 +193,7 @@ export type UpdatePhaseMutation = {
   updatePhase:  {
     id: string,
     title: string,
-    done: boolean | null,
+    done: boolean,
     project:  {
       id: string,
       title: string,
@@ -201,7 +201,7 @@ export type UpdatePhaseMutation = {
     tasks:  Array< {
       id: string,
       title: string,
-      done: boolean | null,
+      done: boolean,
     } | null > | null,
   } | null,
 };
@@ -231,7 +231,7 @@ export type UpdateTaskMutation = {
   updateTask:  {
     id: string,
     title: string,
-    done: boolean | null,
+    done: boolean,
   } | null,
 };
 
@@ -251,7 +251,7 @@ export type UpdateTimeUnitMutation = {
     tasks:  Array< {
       id: string,
       title: string,
-      done: boolean | null,
+      done: boolean,
     } | null > | null,
   } | null,
 };
@@ -304,7 +304,7 @@ export type SchedulePageQuery = {
     tasks:  Array< {
       id: string,
       title: string,
-      done: boolean | null,
+      done: boolean,
     } | null > | null,
   } | null > | null,
 };
@@ -323,7 +323,7 @@ export type TasksPageQuery = {
   phases:  Array< {
     id: string,
     title: string,
-    done: boolean | null,
+    done: boolean,
     project:  {
       id: string,
       title: string,
@@ -331,7 +331,7 @@ export type TasksPageQuery = {
     tasks:  Array< {
       id: string,
       title: string,
-      done: boolean | null,
+      done: boolean,
     } | null > | null,
   } | null > | null,
   currentUser:  {
@@ -347,13 +347,13 @@ export type ProjectItem_projectFragment = {
 export type TaskItem_taskFragment = {
   id: string,
   title: string,
-  done: boolean | null,
+  done: boolean,
 };
 
 export type PhaseItem_phaseFragment = {
   id: string,
   title: string,
-  done: boolean | null,
+  done: boolean,
   project:  {
     id: string,
     title: string,
@@ -361,7 +361,7 @@ export type PhaseItem_phaseFragment = {
   tasks:  Array< {
     id: string,
     title: string,
-    done: boolean | null,
+    done: boolean,
   } | null > | null,
 };
 
@@ -373,7 +373,7 @@ export type TimeUnitItem_timeUnitFragment = {
   tasks:  Array< {
     id: string,
     title: string,
-    done: boolean | null,
+    done: boolean,
   } | null > | null,
 };
 /* tslint:enable */

@@ -30,7 +30,7 @@ scalar ListWhere
 
 type Member {
   id: ID!
-  authority: Authority
+  authority: Authority!
 }
 
 type MoveTaskToPhasePayload {
@@ -71,7 +71,7 @@ type Phase {
   owner: User!
   title: String!
   description: String
-  done: Boolean
+  done: Boolean!
   project: Project
   tasks: [Task]
 }
@@ -81,7 +81,7 @@ type Project {
   title: String!
   description: String
   owner: User!
-  visibility: ProjectVisibility
+  visibility: ProjectVisibility!
   members: [Member]
   phases: [Phase]
 }
@@ -133,7 +133,7 @@ type Task {
   owner: User!
   title: String!
   description: String
-  done: Boolean
+  done: Boolean!
   phase: Phase
   timeUnit: TimeUnit
   assignee: User
