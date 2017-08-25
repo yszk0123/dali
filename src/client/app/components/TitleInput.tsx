@@ -16,7 +16,7 @@ export default class TitleInput extends React.Component {
   constructor(props: Props) {
     super(props);
     this.state = {
-      title: props.title || '',
+      title: props.title,
       isEditing: false,
     };
   }

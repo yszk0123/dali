@@ -27,10 +27,17 @@ export function buildMutationOptions(
         removedTimeUnitId: timeUnitId,
       },
     },
-    update: (store, { data: { removeTimeUnit: { removedTimeUnitId } } }) => {
+    update: (
+      store,
+      { data: { removeTimeUnit } = { removeTimeUnit: null } },
+    ) => {
       const data = store.readQuery<Query>({ query, variables });
+      if (!data.timeUnits || !removeTimeUnit) {
+        return;
+      }
+
       data.timeUnits = data.timeUnits.filter(
-        (p: any) => p.id !== removedTimeUnitId,
+        (p: any) => p.id !== removeTimeUnit.removedTimeUnitId,
       );
       store.writeQuery({ query, data, variables });
     },

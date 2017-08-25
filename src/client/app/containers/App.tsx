@@ -34,7 +34,7 @@ export function App({
 const withData = graphql<Response & AppQuery, {}, Props>(appQuery, {
   props: ({ data }) => ({
     ...data,
-    ...data.currentUser,
+    ...data && data.currentUser,
     isLogin: data && data.currentUser,
   }),
 });

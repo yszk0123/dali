@@ -127,7 +127,7 @@ const withData = compose(
     props: ({ mutate, ownProps: { client, location } }) => ({
       from: (location.state && location.state.from) || { pathname: '/' },
       signup: async (input: SignupMutation.MutationVariables) => {
-        await mutate(SignupMutation.buildMutationOptions(input));
+        mutate && (await mutate(SignupMutation.buildMutationOptions(input)));
         await client.resetStore();
       },
     }),

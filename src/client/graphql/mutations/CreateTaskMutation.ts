@@ -20,13 +20,7 @@ export function buildMutationOptions(
   variables: QueryVariables,
   options: Options,
 ): MutationOptions<Mutation> {
-  const {
-    title,
-    description,
-    done,
-    phaseId,
-    timeUnitId,
-  } = mutationVariables;
+  const { title, description, done, phaseId, timeUnitId } = mutationVariables;
 
   return {
     mutation,
@@ -43,12 +37,16 @@ export function buildMutationOptions(
         timeUnitId,
       },
     },
-    update: (store, { data: { createTask } }) => {
+    update: (store, { data: { createTask } = { createTask: null } }) => {
       const data = store.readFragment<Fragment>({
         fragment,
         variables,
         id: options.phaseId,
       });
+      if (!data || !data.tasks) {
+        return;
+      }
+
       data.tasks.push(createTask);
       store.writeFragment({
         fragment,

@@ -73,7 +73,10 @@ export class TasksPage extends React.Component<
           onChange={this.handleDoneChange}
         />
         <div>
-          {phases.map(phase => <PhaseItem key={phase.id} phase={phase} />)}
+          {phases &&
+            phases.map(
+              phase => phase && <PhaseItem key={phase.id} phase={phase} />,
+            )}
         </div>
         <input type="text" value={title} onChange={this.handleTitleChange} />
         <Button onClick={this.handleAddTaskClick}>Add</Button>
@@ -95,6 +98,7 @@ const withData = compose(
   graphql<Response & TasksPageProps, {}, Props>(CreatePhaseMutation.mutation, {
     props: ({ mutate }) => ({
       createPhase: (title: string) =>
+        mutate &&
         mutate(
           CreatePhaseMutation.buildMutationOptions({ title }, { done: false }),
         ),

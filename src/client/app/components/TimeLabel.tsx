@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { ThemedProps } from '../styles/StyledComponents';
 
 function mapPositionToTimeRange(position: number): string {
   const odd = position % 2 === 0;
@@ -12,7 +12,7 @@ function mapPositionToTimeRange(position: number): string {
 }
 
 const Wrapper = styled.span`
-  font-size: ${({ theme }) => theme.timeLabel.fontSize};
+  font-size: ${({ theme }: ThemedProps) => theme.timeLabel.fontSize};
   color: #aaa;
 `;
 

@@ -40,7 +40,7 @@ const Wrapper = styled.div`
 `;
 
 interface TaskSummaryProps {
-  tasks: TaskItem_taskFragment[];
+  tasks: Array<TaskItem_taskFragment | null>;
   timeUnit: TimeUnitItem_timeUnitFragment;
   onAddTaskUnitButtonClick: any;
 }
@@ -52,7 +52,7 @@ function TaskSummary({
 }: TaskSummaryProps) {
   return (
     <SummaryWrapper>
-      {tasks.map(task => <TaskItem key={task.id} task={task} />)}
+      {tasks.map(task => task && <TaskItem key={task.id} task={task} />)}
       <Icon large icon="plus-circle" onClick={onAddTaskUnitButtonClick} />
     </SummaryWrapper>
   );
@@ -89,20 +89,24 @@ export function TimeUnitItem({
     <div>
       <Wrapper isOver={isOver}>
         <div>
-          <TimeLabel position={timeUnit.position} />{' '}
+          {timeUnit.position &&
+            <span>
+              <TimeLabel position={timeUnit.position} />{' '}
+            </span>}
           <TitleInput
-            title={timeUnit.description}
+            title={timeUnit.description || ''}
             onChange={updateDescription}
           />
           <SmallIconButtonGroup>
             <RemoveButton onClick={removeTimeUnit} />
           </SmallIconButtonGroup>
         </div>
-        <TaskSummary
-          onAddTaskUnitButtonClick={noop}
-          tasks={timeUnit.tasks}
-          timeUnit={timeUnit}
-        />
+        {timeUnit.tasks &&
+          <TaskSummary
+            onAddTaskUnitButtonClick={noop}
+            tasks={timeUnit.tasks}
+            timeUnit={timeUnit}
+          />}
       </Wrapper>
     </div>,
   );
@@ -110,12 +114,19 @@ export function TimeUnitItem({
 
 const taskTarget: DropTargetSpec<Props> = {
   drop: ({ timeUnit }, monitor) => {
+    if (!monitor || !timeUnit) {
+      return;
+    }
+
     if (monitor.didDrop()) {
       return;
     }
 
     const { taskId } = monitor.getItem() as any;
-    if (timeUnit.tasks.find(task => task.id === taskId)) {
+    if (
+      timeUnit.tasks &&
+      timeUnit.tasks.find(task => !!task && task.id === taskId)
+    ) {
       return { canMove: false };
     }
 
@@ -127,6 +138,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(RemoveTimeUnitMutation.mutation, {
     props: ({ mutate, ownProps: { date, timeUnit } }) => ({
       removeTimeUnit: (title: string) =>
+        mutate &&
         mutate(
           RemoveTimeUnitMutation.buildMutationOptions(
             { timeUnitId: timeUnit.id },
@@ -138,6 +150,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(UpdateTimeUnitMutation.mutation, {
     props: ({ mutate, ownProps: { timeUnit } }) => ({
       updateDescription: ({ title: description }: { title: string }) =>
+        mutate &&
         mutate(
           UpdateTimeUnitMutation.buildMutationOptions(
             { description, timeUnitId: timeUnit.id },

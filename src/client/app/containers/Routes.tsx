@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Switch, withRouter } from 'react-router-dom';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import styled from 'styled-components';
 import { RoutesQuery } from 'schema';
+import styled from '../styles/StyledComponents';
 import * as routesQuery from '../../graphql/querySchema/Routes.graphql';
 import PropsRoute from '../../shared/components/PropsRoute';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';

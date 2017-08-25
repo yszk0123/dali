@@ -20,8 +20,15 @@ export function buildMutationOptions(
   return {
     mutation,
     variables: mutationVariables,
-    update: (store, { data: { addPhaseToProject: project } }) => {
+    update: (
+      store,
+      { data: { addPhaseToProject: project } = { addPhaseToProject: null } },
+    ) => {
       const data = store.readQuery<Query>({ query, variables });
+      if (!data.projects) {
+        return;
+      }
+
       data.projects.push(project);
       store.writeQuery({ query, data, variables });
     },

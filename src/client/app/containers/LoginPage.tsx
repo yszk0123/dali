@@ -121,7 +121,7 @@ const withData = compose(
     props: ({ mutate, ownProps: { client, location } }) => ({
       from: (location.state && location.state.from) || { pathname: '/' },
       login: async (input: { email: string; password: string }) => {
-        await mutate(LoginMutation.buildMutationOptions(input));
+        mutate && (await mutate(LoginMutation.buildMutationOptions(input)));
         await client.resetStore();
       },
     }),

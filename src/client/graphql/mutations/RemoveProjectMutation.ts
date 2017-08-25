@@ -27,10 +27,14 @@ export function buildMutationOptions(
         removedProjectId: projectId,
       },
     },
-    update: (store, { data: { removeProject: { removedProjectId } } }) => {
+    update: (store, { data: { removeProject } = { removeProject: null } }) => {
       const data = store.readQuery<Query>({ query, variables });
+      if (!removeProject || !data.projects) {
+        return;
+      }
+
       data.projects = data.projects.filter(
-        (p: any) => p.id !== removedProjectId,
+        (p: any) => p.id !== removeProject.removedProjectId,
       );
       store.writeQuery({ query, data, variables });
     },

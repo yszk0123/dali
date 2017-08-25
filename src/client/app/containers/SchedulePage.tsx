@@ -23,12 +23,14 @@ const ListItem = styled.div`
 `;
 
 function getSparseTimeUnits(
-  timeUnits: TimeUnitItem_timeUnitFragment[],
+  timeUnits: Array<TimeUnitItem_timeUnitFragment | null>,
 ): TimeUnitItem_timeUnitFragment[] {
   const sparseTimeUnits = Array.from(Array(MAX_TIME_UNITS));
 
   timeUnits.forEach(timeUnit => {
-    sparseTimeUnits[timeUnit.position] = timeUnit;
+    if (timeUnit && timeUnit.position) {
+      sparseTimeUnits[timeUnit.position] = timeUnit;
+    }
   });
 
   return sparseTimeUnits;
@@ -48,13 +50,14 @@ export function SchedulePage({ date, timeUnits, loading }: Props) {
   return (
     <NoUserSelectArea>
       <List>
-        {getSparseTimeUnits(timeUnits).map((timeUnit, position) =>
-          <ListItem key={position}>
-            {timeUnit
-              ? <TimeUnitItem date={date} timeUnit={timeUnit} />
-              : <EmptyTimeUnitItem date={date} position={position} />}
-          </ListItem>,
-        )}
+        {timeUnits &&
+          getSparseTimeUnits(timeUnits).map((timeUnit, position) =>
+            <ListItem key={position}>
+              {timeUnit
+                ? <TimeUnitItem date={date} timeUnit={timeUnit} />
+                : <EmptyTimeUnitItem date={date} position={position} />}
+            </ListItem>,
+          )}
       </List>
     </NoUserSelectArea>
   );
@@ -67,7 +70,7 @@ const withData = compose(
     }),
     props: ({ data }) => ({
       ...data,
-      loading: data.loading || !data.timeUnits,
+      loading: data && (data.loading || !data.timeUnits),
     }),
   }),
 );

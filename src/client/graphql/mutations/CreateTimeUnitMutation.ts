@@ -31,8 +31,15 @@ export function buildMutationOptions(
         tasks: [],
       },
     },
-    update: (store, { data: { createTimeUnit } }) => {
+    update: (
+      store,
+      { data: { createTimeUnit } = { createTimeUnit: null } },
+    ) => {
       const data = store.readQuery<Query>({ query, variables });
+      if (!data.timeUnits) {
+        return;
+      }
+
       data.timeUnits.push(createTimeUnit);
       store.writeQuery({ query, data, variables });
     },

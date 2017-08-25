@@ -28,8 +28,15 @@ export function buildMutationOptions(
         title,
       },
     },
-    update: (store, { data: { createProject: project } }) => {
+    update: (
+      store,
+      { data: { createProject: project } = { createProject: null } },
+    ) => {
       const data = store.readQuery<Query>({ query, variables });
+      if (!data.projects) {
+        return;
+      }
+
       data.projects.push(project);
       store.writeQuery({ query, data, variables });
     },

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { PhaseItem_phaseFragment } from 'schema';
+import styled from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
 import * as CreateTaskMutation from '../../graphql/mutations/CreateTaskMutation';
@@ -40,18 +40,23 @@ export function PhaseItem({
       <Wrapper>
         <DoneCheckbox done={phase.done} onChange={toggleDone} />
         <TitleInput title={phase.title} onChange={updateTitle} />
-        {' ('}
-        <TitlePlaceholder
-          label={projectTitle}
-          defaultLabel="No Project"
-          onClick={setProject}
-        />
-        {') '}
+        {projectTitle &&
+          <span>
+            <span> (</span>
+            <TitlePlaceholder
+              label={projectTitle}
+              defaultLabel="No Project"
+              onClick={setProject}
+            />
+            <span>) </span>
+          </span>}
         <Icon icon="trash" onClick={removePhase} />
       </Wrapper>
-      {phase.tasks.map(task =>
-        <TaskItem key={task.id} task={task} phaseId={phase.id} />,
-      )}
+      {phase.tasks &&
+        phase.tasks.map(
+          task =>
+            task && <TaskItem key={task.id} task={task} phaseId={phase.id} />,
+        )}
     </div>
   );
 }
@@ -60,6 +65,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(CreateTaskMutation.mutation, {
     props: ({ mutate, ownProps: { phase } }) => ({
       createTask: (title: string) =>
+        mutate &&
         mutate(
           CreateTaskMutation.buildMutationOptions(
             { title },
@@ -72,6 +78,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(RemovePhaseMutation.mutation, {
     props: ({ mutate, ownProps: { phase } }) => ({
       removePhase: () =>
+        mutate &&
         mutate(
           RemovePhaseMutation.buildMutationOptions(
             { phaseId: phase.id },
@@ -83,6 +90,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(UpdatePhaseMutation.mutation, {
     props: ({ mutate, ownProps: { phase } }) => ({
       updateTitle: (input: { title: string }) =>
+        mutate &&
         mutate(
           UpdatePhaseMutation.buildMutationOptions(
             { ...input, phaseId: phase.id },
@@ -91,6 +99,7 @@ const withData = compose(
           ),
         ),
       toggleDone: () =>
+        mutate &&
         mutate(
           UpdatePhaseMutation.buildMutationOptions(
             { done: !phase.done, phaseId: phase.id },
@@ -104,6 +113,7 @@ const withData = compose(
     props: ({ mutate, ownProps: { phase } }) => ({
       // TODO: Pass projectId
       setProject: (projectId: string) =>
+        mutate &&
         mutate(
           SetProjectToPhaseMutation.buildMutationOptions(
             { phaseId: phase.id, projectId: '' },

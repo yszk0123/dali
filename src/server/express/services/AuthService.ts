@@ -31,7 +31,7 @@ async function signup(
     lastName,
   });
 
-  if (user) {
+  if (user && context.session) {
     context.session.token = createToken(user);
     context.user = user;
   }
@@ -45,7 +45,7 @@ async function login(
 ): Promise<any> {
   const user = await User.findOne({ where: { email, password } });
 
-  if (user) {
+  if (user && context.session) {
     context.session.token = createToken(user);
     context.user = user;
   }
@@ -56,7 +56,9 @@ async function login(
 async function logout(data: any, context: IContext): Promise<any> {
   const user: any = null;
 
-  context.session.token = null;
+  if (context.session) {
+    delete context.session.token;
+  }
 
   return { user };
 }

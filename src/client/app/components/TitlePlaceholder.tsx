@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from '../styles/StyledComponents';
 
 const Placeholder = styled.span`
   display: inline-block;
@@ -9,7 +9,7 @@ const Placeholder = styled.span`
 `;
 
 interface Props {
-  label: string;
+  label?: string;
   defaultLabel?: string;
   onClick: React.MouseEventHandler<HTMLElement>;
 }

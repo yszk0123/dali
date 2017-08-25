@@ -1,10 +1,10 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { graphql, compose, withApollo, QueryProps } from 'react-apollo';
 import { NavBarQuery } from 'schema';
 import * as LogoutMutation from '../../graphql/mutations/LogoutMutation';
 import * as navBarQuery from '../../graphql/querySchema/NavBar.graphql';
+import styled from '../styles/StyledComponents';
 import Button from '../components/Button';
 
 const NavBarWrapper = styled.div`
@@ -68,7 +68,7 @@ const withData = compose(
   graphql<Response, { client: any }, Props>(LogoutMutation.mutation, {
     props: ({ data, mutate, ownProps: { client } }) => ({
       onLogout: async () => {
-        await mutate(LogoutMutation.buildMutationOptions());
+        mutate && (await mutate(LogoutMutation.buildMutationOptions()));
         await client.resetStore();
       },
     }),

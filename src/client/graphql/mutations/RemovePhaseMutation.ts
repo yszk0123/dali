@@ -27,10 +27,14 @@ export function buildMutationOptions(
         removedPhaseId: phaseId,
       },
     },
-    update: (store, { data: { removePhase: { removedPhaseId } } }) => {
+    update: (store, { data: { removePhase } = { removePhase: null } }) => {
       const data = store.readQuery<Query>({ query, variables });
+      if (!removePhase || !data.phases) {
+        return;
+      }
+
       data.phases = data.phases.filter(
-        (p: any) => p.id !== removedPhaseId,
+        (p: any) => p.id !== removePhase.removedPhaseId,
       );
       store.writeQuery({ query, data, variables });
     },

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from '../styles/StyledComponents';
 import Icon from './Icon';
 
 const Label = styled.span`

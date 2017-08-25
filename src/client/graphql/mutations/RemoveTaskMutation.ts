@@ -33,14 +33,20 @@ export function buildMutationOptions(
         removedTaskId: taskId,
       },
     },
-    update: (store, { data: { removeTask: { removedTaskId } } }) => {
+    update: (store, { data: { removeTask } = { removeTask: null } }) => {
       if (phaseId) {
         const data = store.readFragment<Fragment>({
           fragment,
           variables,
           id: phaseId,
         });
-        data.tasks = data.tasks.filter((p: any) => p.id !== removedTaskId);
+        if (!data || !data.tasks || !removeTask) {
+          return;
+        }
+
+        data.tasks = data.tasks.filter(
+          (p: any) => p.id !== removeTask.removedTaskId,
+        );
         store.writeFragment({
           fragment,
           data,

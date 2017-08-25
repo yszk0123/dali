@@ -1,7 +1,7 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { ProjectItem_projectFragment } from 'schema';
+import styled from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
 import * as RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
@@ -33,6 +33,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(RemoveProjectMutation.mutation, {
     props: ({ mutate, ownProps: { project } }) => ({
       remove: () =>
+        mutate &&
         mutate(
           RemoveProjectMutation.buildMutationOptions({ projectId: project.id }),
         ),
@@ -41,6 +42,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(UpdateProjectMutation.mutation, {
     props: ({ mutate, ownProps: { project } }) => ({
       updateTitle: ({ title }: { title: string }) =>
+        mutate &&
         mutate(
           UpdateProjectMutation.buildMutationOptions(
             { title, projectId: project.id },

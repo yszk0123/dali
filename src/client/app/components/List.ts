@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '../styles/StyledComponents';
 
 export default styled.div`
   minWidth: 300px;

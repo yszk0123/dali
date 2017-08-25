@@ -10,7 +10,6 @@ import {
   createNetworkInterface,
 } from 'react-apollo';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
 import isTouchSupported from '../shared/utils/isTouchSupported';
 import configureStore from '../redux/factories/configureStore';
 import Theme from './constants/Theme';
@@ -18,6 +17,7 @@ import injectMountNodeIfNeeded from './factories/injectMountNodeIfNeeded';
 import registerServiceWorker from './factories/registerServiceWorker';
 import setupClipboard from './factories/setupClipboard';
 import App from './containers/App';
+import { ThemeProvider } from './styles/StyledComponents';
 
 const store = configureStore();
 

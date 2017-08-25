@@ -31,9 +31,16 @@ export function buildMutationOptions(
         tasks: [],
       },
     },
-    update: (store, { data: { createPhase } }) => {
+    update: (
+      store,
+      { data: { createPhase: phase } = { createPhase: null } },
+    ) => {
       const data = store.readQuery<Query>({ query, variables });
-      data.phases.push(createPhase);
+      if (!data.phases) {
+        return;
+      }
+
+      data.phases.push(phase);
       store.writeQuery({ query, data, variables });
     },
   };

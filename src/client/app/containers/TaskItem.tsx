@@ -46,6 +46,10 @@ const taskUnitSource: DragSourceSpec<Props> = {
     // phaseId: taskUnit.phase.id,
   }),
   endDrag: (_, monitor) => {
+    if (!monitor) {
+      return;
+    }
+
     if (!monitor.didDrop()) {
       return;
     }
@@ -64,6 +68,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(RemoveTaskMutation.mutation, {
     props: ({ mutate, ownProps: { task, phaseId } }) => ({
       remove: () =>
+        mutate &&
         mutate(
           RemoveTaskMutation.buildMutationOptions(
             { taskId: task.id },
@@ -76,6 +81,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(UpdateTaskMutation.mutation, {
     props: ({ mutate, ownProps: { task } }) => ({
       updateTitle: (input: { title: string }) =>
+        mutate &&
         mutate(
           UpdateTaskMutation.buildMutationOptions(
             { ...input, taskId: task.id },
@@ -84,6 +90,7 @@ const withData = compose(
           ),
         ),
       toggleDone: () =>
+        mutate &&
         mutate(
           UpdateTaskMutation.buildMutationOptions(
             { done: !task.done, taskId: task.id },

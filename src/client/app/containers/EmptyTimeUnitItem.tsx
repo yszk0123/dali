@@ -2,9 +2,9 @@
  * TODO: Extract sharable components
  */
 import * as React from 'react';
-import styled from 'styled-components';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { TimeUnitItem_timeUnitFragment, TaskItem_taskFragment } from 'schema';
+import styled from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TimeLabel from '../components/TimeLabel';
 import { DateOnly } from '../interfaces';
@@ -38,6 +38,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(CreateTimeUnitMutation.mutation, {
     props: ({ mutate, ownProps: { date, position } }) => ({
       create: () =>
+        mutate &&
         mutate(
           CreateTimeUnitMutation.buildMutationOptions(
             { date, position },

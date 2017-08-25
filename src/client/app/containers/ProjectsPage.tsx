@@ -43,10 +43,15 @@ export class ProjectsPage extends React.Component<
   private renderProjects() {
     const { projects } = this.props;
 
-    return projects.map(project =>
-      <div key={project.id}>
-        <ProjectItem project={project} />
-      </div>,
+    return (
+      projects &&
+      projects.map(
+        project =>
+          project &&
+          <div key={project.id}>
+            <ProjectItem project={project} />
+          </div>,
+      )
     );
   }
 
@@ -85,7 +90,7 @@ const withData = compose(
   >(CreateProjectMutation.mutation, {
     props: ({ mutate }) => ({
       createProject: (title: string) =>
-        mutate(CreateProjectMutation.buildMutationOptions({ title })),
+        mutate && mutate(CreateProjectMutation.buildMutationOptions({ title })),
     }),
   }),
 );

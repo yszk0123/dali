@@ -4,7 +4,9 @@ import {
   ThemedStyledProps,
 } from 'styled-components';
 
-import ThemeInterface from './ThemeInterface';
+import Theme from './ThemeInterface';
+
+type Color = 'primary' | 'default';
 
 // FIXME: Workaround for styled-components@v2.0.1
 // ref. https://github.com/styled-components/styled-components/issues/890#issuecomment-307261950
@@ -17,9 +19,9 @@ const {
   withTheme,
 } = (StyledComponents as ThemedStyledComponentsModule<
   any
->) as ThemedStyledComponentsModule<ThemeInterface>;
+>) as ThemedStyledComponentsModule<Theme>;
 
-export type ThemedProps<P> = ThemedStyledProps<P, ThemeInterface>;
+export type ThemedProps<P = {}> = ThemedStyledProps<P, Theme>;
 
-export { css, injectGlobal, keyframes, ThemeProvider, withTheme };
+export { css, injectGlobal, keyframes, ThemeProvider, withTheme, Theme, Color };
 export default styled;
