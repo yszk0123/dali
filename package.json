@@ -23,7 +23,7 @@
     "graphql:generate:json": "apollo-codegen introspect-schema data/schema.graphql --output data/schema.json",
     "graphql:generate:schema": "node -r babel-register ./scripts/generateSchema.js",
     "graphql:generate:type": "apollo-codegen generate 'src/client/graphql/**/*.graphql' --schema data/schema.json --target typescript --output data/schema.ts",
-    "lint": "eslint ./src ./data",
+    "lint": "eslint ./src ./data --ext .ts --ext tsx --fix",
     "release": "NODE_ENV=production yarn build",
     "repl": "node -r babel-register -r ./scripts/repl.js",
     "start": "node ./dist/server/index.js",
@@ -92,7 +92,8 @@
     "sequelize": "^4.6.0",
     "sequelize-cli": "^2.8.0",
     "serve-favicon": "^2.4.3",
-    "styled-components": "^2.1.2"
+    "styled-components": "^2.1.2",
+    "typescript-eslint-parser": "^7.0.0"
   },
   "devDependencies": {
     "apollo-codegen": "^0.16.5",
