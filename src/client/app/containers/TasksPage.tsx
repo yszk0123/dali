@@ -56,7 +56,7 @@ export class TasksPage extends React.Component<
   };
 
   render() {
-    const { isLogin, phases } = this.props;
+    const { isLogin, phases, projects } = this.props;
     const { title, done } = this.state;
 
     if (!isLogin) {
@@ -74,7 +74,9 @@ export class TasksPage extends React.Component<
         <div>
           {phases &&
             phases.map(
-              phase => phase && <PhaseItem key={phase.id} phase={phase} />,
+              phase =>
+                phase &&
+                <PhaseItem key={phase.id} phase={phase} projects={projects} />,
             )}
         </div>
         <input type="text" value={title} onChange={this.handleTitleChange} />

@@ -31,6 +31,7 @@ input ProjectOrder {
 
 type Query {
   projects(
+    done: Boolean
     limit: ListLimit
     offset: ListOffset
     orderBy: ProjectOrder

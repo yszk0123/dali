@@ -1,10 +1,15 @@
-#import "./PhaseItem.graphql"
+#import "./PhaseItem_phase.graphql"
+#import "./PhaseItem_projects.graphql"
 
 query TasksPage($done: Boolean) {
   phases(limit: 100, done: $done) {
     id
     title
     ...PhaseItem_phase
+  }
+  projects(done: false) {
+    id
+    ...PhaseItem_projects
   }
   currentUser {
     id

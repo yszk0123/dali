@@ -4,7 +4,7 @@ import {
   RemoveTaskMutation as Mutation,
   PhaseItem_phaseFragment as Fragment,
 } from 'schema';
-import * as fragment from '../querySchema/PhaseItem.graphql';
+import * as fragment from '../querySchema/PhaseItem_phase.graphql';
 import * as mutation from '../mutationSchema/RemoveTaskMutation.graphql';
 
 type QueryVariables = {};

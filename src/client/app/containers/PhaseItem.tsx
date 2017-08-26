@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import { PhaseItem_phaseFragment } from 'schema';
+import { PhaseItem_phaseFragment, PhaseItem_projectsFragment } from 'schema';
 import styled from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
@@ -9,12 +9,14 @@ import * as RemovePhaseMutation from '../../graphql/mutations/RemovePhaseMutatio
 import * as UpdatePhaseMutation from '../../graphql/mutations/UpdatePhaseMutation';
 import * as SetProjectToPhaseMutation from '../../graphql/mutations/SetProjectToPhaseMutation';
 import TitlePlaceholder from '../components/TitlePlaceholder';
+import TitleSelect from '../components/TitleSelect';
 import DoneCheckbox from '../components/DoneCheckbox';
 import TaskItem from './TaskItem';
 
 const Wrapper = styled.div`margin: 2.5rem;`;
 
 interface OwnProps {
+  projects: (PhaseItem_projectsFragment | null)[] | null;
   phase: PhaseItem_phaseFragment;
 }
 
@@ -23,10 +25,11 @@ type Props = OwnProps & {
   removePhase: React.MouseEventHandler<HTMLElement>;
   updateTitle(_: { title: string }): void;
   toggleDone(): void;
-  setProject(_: any): void;
+  setProject(projectId: string | null): void;
 };
 
 export function PhaseItem({
+  projects,
   phase,
   removePhase,
   updateTitle,
@@ -41,10 +44,10 @@ export function PhaseItem({
         <DoneCheckbox done={phase.done} onChange={toggleDone} />
         <TitleInput title={phase.title} onChange={updateTitle} />
         <span> (</span>
-        <TitlePlaceholder
-          label={projectTitle}
-          defaultLabel="No Project"
-          onClick={setProject}
+        <TitleSelect
+          selectedId={phase.project && phase.project.id}
+          onChange={setProject}
+          items={projects || []}
         />
         <span>) </span>
         <Icon icon="trash" onClick={removePhase} />
@@ -108,12 +111,12 @@ const withData = compose(
   }),
   graphql<Response, OwnProps, Props>(SetProjectToPhaseMutation.mutation, {
     props: ({ mutate, ownProps: { phase } }) => ({
-      // TODO: Pass projectId
-      setProject: (projectId: string) =>
+      setProject: (projectId: string | null) =>
+        projectId &&
         mutate &&
         mutate(
           SetProjectToPhaseMutation.buildMutationOptions(
-            { phaseId: phase.id, projectId: '' },
+            { phaseId: phase.id, projectId },
             { done: false },
           ),
         ),

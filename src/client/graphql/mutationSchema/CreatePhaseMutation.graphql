@@ -1,4 +1,4 @@
-#import "../querySchema/PhaseItem.graphql"
+#import "../querySchema/PhaseItem_phase.graphql"
 
 mutation CreatePhase(
   $title: String
