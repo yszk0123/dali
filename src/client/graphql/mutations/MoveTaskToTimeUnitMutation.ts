@@ -3,8 +3,7 @@ import { MutationOptions } from 'apollo-client';
 import {
   MoveTaskToTimeUnitMutationVariables as MutationVariables,
   MoveTaskToTimeUnitMutation as Mutation,
-  TimeUnitItem_timeUnitFragment as Fragment,
-  TaskItem_taskFragment,
+  TimeUnitItem_timeUnitFragment,
 } from 'schema';
 import * as TimeUnitItem_timeUnit from '../querySchema/TimeUnitItem_timeUnit.graphql';
 import * as mutation from '../mutationSchema/MoveTaskToTimeUnitMutation.graphql';
@@ -35,13 +34,17 @@ export function buildMutationOptions(
         return;
       }
 
-      const oldTimeUnitProxy = store.readFragment<Fragment>({
+      const oldTimeUnitProxy = store.readFragment<
+        TimeUnitItem_timeUnitFragment
+      >({
         fragment: TimeUnitItem_timeUnit,
         fragmentName: 'TimeUnitItem_timeUnit',
         variables,
         id: dataIdFromObject(sourceTimeUnit),
       });
-      const newTimeUnitProxy = store.readFragment<Fragment>({
+      const newTimeUnitProxy = store.readFragment<
+        TimeUnitItem_timeUnitFragment
+      >({
         fragment: TimeUnitItem_timeUnit,
         fragmentName: 'TimeUnitItem_timeUnit',
         variables,

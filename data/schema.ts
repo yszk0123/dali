@@ -86,11 +86,32 @@ export type CreateTimeUnitMutation = {
       done: boolean,
       phase:  {
         id: string,
+        title: string,
       } | null,
     } | null > | null,
     description: string | null,
     date: string,
     position: number | null,
+  } | null,
+};
+
+export type CreateTimeUnitTaskMutationVariables = {
+  title: string,
+  description?: string | null,
+  done?: boolean | null,
+  phaseId: string,
+  timeUnitId?: string | null,
+};
+
+export type CreateTimeUnitTaskMutation = {
+  createTask:  {
+    id: string,
+    phase:  {
+      id: string,
+      title: string,
+    } | null,
+    title: string,
+    done: boolean,
   } | null,
 };
 
@@ -148,6 +169,7 @@ export type MoveTaskToTimeUnitMutation = {
       done: boolean,
       phase:  {
         id: string,
+        title: string,
       } | null,
     } | null,
     sourceTimeUnit:  {
@@ -196,6 +218,16 @@ export type RemoveTimeUnitMutationVariables = {
 export type RemoveTimeUnitMutation = {
   removeTimeUnit:  {
     removedTimeUnitId: string | null,
+  } | null,
+};
+
+export type RemoveTimeUnitTaskMutationVariables = {
+  taskId: string,
+};
+
+export type RemoveTimeUnitTaskMutation = {
+  removeTask:  {
+    removedTaskId: string | null,
   } | null,
 };
 
@@ -317,8 +349,30 @@ export type UpdateTimeUnitMutation = {
       done: boolean,
       phase:  {
         id: string,
+        title: string,
       } | null,
     } | null > | null,
+  } | null,
+};
+
+export type UpdateTimeUnitTaskMutationVariables = {
+  taskId: string,
+  title?: string | null,
+  description?: string | null,
+  done?: boolean | null,
+  phaseId?: string | null,
+  timeUnitId?: string | null,
+};
+
+export type UpdateTimeUnitTaskMutation = {
+  updateTask:  {
+    id: string,
+    title: string,
+    done: boolean,
+    phase:  {
+      id: string,
+      title: string,
+    } | null,
   } | null,
 };
 
@@ -373,6 +427,7 @@ export type SchedulePageQuery = {
       done: boolean,
       phase:  {
         id: string,
+        title: string,
       } | null,
     } | null > | null,
   } | null > | null,
@@ -455,6 +510,16 @@ export type PhaseItem_phaseFragment = {
   } | null > | null,
 };
 
+export type TimeUnitTaskItem_taskFragment = {
+  id: string,
+  title: string,
+  done: boolean,
+  phase:  {
+    id: string,
+    title: string,
+  } | null,
+};
+
 export type TimeUnitItem_timeUnitFragment = {
   id: string,
   description: string | null,
@@ -466,6 +531,7 @@ export type TimeUnitItem_timeUnitFragment = {
     done: boolean,
     phase:  {
       id: string,
+      title: string,
     } | null,
   } | null > | null,
 };

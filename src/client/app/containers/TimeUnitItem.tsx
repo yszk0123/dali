@@ -2,7 +2,7 @@ import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import {
   TimeUnitItem_timeUnitFragment,
-  TaskItem_taskFragment,
+  TimeUnitTaskItem_taskFragment,
   TimeUnitItem_phasesFragment,
 } from 'schema';
 import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
@@ -22,10 +22,7 @@ import ItemTypes from '../constants/ItemTypes';
 import Theme from '../constants/Theme';
 import AddTaskToTimeUnitForm from '../containers/AddTaskToTimeUnitForm';
 import { DateOnly } from '../interfaces';
-import TaskItem from './TaskItem';
-
-// FIXME
-const noop: Function = (): any => null;
+import TimeUnitTaskItem from './TimeUnitTaskItem';
 
 const SmallIconButtonGroup = styled(IconButtonGroup)`
   margin-right: 1rem;
@@ -48,25 +45,19 @@ const Wrapper = styled.div`
 `;
 
 interface TaskSummaryProps {
-  tasks: Array<TaskItem_taskFragment | null>;
+  tasks: Array<TimeUnitTaskItem_taskFragment | null>;
   timeUnit: TimeUnitItem_timeUnitFragment;
-  removeTask(task: TaskItem_taskFragment): void;
-  onAddTaskUnitButtonClick: any;
+  removeTask(task: TimeUnitTaskItem_taskFragment): void;
 }
 
-function TaskSummary({
-  tasks,
-  timeUnit,
-  removeTask,
-  onAddTaskUnitButtonClick,
-}: TaskSummaryProps) {
+function TaskSummary({ tasks, timeUnit, removeTask }: TaskSummaryProps) {
   return (
     <SummaryWrapper>
       {tasks.map(
         task =>
-          task && <TaskItem key={task.id} task={task} remove={removeTask} />,
+          task &&
+          <TimeUnitTaskItem key={task.id} task={task} remove={removeTask} />,
       )}
-      <Icon large icon="plus-circle" onClick={onAddTaskUnitButtonClick} />
     </SummaryWrapper>
   );
 }
@@ -89,7 +80,7 @@ type Props = OwnProps & {
   updateDescription(description: string): void;
   moveTaskToTimeUnit(taskId: string, timeUnitId: string): void;
   removeTimeUnit(): void;
-  removeTask(task: TaskItem_taskFragment): void;
+  removeTask(task: TimeUnitTaskItem_taskFragment): void;
   connectDropTarget: ConnectDropTarget;
   isOver: boolean;
 };
@@ -121,7 +112,6 @@ export function TimeUnitItem({
         </div>
         {timeUnit.tasks &&
           <TaskSummary
-            onAddTaskUnitButtonClick={noop}
             tasks={timeUnit.tasks}
             timeUnit={timeUnit}
             removeTask={removeTask}
@@ -159,7 +149,7 @@ const taskTarget: DropTargetSpec<Props> = {
 const withData = compose(
   graphql<Response, OwnProps, Props>(RemoveTaskMutation.mutation, {
     props: ({ mutate, ownProps: { timeUnit } }) => ({
-      removeTask: (task: TaskItem_taskFragment) =>
+      removeTask: (task: TimeUnitTaskItem_taskFragment) =>
         mutate &&
         mutate(
           RemoveTaskMutation.buildMutationOptions(
