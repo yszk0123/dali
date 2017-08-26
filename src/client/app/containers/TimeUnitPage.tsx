@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import { SchedulePageQuery, TimeUnitItem_timeUnitFragment } from 'schema';
-import * as schedulePageQuery from '../../graphql/querySchema/SchedulePage.graphql';
+import { TimeUnitPageQuery, TimeUnitItem_timeUnitFragment } from 'schema';
+import * as timeUnitPageQuery from '../../graphql/querySchema/TimeUnitPage.graphql';
 import styled from '../styles/StyledComponents';
 import NoUserSelectArea from '../components/NoUserSelectArea';
 import { DateOnly } from '../interfaces';
@@ -40,9 +40,9 @@ interface OwnProps {
   date: DateOnly;
 }
 
-type Props = QueryProps & SchedulePageQuery & OwnProps;
+type Props = QueryProps & TimeUnitPageQuery & OwnProps;
 
-export function SchedulePage({ date, timeUnits, loading, phases }: Props) {
+export function TimeUnitPage({ date, timeUnits, loading, phases }: Props) {
   if (loading || !phases) {
     return null;
   }
@@ -68,7 +68,7 @@ export function SchedulePage({ date, timeUnits, loading, phases }: Props) {
 }
 
 const withData = compose(
-  graphql<Response & SchedulePageQuery, OwnProps, Props>(schedulePageQuery, {
+  graphql<Response & TimeUnitPageQuery, OwnProps, Props>(timeUnitPageQuery, {
     options: ({ date }) => ({
       variables: { date },
     }),
@@ -79,4 +79,4 @@ const withData = compose(
   }),
 );
 
-export default withData(SchedulePage);
+export default withData(TimeUnitPage);

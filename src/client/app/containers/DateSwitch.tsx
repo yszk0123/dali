@@ -9,7 +9,7 @@ import toDaliDate from '../utils/toDaliDate';
 import Day from '../components/Day';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import Dummy from '../Dummy';
-import SchedulePage from './SchedulePage';
+import TimeUnitPage from './TimeUnitPage';
 // import ReportPage from './DailyReportPage';
 const ReportPage = Dummy;
 
@@ -114,8 +114,8 @@ export class DateSwitch extends React.Component<Props, State> {
         </h2>
         <Switch>
           <PropsPrivateRoute
-            path="/schedule"
-            component={SchedulePage}
+            path="/timeUnit"
+            component={TimeUnitPage}
             date={currentDate}
             isLogin={isLogin}
           />

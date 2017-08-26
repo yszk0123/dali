@@ -45,7 +45,7 @@ export function NavBar({ isLogin, onLogout }: Props) {
       <NavBarLink to="/">Dashboard</NavBarLink>
       <NavBarLink to="/projects">Projects</NavBarLink>
       <NavBarLink to="/tasks">Tasks</NavBarLink>
-      <NavBarLink to="/schedule">Schedule</NavBarLink>
+      <NavBarLink to="/timeUnit">TimeUnit</NavBarLink>
       <NavBarLink to="/report">Report</NavBarLink>
       <NavBarLink to="/options">Options</NavBarLink>
       <NavBarLink to="/profile">Profile</NavBarLink>

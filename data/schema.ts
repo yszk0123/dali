@@ -411,36 +411,6 @@ export type RoutesQuery = {
   } | null,
 };
 
-export type SchedulePageQueryVariables = {
-  date?: string | null,
-};
-
-export type SchedulePageQuery = {
-  timeUnits:  Array< {
-    id: string,
-    description: string | null,
-    date: string,
-    position: number | null,
-    tasks:  Array< {
-      id: string,
-      title: string,
-      done: boolean,
-      phase:  {
-        id: string,
-        title: string,
-      } | null,
-    } | null > | null,
-  } | null > | null,
-  phases:  Array< {
-    id: string,
-    title: string,
-    tasks:  Array< {
-      id: string,
-      title: string,
-    } | null > | null,
-  } | null > | null,
-};
-
 export type SignupPageQuery = {
   currentUser:  {
     id: string,
@@ -476,6 +446,36 @@ export type TasksPageQuery = {
   currentUser:  {
     id: string,
   } | null,
+};
+
+export type TimeUnitPageQueryVariables = {
+  date?: string | null,
+};
+
+export type TimeUnitPageQuery = {
+  timeUnits:  Array< {
+    id: string,
+    description: string | null,
+    date: string,
+    position: number | null,
+    tasks:  Array< {
+      id: string,
+      title: string,
+      done: boolean,
+      phase:  {
+        id: string,
+        title: string,
+      } | null,
+    } | null > | null,
+  } | null > | null,
+  phases:  Array< {
+    id: string,
+    title: string,
+    tasks:  Array< {
+      id: string,
+      title: string,
+    } | null > | null,
+  } | null > | null,
 };
 
 export type ProjectItem_projectFragment = {
@@ -536,6 +536,11 @@ export type TimeUnitItem_timeUnitFragment = {
   } | null > | null,
 };
 
+export type PhaseItem_projectsFragment = {
+  id: string,
+  title: string,
+};
+
 export type AddTaskToTimeUnitForm_phasesFragment = {
   id: string,
   title: string,
@@ -552,10 +557,5 @@ export type TimeUnitItem_phasesFragment = {
     id: string,
     title: string,
   } | null > | null,
-};
-
-export type PhaseItem_projectsFragment = {
-  id: string,
-  title: string,
 };
 /* tslint:enable */

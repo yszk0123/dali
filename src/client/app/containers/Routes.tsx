@@ -9,7 +9,7 @@ import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import Dummy from '../Dummy';
 import DateSwitch from './DateSwitch';
 // import DashboardPage from './DashboardPage';
-// import SchedulePage from './SchedulePage';
+// import TimeUnitPage from './TimeUnitPage';
 import LoginPage from './LoginPage';
 import NavBar from './NavBar';
 import ProjectsPage from './ProjectsPage';

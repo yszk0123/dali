@@ -2,9 +2,9 @@ import { MutationOptions } from 'apollo-client';
 import {
   CreateTimeUnitMutationVariables as MutationVariables,
   CreateTimeUnitMutation as Mutation,
-  SchedulePageQuery as Query,
+  TimeUnitPageQuery as Query,
 } from 'schema';
-import * as query from '../querySchema/SchedulePage.graphql';
+import * as query from '../querySchema/TimeUnitPage.graphql';
 import * as mutation from '../mutationSchema/CreateTimeUnitMutation.graphql';
 
 type QueryVariables = {};
