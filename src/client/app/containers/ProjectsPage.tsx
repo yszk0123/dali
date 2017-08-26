@@ -65,7 +65,6 @@ export class ProjectsPage extends React.Component<
 
     return (
       <div>
-        <h1>Projects</h1>
         <div>
           {this.renderProjects()}
         </div>

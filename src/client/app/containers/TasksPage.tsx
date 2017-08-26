@@ -65,7 +65,6 @@ export class TasksPage extends React.Component<
 
     return (
       <div>
-        <h1>Phases</h1>
         <label htmlFor="phaseDone">Done: </label>
         <input
           type="checkbox"
