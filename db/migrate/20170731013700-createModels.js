@@ -198,14 +198,6 @@ module.exports = {
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
     });
-
-    await queryInterface.addConstraint('Member', ['projectId', 'userId'], {
-      type: 'primary key',
-    });
-
-    await queryInterface.addConstraint('Task', ['phaseId', 'timeUnitId'], {
-      type: 'unique',
-    });
   },
 
   async down(queryInterface, Sequelize) {

@@ -1,19 +1,26 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import { TimeUnitItem_timeUnitFragment, TaskItem_taskFragment } from 'schema';
+import {
+  TimeUnitItem_timeUnitFragment,
+  TaskItem_taskFragment,
+  TimeUnitItem_phasesFragment,
+} from 'schema';
 import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
 import * as UpdateTimeUnitMutation from '../../graphql/mutations/UpdateTimeUnitMutation';
 import * as MoveTaskToTimeUnitMutation from '../../graphql/mutations/MoveTaskToTimeUnitMutation';
 import * as RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
+import * as RemoveTaskMutation from '../../graphql/mutations/RemoveTaskMutation';
 import styled, { ThemedProps } from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
 import TitlePlaceholder from '../components/TitlePlaceholder';
 import DoneCheckbox from '../components/DoneCheckbox';
+import InputWithButton from '../components/InputWithButton';
 import IconButtonGroup from '../components/IconButtonGroup';
 import TimeLabel from '../components/TimeLabel';
 import ItemTypes from '../constants/ItemTypes';
 import Theme from '../constants/Theme';
+import AddTaskToTimeUnitForm from '../containers/AddTaskToTimeUnitForm';
 import { DateOnly } from '../interfaces';
 import TaskItem from './TaskItem';
 
@@ -43,17 +50,22 @@ const Wrapper = styled.div`
 interface TaskSummaryProps {
   tasks: Array<TaskItem_taskFragment | null>;
   timeUnit: TimeUnitItem_timeUnitFragment;
+  removeTask(task: TaskItem_taskFragment): void;
   onAddTaskUnitButtonClick: any;
 }
 
 function TaskSummary({
   tasks,
   timeUnit,
+  removeTask,
   onAddTaskUnitButtonClick,
 }: TaskSummaryProps) {
   return (
     <SummaryWrapper>
-      {tasks.map(task => task && <TaskItem key={task.id} task={task} />)}
+      {tasks.map(
+        task =>
+          task && <TaskItem key={task.id} task={task} remove={removeTask} />,
+      )}
       <Icon large icon="plus-circle" onClick={onAddTaskUnitButtonClick} />
     </SummaryWrapper>
   );
@@ -70,12 +82,14 @@ function RemoveButton({
 interface OwnProps {
   date: DateOnly;
   timeUnit: TimeUnitItem_timeUnitFragment;
+  phases: (TimeUnitItem_phasesFragment | null)[];
 }
 
 type Props = OwnProps & {
   updateDescription(input: { title: string }): void;
   moveTaskToTimeUnit(taskId: string, timeUnitId: string): void;
   removeTimeUnit(): void;
+  removeTask(task: TaskItem_taskFragment): void;
   connectDropTarget: ConnectDropTarget;
   isOver: boolean;
 };
@@ -83,6 +97,8 @@ type Props = OwnProps & {
 export function TimeUnitItem({
   removeTimeUnit,
   timeUnit,
+  phases,
+  removeTask,
   connectDropTarget,
   updateDescription,
   isOver,
@@ -108,7 +124,9 @@ export function TimeUnitItem({
             onAddTaskUnitButtonClick={noop}
             tasks={timeUnit.tasks}
             timeUnit={timeUnit}
+            removeTask={removeTask}
           />}
+        <AddTaskToTimeUnitForm timeUnit={timeUnit} phases={phases} />
       </Wrapper>
     </div>,
   );
@@ -139,6 +157,19 @@ const taskTarget: DropTargetSpec<Props> = {
 };
 
 const withData = compose(
+  graphql<Response, OwnProps, Props>(RemoveTaskMutation.mutation, {
+    props: ({ mutate, ownProps: { timeUnit } }) => ({
+      removeTask: (task: TaskItem_taskFragment) =>
+        mutate &&
+        mutate(
+          RemoveTaskMutation.buildMutationOptions(
+            { taskId: task.id },
+            { done: false },
+            { timeUnit },
+          ),
+        ),
+    }),
+  }),
   graphql<Response, OwnProps, Props>(RemoveTimeUnitMutation.mutation, {
     props: ({ mutate, ownProps: { date, timeUnit } }) => ({
       removeTimeUnit: (title: string) =>
@@ -166,7 +197,7 @@ const withData = compose(
   }),
   graphql<Response, OwnProps, Props>(MoveTaskToTimeUnitMutation.mutation, {
     props: ({ mutate }) => ({
-      moveTaskToPhase: (taskId: string, timeUnitId: string) =>
+      moveTaskToTimeUnit: (taskId: string, timeUnitId: string) =>
         mutate &&
         mutate(
           MoveTaskToTimeUnitMutation.buildMutationOptions(

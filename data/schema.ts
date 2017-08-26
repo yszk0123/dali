@@ -376,6 +376,14 @@ export type SchedulePageQuery = {
       } | null,
     } | null > | null,
   } | null > | null,
+  phases:  Array< {
+    id: string,
+    title: string,
+    tasks:  Array< {
+      id: string,
+      title: string,
+    } | null > | null,
+  } | null > | null,
 };
 
 export type SignupPageQuery = {
@@ -459,6 +467,24 @@ export type TimeUnitItem_timeUnitFragment = {
     phase:  {
       id: string,
     } | null,
+  } | null > | null,
+};
+
+export type AddTaskToTimeUnitForm_phasesFragment = {
+  id: string,
+  title: string,
+  tasks:  Array< {
+    id: string,
+    title: string,
+  } | null > | null,
+};
+
+export type TimeUnitItem_phasesFragment = {
+  id: string,
+  title: string,
+  tasks:  Array< {
+    id: string,
+    title: string,
   } | null > | null,
 };
 

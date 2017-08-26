@@ -1,4 +1,4 @@
-#import "../querySchema/TimeUnitItem.graphql"
+#import "../querySchema/TimeUnitItem_timeUnit.graphql"
 
 mutation UpdateTimeUnit(
   $description: String

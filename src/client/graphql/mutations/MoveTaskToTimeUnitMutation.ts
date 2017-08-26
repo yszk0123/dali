@@ -6,7 +6,7 @@ import {
   TimeUnitItem_timeUnitFragment as Fragment,
   TaskItem_taskFragment,
 } from 'schema';
-import * as fragment from '../querySchema/TimeUnitItem.graphql';
+import * as TimeUnitItem_timeUnit from '../querySchema/TimeUnitItem_timeUnit.graphql';
 import * as mutation from '../mutationSchema/MoveTaskToTimeUnitMutation.graphql';
 import dataIdFromObject from '../../shared/utils/dataIdFromObject';
 
@@ -36,16 +36,16 @@ export function buildMutationOptions(
       }
 
       const oldTimeUnitProxy = store.readFragment<Fragment>({
-        fragment,
+        fragment: TimeUnitItem_timeUnit,
+        fragmentName: 'TimeUnitItem_timeUnit',
         variables,
         id: dataIdFromObject(sourceTimeUnit),
-        fragmentName: 'TimeUnitItem_timeUnit',
       });
       const newTimeUnitProxy = store.readFragment<Fragment>({
-        fragment,
+        fragment: TimeUnitItem_timeUnit,
+        fragmentName: 'TimeUnitItem_timeUnit',
         variables,
         id: dataIdFromObject(targetTimeUnit),
-        fragmentName: 'TimeUnitItem_timeUnit',
       });
       if (
         !oldTimeUnitProxy ||
@@ -60,18 +60,18 @@ export function buildMutationOptions(
       newTimeUnitProxy.tasks.push(moveTaskToTimeUnit.task);
 
       store.writeFragment({
-        fragment,
+        fragment: TimeUnitItem_timeUnit,
+        fragmentName: 'TimeUnitItem_timeUnit',
         data: oldTimeUnitProxy,
         variables,
         id: dataIdFromObject(sourceTimeUnit),
-        fragmentName: 'TimeUnitItem_timeUnit',
       });
       store.writeFragment({
-        fragment,
+        fragment: TimeUnitItem_timeUnit,
+        fragmentName: 'TimeUnitItem_timeUnit',
         data: newTimeUnitProxy,
         variables,
         id: dataIdFromObject(targetTimeUnit),
-        fragmentName: 'TimeUnitItem_timeUnit',
       });
     },
   };

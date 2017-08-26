@@ -2,15 +2,19 @@ import { MutationOptions } from 'apollo-client';
 import {
   CreateTaskMutationVariables as MutationVariables,
   CreateTaskMutation as Mutation,
-  PhaseItem_phaseFragment as Fragment,
+  PhaseItem_phaseFragment,
+  TimeUnitItem_timeUnitFragment,
 } from 'schema';
-import * as fragment from '../querySchema/PhaseItem_phase.graphql';
+import * as PhaseItem_phase from '../querySchema/PhaseItem_phase.graphql';
+import * as TimeUnitItem_timeUnit from '../querySchema/TimeUnitItem_timeUnit.graphql';
 import * as mutation from '../mutationSchema/CreateTaskMutation.graphql';
+import dataIdFromObject from '../../shared/utils/dataIdFromObject';
 
 type QueryVariables = {};
 
 export interface Options {
-  phaseId: string;
+  phase?: PhaseItem_phaseFragment;
+  timeUnit?: TimeUnitItem_timeUnitFragment;
 }
 
 export { mutation, MutationVariables, Mutation };
@@ -18,7 +22,7 @@ export { mutation, MutationVariables, Mutation };
 export function buildMutationOptions(
   mutationVariables: MutationVariables,
   variables: QueryVariables,
-  options: Options,
+  options: Options = {},
 ): MutationOptions<Mutation> {
   const { title, description, done, phaseId, timeUnitId } = mutationVariables;
 
@@ -34,26 +38,52 @@ export function buildMutationOptions(
         description,
         done: done || false,
         phaseId,
+        phase: null,
         timeUnitId,
       },
     },
     update: (store, { data: { createTask } = { createTask: null } }) => {
-      const data = store.readFragment<Fragment>({
-        fragment,
-        variables,
-        id: options.phaseId,
-      });
-      if (!data || !data.tasks) {
-        return;
+      if (options.phase) {
+        const data = store.readFragment<PhaseItem_phaseFragment>({
+          fragment: PhaseItem_phase,
+          fragmentName: 'PhaseItem_phase',
+          variables,
+          id: dataIdFromObject(options.phase),
+        });
+        if (!data || !data.tasks) {
+          return;
+        }
+
+        data.tasks.push(createTask);
+        store.writeFragment({
+          fragment: PhaseItem_phase,
+          fragmentName: 'PhaseItem_phase',
+          data,
+          variables,
+          id: dataIdFromObject(options.phase),
+        });
       }
 
-      data.tasks.push(createTask);
-      store.writeFragment({
-        fragment,
-        data,
-        variables,
-        id: options.phaseId,
-      });
+      if (options.timeUnit) {
+        const data = store.readFragment<TimeUnitItem_timeUnitFragment>({
+          fragment: TimeUnitItem_timeUnit,
+          fragmentName: 'TimeUnitItem_timeUnit',
+          variables,
+          id: dataIdFromObject(options.timeUnit),
+        });
+        if (!data || !data.tasks) {
+          return;
+        }
+
+        data.tasks.push(createTask);
+        store.writeFragment({
+          fragment: TimeUnitItem_timeUnit,
+          fragmentName: 'TimeUnitItem_timeUnit',
+          data,
+          variables,
+          id: dataIdFromObject(options.timeUnit),
+        });
+      }
     },
   };
 }

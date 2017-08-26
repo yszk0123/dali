@@ -1,8 +1,13 @@
-#import "./TimeUnitItem.graphql"
+#import "./TimeUnitItem_timeUnit.graphql"
+#import "./TimeUnitItem_phases.graphql"
 
 query SchedulePage($date: DateOnly) {
   timeUnits(date: $date) {
     id
     ...TimeUnitItem_timeUnit
+  }
+  phases(done: false) {
+    id
+    ...TimeUnitItem_phases
   }
 }

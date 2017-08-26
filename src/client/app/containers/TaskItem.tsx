@@ -2,7 +2,6 @@ import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { DragSource, DragSourceSpec, ConnectDragSource } from 'react-dnd';
 import { TaskItem_taskFragment } from 'schema';
-import * as RemoveTaskMutation from '../../graphql/mutations/RemoveTaskMutation';
 import * as UpdateTaskMutation from '../../graphql/mutations/UpdateTaskMutation';
 import TaskLabel from '../components/TaskLabel';
 import ItemTypes from '../constants/ItemTypes';
@@ -10,11 +9,12 @@ import ItemTypes from '../constants/ItemTypes';
 interface OwnProps {
   task: TaskItem_taskFragment;
   phaseId?: string;
+  remove(task: TaskItem_taskFragment): void;
+  timeUnitId?: string;
 }
 
 type Props = OwnProps & {
   toggleDone(): void;
-  remove(): void;
   isDragging: boolean;
   connectDragSource: ConnectDragSource;
 };
@@ -33,7 +33,7 @@ export function TaskItem({
         label={task.title}
         done={task.done}
         onLabelClick={toggleDone}
-        onRemoveButtonClick={remove}
+        onRemoveButtonClick={() => remove(task)}
       />
     </span>,
   );
@@ -60,19 +60,6 @@ const taskSource: DragSourceSpec<Props> = {
 };
 
 const withData = compose(
-  graphql<Response, OwnProps, Props>(RemoveTaskMutation.mutation, {
-    props: ({ mutate, ownProps: { task, phaseId } }) => ({
-      remove: () =>
-        mutate &&
-        mutate(
-          RemoveTaskMutation.buildMutationOptions(
-            { taskId: task.id },
-            { done: false },
-            { phaseId },
-          ),
-        ),
-    }),
-  }),
   graphql<Response, OwnProps, Props>(UpdateTaskMutation.mutation, {
     props: ({ mutate, ownProps: { task } }) => ({
       updateTitle: (input: { title: string }) =>

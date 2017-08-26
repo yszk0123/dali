@@ -1,0 +1,8 @@
+fragment AddTaskToTimeUnitForm_phases on Phase {
+  id
+  title
+  tasks {
+    id
+    title
+  }
+}

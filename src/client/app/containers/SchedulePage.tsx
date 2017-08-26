@@ -42,8 +42,8 @@ interface OwnProps {
 
 type Props = QueryProps & SchedulePageQuery & OwnProps;
 
-export function SchedulePage({ date, timeUnits, loading }: Props) {
-  if (loading) {
+export function SchedulePage({ date, timeUnits, loading, phases }: Props) {
+  if (loading || !phases) {
     return null;
   }
 
@@ -54,7 +54,11 @@ export function SchedulePage({ date, timeUnits, loading }: Props) {
           getSparseTimeUnits(timeUnits).map((timeUnit, position) =>
             <ListItem key={position}>
               {timeUnit
-                ? <TimeUnitItem date={date} timeUnit={timeUnit} />
+                ? <TimeUnitItem
+                    date={date}
+                    timeUnit={timeUnit}
+                    phases={phases}
+                  />
                 : <EmptyTimeUnitItem date={date} position={position} />}
             </ListItem>,
           )}

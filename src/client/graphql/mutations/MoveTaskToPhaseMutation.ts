@@ -6,7 +6,7 @@ import {
   PhaseItem_phaseFragment as Fragment,
   TaskItem_taskFragment,
 } from 'schema';
-import * as fragment from '../querySchema/PhaseItem_phase.graphql';
+import * as PhaseItem_phase from '../querySchema/PhaseItem_phase.graphql';
 import * as mutation from '../mutationSchema/MoveTaskToPhaseMutation.graphql';
 import dataIdFromObject from '../../shared/utils/dataIdFromObject';
 
@@ -36,16 +36,16 @@ export function buildMutationOptions(
       }
 
       const oldPhaseProxy = store.readFragment<Fragment>({
-        fragment,
+        fragment: PhaseItem_phase,
+        fragmentName: 'PhaseItem_phase',
         variables,
         id: dataIdFromObject(sourcePhase),
-        fragmentName: 'PhaseItem_phase',
       });
       const newPhaseProxy = store.readFragment<Fragment>({
-        fragment,
+        fragment: PhaseItem_phase,
+        fragmentName: 'PhaseItem_phase',
         variables,
         id: dataIdFromObject(targetPhase),
-        fragmentName: 'PhaseItem_phase',
       });
       if (
         !oldPhaseProxy ||
@@ -60,18 +60,18 @@ export function buildMutationOptions(
       newPhaseProxy.tasks.push(moveTaskToPhase.task);
 
       store.writeFragment({
-        fragment,
+        fragment: PhaseItem_phase,
+        fragmentName: 'PhaseItem_phase',
         data: oldPhaseProxy,
         variables,
         id: dataIdFromObject(sourcePhase),
-        fragmentName: 'PhaseItem_phase',
       });
       store.writeFragment({
-        fragment,
+        fragment: PhaseItem_phase,
+        fragmentName: 'PhaseItem_phase',
         data: newPhaseProxy,
         variables,
         id: dataIdFromObject(targetPhase),
-        fragmentName: 'PhaseItem_phase',
       });
     },
   };

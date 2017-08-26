@@ -4,7 +4,7 @@ import Button from './Button';
 
 interface Props {
   onSubmit(value: { value: string; isChanged: boolean }): void;
-  value: string;
+  value?: string;
 }
 
 export default class InputWithButton extends React.Component {

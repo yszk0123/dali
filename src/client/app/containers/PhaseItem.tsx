@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import { PhaseItem_phaseFragment, PhaseItem_projectsFragment } from 'schema';
+import {
+  PhaseItem_phaseFragment,
+  PhaseItem_projectsFragment,
+  TaskItem_taskFragment,
+} from 'schema';
 import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
 import styled, { ThemedProps } from '../styles/StyledComponents';
 import Icon from '../components/Icon';
@@ -10,6 +14,7 @@ import * as RemovePhaseMutation from '../../graphql/mutations/RemovePhaseMutatio
 import * as UpdatePhaseMutation from '../../graphql/mutations/UpdatePhaseMutation';
 import * as SetProjectToPhaseMutation from '../../graphql/mutations/SetProjectToPhaseMutation';
 import * as MoveTaskToPhaseMutation from '../../graphql/mutations/MoveTaskToPhaseMutation';
+import * as RemoveTaskMutation from '../../graphql/mutations/RemoveTaskMutation';
 import ItemTypes from '../constants/ItemTypes';
 import TitlePlaceholder from '../components/TitlePlaceholder';
 import TitleSelect from '../components/TitleSelect';
@@ -31,6 +36,7 @@ interface OwnProps {
 type Props = OwnProps & {
   createTask(title: string): void;
   removePhase: React.MouseEventHandler<HTMLElement>;
+  removeTask(task: TaskItem_taskFragment): void;
   updateTitle(_: { title: string }): void;
   toggleDone(): void;
   setProject(projectId: string | null): void;
@@ -43,6 +49,7 @@ export function PhaseItem({
   projects,
   phase,
   removePhase,
+  removeTask,
   updateTitle,
   toggleDone,
   setProject,
@@ -68,7 +75,13 @@ export function PhaseItem({
       {phase.tasks &&
         phase.tasks.map(
           task =>
-            task && <TaskItem key={task.id} task={task} phaseId={phase.id} />,
+            task &&
+            <TaskItem
+              key={task.id}
+              task={task}
+              phaseId={phase.id}
+              remove={removeTask}
+            />,
         )}
     </div>,
   );
@@ -96,6 +109,19 @@ const taskTarget: DropTargetSpec<Props> = {
 };
 
 const withData = compose(
+  graphql<Response, OwnProps, Props>(RemoveTaskMutation.mutation, {
+    props: ({ mutate, ownProps: { phase } }) => ({
+      removeTask: (task: TaskItem_taskFragment) =>
+        mutate &&
+        mutate(
+          RemoveTaskMutation.buildMutationOptions(
+            { taskId: task.id },
+            { done: false },
+            { phase },
+          ),
+        ),
+    }),
+  }),
   graphql<Response, OwnProps, Props>(CreateTaskMutation.mutation, {
     props: ({ mutate, ownProps: { phase } }) => ({
       createTask: (title: string) =>
@@ -104,7 +130,7 @@ const withData = compose(
           CreateTaskMutation.buildMutationOptions(
             { title },
             { done: false },
-            { phaseId: phase.id },
+            { phase },
           ),
         ),
     }),
