@@ -3,7 +3,7 @@
     "transform-class-properties",
     "transform-object-rest-spread",
     "transform-runtime",
-    "lodash"
+    ["lodash", { "id": ["lodash", "recompose"] }]
   ],
   "presets": [
     "react",
