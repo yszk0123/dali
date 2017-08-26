@@ -14,7 +14,12 @@ export function buildMutationOptions(
   mutationVariables: MutationVariables,
   variables: QueryVariables,
 ): MutationOptions<Mutation> {
-  const { title, description, done, projectId } = mutationVariables;
+  const {
+    title,
+    description,
+    done = false,
+    projectId = null,
+  } = mutationVariables;
 
   return {
     mutation,
@@ -26,8 +31,9 @@ export function buildMutationOptions(
         id: null,
         title,
         description,
-        done: done || false,
+        done,
         projectId,
+        project: null,
         tasks: [],
       },
     },

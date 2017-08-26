@@ -29,7 +29,7 @@ export class TasksPage extends React.Component<
 > {
   state = { title: '', done: false };
 
-  private handleAddTaskClick = (event: React.MouseEvent<HTMLElement>) => {
+  private handleCreatePhaseClick = (event: React.MouseEvent<HTMLElement>) => {
     const { title } = this.state;
 
     if (title) {
@@ -78,7 +78,7 @@ export class TasksPage extends React.Component<
             )}
         </div>
         <input type="text" value={title} onChange={this.handleTitleChange} />
-        <Button onClick={this.handleAddTaskClick}>Add</Button>
+        <Button onClick={this.handleCreatePhaseClick}>Add</Button>
       </div>
     );
   }

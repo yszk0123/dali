@@ -1,3 +1,4 @@
+import { defaults } from 'lodash';
 import { MutationOptions } from 'apollo-client';
 import {
   UpdatePhaseMutationVariables as MutationVariables,
@@ -24,11 +25,7 @@ export function buildMutationOptions(
       __typename: 'Mutation',
       updatePhase: {
         __typename: 'Phase',
-        ...phase,
-        title,
-        description,
-        done,
-        projectId,
+        ...defaults({ title, description, done, projectId }, phase),
       },
     },
   };

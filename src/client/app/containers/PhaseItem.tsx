@@ -40,16 +40,13 @@ export function PhaseItem({
       <Wrapper>
         <DoneCheckbox done={phase.done} onChange={toggleDone} />
         <TitleInput title={phase.title} onChange={updateTitle} />
-        {projectTitle &&
-          <span>
-            <span> (</span>
-            <TitlePlaceholder
-              label={projectTitle}
-              defaultLabel="No Project"
-              onClick={setProject}
-            />
-            <span>) </span>
-          </span>}
+        <span> (</span>
+        <TitlePlaceholder
+          label={projectTitle}
+          defaultLabel="No Project"
+          onClick={setProject}
+        />
+        <span>) </span>
         <Icon icon="trash" onClick={removePhase} />
       </Wrapper>
       {phase.tasks &&

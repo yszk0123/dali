@@ -9,14 +9,14 @@ const Placeholder = styled.span`
 `;
 
 interface Props {
-  label?: string;
+  label: string | null;
   defaultLabel?: string;
   onClick: React.MouseEventHandler<HTMLElement>;
 }
 
 export default function TitlePlaceholder({
-  label,
   defaultLabel = 'No Title',
+  label,
   onClick,
 }: Props) {
   if (!label) {

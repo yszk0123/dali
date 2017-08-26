@@ -1,3 +1,4 @@
+import { defaults } from 'lodash';
 import { MutationOptions } from 'apollo-client';
 import {
   UpdateTaskMutationVariables as MutationVariables,
@@ -15,13 +16,7 @@ export function buildMutationOptions(
   variables: QueryVariables = {},
   task: TaskItem_taskFragment,
 ): MutationOptions<Mutation> {
-  const {
-    title,
-    description,
-    done,
-    phaseId,
-    timeUnitId,
-  } = mutationVariables;
+  const { title, description, done, phaseId, timeUnitId } = mutationVariables;
 
   return {
     mutation,
@@ -30,12 +25,7 @@ export function buildMutationOptions(
       __typename: 'Mutation',
       updateTask: {
         __typename: 'Task',
-        ...task,
-        title,
-        description,
-        done,
-        phaseId,
-        timeUnitId,
+        ...defaults({ title, description, done, phaseId, timeUnitId }, task),
       },
     },
   };
