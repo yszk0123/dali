@@ -14,7 +14,7 @@ import LoginPage from './LoginPage';
 import NavBar from './NavBar';
 import ProjectPage from './ProjectPage';
 import SignupPage from './SignupPage';
-import TasksPage from './TasksPage';
+import PhasePage from './PhasePage';
 import ProfilePage from './ProfilePage';
 const DashboardPage = Dummy;
 
@@ -44,8 +44,8 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/tasks"
-            component={TasksPage}
+            path="/phase"
+            component={PhasePage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute

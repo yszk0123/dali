@@ -44,7 +44,7 @@ export function NavBar({ isLogin, onLogout }: Props) {
     <NavBarWrapper>
       <NavBarLink to="/">Dashboard</NavBarLink>
       <NavBarLink to="/project">Project</NavBarLink>
-      <NavBarLink to="/tasks">Tasks</NavBarLink>
+      <NavBarLink to="/phase">Phase</NavBarLink>
       <NavBarLink to="/timeUnit">TimeUnit</NavBarLink>
       <NavBarLink to="/report">Report</NavBarLink>
       <NavBarLink to="/options">Options</NavBarLink>

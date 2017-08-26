@@ -2,10 +2,10 @@ import { MutationOptions } from 'apollo-client';
 import {
   CreatePhaseMutationVariables as MutationVariables,
   CreatePhaseMutation as Mutation,
-  TasksPageQueryVariables as QueryVariables,
-  TasksPageQuery as Query,
+  PhasePageQueryVariables as QueryVariables,
+  PhasePageQuery as Query,
 } from 'schema';
-import * as query from '../querySchema/TasksPage.graphql';
+import * as query from '../querySchema/PhasePage.graphql';
 import * as mutation from '../mutationSchema/CreatePhaseMutation.graphql';
 
 export { mutation, MutationVariables, Mutation };

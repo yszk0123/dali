@@ -1,29 +1,29 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import {
-  TasksPageQuery,
+  PhasePageQuery,
   PhaseItem_phaseFragment,
   TaskItem_taskFragment,
 } from 'schema';
-import * as tasksPageQuery from '../../graphql/querySchema/TasksPage.graphql';
+import * as phasePageQuery from '../../graphql/querySchema/PhasePage.graphql';
 import * as CreatePhaseMutation from '../../graphql/mutations/CreatePhaseMutation';
 import Button from '../components/Button';
 import Dummy from '../Dummy';
 import PhaseItem from './PhaseItem';
 
-interface TasksPageProps {
+interface PhasePageProps {
   isLogin: boolean;
   createPhase(title: string): void;
 }
 
-type Props = QueryProps & TasksPageQuery & TasksPageProps;
+type Props = QueryProps & PhasePageQuery & PhasePageProps;
 
 interface State {
   title: string;
   done: boolean;
 }
 
-export class TasksPage extends React.Component<
+export class PhasePage extends React.Component<
   ChildProps<Props, Response>,
   State
 > {
@@ -87,7 +87,7 @@ export class TasksPage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Response & TasksPageQuery, {}, Props>(tasksPageQuery, {
+  graphql<Response & PhasePageQuery, {}, Props>(phasePageQuery, {
     options: {
       variables: { done: false },
     },
@@ -96,7 +96,7 @@ const withData = compose(
       isLogin: data && data.currentUser,
     }),
   }),
-  graphql<Response & TasksPageProps, {}, Props>(CreatePhaseMutation.mutation, {
+  graphql<Response & PhasePageProps, {}, Props>(CreatePhaseMutation.mutation, {
     props: ({ mutate }) => ({
       createPhase: (title: string) =>
         mutate &&
@@ -107,4 +107,4 @@ const withData = compose(
   }),
 );
 
-export default withData(TasksPage);
+export default withData(PhasePage);

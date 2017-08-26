@@ -395,33 +395,11 @@ export type NavBarQuery = {
   } | null,
 };
 
-export type ProjectPageQuery = {
-  projects:  Array< {
-    id: string,
-    title: string,
-  } | null > | null,
-  currentUser:  {
-    id: string,
-  } | null,
-};
-
-export type RoutesQuery = {
-  currentUser:  {
-    id: string,
-  } | null,
-};
-
-export type SignupPageQuery = {
-  currentUser:  {
-    id: string,
-  } | null,
-};
-
-export type TasksPageQueryVariables = {
+export type PhasePageQueryVariables = {
   done?: boolean | null,
 };
 
-export type TasksPageQuery = {
+export type PhasePageQuery = {
   phases:  Array< {
     id: string,
     title: string,
@@ -443,6 +421,28 @@ export type TasksPageQuery = {
     id: string,
     title: string,
   } | null > | null,
+  currentUser:  {
+    id: string,
+  } | null,
+};
+
+export type ProjectPageQuery = {
+  projects:  Array< {
+    id: string,
+    title: string,
+  } | null > | null,
+  currentUser:  {
+    id: string,
+  } | null,
+};
+
+export type RoutesQuery = {
+  currentUser:  {
+    id: string,
+  } | null,
+};
+
+export type SignupPageQuery = {
   currentUser:  {
     id: string,
   } | null,
