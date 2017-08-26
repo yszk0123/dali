@@ -3,8 +3,11 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { ProjectPageQuery } from 'schema';
 import * as projectPageQuery from '../../graphql/querySchema/ProjectPage.graphql';
 import * as CreateProjectMutation from '../../graphql/mutations/CreateProjectMutation';
+import styled from '../styles/StyledComponents';
 import Button from '../components/Button';
 import ProjectItem from './ProjectItem';
+
+const ProjectItemWrapper = styled.div`margin: 1rem;`;
 
 interface ProjectPageProps {
   isLogin: boolean;
@@ -48,9 +51,9 @@ export class ProjectPage extends React.Component<
       projects.map(
         project =>
           project &&
-          <div key={project.id}>
+          <ProjectItemWrapper key={project.id}>
             <ProjectItem project={project} />
-          </div>,
+          </ProjectItemWrapper>,
       )
     );
   }

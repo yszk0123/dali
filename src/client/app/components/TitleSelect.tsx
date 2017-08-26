@@ -7,9 +7,10 @@ interface SelectItem {
 }
 
 interface Props {
-  onChange(id: string | null): void;
+  defaultLabel?: string;
   selectedId: string | null;
   items: (SelectItem | null)[];
+  onChange(id: string | null): void;
 }
 
 interface State {
@@ -75,12 +76,16 @@ export default class TitleSelect extends React.Component<Props, State> {
   }
 
   render() {
-    const { items } = this.props;
+    const { defaultLabel, items } = this.props;
     const { title, selectedId, isEditing } = this.state;
 
     if (!isEditing) {
       return (
-        <TitlePlaceholder label={title} onClick={this.handlePlaceholderClick} />
+        <TitlePlaceholder
+          defaultLabel={defaultLabel}
+          label={title}
+          onClick={this.handlePlaceholderClick}
+        />
       );
     }
 

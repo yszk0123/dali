@@ -17,7 +17,7 @@ import ProfilePage from './ProfilePage';
 // import DashboardPage from './DashboardPage';
 const DashboardPage = Dummy;
 
-const MainContent = styled.div`margin: 1.8rem;`;
+const MainContent = styled.div`padding: 1.8rem 0;`;
 
 interface RoutesProps {
   isLogin: boolean;

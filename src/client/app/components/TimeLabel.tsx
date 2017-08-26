@@ -20,7 +20,7 @@ interface Props {
   position: number;
 }
 
-export default function Time({ position }: Props) {
+export default function TimeLabel({ position }: Props) {
   return (
     <Wrapper>
       {mapPositionToTimeRange(position)}

@@ -7,7 +7,7 @@ import TitleInput from '../components/TitleInput';
 import * as RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
 import * as UpdateProjectMutation from '../../graphql/mutations/UpdateProjectMutation';
 
-const Wrapper = styled.div`margin: 2.5rem;`;
+const Wrapper = styled.div`padding: 0.4rem;`;
 
 type OwnProps = {
   project: ProjectItem_projectFragment;

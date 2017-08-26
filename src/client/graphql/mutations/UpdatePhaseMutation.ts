@@ -13,7 +13,7 @@ export { mutation, MutationVariables, Mutation };
 
 export function buildMutationOptions(
   mutationVariables: MutationVariables,
-  variables: QueryVariables = {},
+  variables: QueryVariables,
   phase: PhaseItem_phaseFragment,
 ): MutationOptions<Mutation> {
   const { title, description, done, projectId } = mutationVariables;

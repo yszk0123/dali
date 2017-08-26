@@ -2,10 +2,14 @@ import * as React from 'react';
 import styled from '../styles/StyledComponents';
 import Icon from './Icon';
 
-const Label = styled.span`
-  display: inline-block;
+const Side = styled.div`
+  padding: 0.4rem;
+  font-size: 0.8rem;
+  color: gray;
+`;
+
+const Label = styled.div`
   font-size: 1.6rem;
-  margin: 1rem;
   padding: 0.8rem;
   color: #111;
   cursor: pointer;
@@ -14,6 +18,7 @@ const Label = styled.span`
 interface Props {
   icon: string;
   label: string;
+  subLabel?: string | null;
   done: boolean;
   onLabelClick: React.MouseEventHandler<HTMLElement>;
   onRemoveButtonClick: React.MouseEventHandler<HTMLElement>;
@@ -22,6 +27,7 @@ interface Props {
 export default function TaskLabel({
   icon,
   label,
+  subLabel,
   done,
   onLabelClick,
   onRemoveButtonClick,
@@ -35,6 +41,10 @@ export default function TaskLabel({
 
   return (
     <Label {...rest}>
+      {subLabel &&
+        <Side>
+          {subLabel}
+        </Side>}
       <Icon
         color="primary"
         icon="times-circle"

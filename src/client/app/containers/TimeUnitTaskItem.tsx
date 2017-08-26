@@ -3,6 +3,7 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { DragSource, DragSourceSpec, ConnectDragSource } from 'react-dnd';
 import { TimeUnitTaskItem_taskFragment } from 'schema';
 import * as UpdateTimeUnitTaskMutation from '../../graphql/mutations/UpdateTimeUnitTaskMutation';
+import styled from '../styles/StyledComponents';
 import TaskLabel from '../components/TaskLabel';
 import ItemTypes from '../constants/ItemTypes';
 
@@ -27,15 +28,16 @@ export function TimeUnitTaskItem({
   connectDragSource,
 }: Props) {
   return connectDragSource(
-    <span style={{ opacity: isDragging ? 0.5 : 1 }}>
+    <div style={{ opacity: isDragging ? 0.5 : 1 }}>
       <TaskLabel
         icon="times-circle"
         label={task.title}
+        subLabel={task.phase && task.phase.title}
         done={task.done}
         onLabelClick={toggleDone}
         onRemoveButtonClick={() => remove(task)}
       />
-    </span>,
+    </div>,
   );
 }
 

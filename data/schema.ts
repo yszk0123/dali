@@ -35,6 +35,7 @@ export type CreatePhaseMutationVariables = {
   description?: string | null,
   done?: boolean | null,
   projectId?: string | null,
+  taskDone?: boolean | null,
 };
 
 export type CreatePhaseMutation = {
@@ -240,17 +241,25 @@ export type RemoveTimeUnitMutation = {
 
 export type RemoveTimeUnitTaskMutationVariables = {
   taskId: string,
+  timeUnitId?: string | null,
 };
 
 export type RemoveTimeUnitTaskMutation = {
-  removeTask:  {
-    removedTaskId: string | null,
+  task:  {
+    id: string,
+    title: string,
+    done: boolean,
+    phase:  {
+      id: string,
+      title: string,
+    } | null,
   } | null,
 };
 
 export type SetProjectToPhaseMutationVariables = {
   phaseId: string,
   projectId: string,
+  taskDone?: boolean | null,
 };
 
 export type SetProjectToPhaseMutation = {
@@ -293,6 +302,7 @@ export type UpdatePhaseMutationVariables = {
   description?: string | null,
   done?: boolean | null,
   projectId?: string | null,
+  taskDone?: boolean | null,
 };
 
 export type UpdatePhaseMutation = {
@@ -413,7 +423,8 @@ export type NavBarQuery = {
 };
 
 export type PhasePageQueryVariables = {
-  done?: boolean | null,
+  phaseDone?: boolean | null,
+  taskDone?: boolean | null,
 };
 
 export type PhasePageQuery = {
@@ -520,6 +531,11 @@ export type TimeUnitPageQuery = {
   tasks:  Array< {
     id: string,
     title: string,
+    done: boolean,
+    phase:  {
+      id: string,
+      title: string,
+    } | null,
   } | null > | null,
 };
 
@@ -612,5 +628,10 @@ export type AddTaskToTimeUnitForm_tasksFragment = {
 export type TimeUnitItem_tasksFragment = {
   id: string,
   title: string,
+  done: boolean,
+  phase:  {
+    id: string,
+    title: string,
+  } | null,
 };
 /* tslint:enable */
