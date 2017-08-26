@@ -1,0 +1,13 @@
+{
+  "parser": "typescript-eslint-parser",
+  "env": {
+    "browser": true,
+    "mocha": true
+  },
+  "extends": "react-app",
+  "rules": {
+    "import/order": "error",
+    "no-undef": "off",
+    "no-unused-vars": "off"
+  }
+}

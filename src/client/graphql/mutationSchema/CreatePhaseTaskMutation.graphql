@@ -1,0 +1,24 @@
+#import "../querySchema/TaskItem.graphql"
+
+mutation CreatePhaseTask(
+  $title: String!
+  $description: String
+  $done: Boolean
+  $phaseId: ID!
+  $timeUnitId: ID
+) {
+  createTask(
+    title: $title
+    description: $description
+    done: $done
+    phaseId: $phaseId
+    timeUnitId: $timeUnitId
+  ) {
+    id
+    phase {
+      id
+      title
+    }
+    ...TaskItem_task
+  }
+}

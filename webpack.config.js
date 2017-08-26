@@ -32,7 +32,7 @@ module.exports = (env = {}) => {
         'font-awesome/css/font-awesome.min.css',
         env.autoReload && `webpack-dev-server/client?http://0.0.0.0:${appPort}`,
         './src/client/app/assets/app.css',
-        './src/client/app/index.js',
+        './src/client/app/index.tsx',
       ].filter(Boolean),
     },
     output: {
@@ -103,6 +103,9 @@ module.exports = (env = {}) => {
     ]
       .concat(sharedPlugins)
       .filter(Boolean),
+    resolve: {
+      extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
+    },
     module: {
       rules: [
         {
@@ -134,9 +137,24 @@ module.exports = (env = {}) => {
           },
         },
         {
+          test: /\.graphql$/,
+          loader: 'graphql-tag/loader',
+          exclude: /node_modules/,
+        },
+        {
           test: /\.js$/,
           loader: 'babel-loader',
           exclude: /node_modules/,
+        },
+        { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
+        {
+          enforce: 'pre',
+          test: /\.js$/,
+          loader: 'source-map-loader',
+          include: [
+            path.resolve(__dirname, 'data'),
+            path.resolve(__dirname, 'src'),
+          ],
         },
       ],
     },

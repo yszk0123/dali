@@ -1,0 +1,21 @@
+#import "../querySchema/PhaseItem_phase.graphql"
+
+mutation CreatePhase(
+  $title: String
+  $description: String
+  $done: Boolean
+  $projectId: ID
+  $taskDone: Boolean
+) {
+  createPhase(
+    title: $title
+    description: $description
+    done: $done
+    projectId: $projectId
+  ) {
+    id
+    done
+    title
+    ...PhaseItem_phase
+  }
+}

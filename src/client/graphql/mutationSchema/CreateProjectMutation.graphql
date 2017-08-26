@@ -1,0 +1,9 @@
+#import "../querySchema/ProjectItem.graphql"
+
+mutation CreateProject($title: String!) {
+  createProject(title: $title) {
+    id
+    title
+    ...ProjectItem_project
+  }
+}

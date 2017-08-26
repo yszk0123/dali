@@ -1,0 +1,17 @@
+#import "./PhaseItem_phase.graphql"
+#import "./PhaseItem_projects.graphql"
+
+query PhasePage($phaseDone: Boolean, $taskDone: Boolean) {
+  phases(limit: 100, done: $phaseDone) {
+    id
+    title
+    ...PhaseItem_phase
+  }
+  projects(done: false, orderBy: { field: TITLE, direction: ASC }) {
+    id
+    ...PhaseItem_projects
+  }
+  currentUser {
+    id
+  }
+}

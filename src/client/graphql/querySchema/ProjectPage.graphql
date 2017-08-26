@@ -1,0 +1,11 @@
+#import "./ProjectItem.graphql"
+
+query ProjectPage {
+  projects {
+    id
+    ...ProjectItem_project
+  }
+  currentUser {
+    id
+  }
+}

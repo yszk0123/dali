@@ -1,0 +1,17 @@
+enum Authority {
+  OWNER
+  EDITABLE
+  READONLY
+}
+
+type Member {
+  id: ID!
+  authority: Authority!
+}
+
+type Query {
+  members(limit: ListLimit, offset: ListOffset, order: ListOrder): [Member]
+}
+
+type Mutation {
+}

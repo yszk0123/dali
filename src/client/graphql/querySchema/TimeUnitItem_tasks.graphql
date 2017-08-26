@@ -1,0 +1,8 @@
+#import "./AddTaskToTimeUnitForm_tasks.graphql"
+#import "./TimeUnitTaskItem_task.graphql"
+
+fragment TimeUnitItem_tasks on Task {
+  id
+  ...AddTaskToTimeUnitForm_tasks
+  ...TimeUnitTaskItem_task
+}

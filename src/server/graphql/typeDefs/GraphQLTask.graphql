@@ -1,0 +1,58 @@
+type Task {
+  id: ID!
+  owner: User!
+  title: String!
+  description: String
+  done: Boolean!
+  phase: Phase
+  timeUnit: TimeUnit
+  assignee: User
+}
+
+enum TaskOrderField {
+  TITLE
+  PRIORITY
+  CREATED_AT
+  UPDATED_AT
+}
+
+input TaskOrder {
+  field: TaskOrderField!
+  direction: OrderDirection!
+}
+
+type Query {
+  tasks(
+    done: Boolean
+    phaseId: ID
+    timeUnitId: ID
+    limit: ListLimit
+    offset: ListOffset
+    orderBy: TaskOrder
+  ): [Task]
+}
+
+type RemoveTaskPayload {
+  removedTaskId: ID
+}
+
+type Mutation {
+  createTask(
+    title: String!
+    description: String
+    done: Boolean
+    phaseId: ID
+    timeUnitId: ID
+  ): Task
+  updateTask(
+    taskId: ID!
+    title: String
+    description: String
+    done: Boolean
+    phaseId: ID
+    timeUnitId: ID
+  ): Task
+  removeTask(taskId: ID!): RemoveTaskPayload
+  setPhaseToTask(phaseId: ID!, taskId: ID!): Task
+  setTimeUnitToTask(timeUnitId: ID!, taskId: ID!): Task
+}

@@ -1,0 +1,4 @@
+fragment ProjectItem_project on Project {
+  id
+  title
+}

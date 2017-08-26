@@ -1,0 +1,5 @@
+mutation RemoveProject($projectId: ID!) {
+  removeProject(projectId: $projectId) {
+    removedProjectId
+  }
+}
