@@ -25,11 +25,6 @@ type RemoveTaskPayload {
   removedTaskId: ID
 }
 
-type AddTaskToPhasePayload {
-  task: Task
-  phase: Phase
-}
-
 type Query {
   tasks(
     done: Boolean
@@ -58,5 +53,6 @@ type Mutation {
     timeUnitId: ID
   ): Task
   removeTask(taskId: ID!): RemoveTaskPayload
-  addTaskToPhase(taskId: ID!, phaseId: ID!): AddTaskToPhasePayload
+  setPhaseToTask(phaseId: ID!, taskId: ID!): Task
+  setTimeUnitToTask(timeUnitId: ID!, taskId: ID!): Task
 }

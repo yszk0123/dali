@@ -1,8 +1,3 @@
-type AddTaskToPhasePayload {
-  task: Task
-  phase: Phase
-}
-
 enum Authority {
   OWNER
   EDITABLE
@@ -58,7 +53,8 @@ type Mutation {
   createTask(title: String!, description: String, done: Boolean, phaseId: ID, timeUnitId: ID): Task
   updateTask(taskId: ID!, title: String, description: String, done: Boolean, phaseId: ID, timeUnitId: ID): Task
   removeTask(taskId: ID!): RemoveTaskPayload
-  addTaskToPhase(taskId: ID!, phaseId: ID!): AddTaskToPhasePayload
+  setPhaseToTask(phaseId: ID!, taskId: ID!): Task
+  setTimeUnitToTask(timeUnitId: ID!, taskId: ID!): Task
   createTimeUnit(description: String, date: DateOnly!, position: Int): TimeUnit
   updateTimeUnit(timeUnitId: ID!, description: String, date: DateOnly, position: Int): TimeUnit
   moveTaskToTimeUnit(taskId: ID!, timeUnitId: ID!): MoveTaskToTimeUnitPayload

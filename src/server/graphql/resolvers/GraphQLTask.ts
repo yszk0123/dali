@@ -7,7 +7,7 @@ interface Input {
 }
 
 export default function createResolvers({
-  models: { Task, Phase },
+  models: { Task, TimeUnit, Phase },
 }: Input): IResolvers {
   return {
     Task: {
@@ -46,15 +46,7 @@ export default function createResolvers({
       },
       updateTask: async (
         root,
-        {
-          taskId,
-          title,
-          description,
-          done,
-          phaseId,
-          timeUnitId,
-          assigneeId,
-        },
+        { taskId, title, description, done, phaseId, timeUnitId, assigneeId },
         { user },
       ) => {
         const task = await Task.findOne({
@@ -81,20 +73,33 @@ export default function createResolvers({
 
         return { removedTaskId: taskId };
       },
-      addTaskToPhase: async (root, { taskId, phaseId }, { user }) => {
-        const task = await Task.findOne({
-          where: { id: taskId, ownerId: user.id },
-          rejectOnEmpty: true,
-        });
+      setPhaseToTask: async (root, { phaseId, taskId }, { user }) => {
         const phase = await Phase.findOne({
           where: { id: phaseId, ownerId: user.id },
           rejectOnEmpty: true,
         });
+        const task = await Task.findOne({
+          where: { id: taskId, ownerId: user.id },
+          rejectOnEmpty: true,
+        });
 
-        await phase.addTask(task);
-        await task.reload();
+        await task.setPhase(phase);
 
-        return { task, phase };
+        return task;
+      },
+      setTimeUnitToTask: async (root, { timeUnitId, taskId }, { user }) => {
+        const timeUnit = await TimeUnit.findOne({
+          where: { id: timeUnitId, ownerId: user.id },
+          rejectOnEmpty: true,
+        });
+        const task = await Task.findOne({
+          where: { id: taskId, ownerId: user.id },
+          rejectOnEmpty: true,
+        });
+
+        await task.setTimeUnit(timeUnit);
+
+        return task;
       },
     },
   };
