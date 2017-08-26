@@ -12,7 +12,7 @@ import DateSwitch from './DateSwitch';
 // import TimeUnitPage from './TimeUnitPage';
 import LoginPage from './LoginPage';
 import NavBar from './NavBar';
-import ProjectsPage from './ProjectsPage';
+import ProjectPage from './ProjectPage';
 import SignupPage from './SignupPage';
 import TasksPage from './TasksPage';
 import ProfilePage from './ProfilePage';
@@ -39,8 +39,8 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/projects"
-            component={ProjectsPage}
+            path="/project"
+            component={ProjectPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute

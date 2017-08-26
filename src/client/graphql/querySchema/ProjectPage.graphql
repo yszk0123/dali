@@ -1,6 +1,6 @@
 #import "./ProjectItem.graphql"
 
-query ProjectsPage {
+query ProjectPage {
   projects {
     id
     ...ProjectItem_project

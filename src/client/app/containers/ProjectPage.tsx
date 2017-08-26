@@ -1,23 +1,23 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import { ProjectsPageQuery } from 'schema';
-import * as projectsPageQuery from '../../graphql/querySchema/ProjectsPage.graphql';
+import { ProjectPageQuery } from 'schema';
+import * as projectPageQuery from '../../graphql/querySchema/ProjectPage.graphql';
 import * as CreateProjectMutation from '../../graphql/mutations/CreateProjectMutation';
 import Button from '../components/Button';
 import ProjectItem from './ProjectItem';
 
-interface ProjectsPageProps {
+interface ProjectPageProps {
   isLogin: boolean;
   createProject(title: string): void;
 }
 
-type Props = QueryProps & ProjectsPageQuery & ProjectsPageProps;
+type Props = QueryProps & ProjectPageQuery & ProjectPageProps;
 
 interface State {
   title: string;
 }
 
-export class ProjectsPage extends React.Component<
+export class ProjectPage extends React.Component<
   ChildProps<Props, Response>,
   State
 > {
@@ -76,14 +76,14 @@ export class ProjectsPage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Response & ProjectsPageQuery, {}, Props>(projectsPageQuery, {
+  graphql<Response & ProjectPageQuery, {}, Props>(projectPageQuery, {
     props: ({ data }) => ({
       ...data,
       isLogin: data && data.currentUser,
     }),
   }),
   graphql<
-    Response & ProjectsPageQuery,
+    Response & ProjectPageQuery,
     {},
     Props
   >(CreateProjectMutation.mutation, {
@@ -94,4 +94,4 @@ const withData = compose(
   }),
 );
 
-export default withData(ProjectsPage);
+export default withData(ProjectPage);

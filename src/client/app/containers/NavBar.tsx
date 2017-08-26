@@ -43,7 +43,7 @@ export function NavBar({ isLogin, onLogout }: Props) {
   return (
     <NavBarWrapper>
       <NavBarLink to="/">Dashboard</NavBarLink>
-      <NavBarLink to="/projects">Projects</NavBarLink>
+      <NavBarLink to="/project">Project</NavBarLink>
       <NavBarLink to="/tasks">Tasks</NavBarLink>
       <NavBarLink to="/timeUnit">TimeUnit</NavBarLink>
       <NavBarLink to="/report">Report</NavBarLink>

@@ -2,7 +2,7 @@ import { MutationOptions } from 'apollo-client';
 import {
   SetProjectToPhaseMutationVariables as MutationVariables,
   SetProjectToPhaseMutation as Mutation,
-  ProjectsPageQuery as Query,
+  ProjectPageQuery as Query,
 } from 'schema';
 import * as mutation from '../mutationSchema/SetProjectToPhaseMutation.graphql';
 

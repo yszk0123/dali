@@ -2,9 +2,9 @@ import { MutationOptions } from 'apollo-client';
 import {
   AddPhaseToProjectMutationVariables as MutationVariables,
   AddPhaseToProjectMutation as Mutation,
-  ProjectsPageQuery as Query,
+  ProjectPageQuery as Query,
 } from 'schema';
-import * as query from '../querySchema/ProjectsPage.graphql';
+import * as query from '../querySchema/ProjectPage.graphql';
 import * as mutation from '../mutationSchema/AddPhaseToProjectMutation.graphql';
 
 type QueryVariables = {};

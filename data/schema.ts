@@ -395,7 +395,7 @@ export type NavBarQuery = {
   } | null,
 };
 
-export type ProjectsPageQuery = {
+export type ProjectPageQuery = {
   projects:  Array< {
     id: string,
     title: string,
