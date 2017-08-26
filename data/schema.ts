@@ -334,6 +334,10 @@ export type TasksPageQuery = {
       done: boolean,
     } | null > | null,
   } | null > | null,
+  projects:  Array< {
+    id: string,
+    title: string,
+  } | null > | null,
   currentUser:  {
     id: string,
   } | null,
@@ -375,5 +379,10 @@ export type TimeUnitItem_timeUnitFragment = {
     title: string,
     done: boolean,
   } | null > | null,
+};
+
+export type PhaseItem_projectsFragment = {
+  id: string,
+  title: string,
 };
 /* tslint:enable */

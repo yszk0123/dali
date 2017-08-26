@@ -133,6 +133,16 @@
               "description": "",
               "args": [
                 {
+                  "name": "done",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "limit",
                   "description": "",
                   "type": {
