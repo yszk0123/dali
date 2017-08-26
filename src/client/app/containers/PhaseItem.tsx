@@ -37,7 +37,7 @@ type Props = OwnProps & {
   createTask(title: string): void;
   removePhase: React.MouseEventHandler<HTMLElement>;
   removeTask(task: TaskItem_taskFragment): void;
-  updateTitle(_: { title: string }): void;
+  updateTitle(title: string): void;
   toggleDone(): void;
   setProject(projectId: string | null): void;
   moveTaskToPhase(taskId: string, phaseId: string): void;
@@ -50,6 +50,7 @@ export function PhaseItem({
   phase,
   removePhase,
   removeTask,
+  createTask,
   updateTitle,
   toggleDone,
   setProject,
@@ -83,6 +84,7 @@ export function PhaseItem({
               remove={removeTask}
             />,
         )}
+      <TitleInput title="" onChange={createTask} />
     </div>,
   );
 }
@@ -128,7 +130,7 @@ const withData = compose(
         mutate &&
         mutate(
           CreateTaskMutation.buildMutationOptions(
-            { title },
+            { title, phaseId: phase.id },
             { done: false },
             { phase },
           ),
@@ -149,11 +151,11 @@ const withData = compose(
   }),
   graphql<Response, OwnProps, Props>(UpdatePhaseMutation.mutation, {
     props: ({ mutate, ownProps: { phase } }) => ({
-      updateTitle: (input: { title: string }) =>
+      updateTitle: (title: string) =>
         mutate &&
         mutate(
           UpdatePhaseMutation.buildMutationOptions(
-            { ...input, phaseId: phase.id },
+            { title, phaseId: phase.id },
             { done: false },
             phase,
           ),

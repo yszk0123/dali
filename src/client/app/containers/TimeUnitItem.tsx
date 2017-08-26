@@ -86,7 +86,7 @@ interface OwnProps {
 }
 
 type Props = OwnProps & {
-  updateDescription(input: { title: string }): void;
+  updateDescription(description: string): void;
   moveTaskToTimeUnit(taskId: string, timeUnitId: string): void;
   removeTimeUnit(): void;
   removeTask(task: TaskItem_taskFragment): void;
@@ -184,7 +184,7 @@ const withData = compose(
   }),
   graphql<Response, OwnProps, Props>(UpdateTimeUnitMutation.mutation, {
     props: ({ mutate, ownProps: { timeUnit } }) => ({
-      updateDescription: ({ title: description }: { title: string }) =>
+      updateDescription: (description: string) =>
         mutate &&
         mutate(
           UpdateTimeUnitMutation.buildMutationOptions(

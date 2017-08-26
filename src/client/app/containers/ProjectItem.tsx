@@ -15,7 +15,7 @@ type OwnProps = {
 
 interface ProjectItemProps {
   remove(): void;
-  updateTitle(_: { title: string }): void;
+  updateTitle(title: string): void;
 }
 
 type Props = QueryProps & OwnProps & ProjectItemProps;
@@ -41,7 +41,7 @@ const withData = compose(
   }),
   graphql<Response, OwnProps, Props>(UpdateProjectMutation.mutation, {
     props: ({ mutate, ownProps: { project } }) => ({
-      updateTitle: ({ title }: { title: string }) =>
+      updateTitle: (title: string) =>
         mutate &&
         mutate(
           UpdateProjectMutation.buildMutationOptions(

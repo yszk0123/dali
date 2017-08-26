@@ -47,7 +47,7 @@ export class AddTaskToTimeUnitForm extends React.Component<
     this.setState({ selectedPhaseId });
   };
 
-  private handleTitleChange = ({ title }: { title: string }) => {
+  private handleTitleChange = (title: string) => {
     this.setState({ title });
   };
 
@@ -79,6 +79,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(CreateTaskMutation.mutation, {
     props: ({ mutate, ownProps: { timeUnit } }) => ({
       createTask: (phaseId: string | null, title: string) =>
+        phaseId &&
         mutate &&
         mutate(
           CreateTaskMutation.buildMutationOptions(

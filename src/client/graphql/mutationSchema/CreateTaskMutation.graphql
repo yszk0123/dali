@@ -4,7 +4,7 @@ mutation CreateTask(
   $title: String!
   $description: String
   $done: Boolean
-  $phaseId: ID
+  $phaseId: ID!
   $timeUnitId: ID
 ) {
   createTask(

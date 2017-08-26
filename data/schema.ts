@@ -55,7 +55,7 @@ export type CreateTaskMutationVariables = {
   title: string,
   description?: string | null,
   done?: boolean | null,
-  phaseId?: string | null,
+  phaseId: string,
   timeUnitId?: string | null,
 };
 
