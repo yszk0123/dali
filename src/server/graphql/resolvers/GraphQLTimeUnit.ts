@@ -7,7 +7,7 @@ interface Input {
 }
 
 export default function createResolvers({
-  models: { TimeUnit },
+  models: { TimeUnit, Task },
 }: Input): IResolvers {
   return {
     TimeUnit: {
@@ -69,6 +69,21 @@ export default function createResolvers({
         );
 
         return timeUnit;
+      },
+      moveTaskToTimeUnit: async (root, { taskId, timeUnitId }, { user }) => {
+        const task = await Task.findById(taskId, {
+          where: { ownerId: user.id },
+          rejectOnEmpty: true,
+        });
+        const sourceTimeUnit = await task.getTimeUnit();
+        const targetTimeUnit = await TimeUnit.findById(timeUnitId, {
+          where: { ownerId: user.id },
+          rejectOnEmpty: true,
+        });
+
+        await task.setTimeUnit(targetTimeUnit);
+
+        return { task, sourceTimeUnit, targetTimeUnit };
       },
       removeTimeUnit: async (root, { timeUnitId }, { user }) => {
         const timeUnit = await TimeUnit.findOne({

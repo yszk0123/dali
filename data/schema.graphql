@@ -39,6 +39,12 @@ type MoveTaskToPhasePayload {
   targetPhase: Phase
 }
 
+type MoveTaskToTimeUnitPayload {
+  task: Task
+  sourceTimeUnit: TimeUnit
+  targetTimeUnit: TimeUnit
+}
+
 type Mutation {
   createPhase(title: String, description: String, done: Boolean, projectId: ID): Phase
   updatePhase(phaseId: ID!, title: String, description: String, done: Boolean, projectId: ID): Phase
@@ -55,6 +61,7 @@ type Mutation {
   addTaskToPhase(taskId: ID!, phaseId: ID!): AddTaskToPhasePayload
   createTimeUnit(description: String, date: DateOnly!, position: Int): TimeUnit
   updateTimeUnit(timeUnitId: ID!, description: String, date: DateOnly, position: Int): TimeUnit
+  moveTaskToTimeUnit(taskId: ID!, timeUnitId: ID!): MoveTaskToTimeUnitPayload
   removeTimeUnit(timeUnitId: ID!): RemoveTimeUnitPayload
   signup(email: String!, password: String!, nickname: String!, firstName: String, lastName: String): User
   login(email: String!, password: String!): User

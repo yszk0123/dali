@@ -11,6 +11,12 @@ type RemoveTimeUnitPayload {
   removedTimeUnitId: ID
 }
 
+type MoveTaskToTimeUnitPayload {
+  task: Task
+  sourceTimeUnit: TimeUnit
+  targetTimeUnit: TimeUnit
+}
+
 enum TimeUnitOrderField {
   DATE
   POSITION
@@ -40,5 +46,6 @@ type Mutation {
     date: DateOnly
     position: Int
   ): TimeUnit
+  moveTaskToTimeUnit(taskId: ID!, timeUnitId: ID!): MoveTaskToTimeUnitPayload
   removeTimeUnit(timeUnitId: ID!): RemoveTimeUnitPayload
 }
