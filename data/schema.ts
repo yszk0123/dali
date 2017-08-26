@@ -33,6 +33,9 @@ export type CreatePhaseMutation = {
       id: string,
       title: string,
       done: boolean,
+      phase:  {
+        id: string,
+      } | null,
     } | null > | null,
   } | null,
 };
@@ -81,6 +84,9 @@ export type CreateTimeUnitMutation = {
       id: string,
       title: string,
       done: boolean,
+      phase:  {
+        id: string,
+      } | null,
     } | null > | null,
     description: string | null,
     date: string,
@@ -102,6 +108,30 @@ export type LoginMutation = {
 export type LogoutMutation = {
   logout:  {
     id: string,
+  } | null,
+};
+
+export type MoveTaskToPhaseMutationVariables = {
+  taskId: string,
+  phaseId: string,
+};
+
+export type MoveTaskToPhaseMutation = {
+  moveTaskToPhase:  {
+    task:  {
+      id: string,
+      title: string,
+      done: boolean,
+      phase:  {
+        id: string,
+      } | null,
+    } | null,
+    sourcePhase:  {
+      id: string,
+    } | null,
+    targetPhase:  {
+      id: string,
+    } | null,
   } | null,
 };
 
@@ -163,6 +193,9 @@ export type SetProjectToPhaseMutation = {
       id: string,
       title: string,
       done: boolean,
+      phase:  {
+        id: string,
+      } | null,
     } | null > | null,
   } | null,
 };
@@ -202,6 +235,9 @@ export type UpdatePhaseMutation = {
       id: string,
       title: string,
       done: boolean,
+      phase:  {
+        id: string,
+      } | null,
     } | null > | null,
   } | null,
 };
@@ -232,6 +268,9 @@ export type UpdateTaskMutation = {
     id: string,
     title: string,
     done: boolean,
+    phase:  {
+      id: string,
+    } | null,
   } | null,
 };
 
@@ -252,6 +291,9 @@ export type UpdateTimeUnitMutation = {
       id: string,
       title: string,
       done: boolean,
+      phase:  {
+        id: string,
+      } | null,
     } | null > | null,
   } | null,
 };
@@ -305,6 +347,9 @@ export type SchedulePageQuery = {
       id: string,
       title: string,
       done: boolean,
+      phase:  {
+        id: string,
+      } | null,
     } | null > | null,
   } | null > | null,
 };
@@ -332,6 +377,9 @@ export type TasksPageQuery = {
       id: string,
       title: string,
       done: boolean,
+      phase:  {
+        id: string,
+      } | null,
     } | null > | null,
   } | null > | null,
   projects:  Array< {
@@ -352,6 +400,9 @@ export type TaskItem_taskFragment = {
   id: string,
   title: string,
   done: boolean,
+  phase:  {
+    id: string,
+  } | null,
 };
 
 export type PhaseItem_phaseFragment = {
@@ -366,6 +417,9 @@ export type PhaseItem_phaseFragment = {
     id: string,
     title: string,
     done: boolean,
+    phase:  {
+      id: string,
+    } | null,
   } | null > | null,
 };
 
@@ -378,6 +432,9 @@ export type TimeUnitItem_timeUnitFragment = {
     id: string,
     title: string,
     done: boolean,
+    phase:  {
+      id: string,
+    } | null,
   } | null > | null,
 };
 

@@ -1,19 +1,27 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { PhaseItem_phaseFragment, PhaseItem_projectsFragment } from 'schema';
-import styled from '../styles/StyledComponents';
+import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
+import styled, { ThemedProps } from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
 import * as CreateTaskMutation from '../../graphql/mutations/CreateTaskMutation';
 import * as RemovePhaseMutation from '../../graphql/mutations/RemovePhaseMutation';
 import * as UpdatePhaseMutation from '../../graphql/mutations/UpdatePhaseMutation';
 import * as SetProjectToPhaseMutation from '../../graphql/mutations/SetProjectToPhaseMutation';
+import * as MoveTaskToPhaseMutation from '../../graphql/mutations/MoveTaskToPhaseMutation';
+import ItemTypes from '../constants/ItemTypes';
 import TitlePlaceholder from '../components/TitlePlaceholder';
 import TitleSelect from '../components/TitleSelect';
 import DoneCheckbox from '../components/DoneCheckbox';
 import TaskItem from './TaskItem';
 
-const Wrapper = styled.div`margin: 2.5rem;`;
+const Wrapper = styled.div`
+  padding-top: 0.4rem;
+  border-top: 1px solid #e4eaf7;
+  background: ${({ isOver }: ThemedProps<{ isOver: boolean }>) =>
+    isOver ? '#c0e3fb' : 'inherit'};
+`;
 
 interface OwnProps {
   projects: (PhaseItem_projectsFragment | null)[] | null;
@@ -26,6 +34,9 @@ type Props = OwnProps & {
   updateTitle(_: { title: string }): void;
   toggleDone(): void;
   setProject(projectId: string | null): void;
+  moveTaskToPhase(taskId: string, phaseId: string): void;
+  connectDropTarget: ConnectDropTarget;
+  isOver: boolean;
 };
 
 export function PhaseItem({
@@ -35,12 +46,14 @@ export function PhaseItem({
   updateTitle,
   toggleDone,
   setProject,
+  connectDropTarget,
+  isOver,
 }: Props) {
   const projectTitle = phase.project && phase.project.title;
 
-  return (
+  return connectDropTarget(
     <div>
-      <Wrapper>
+      <Wrapper isOver={isOver}>
         <DoneCheckbox done={phase.done} onChange={toggleDone} />
         <TitleInput title={phase.title} onChange={updateTitle} />
         <span> (</span>
@@ -57,9 +70,30 @@ export function PhaseItem({
           task =>
             task && <TaskItem key={task.id} task={task} phaseId={phase.id} />,
         )}
-    </div>
+    </div>,
   );
 }
+
+const taskTarget: DropTargetSpec<Props> = {
+  drop: ({ phase, moveTaskToPhase }, monitor) => {
+    if (!monitor || !phase) {
+      return;
+    }
+
+    if (monitor.didDrop()) {
+      return;
+    }
+
+    const { taskId } = monitor.getItem() as any;
+    if (phase.tasks && phase.tasks.find(task => !!task && task.id === taskId)) {
+      return { canMove: false };
+    }
+
+    moveTaskToPhase(taskId, phase.id);
+
+    return { canMove: true, toTimeUnitId: phase.id };
+  },
+};
 
 const withData = compose(
   graphql<Response, OwnProps, Props>(CreateTaskMutation.mutation, {
@@ -122,6 +156,19 @@ const withData = compose(
         ),
     }),
   }),
+  graphql<Response, OwnProps, Props>(MoveTaskToPhaseMutation.mutation, {
+    props: ({ mutate, ownProps: { phase } }) => ({
+      moveTaskToPhase: (taskId: string, phaseId: string) =>
+        mutate &&
+        mutate(
+          MoveTaskToPhaseMutation.buildMutationOptions({ taskId, phaseId }, {}),
+        ),
+    }),
+  }),
+  DropTarget(ItemTypes.TASK_UNIT, taskTarget, (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver({ shallow: true }),
+  })),
 );
 
 export default withData(PhaseItem);

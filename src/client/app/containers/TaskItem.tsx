@@ -39,10 +39,10 @@ export function TaskItem({
   );
 }
 
-const taskUnitSource: DragSourceSpec<Props> = {
+const taskSource: DragSourceSpec<Props> = {
   beginDrag: ({ task }) => ({
     // fromTimeUnitId: timeUnit.id,
-    // taskUnitId: taskUnit.id,
+    taskId: task.id,
     // phaseId: taskUnit.phase.id,
   }),
   endDrag: (_, monitor) => {
@@ -58,9 +58,6 @@ const taskUnitSource: DragSourceSpec<Props> = {
     if (!canMove) {
       return;
     }
-
-    // move task
-    console.log('[TODO] Move Task');
   },
 };
 
@@ -100,7 +97,7 @@ const withData = compose(
         ),
     }),
   }),
-  DragSource(ItemTypes.TASK_UNIT, taskUnitSource, (connect, monitor) => ({
+  DragSource(ItemTypes.TASK_UNIT, taskSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging(),
   })),

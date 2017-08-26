@@ -10,6 +10,7 @@ import {
   createNetworkInterface,
 } from 'react-apollo';
 import { BrowserRouter as Router } from 'react-router-dom';
+import dataIdFromObject from '../shared/utils/dataIdFromObject';
 import isTouchSupported from '../shared/utils/isTouchSupported';
 import configureStore from '../redux/factories/configureStore';
 import Theme from './constants/Theme';
@@ -24,7 +25,7 @@ const store = configureStore();
 const dragDropBackend = isTouchSupported() ? TouchBackend : HTML5Backend;
 
 const client = new ApolloClient({
-  dataIdFromObject: (o: any) => `${o.__typename}:${o.id}`,
+  dataIdFromObject,
   networkInterface: createNetworkInterface({
     uri: '/graphql', // TODO: Don't specify port directly
     opts: {
