@@ -40,18 +40,7 @@ export type CreatePhaseMutation = {
   } | null,
 };
 
-export type CreateProjectMutationVariables = {
-  title: string,
-};
-
-export type CreateProjectMutation = {
-  createProject:  {
-    id: string,
-    title: string,
-  } | null,
-};
-
-export type CreateTaskMutationVariables = {
+export type CreatePhaseTaskMutationVariables = {
   title: string,
   description?: string | null,
   done?: boolean | null,
@@ -59,7 +48,7 @@ export type CreateTaskMutationVariables = {
   timeUnitId?: string | null,
 };
 
-export type CreateTaskMutation = {
+export type CreatePhaseTaskMutation = {
   createTask:  {
     id: string,
     phase:  {
@@ -68,6 +57,17 @@ export type CreateTaskMutation = {
     } | null,
     title: string,
     done: boolean,
+  } | null,
+};
+
+export type CreateProjectMutationVariables = {
+  title: string,
+};
+
+export type CreateProjectMutation = {
+  createProject:  {
+    id: string,
+    title: string,
   } | null,
 };
 
@@ -191,6 +191,16 @@ export type RemovePhaseMutation = {
   } | null,
 };
 
+export type RemovePhaseTaskMutationVariables = {
+  taskId: string,
+};
+
+export type RemovePhaseTaskMutation = {
+  removeTask:  {
+    removedTaskId: string | null,
+  } | null,
+};
+
 export type RemoveProjectMutationVariables = {
   projectId: string,
 };
@@ -198,16 +208,6 @@ export type RemoveProjectMutationVariables = {
 export type RemoveProjectMutation = {
   removeProject:  {
     removedProjectId: string,
-  } | null,
-};
-
-export type RemoveTaskMutationVariables = {
-  taskId: string,
-};
-
-export type RemoveTaskMutation = {
-  removeTask:  {
-    removedTaskId: string | null,
   } | null,
 };
 
@@ -298,6 +298,26 @@ export type UpdatePhaseMutation = {
   } | null,
 };
 
+export type UpdatePhaseTaskMutationVariables = {
+  taskId: string,
+  title?: string | null,
+  description?: string | null,
+  done?: boolean | null,
+  phaseId?: string | null,
+  timeUnitId?: string | null,
+};
+
+export type UpdatePhaseTaskMutation = {
+  updateTask:  {
+    id: string,
+    title: string,
+    done: boolean,
+    phase:  {
+      id: string,
+    } | null,
+  } | null,
+};
+
 export type UpdateProjectMutationVariables = {
   projectId: string,
   title: string,
@@ -307,26 +327,6 @@ export type UpdateProjectMutation = {
   updateProject:  {
     id: string,
     title: string,
-  } | null,
-};
-
-export type UpdateTaskMutationVariables = {
-  taskId: string,
-  title?: string | null,
-  description?: string | null,
-  done?: boolean | null,
-  phaseId?: string | null,
-  timeUnitId?: string | null,
-};
-
-export type UpdateTaskMutation = {
-  updateTask:  {
-    id: string,
-    title: string,
-    done: boolean,
-    phase:  {
-      id: string,
-    } | null,
   } | null,
 };
 

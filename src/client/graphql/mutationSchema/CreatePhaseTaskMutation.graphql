@@ -1,6 +1,6 @@
 #import "../querySchema/TaskItem.graphql"
 
-mutation CreateTask(
+mutation CreatePhaseTask(
   $title: String!
   $description: String
   $done: Boolean

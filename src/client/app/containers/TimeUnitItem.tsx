@@ -9,7 +9,7 @@ import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
 import * as UpdateTimeUnitMutation from '../../graphql/mutations/UpdateTimeUnitMutation';
 import * as MoveTaskToTimeUnitMutation from '../../graphql/mutations/MoveTaskToTimeUnitMutation';
 import * as RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
-import * as RemoveTaskMutation from '../../graphql/mutations/RemoveTaskMutation';
+import * as RemoveTimeUnitTaskMutation from '../../graphql/mutations/RemoveTimeUnitTaskMutation';
 import styled, { ThemedProps } from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
@@ -147,15 +147,15 @@ const taskTarget: DropTargetSpec<Props> = {
 };
 
 const withData = compose(
-  graphql<Response, OwnProps, Props>(RemoveTaskMutation.mutation, {
+  graphql<Response, OwnProps, Props>(RemoveTimeUnitTaskMutation.mutation, {
     props: ({ mutate, ownProps: { timeUnit } }) => ({
       removeTask: (task: TimeUnitTaskItem_taskFragment) =>
         mutate &&
         mutate(
-          RemoveTaskMutation.buildMutationOptions(
+          RemoveTimeUnitTaskMutation.buildMutationOptions(
             { taskId: task.id },
             { done: false },
-            { timeUnit },
+            timeUnit,
           ),
         ),
     }),

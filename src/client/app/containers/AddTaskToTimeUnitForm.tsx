@@ -7,7 +7,7 @@ import {
 import styled from '../styles/StyledComponents';
 import TitleSelect from '../components/TitleSelect';
 import TitleInput from '../components/TitleInput';
-import * as CreateTaskMutation from '../../graphql/mutations/CreateTaskMutation';
+import * as CreateTimeUnitTaskMutation from '../../graphql/mutations/CreateTimeUnitTaskMutation';
 
 const List = styled.div`
   minWidth: 300px;
@@ -76,16 +76,16 @@ export class AddTaskToTimeUnitForm extends React.Component<
 }
 
 const withData = compose(
-  graphql<Response, OwnProps, Props>(CreateTaskMutation.mutation, {
+  graphql<Response, OwnProps, Props>(CreateTimeUnitTaskMutation.mutation, {
     props: ({ mutate, ownProps: { timeUnit } }) => ({
       createTask: (phaseId: string | null, title: string) =>
         phaseId &&
         mutate &&
         mutate(
-          CreateTaskMutation.buildMutationOptions(
+          CreateTimeUnitTaskMutation.buildMutationOptions(
             { title, phaseId, timeUnitId: timeUnit.id },
             {},
-            { timeUnit },
+            timeUnit,
           ),
         ),
     }),

@@ -1,11 +1,11 @@
 import { MutationOptions } from 'apollo-client';
 import {
-  CreateTimeUnitTaskMutationVariables as MutationVariables,
-  CreateTimeUnitTaskMutation as Mutation,
-  TimeUnitItem_timeUnitFragment,
+  CreatePhaseTaskMutationVariables as MutationVariables,
+  CreatePhaseTaskMutation as Mutation,
+  PhaseItem_phaseFragment,
 } from 'schema';
-import * as TimeUnitItem_timeUnit from '../querySchema/TimeUnitItem_timeUnit.graphql';
-import * as mutation from '../mutationSchema/CreateTimeUnitTaskMutation.graphql';
+import * as PhaseItem_phase from '../querySchema/PhaseItem_phase.graphql';
+import * as mutation from '../mutationSchema/CreatePhaseTaskMutation.graphql';
 import dataIdFromObject from '../../shared/utils/dataIdFromObject';
 
 type QueryVariables = {};
@@ -15,7 +15,7 @@ export { mutation, MutationVariables, Mutation };
 export function buildMutationOptions(
   mutationVariables: MutationVariables,
   variables: QueryVariables,
-  timeUnit: TimeUnitItem_timeUnitFragment,
+  phase: PhaseItem_phaseFragment,
 ): MutationOptions<Mutation> {
   const { title, description, done, phaseId, timeUnitId } = mutationVariables;
 
@@ -36,11 +36,11 @@ export function buildMutationOptions(
       },
     },
     update: (store, { data: { createTask } = { createTask: null } }) => {
-      const data = store.readFragment<TimeUnitItem_timeUnitFragment>({
-        fragment: TimeUnitItem_timeUnit,
-        fragmentName: 'TimeUnitItem_timeUnit',
+      const data = store.readFragment<PhaseItem_phaseFragment>({
+        fragment: PhaseItem_phase,
+        fragmentName: 'PhaseItem_phase',
         variables,
-        id: dataIdFromObject(timeUnit),
+        id: dataIdFromObject(phase),
       });
       if (!data || !data.tasks) {
         return;
@@ -48,11 +48,11 @@ export function buildMutationOptions(
 
       data.tasks.push(createTask);
       store.writeFragment({
-        fragment: TimeUnitItem_timeUnit,
-        fragmentName: 'TimeUnitItem_timeUnit',
+        fragment: PhaseItem_phase,
+        fragmentName: 'PhaseItem_phase',
         data,
         variables,
-        id: dataIdFromObject(timeUnit),
+        id: dataIdFromObject(phase),
       });
     },
   };

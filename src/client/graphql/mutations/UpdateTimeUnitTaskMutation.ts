@@ -5,7 +5,7 @@ import {
   UpdateTimeUnitTaskMutation as Mutation,
   TimeUnitTaskItem_taskFragment,
 } from 'schema';
-import * as mutation from '../mutationSchema/UpdateTaskMutation.graphql';
+import * as mutation from '../mutationSchema/UpdateTimeUnitTaskMutation.graphql';
 
 type QueryVariables = {};
 

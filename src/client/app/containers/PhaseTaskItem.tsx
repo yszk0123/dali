@@ -2,7 +2,7 @@ import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { DragSource, DragSourceSpec, ConnectDragSource } from 'react-dnd';
 import { TaskItem_taskFragment } from 'schema';
-import * as UpdateTaskMutation from '../../graphql/mutations/UpdateTaskMutation';
+import * as UpdatePhaseTaskMutation from '../../graphql/mutations/UpdatePhaseTaskMutation';
 import TaskLabel from '../components/TaskLabel';
 import ItemTypes from '../constants/ItemTypes';
 
@@ -60,12 +60,12 @@ const taskSource: DragSourceSpec<Props> = {
 };
 
 const withData = compose(
-  graphql<Response, OwnProps, Props>(UpdateTaskMutation.mutation, {
+  graphql<Response, OwnProps, Props>(UpdatePhaseTaskMutation.mutation, {
     props: ({ mutate, ownProps: { task } }) => ({
       updateTitle: (input: { title: string }) =>
         mutate &&
         mutate(
-          UpdateTaskMutation.buildMutationOptions(
+          UpdatePhaseTaskMutation.buildMutationOptions(
             { ...input, taskId: task.id },
             { done: false },
             task,
@@ -74,7 +74,7 @@ const withData = compose(
       toggleDone: () =>
         mutate &&
         mutate(
-          UpdateTaskMutation.buildMutationOptions(
+          UpdatePhaseTaskMutation.buildMutationOptions(
             { done: !task.done, taskId: task.id },
             { done: false },
             task,

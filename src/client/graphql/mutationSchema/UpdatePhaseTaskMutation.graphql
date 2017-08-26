@@ -1,6 +1,6 @@
 #import "../querySchema/TaskItem.graphql"
 
-mutation UpdateTask(
+mutation UpdatePhaseTask(
   $taskId: ID!
   $title: String
   $description: String

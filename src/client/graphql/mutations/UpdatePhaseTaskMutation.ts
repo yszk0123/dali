@@ -1,11 +1,11 @@
 import { defaults } from 'lodash';
 import { MutationOptions } from 'apollo-client';
 import {
-  UpdateTaskMutationVariables as MutationVariables,
-  UpdateTaskMutation as Mutation,
+  UpdatePhaseTaskMutationVariables as MutationVariables,
+  UpdatePhaseTaskMutation as Mutation,
   TaskItem_taskFragment,
 } from 'schema';
-import * as mutation from '../mutationSchema/UpdateTaskMutation.graphql';
+import * as mutation from '../mutationSchema/UpdatePhaseTaskMutation.graphql';
 
 type QueryVariables = {};
 

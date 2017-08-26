@@ -9,17 +9,17 @@ import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
 import styled, { ThemedProps } from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
-import * as CreateTaskMutation from '../../graphql/mutations/CreateTaskMutation';
+import * as CreatePhaseTaskMutation from '../../graphql/mutations/CreatePhaseTaskMutation';
 import * as RemovePhaseMutation from '../../graphql/mutations/RemovePhaseMutation';
 import * as UpdatePhaseMutation from '../../graphql/mutations/UpdatePhaseMutation';
 import * as SetProjectToPhaseMutation from '../../graphql/mutations/SetProjectToPhaseMutation';
 import * as MoveTaskToPhaseMutation from '../../graphql/mutations/MoveTaskToPhaseMutation';
-import * as RemoveTaskMutation from '../../graphql/mutations/RemoveTaskMutation';
+import * as RemovePhaseTaskMutation from '../../graphql/mutations/RemovePhaseTaskMutation';
 import ItemTypes from '../constants/ItemTypes';
 import TitlePlaceholder from '../components/TitlePlaceholder';
 import TitleSelect from '../components/TitleSelect';
 import DoneCheckbox from '../components/DoneCheckbox';
-import TaskItem from './TaskItem';
+import PhaseTaskItem from './PhaseTaskItem';
 
 const Wrapper = styled.div`
   padding-top: 0.4rem;
@@ -77,7 +77,7 @@ export function PhaseItem({
         phase.tasks.map(
           task =>
             task &&
-            <TaskItem
+            <PhaseTaskItem
               key={task.id}
               task={task}
               phaseId={phase.id}
@@ -111,28 +111,28 @@ const taskTarget: DropTargetSpec<Props> = {
 };
 
 const withData = compose(
-  graphql<Response, OwnProps, Props>(RemoveTaskMutation.mutation, {
+  graphql<Response, OwnProps, Props>(RemovePhaseTaskMutation.mutation, {
     props: ({ mutate, ownProps: { phase } }) => ({
       removeTask: (task: TaskItem_taskFragment) =>
         mutate &&
         mutate(
-          RemoveTaskMutation.buildMutationOptions(
+          RemovePhaseTaskMutation.buildMutationOptions(
             { taskId: task.id },
             { done: false },
-            { phase },
+            phase,
           ),
         ),
     }),
   }),
-  graphql<Response, OwnProps, Props>(CreateTaskMutation.mutation, {
+  graphql<Response, OwnProps, Props>(CreatePhaseTaskMutation.mutation, {
     props: ({ mutate, ownProps: { phase } }) => ({
       createTask: (title: string) =>
         mutate &&
         mutate(
-          CreateTaskMutation.buildMutationOptions(
+          CreatePhaseTaskMutation.buildMutationOptions(
             { title, phaseId: phase.id },
             { done: false },
-            { phase },
+            phase,
           ),
         ),
     }),

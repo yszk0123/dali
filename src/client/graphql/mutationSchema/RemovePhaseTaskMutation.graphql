@@ -1,4 +1,4 @@
-mutation RemoveTask($taskId: ID!) {
+mutation RemovePhaseTask($taskId: ID!) {
   removeTask(taskId: $taskId) {
     removedTaskId
   }
