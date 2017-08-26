@@ -44,7 +44,7 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/taskSets"
+            path="/tasks"
             component={TasksPage}
             isLogin={isLogin}
           />
@@ -53,9 +53,9 @@ export function Routes({ isLogin }: Props) {
             component={ProfilePage}
             isLogin={isLogin}
           />
-          <DateSwitch isLogin={isLogin} />
           <PropsRoute path="/login" component={LoginPage} />
           <PropsRoute path="/signup" component={SignupPage} />
+          <DateSwitch isLogin={isLogin} />
         </Switch>
       </MainContent>
     </div>
