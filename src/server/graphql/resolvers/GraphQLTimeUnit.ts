@@ -7,7 +7,7 @@ interface Input {
 }
 
 export default function createResolvers({
-  models: { TimeUnit },
+  models: { TimeUnit, Task },
 }: Input): IResolvers {
   return {
     TimeUnit: {
@@ -17,9 +17,24 @@ export default function createResolvers({
     Query: {
       timeUnits: resolver(TimeUnit, {
         list: true,
-        before: (findOptions: any, { orderBy }: any, context: IContext) => {
+        before: (
+          findOptions: any,
+          { orderBy, before, after, date }: any,
+          context: IContext,
+        ) => {
+          const where = {};
+
           if (orderBy) {
             findOptions.order = [[camelCase(orderBy.field), orderBy.direction]];
+          }
+          if (after) {
+            Object.assign(where, { date: { $gte: after } });
+          }
+          if (before) {
+            Object.assign(where, { date: { $lte: before } });
+          }
+          if (date) {
+            Object.assign(where, { date });
           }
 
           return findOptions;
@@ -29,42 +44,56 @@ export default function createResolvers({
     Mutation: {
       createTimeUnit: async (
         root,
-        { description, wholeDay, startAt, endAt },
+        { description, date, position },
         { user },
       ) => {
         return await TimeUnit.create({
           ownerId: user.id,
           description,
-          wholeDay,
-          startAt,
-          endAt,
+          date,
+          position,
         });
       },
       updateTimeUnit: async (
         root,
-        { taskGroupId, description, wholeDay, startAt, endAt },
+        { timeUnitId, description, date, position },
         { user },
       ) => {
         const timeUnit = await TimeUnit.findOne({
-          where: { id: taskGroupId, ownerId: user.id },
+          where: { id: timeUnitId, ownerId: user.id },
           rejectOnEmpty: true,
         });
 
         await timeUnit.update(
-          omitBy({ description, wholeDay, startAt, endAt }, isUndefined),
+          omitBy({ description, date, position }, isUndefined),
         );
 
         return timeUnit;
       },
-      removeTimeUnit: async (root, { taskGroupId }, { user }) => {
-        const task = await TimeUnit.findOne({
-          where: { id: taskGroupId, ownerId: user.id },
+      moveTaskToTimeUnit: async (root, { taskId, timeUnitId }, { user }) => {
+        const task = await Task.findById(taskId, {
+          where: { ownerId: user.id },
+          rejectOnEmpty: true,
+        });
+        const sourceTimeUnit = await task.getTimeUnit();
+        const targetTimeUnit = await TimeUnit.findById(timeUnitId, {
+          where: { ownerId: user.id },
           rejectOnEmpty: true,
         });
 
-        await task.destroy();
+        await task.setTimeUnit(targetTimeUnit);
 
-        return { removedTimeUnitId: taskGroupId };
+        return { task, sourceTimeUnit, targetTimeUnit };
+      },
+      removeTimeUnit: async (root, { timeUnitId }, { user }) => {
+        const timeUnit = await TimeUnit.findOne({
+          where: { id: timeUnitId, ownerId: user.id },
+          rejectOnEmpty: true,
+        });
+
+        await timeUnit.destroy();
+
+        return { removedTimeUnitId: timeUnitId };
       },
     },
   };

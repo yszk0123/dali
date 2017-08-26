@@ -1,0 +1,16 @@
+#import "../querySchema/TaskItem.graphql"
+
+mutation MoveTaskToPhase($taskId: ID!, $phaseId: ID!) {
+  moveTaskToPhase(taskId: $taskId, phaseId: $phaseId) {
+    task {
+      id
+      ...TaskItem_task
+    }
+    sourcePhase {
+      id
+    }
+    targetPhase {
+      id
+    }
+  }
+}

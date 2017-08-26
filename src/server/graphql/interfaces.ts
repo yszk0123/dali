@@ -11,7 +11,7 @@ export type IModels = {
   Member: any;
   Project: any;
   Task: any;
-  TaskGroup: any;
+  Phase: any;
   TimeUnit: any;
   User: any;
 };

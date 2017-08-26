@@ -3,14 +3,7 @@ import * as Sequelize from 'sequelize';
 import serverConfig from '../../shared/config/serverConfig';
 import { IModels } from '../../graphql/interfaces';
 
-const modelNames = [
-  'Member',
-  'Project',
-  'Task',
-  'TaskGroup',
-  'TimeUnit',
-  'User',
-];
+const modelNames = ['Member', 'Project', 'Task', 'Phase', 'TimeUnit', 'User'];
 
 type Output = {
   models: IModels;

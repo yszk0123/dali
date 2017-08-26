@@ -1,0 +1,5 @@
+query SignupPage {
+  currentUser {
+    id
+  }
+}

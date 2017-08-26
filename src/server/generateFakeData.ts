@@ -8,7 +8,7 @@ interface GenerateFakeDataInput {
 
 export default async function generateFakeData({
   sequelize,
-  models: { User, Project, TaskGroup, Task, TimeUnit },
+  models: { User, Project, Phase, Task, TimeUnit },
 }: GenerateFakeDataInput) {
   await sequelize.transaction(async transaction => {
     const user = await User.create(
@@ -23,20 +23,20 @@ export default async function generateFakeData({
       Project.create({ ownerId: user.id, title: 'Work' }, { transaction }),
       Project.create({ ownerId: user.id, title: 'Private' }, { transaction }),
     ]);
-    const taskGroups = await Promise.all([
-      TaskGroup.create(
+    const phases = await Promise.all([
+      Phase.create(
         {
           ownerId: user.id,
           projectId: projects[0].id,
-          title: 'TaskGroup A',
+          title: 'Phase A',
         },
         { transaction },
       ),
-      TaskGroup.create(
+      Phase.create(
         {
           ownerId: user.id,
           projectId: projects[1].id,
-          title: 'TaskGroup B',
+          title: 'Phase B',
         },
         { transaction },
       ),
@@ -45,7 +45,7 @@ export default async function generateFakeData({
       Task.create(
         {
           ownerId: user.id,
-          taskGroupId: taskGroups[0].id,
+          phaseId: phases[0].id,
           title: 'Task A',
         },
         { transaction },
@@ -53,7 +53,7 @@ export default async function generateFakeData({
       Task.create(
         {
           ownerId: user.id,
-          taskGroupId: taskGroups[1].id,
+          phaseId: phases[1].id,
           title: 'Task B',
         },
         { transaction },
@@ -61,7 +61,35 @@ export default async function generateFakeData({
     ]);
     await Promise.all([
       TimeUnit.create(
-        { ownerId: user.id, startAt: new Date(), endAt: new Date() },
+        {
+          ownerId: user.id,
+          date: '2017-01-20',
+          position: 10,
+        },
+        { transaction },
+      ),
+      TimeUnit.create(
+        {
+          ownerId: user.id,
+          date: '2017-01-20',
+          position: 11,
+        },
+        { transaction },
+      ),
+      TimeUnit.create(
+        {
+          ownerId: user.id,
+          date: '2017-01-20',
+          position: 13,
+        },
+        { transaction },
+      ),
+      TimeUnit.create(
+        {
+          ownerId: user.id,
+          date: '2017-01-21',
+          position: 10,
+        },
         { transaction },
       ),
     ]);

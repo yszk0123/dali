@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from '../styles/StyledComponents';
 import Icon from './Icon';
 
 const Label = styled.span`
@@ -13,7 +13,7 @@ const Label = styled.span`
 
 interface Props {
   icon: string;
-  label: boolean;
+  label: string;
   done: boolean;
   onLabelClick: React.MouseEventHandler<HTMLElement>;
   onRemoveButtonClick: React.MouseEventHandler<HTMLElement>;

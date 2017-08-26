@@ -26,9 +26,24 @@ declare module 'cookie-session' {
   export = value;
 }
 
+declare module 'graphql-errors' {
+  export function maskErrors(schema: any): void;
+}
+
 declare module 'jsonwebtoken' {
   const value: any;
   export = value;
+}
+
+declare module 'assert-err' {
+  const value: any;
+  export = value;
+  // export default function assertError(
+  //   assertion: boolean,
+  //   errorType: any,
+  //   message: string,
+  //   _?: any[],
+  // ): void;
 }
 
 declare module 'merge-graphql-schemas' {

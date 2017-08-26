@@ -1,0 +1,4 @@
+fragment AddTaskToTimeUnitForm_tasks on Task {
+  id
+  title
+}

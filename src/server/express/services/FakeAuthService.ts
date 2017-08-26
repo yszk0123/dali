@@ -14,7 +14,7 @@ async function authenticate({ User }: any, context: IContext) {
 async function signup({ User }: any, context: IContext) {
   const user = await User.findOne();
 
-  if (user) {
+  if (user && context.session) {
     context.session.token = createToken(user);
     context.user = user;
   }
@@ -25,7 +25,7 @@ async function signup({ User }: any, context: IContext) {
 async function login({ User }: any, context: IContext): Promise<any> {
   const user = await User.findOne();
 
-  if (user) {
+  if (user && context.session) {
     context.session.token = createToken(user);
     context.user = user;
   }
@@ -36,7 +36,9 @@ async function login({ User }: any, context: IContext): Promise<any> {
 async function logout(data: any, context: IContext): Promise<any> {
   const user: any = null;
 
-  context.session.token = null;
+  if (context.session) {
+    delete context.session.token;
+  }
 
   return { user };
 }

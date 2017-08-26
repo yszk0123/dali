@@ -1,0 +1,8 @@
+#import "../querySchema/TimeUnitTaskItem_task.graphql"
+
+mutation AddTaskToTimeUnit($timeUnitId: ID!, $taskId: ID!) {
+  task: setTimeUnitToTask(timeUnitId: $timeUnitId, taskId: $taskId) {
+    id
+    ...TimeUnitTaskItem_task
+  }
+}

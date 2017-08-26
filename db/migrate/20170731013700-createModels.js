@@ -63,6 +63,7 @@ module.exports = {
     await queryInterface.createTable('Member', {
       authority: {
         type: Sequelize.ENUM('OWNER', 'EDITABLE', 'READONLY'),
+        allowNull: false,
         defaultValue: 'READONLY',
       },
       userId: {
@@ -85,7 +86,7 @@ module.exports = {
       },
     });
 
-    await queryInterface.createTable('TaskGroup', {
+    await queryInterface.createTable('Phase', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -128,19 +129,11 @@ module.exports = {
         autoIncrement: true,
       },
       description: Sequelize.TEXT,
-      wholeDay: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      startAt: {
-        type: Sequelize.DATE,
+      date: {
+        type: Sequelize.DATEONLY,
         allowNull: false,
       },
-      endAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
+      position: Sequelize.INTEGER,
       ownerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -186,11 +179,11 @@ module.exports = {
           key: 'id',
         },
       },
-      taskGroupId: {
+      phaseId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'TaskGroup',
+          model: 'Phase',
           key: 'id',
         },
         onDelete: 'cascade',
@@ -205,20 +198,12 @@ module.exports = {
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
     });
-
-    await queryInterface.addConstraint('Member', ['projectId', 'userId'], {
-      type: 'primary key',
-    });
-
-    await queryInterface.addConstraint('Task', ['taskGroupId', 'timeUnitId'], {
-      type: 'unique',
-    });
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Task');
     await queryInterface.dropTable('TimeUnit');
-    await queryInterface.dropTable('TaskGroup');
+    await queryInterface.dropTable('Phase');
     await queryInterface.dropTable('Member');
     await queryInterface.dropTable('Project');
     await queryInterface.dropTable('User');

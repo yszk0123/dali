@@ -29,10 +29,10 @@ export default function createProject(
 
   // FIXME
   const _Project = Project as any;
-  _Project.associate = ({ User, Member, TaskGroup }: IModels) => {
+  _Project.associate = ({ User, Member, Phase }: IModels) => {
     _Project.Owner = Project.belongsTo(User, { as: 'owner' });
     _Project.Members = Project.belongsToMany(User, { through: Member });
-    _Project.TaskGroups = Project.hasMany(TaskGroup);
+    _Project.Phases = Project.hasMany(Phase);
   };
 
   return Project;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import TitlePlaceholder from './TitlePlaceholder';
 
 interface Props {
-  onChange(value: { title: string }): void;
+  onChange(title: string): void;
   title: string;
 }
 
@@ -16,7 +16,7 @@ export default class TitleInput extends React.Component {
   constructor(props: Props) {
     super(props);
     this.state = {
-      title: props.title || '',
+      title: props.title,
       isEditing: false,
     };
   }
@@ -50,7 +50,7 @@ export default class TitleInput extends React.Component {
     const { title } = this.state;
 
     if (title !== originalTitle) {
-      onChange({ title });
+      onChange(title);
     }
 
     this.setState({

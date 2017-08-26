@@ -1,15 +1,25 @@
-import { CreateProjectMutationMutationVariables } from 'schema';
-import * as projectPageQuery from '../querySchema/ProjectsPage.graphql';
-import * as query from '../mutationSchema/CreateProjectMutation.graphql';
+import { MutationOptions } from 'apollo-client';
+import {
+  CreateProjectMutationVariables as MutationVariables,
+  CreateProjectMutation as Mutation,
+  ProjectPageQuery as Query,
+} from 'schema';
+import * as query from '../querySchema/ProjectPage.graphql';
+import * as mutation from '../mutationSchema/CreateProjectMutation.graphql';
 
-async function commit(
-  mutate: any,
-  { title }: CreateProjectMutationMutationVariables,
-) {
-  await mutate({
-    variables: {
-      title,
-    },
+type QueryVariables = {};
+
+export { mutation, MutationVariables, Mutation };
+
+export function buildMutationOptions(
+  mutationVariables: MutationVariables,
+  variables: QueryVariables = {},
+): MutationOptions<Mutation> {
+  const { title } = mutationVariables;
+
+  return {
+    mutation,
+    variables: mutationVariables,
     optimisticResponse: {
       __typename: 'Mutation',
       createProject: {
@@ -18,12 +28,17 @@ async function commit(
         title,
       },
     },
-    update: (store: any, { data: { createProject } }: any) => {
-      const data = store.readQuery({ query: projectPageQuery });
-      data.projects.push(createProject);
-      store.writeQuery({ query: projectPageQuery, data });
-    },
-  });
-}
+    update: (
+      store,
+      { data: { createProject: project } = { createProject: null } },
+    ) => {
+      const data = store.readQuery<Query>({ query, variables });
+      if (!data.projects) {
+        return;
+      }
 
-export default { commit, query };
+      data.projects.push(project);
+      store.writeQuery({ query, data, variables });
+    },
+  };
+}

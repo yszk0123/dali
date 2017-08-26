@@ -1,0 +1,18 @@
+#import "../querySchema/TimeUnitItem_timeUnit.graphql"
+
+mutation UpdateTimeUnit(
+  $description: String
+  $date: DateOnly
+  $position: Int
+  $timeUnitId: ID!
+) {
+  updateTimeUnit(
+    description: $description
+    date: $date
+    position: $position
+    timeUnitId: $timeUnitId
+  ) {
+    id
+    ...TimeUnitItem_timeUnit
+  }
+}

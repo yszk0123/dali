@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from '../styles/StyledComponents';
 
 const Wrapper = styled.div`
   backgtimeUnit: #f62;

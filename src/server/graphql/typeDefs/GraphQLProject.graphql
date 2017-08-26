@@ -9,9 +9,9 @@ type Project {
   title: String!
   description: String
   owner: User!
-  visibility: ProjectVisibility
+  visibility: ProjectVisibility!
   members: [Member]
-  taskGroups: [TaskGroup]
+  phases: [Phase]
 }
 
 type RemoveProjectPayload {
@@ -31,6 +31,7 @@ input ProjectOrder {
 
 type Query {
   projects(
+    done: Boolean
     limit: ListLimit
     offset: ListOffset
     orderBy: ProjectOrder
@@ -41,4 +42,5 @@ type Mutation {
   createProject(title: String!): Project
   updateProject(projectId: ID!, title: String!): Project
   removeProject(projectId: ID!): RemoveProjectPayload
+  addPhaseToProject(phaseId: ID!, projectId: ID!): Project
 }

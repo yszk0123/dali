@@ -1,10 +1,16 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { Color, ThemedProps } from '../styles/StyledComponents';
+
+interface IProps {
+  color?: Color;
+  large?: boolean;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+}
 
 const I = styled.i`
-  color: ${({ theme, color }) => theme.icon[color].color};
-  font-size: ${({ large }: { large: boolean }) =>
-    large ? '1.6rem' : 'inherit'};
+  color: ${({ theme, color = 'default' }: ThemedProps<IProps>) =>
+    theme.icon[color].color};
+  font-size: ${({ large }) => (large ? '1.6rem' : 'inherit')};
   cursor: ${({ onClick }) => (onClick ? 'pointer' : 'initial')};
 `;
 
@@ -15,8 +21,8 @@ I.defaultProps = {
 interface Props {
   icon: string;
   large?: boolean;
-  color?: string;
-  onClick: React.MouseEventHandler<HTMLElement>;
+  color?: Color;
+  onClick?: React.MouseEventHandler<HTMLElement>;
 }
 
 export default function Icon({ icon, large, color, onClick }: Props) {

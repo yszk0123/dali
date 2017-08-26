@@ -28,24 +28,13 @@ export function App({
     return <LoadingIndicator />;
   }
 
-  return (
-    <div>
-      <h1>
-        Hello {networkStatus}
-      </h1>
-      {isLogin &&
-        <h1>
-          Hello, {nickname}!
-        </h1>}
-      <Routes />
-    </div>
-  );
+  return <Routes />;
 }
 
 const withData = graphql<Response & AppQuery, {}, Props>(appQuery, {
   props: ({ data }) => ({
     ...data,
-    ...data.currentUser,
+    ...data && data.currentUser,
     isLogin: data && data.currentUser,
   }),
 });

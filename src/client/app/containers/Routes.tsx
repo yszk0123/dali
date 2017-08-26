@@ -1,23 +1,21 @@
 import * as React from 'react';
 import { Switch, withRouter } from 'react-router-dom';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import styled from 'styled-components';
 import { RoutesQuery } from 'schema';
+import styled from '../styles/StyledComponents';
 import * as routesQuery from '../../graphql/querySchema/Routes.graphql';
 import PropsRoute from '../../shared/components/PropsRoute';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import Dummy from '../Dummy';
-// import DailySwitch from './DailySwitch';
-// import DashboardPage from './DashboardPage';
+import DateSwitch from './DateSwitch';
 import LoginPage from './LoginPage';
 import NavBar from './NavBar';
-import ProjectsPage from './ProjectsPage';
-// import SignupPage from './SignupPage';
-// import TaskSetsPage from './TaskSetsPage';
-const DailySwitch = Dummy;
+import ProjectPage from './ProjectPage';
+import SignupPage from './SignupPage';
+import PhasePage from './PhasePage';
+import ProfilePage from './ProfilePage';
+// import DashboardPage from './DashboardPage';
 const DashboardPage = Dummy;
-const SignupPage = Dummy;
-const TaskSetsPage = Dummy;
 
 const MainContent = styled.div`margin: 1.8rem;`;
 
@@ -40,22 +38,23 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/projects"
-            component={ProjectsPage}
+            path="/project"
+            component={ProjectPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/taskSets"
-            component={TaskSetsPage}
+            path="/phase"
+            component={PhasePage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/daily"
-            component={DailySwitch}
+            path="/profile"
+            component={ProfilePage}
             isLogin={isLogin}
           />
           <PropsRoute path="/login" component={LoginPage} />
           <PropsRoute path="/signup" component={SignupPage} />
+          <DateSwitch isLogin={isLogin} />
         </Switch>
       </MainContent>
     </div>

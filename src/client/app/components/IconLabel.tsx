@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from '../styles/StyledComponents';
 
 const Label = styled.span`
   display: inline-block;
@@ -14,7 +14,7 @@ const Label = styled.span`
 interface Props {
   icon: string;
   label: boolean;
-  onIconClick(event: any): void;
+  onIconClick(_event: any): void;
 }
 
 export default function IconLabel({

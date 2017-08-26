@@ -15,7 +15,7 @@ interface Props {
   isOpen: boolean,
   onRequestClose: () => mixed,
   relay: any,
-  taskSetId: any,
+  phaseId: any,
   viewer: any,
 }
 
@@ -23,12 +23,12 @@ export class LinkProjectModal extends React.Component {
   props: Props;
 
   _add(project) {
-    const { relay, taskSetId, onRequestClose } = this.props;
+    const { relay, phaseId, onRequestClose } = this.props;
 
     LinkProjectMutation.commit(
       relay.environment,
       { project },
-      { id: taskSetId },
+      { id: phaseId },
     );
 
     onRequestClose();
@@ -63,10 +63,10 @@ export class LinkProjectModal extends React.Component {
   }
 }
 
-function mapStateToProps({ modals: { taskSetId } }) {
+function mapStateToProps({ modals: { phaseId } }) {
   return {
-    isOpen: taskSetId != null,
-    taskSetId,
+    isOpen: phaseId != null,
+    phaseId,
   };
 }
 

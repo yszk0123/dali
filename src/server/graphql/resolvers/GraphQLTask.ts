@@ -7,12 +7,12 @@ interface Input {
 }
 
 export default function createResolvers({
-  models: { Task, TaskGroup },
+  models: { Task, TimeUnit, Phase },
 }: Input): IResolvers {
   return {
     Task: {
       owner: resolver(Task.Owner),
-      taskGroup: resolver(Task.TaskGroup),
+      phase: resolver(Task.Phase),
       timeUnit: resolver(Task.TimeUnit),
       assignee: resolver(Task.Assignee),
     },
@@ -31,14 +31,14 @@ export default function createResolvers({
     Mutation: {
       createTask: async (
         root,
-        { title, description, done, taskGroupId, timeUnitId, assigneeId },
+        { title, description, done, phaseId, timeUnitId, assigneeId },
         { user },
       ) => {
         return await Task.create({
           title,
           description,
           done,
-          taskGroupId,
+          phaseId,
           timeUnitId,
           assigneeId,
           ownerId: user.id,
@@ -46,15 +46,7 @@ export default function createResolvers({
       },
       updateTask: async (
         root,
-        {
-          taskId,
-          title,
-          description,
-          done,
-          taskGroupId,
-          timeUnitId,
-          assigneeId,
-        },
+        { taskId, title, description, done, phaseId, timeUnitId, assigneeId },
         { user },
       ) => {
         const task = await Task.findOne({
@@ -64,7 +56,7 @@ export default function createResolvers({
 
         await task.update(
           omitBy(
-            { title, description, done, taskGroupId, timeUnitId, assigneeId },
+            { title, description, done, phaseId, timeUnitId, assigneeId },
             isUndefined,
           ),
         );
@@ -81,20 +73,33 @@ export default function createResolvers({
 
         return { removedTaskId: taskId };
       },
-      addTaskToTaskGroup: async (root, { taskId, taskGroupId }, { user }) => {
+      setPhaseToTask: async (root, { phaseId, taskId }, { user }) => {
+        const phase = await Phase.findOne({
+          where: { id: phaseId, ownerId: user.id },
+          rejectOnEmpty: true,
+        });
         const task = await Task.findOne({
           where: { id: taskId, ownerId: user.id },
           rejectOnEmpty: true,
         });
-        const taskGroup = await TaskGroup.findOne({
-          where: { id: taskGroupId, ownerId: user.id },
+
+        await task.setPhase(phase);
+
+        return task;
+      },
+      setTimeUnitToTask: async (root, { timeUnitId, taskId }, { user }) => {
+        const timeUnit = await TimeUnit.findOne({
+          where: { id: timeUnitId, ownerId: user.id },
+          rejectOnEmpty: true,
+        });
+        const task = await Task.findOne({
+          where: { id: taskId, ownerId: user.id },
           rejectOnEmpty: true,
         });
 
-        await taskGroup.addTask(task);
-        await task.reload();
+        await task.setTimeUnit(timeUnit);
 
-        return { task, taskGroup };
+        return task;
       },
     },
   };

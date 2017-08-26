@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { printSchema } from 'graphql';
-import { createSchema } from '../src/server/graphql';
-import { connectDatabase } from '../src/server/database';
+import { createSchema } from '../dist/server/graphql';
+import { connectDatabase } from '../dist/server/database';
 
 const schemaPath = path.resolve(__dirname, '../data/schema.graphql');
 

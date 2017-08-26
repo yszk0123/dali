@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": false,
     "outDir": "./dist/",
     "sourceMap": true,
     "allowJs": true,
-    "noImplicitAny": true,
+    "strict": true,
     "module": "commonjs",
+    "moduleResolution": "node",
     "target": "es6",
     "jsx": "react",
     "lib": [

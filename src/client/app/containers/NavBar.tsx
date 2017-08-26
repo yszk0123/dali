@@ -1,11 +1,10 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { graphql, compose, withApollo, QueryProps } from 'react-apollo';
 import { NavBarQuery } from 'schema';
-import LogoutMutation from '../../graphql/typeDefs/LogoutMutation';
-import * as LogoutMutationString from '../../graphql/typeDefs/LogoutMutation.graphql';
+import * as LogoutMutation from '../../graphql/mutations/LogoutMutation';
 import * as navBarQuery from '../../graphql/querySchema/NavBar.graphql';
+import styled from '../styles/StyledComponents';
 import Button from '../components/Button';
 
 const NavBarWrapper = styled.div`
@@ -44,13 +43,12 @@ export function NavBar({ isLogin, onLogout }: Props) {
   return (
     <NavBarWrapper>
       <NavBarLink to="/">Dashboard</NavBarLink>
-      <NavBarLink to="/daily/schedule">DailySchedule</NavBarLink>
-      <NavBarLink to="/daily/report">DailyReport</NavBarLink>
-      <NavBarLink to="/projects">Projects</NavBarLink>
-      <NavBarLink to="/taskSets">TaskSets</NavBarLink>
+      <NavBarLink to="/project">Project</NavBarLink>
+      <NavBarLink to="/phase">Phase</NavBarLink>
+      <NavBarLink to="/timeUnit">TimeUnit</NavBarLink>
+      <NavBarLink to="/report">Report</NavBarLink>
       <NavBarLink to="/options">Options</NavBarLink>
       <NavBarLink to="/profile">Profile</NavBarLink>
-      <NavBarLink to="/dailyReportTemplate">DailyReportTemplate</NavBarLink>
       {isLogin &&
         <NavBarItem>
           <Button onClick={onLogout}>Logout</Button>
@@ -66,10 +64,10 @@ const withData = compose(
     }),
   }),
   withApollo,
-  graphql<Response, { client: any }, Props>(LogoutMutationString, {
+  graphql<Response, { client: any }, Props>(LogoutMutation.mutation, {
     props: ({ data, mutate, ownProps: { client } }) => ({
       onLogout: async () => {
-        await LogoutMutation.commit(mutate);
+        mutate && (await mutate(LogoutMutation.buildMutationOptions()));
         await client.resetStore();
       },
     }),

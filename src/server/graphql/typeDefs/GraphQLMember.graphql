@@ -6,7 +6,7 @@ enum Authority {
 
 type Member {
   id: ID!
-  authority: Authority
+  authority: Authority!
 }
 
 type Query {

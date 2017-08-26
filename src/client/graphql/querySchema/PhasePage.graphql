@@ -1,0 +1,17 @@
+#import "./PhaseItem_phase.graphql"
+#import "./PhaseItem_projects.graphql"
+
+query PhasePage($done: Boolean) {
+  phases(limit: 100, done: $done) {
+    id
+    title
+    ...PhaseItem_phase
+  }
+  projects(done: false) {
+    id
+    ...PhaseItem_projects
+  }
+  currentUser {
+    id
+  }
+}

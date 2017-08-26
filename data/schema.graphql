@@ -1,13 +1,3 @@
-type AddTaskGroupToProjectPayload {
-  taskGroup: TaskGroup
-  project: Project
-}
-
-type AddTaskToTaskGroupPayload {
-  task: Task
-  taskGroup: TaskGroup
-}
-
 enum Authority {
   OWNER
   EDITABLE
@@ -15,6 +5,8 @@ enum Authority {
 }
 
 scalar Date
+
+scalar DateOnly
 
 # The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 scalar JSON
@@ -33,31 +25,40 @@ scalar ListWhere
 
 type Member {
   id: ID!
-  authority: Authority
+  authority: Authority!
 }
 
-type MoveTaskToTaskGroupPayload {
+type MoveTaskToPhasePayload {
   task: Task
-  sourceTaskGroup: TaskGroup
-  targetTaskGroup: TaskGroup
+  sourcePhase: Phase
+  targetPhase: Phase
+}
+
+type MoveTaskToTimeUnitPayload {
+  task: Task
+  sourceTimeUnit: TimeUnit
+  targetTimeUnit: TimeUnit
 }
 
 type Mutation {
+  createPhase(title: String, description: String, done: Boolean, projectId: ID): Phase
+  updatePhase(phaseId: ID!, title: String, description: String, done: Boolean, projectId: ID): Phase
+  removePhase(phaseId: ID!): RemovePhasePayload
+  moveTaskToPhase(taskId: ID!, phaseId: ID!): MoveTaskToPhasePayload
+  setProjectToPhase(phaseId: ID!, projectId: ID!): Phase
   createProject(title: String!): Project
   updateProject(projectId: ID!, title: String!): Project
   removeProject(projectId: ID!): RemoveProjectPayload
-  createTask(title: String!, taskGroupId: ID, timeUnitId: ID): Task
-  updateTask(taskId: ID!, taskGroupId: ID, timeUnitId: ID): Task
+  addPhaseToProject(phaseId: ID!, projectId: ID!): Project
+  createTask(title: String!, description: String, done: Boolean, phaseId: ID, timeUnitId: ID): Task
+  updateTask(taskId: ID!, title: String, description: String, done: Boolean, phaseId: ID, timeUnitId: ID): Task
   removeTask(taskId: ID!): RemoveTaskPayload
-  addTaskToTaskGroup(taskId: ID!, taskGroupId: ID!): AddTaskToTaskGroupPayload
-  createTaskGroup(title: String, description: String, done: Boolean, projectId: ID): TaskGroup
-  updateTaskGroup(taskGroupId: ID!, title: String, description: String, done: Boolean, projectId: ID): TaskGroup
-  removeTaskGroup(taskGroupId: ID!): RemoveTaskGroupPayload
-  moveTaskToTaskGroup(taskId: ID!, taskGroupId: ID!): MoveTaskToTaskGroupPayload
-  addTaskGroupToProject(taskGroupId: ID!, projectId: ID!): AddTaskGroupToProjectPayload
-  createTimeUnit(description: String, wholeDay: Boolean, startAt: Date, endAt: Date): TimeUnit
-  updateTimeUnit(id: ID!, description: String, wholeDay: Boolean, startAt: Date, endAt: Date): TimeUnit
-  removeTimeUnit(id: ID!): RemoveTimeUnitPayload
+  setPhaseToTask(phaseId: ID!, taskId: ID!): Task
+  setTimeUnitToTask(timeUnitId: ID!, taskId: ID!): Task
+  createTimeUnit(description: String, date: DateOnly!, position: Int): TimeUnit
+  updateTimeUnit(timeUnitId: ID!, description: String, date: DateOnly, position: Int): TimeUnit
+  moveTaskToTimeUnit(taskId: ID!, timeUnitId: ID!): MoveTaskToTimeUnitPayload
+  removeTimeUnit(timeUnitId: ID!): RemoveTimeUnitPayload
   signup(email: String!, password: String!, nickname: String!, firstName: String, lastName: String): User
   login(email: String!, password: String!): User
   logout: User
@@ -68,14 +69,24 @@ enum OrderDirection {
   DESC
 }
 
+type Phase {
+  id: ID!
+  owner: User!
+  title: String!
+  description: String
+  done: Boolean!
+  project: Project
+  tasks: [Task]
+}
+
 type Project {
   id: ID!
   title: String!
   description: String
   owner: User!
-  visibility: ProjectVisibility
+  visibility: ProjectVisibility!
   members: [Member]
-  taskGroups: [TaskGroup]
+  phases: [Phase]
 }
 
 input ProjectOrder {
@@ -97,19 +108,19 @@ enum ProjectVisibility {
 
 type Query {
   members(limit: ListLimit, offset: ListOffset, order: ListOrder): [Member]
-  projects(limit: ListLimit, offset: ListOffset, orderBy: ProjectOrder): [Project]
-  tasks(done: Boolean, taskGroupId: ID, timeUnitId: ID, limit: ListLimit, offset: ListOffset, orderBy: TaskOrder): [Task]
-  taskGroups(projectId: ID, limit: ListLimit, offset: ListOffset, orderBy: ListOrder): [TaskGroup]
-  timeUnits(after: Date, before: Date, limit: ListLimit, offset: ListOffset, order: TimeUnitOrder): [TimeUnit]
+  phases(projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: ListOrder): [Phase]
+  projects(done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: ProjectOrder): [Project]
+  tasks(done: Boolean, phaseId: ID, timeUnitId: ID, limit: ListLimit, offset: ListOffset, orderBy: TaskOrder): [Task]
+  timeUnits(date: DateOnly, after: DateOnly, before: DateOnly, limit: ListLimit, offset: ListOffset, order: TimeUnitOrder): [TimeUnit]
   currentUser: User
+}
+
+type RemovePhasePayload {
+  removedPhaseId: ID
 }
 
 type RemoveProjectPayload {
   removedProjectId: ID!
-}
-
-type RemoveTaskGroupPayload {
-  removedTaskGroupId: ID
 }
 
 type RemoveTaskPayload {
@@ -125,20 +136,10 @@ type Task {
   owner: User!
   title: String!
   description: String
-  done: Boolean
-  taskGroup: TaskGroup
+  done: Boolean!
+  phase: Phase
   timeUnit: TimeUnit
   assignee: User
-}
-
-type TaskGroup {
-  id: ID!
-  owner: User!
-  title: String!
-  description: String
-  done: Boolean
-  project: Project
-  tasks: [Task]
 }
 
 input TaskOrder {
@@ -157,9 +158,8 @@ type TimeUnit {
   id: ID!
   owner: User!
   description: String
-  wholeDay: Boolean
-  startAt: Date
-  endAt: Date
+  date: DateOnly!
+  position: Int
   tasks: [Task]
 }
 
@@ -170,7 +170,7 @@ input TimeUnitOrder {
 
 enum TimeUnitOrderField {
   DATE
-  TITLE
+  POSITION
 }
 
 type User {

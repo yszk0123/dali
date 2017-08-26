@@ -3,8 +3,8 @@ type Task {
   owner: User!
   title: String!
   description: String
-  done: Boolean
-  taskGroup: TaskGroup
+  done: Boolean!
+  phase: Phase
   timeUnit: TimeUnit
   assignee: User
 }
@@ -25,15 +25,10 @@ type RemoveTaskPayload {
   removedTaskId: ID
 }
 
-type AddTaskToTaskGroupPayload {
-  task: Task
-  taskGroup: TaskGroup
-}
-
 type Query {
   tasks(
     done: Boolean
-    taskGroupId: ID
+    phaseId: ID
     timeUnitId: ID
     limit: ListLimit
     offset: ListOffset
@@ -42,8 +37,22 @@ type Query {
 }
 
 type Mutation {
-  createTask(title: String!, taskGroupId: ID, timeUnitId: ID): Task
-  updateTask(taskId: ID!, taskGroupId: ID, timeUnitId: ID): Task
+  createTask(
+    title: String!
+    description: String
+    done: Boolean
+    phaseId: ID
+    timeUnitId: ID
+  ): Task
+  updateTask(
+    taskId: ID!
+    title: String
+    description: String
+    done: Boolean
+    phaseId: ID
+    timeUnitId: ID
+  ): Task
   removeTask(taskId: ID!): RemoveTaskPayload
-  addTaskToTaskGroup(taskId: ID!, taskGroupId: ID!): AddTaskToTaskGroupPayload
+  setPhaseToTask(phaseId: ID!, taskId: ID!): Task
+  setTimeUnitToTask(timeUnitId: ID!, taskId: ID!): Task
 }

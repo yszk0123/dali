@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface Props {
-  done: boolean;
+  done?: boolean;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 

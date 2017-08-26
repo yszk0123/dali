@@ -13,7 +13,7 @@ export default function createResolvers({
       projects: resolver(User.Projects),
     },
     Query: {
-      currentUser: resolver(User),
+      currentUser: (root, args, { user }) => user,
     },
     Mutation: {
       signup: async (

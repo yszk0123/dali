@@ -20,15 +20,15 @@ interface Props {
   viewer: any,
 }
 
-export class TaskSetModal extends React.Component {
+export class PhaseModal extends React.Component {
   props: Props;
 
-  _add(taskSet) {
+  _add(phase) {
     const { relay, timeUnitId, dailySchedule, onRequestClose } = this.props;
 
     AddTaskUnitMutation.commit(
       relay.environment,
-      taskSet,
+      phase,
       { id: timeUnitId },
       dailySchedule,
     );
@@ -36,13 +36,13 @@ export class TaskSetModal extends React.Component {
     onRequestClose();
   }
 
-  _renderTaskSets() {
+  _renderPhases() {
     const { viewer } = this.props;
-    const taskSets = getNodesFromConnection(viewer.taskSets);
+    const phases = getNodesFromConnection(viewer.phases);
 
-    return taskSets.map(taskSet =>
-      <ListItem key={taskSet.id} onClick={() => this._add(taskSet)}>
-        <Icon icon="plus" /> {taskSet.title}
+    return phases.map(phase =>
+      <ListItem key={phase.id} onClick={() => this._add(phase)}>
+        <Icon icon="plus" /> {phase.title}
       </ListItem>,
     );
   }
@@ -56,9 +56,9 @@ export class TaskSetModal extends React.Component {
         isOpen={isOpen}
         onRequestClose={onRequestClose}
       >
-        <ModalTitle>Select TaskSet To Add</ModalTitle>
+        <ModalTitle>Select Phase To Add</ModalTitle>
         <List>
-          {this._renderTaskSets()}
+          {this._renderPhases()}
         </List>
       </Modal>
     );
@@ -77,7 +77,7 @@ const mapDispatchToProps = {
 };
 
 export default createFragmentContainer(
-  connect(mapStateToProps, mapDispatchToProps)(TaskSetModal),
+  connect(mapStateToProps, mapDispatchToProps)(PhaseModal),
   graphql.experimental`
     fragment AddTaskUnitModal_dailySchedule on DailySchedule {
       id
@@ -88,8 +88,8 @@ export default createFragmentContainer(
         count: { type: "Int", defaultValue: 100 }
         done: { type: "Boolean", defaultValue: false }
       ) {
-      taskSets(first: $count, done: $done)
-        @connection(key: "AddTaskUnitModal_taskSets") {
+      phases(first: $count, done: $done)
+        @connection(key: "AddTaskUnitModal_phases") {
         edges {
           node {
             id

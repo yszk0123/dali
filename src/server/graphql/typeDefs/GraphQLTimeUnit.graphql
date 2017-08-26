@@ -2,9 +2,8 @@ type TimeUnit {
   id: ID!
   owner: User!
   description: String
-  wholeDay: Boolean
-  startAt: Date
-  endAt: Date
+  date: DateOnly!
+  position: Int
   tasks: [Task]
 }
 
@@ -12,9 +11,15 @@ type RemoveTimeUnitPayload {
   removedTimeUnitId: ID
 }
 
+type MoveTaskToTimeUnitPayload {
+  task: Task
+  sourceTimeUnit: TimeUnit
+  targetTimeUnit: TimeUnit
+}
+
 enum TimeUnitOrderField {
   DATE
-  TITLE
+  POSITION
 }
 
 input TimeUnitOrder {
@@ -24,8 +29,9 @@ input TimeUnitOrder {
 
 type Query {
   timeUnits(
-    after: Date
-    before: Date
+    date: DateOnly
+    after: DateOnly
+    before: DateOnly
     limit: ListLimit
     offset: ListOffset
     order: TimeUnitOrder
@@ -33,18 +39,13 @@ type Query {
 }
 
 type Mutation {
-  createTimeUnit(
-    description: String
-    wholeDay: Boolean
-    startAt: Date
-    endAt: Date
-  ): TimeUnit
+  createTimeUnit(description: String, date: DateOnly!, position: Int): TimeUnit
   updateTimeUnit(
-    id: ID!
+    timeUnitId: ID!
     description: String
-    wholeDay: Boolean
-    startAt: Date
-    endAt: Date
+    date: DateOnly
+    position: Int
   ): TimeUnit
-  removeTimeUnit(id: ID!): RemoveTimeUnitPayload
+  moveTaskToTimeUnit(taskId: ID!, timeUnitId: ID!): MoveTaskToTimeUnitPayload
+  removeTimeUnit(timeUnitId: ID!): RemoveTimeUnitPayload
 }

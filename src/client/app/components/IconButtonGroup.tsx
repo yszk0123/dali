@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '../styles/StyledComponents';
 
 const IconButtonGroup = styled.span`
   display: inline-block;

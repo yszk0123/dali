@@ -1,11 +1,11 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { ProjectItem_projectFragment } from 'schema';
+import styled from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
-import RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
-import UpdateProjectMutation from '../../graphql/mutations/UpdateProjectMutation';
+import * as RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
+import * as UpdateProjectMutation from '../../graphql/mutations/UpdateProjectMutation';
 
 const Wrapper = styled.div`margin: 2.5rem;`;
 
@@ -15,7 +15,7 @@ type OwnProps = {
 
 interface ProjectItemProps {
   remove(): void;
-  updateTitle(_: { title: string }): void;
+  updateTitle(title: string): void;
 }
 
 type Props = QueryProps & OwnProps & ProjectItemProps;
@@ -30,18 +30,26 @@ export function ProjectItem({ project, remove, updateTitle }: Props) {
 }
 
 const withData = compose(
-  graphql<Response, OwnProps, Props>(RemoveProjectMutation.query, {
+  graphql<Response, OwnProps, Props>(RemoveProjectMutation.mutation, {
     props: ({ mutate, ownProps: { project } }) => ({
       remove: () =>
-        RemoveProjectMutation.commit(mutate, {
-          projectId: project.id,
-        }),
+        mutate &&
+        mutate(
+          RemoveProjectMutation.buildMutationOptions({ projectId: project.id }),
+        ),
     }),
   }),
-  graphql<Response, OwnProps, Props>(UpdateProjectMutation.query, {
+  graphql<Response, OwnProps, Props>(UpdateProjectMutation.mutation, {
     props: ({ mutate, ownProps: { project } }) => ({
-      updateTitle: (input: { title: string }) =>
-        UpdateProjectMutation.commit(mutate, input, project),
+      updateTitle: (title: string) =>
+        mutate &&
+        mutate(
+          UpdateProjectMutation.buildMutationOptions(
+            { title, projectId: project.id },
+            {},
+            project,
+          ),
+        ),
     }),
   }),
 );
