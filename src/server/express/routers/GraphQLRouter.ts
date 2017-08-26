@@ -26,11 +26,14 @@ export default async function createGraphQLRouter({
     authMiddleware,
     graphqlExpress(request => ({ schema, context: request })),
   );
-  router.use(
-    '/graphiql',
-    authMiddleware,
-    graphiqlExpress({ endpointURL: '/graphql' }),
-  );
+
+  if (process.env.NODE_ENV !== 'production') {
+    router.use(
+      '/graphiql',
+      authMiddleware,
+      graphiqlExpress({ endpointURL: '/graphql' }),
+    );
+  }
 
   return router;
 }
