@@ -57,7 +57,7 @@ describe('server', () => {
       });
     });
 
-    it('moves task to task group', async () => {
+    it('moves task to phase', async () => {
       const { data: { phaseA, phaseB } } = await graphql(
         schema,
         gql`
@@ -91,13 +91,7 @@ describe('server', () => {
       );
 
       const {
-        data: {
-          moveTaskToPhase: {
-            task: newTask,
-            sourcePhase,
-            targetPhase,
-          },
-        },
+        data: { moveTaskToPhase: { task: newTask, sourcePhase, targetPhase } },
       } = await graphql(
         schema,
         gql`
@@ -128,8 +122,8 @@ describe('server', () => {
       expect(newTask.phase.id).toEqual(phaseB.id);
     });
 
-    it('adds task group to project', async () => {
-      const { data: { phase, oldProject } } = await graphql(
+    it('adds phase to project', async () => {
+      const { data: { phase: oldPhase, oldProject } } = await graphql(
         schema,
         gql`
           mutation {
@@ -153,7 +147,7 @@ describe('server', () => {
         gql`
           mutation {
             addPhaseToProject(
-              phaseId: "${phase.id}",
+              phaseId: "${oldPhase.id}",
               projectId: "${oldProject.id}"
             ) {
               id
@@ -167,9 +161,9 @@ describe('server', () => {
         contextValue,
       );
 
-      expect(phase.project).toBeNull();
+      expect(oldPhase.project).toBeNull();
       expect(
-        newProject.phases.find(phase => phase.id === phase.id),
+        newProject.phases.find(phase => phase.id === oldPhase.id),
       ).toBeTruthy();
     });
   });
@@ -188,19 +182,19 @@ describe('server', () => {
     });
 
     it('search tasks', async () => {
-      const group = await models.Phase.create({
+      const phase = await models.Phase.create({
         ownerId: user.id,
-        title: 'group',
+        title: 'phase',
       });
 
       const { data: { task1, task2 } } = await graphql(
         schema,
         gql`
           mutation {
-            task2: createTask(title: "task2", phaseId: "${group.id}") {
+            task2: createTask(title: "task2", phaseId: "${phase.id}") {
               id
             }
-            task1: createTask(title: "task1", phaseId: "${group.id}") {
+            task1: createTask(title: "task1", phaseId: "${phase.id}") {
               id
             }
           }
@@ -238,17 +232,17 @@ describe('server', () => {
       expect(tasksByNameDesc).toEqual([{ id: task2.id }, { id: task1.id }]);
     });
 
-    it('adds task to task group', async () => {
-      const [groupA, groupB] = await Promise.all([
-        models.Phase.create({ ownerId: user.id, title: 'group a' }),
-        models.Phase.create({ ownerId: user.id, title: 'group b' }),
+    it('set phase to task', async () => {
+      const [phaseA, phaseB] = await Promise.all([
+        models.Phase.create({ ownerId: user.id, title: 'phase a' }),
+        models.Phase.create({ ownerId: user.id, title: 'phase b' }),
       ]);
 
       const { data: { oldTask } } = await graphql(
         schema,
         gql`
           mutation {
-            oldTask: createTask(title: "task", phaseId: "${groupA.id}") {
+            oldTask: createTask(title: "task", phaseId: "${phaseA.id}") {
               id
               phase {
                 id
@@ -260,29 +254,17 @@ describe('server', () => {
         contextValue,
       );
 
-      const {
-        data: {
-          addTaskToPhase: { task: newTask, phase: newPhase },
-        },
-      } = await graphql(
+      const { data: { setPhaseToTask: newTask } } = await graphql(
         schema,
         gql`
           mutation {
-            addTaskToPhase(
+            setPhaseToTask(
               taskId: "${oldTask.id}",
-              phaseId: "${groupB.id}"
+              phaseId: "${phaseB.id}"
             ) {
-              task {
-                id
-                phase {
-                  id
-                }
-              }
+              id
               phase {
                 id
-                tasks {
-                  id
-                }
               }
             }
           }
@@ -291,11 +273,8 @@ describe('server', () => {
         contextValue,
       );
 
-      expect(oldTask.phase.id).toEqual(String(groupA.id));
-      expect(newTask.phase.id).toEqual(String(groupB.id));
-      expect(
-        newPhase.tasks.find(task => task.id === newTask.id),
-      ).toBeTruthy();
+      expect(oldTask.phase.id).toEqual(String(phaseA.id));
+      expect(newTask.phase.id).toEqual(String(phaseB.id));
     });
   });
 
