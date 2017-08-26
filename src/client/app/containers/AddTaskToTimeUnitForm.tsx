@@ -3,11 +3,13 @@ import { graphql, compose, ChildProps } from 'react-apollo';
 import {
   TimeUnitItem_timeUnitFragment,
   AddTaskToTimeUnitForm_phasesFragment,
+  AddTaskToTimeUnitForm_tasksFragment,
 } from 'schema';
 import styled from '../styles/StyledComponents';
 import TitleSelect from '../components/TitleSelect';
 import TitleInput from '../components/TitleInput';
 import * as CreateTimeUnitTaskMutation from '../../graphql/mutations/CreateTimeUnitTaskMutation';
+import * as AddTaskToTimeUnitMutation from '../../graphql/mutations/AddTaskToTimeUnitMutation';
 
 const List = styled.div`
   minWidth: 300px;
@@ -23,10 +25,12 @@ const ListItem = styled.div`
 interface OwnProps {
   timeUnit: TimeUnitItem_timeUnitFragment;
   phases: (AddTaskToTimeUnitForm_phasesFragment | null)[];
+  tasks: (AddTaskToTimeUnitForm_tasksFragment | null)[];
 }
 
 type Props = OwnProps & {
   createTask(phaseId: string | null, title: string): void;
+  addTask(task: AddTaskToTimeUnitForm_tasksFragment): void;
 };
 
 interface State {
@@ -34,7 +38,7 @@ interface State {
   title: string;
 }
 
-export class AddTaskToTimeUnitForm extends React.Component<
+export class CreateTimeUnitTaskForm extends React.Component<
   ChildProps<Props, Response>,
   State
 > {
@@ -57,8 +61,17 @@ export class AddTaskToTimeUnitForm extends React.Component<
     this.props.createTask(selectedPhaseId, title);
   };
 
+  private handleAdd = (taskId: string) => {
+    const { addTask, tasks } = this.props;
+    const task = tasks.find(task => !!task && task.id === taskId);
+    if (!task) {
+      return;
+    }
+    addTask(task);
+  };
+
   render() {
-    const { createTask, phases } = this.props;
+    const { createTask, phases, tasks } = this.props;
     const { selectedPhaseId, title } = this.state;
 
     return (
@@ -70,12 +83,26 @@ export class AddTaskToTimeUnitForm extends React.Component<
         />
         <TitleInput title={title} onChange={this.handleTitleChange} />
         <button onClick={this.handleCreate}>OK</button>
+        <TitleSelect selectedId="" onChange={this.handleAdd} items={tasks} />
       </div>
     );
   }
 }
 
 const withData = compose(
+  graphql<Response, OwnProps, Props>(AddTaskToTimeUnitMutation.mutation, {
+    props: ({ mutate, ownProps: { timeUnit } }) => ({
+      addTask: (task: AddTaskToTimeUnitForm_tasksFragment) =>
+        mutate &&
+        mutate(
+          AddTaskToTimeUnitMutation.buildMutationOptions(
+            { timeUnitId: timeUnit.id, taskId: task.id },
+            {},
+            timeUnit,
+          ),
+        ),
+    }),
+  }),
   graphql<Response, OwnProps, Props>(CreateTimeUnitTaskMutation.mutation, {
     props: ({ mutate, ownProps: { timeUnit } }) => ({
       createTask: (phaseId: string | null, title: string) =>
@@ -92,4 +119,4 @@ const withData = compose(
   }),
 );
 
-export default withData(AddTaskToTimeUnitForm);
+export default withData(CreateTimeUnitTaskForm);

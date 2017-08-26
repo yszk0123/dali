@@ -4,6 +4,7 @@ import {
   TimeUnitItem_timeUnitFragment,
   TimeUnitTaskItem_taskFragment,
   TimeUnitItem_phasesFragment,
+  TimeUnitItem_tasksFragment,
 } from 'schema';
 import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
 import * as UpdateTimeUnitMutation from '../../graphql/mutations/UpdateTimeUnitMutation';
@@ -74,6 +75,7 @@ interface OwnProps {
   date: DateOnly;
   timeUnit: TimeUnitItem_timeUnitFragment;
   phases: (TimeUnitItem_phasesFragment | null)[];
+  tasks: (TimeUnitItem_tasksFragment | null)[];
 }
 
 type Props = OwnProps & {
@@ -89,6 +91,7 @@ export function TimeUnitItem({
   removeTimeUnit,
   timeUnit,
   phases,
+  tasks,
   removeTask,
   connectDropTarget,
   updateDescription,
@@ -116,7 +119,11 @@ export function TimeUnitItem({
             timeUnit={timeUnit}
             removeTask={removeTask}
           />}
-        <AddTaskToTimeUnitForm timeUnit={timeUnit} phases={phases} />
+        <AddTaskToTimeUnitForm
+          timeUnit={timeUnit}
+          phases={phases}
+          tasks={tasks}
+        />
       </Wrapper>
     </div>,
   );

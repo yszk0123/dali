@@ -42,8 +42,14 @@ interface OwnProps {
 
 type Props = QueryProps & TimeUnitPageQuery & OwnProps;
 
-export function TimeUnitPage({ date, timeUnits, loading, phases }: Props) {
-  if (loading || !phases) {
+export function TimeUnitPage({
+  date,
+  timeUnits,
+  loading,
+  phases,
+  tasks,
+}: Props) {
+  if (loading || !phases || !tasks) {
     return null;
   }
 
@@ -58,6 +64,7 @@ export function TimeUnitPage({ date, timeUnits, loading, phases }: Props) {
                     date={date}
                     timeUnit={timeUnit}
                     phases={phases}
+                    tasks={tasks}
                   />
                 : <EmptyTimeUnitItem date={date} position={position} />}
             </ListItem>,

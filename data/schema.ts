@@ -13,6 +13,23 @@ export type AddPhaseToProjectMutation = {
   } | null,
 };
 
+export type AddTaskToTimeUnitMutationVariables = {
+  timeUnitId: string,
+  taskId: string,
+};
+
+export type AddTaskToTimeUnitMutation = {
+  task:  {
+    id: string,
+    title: string,
+    done: boolean,
+    phase:  {
+      id: string,
+      title: string,
+    } | null,
+  } | null,
+};
+
 export type CreatePhaseMutationVariables = {
   title?: string | null,
   description?: string | null,
@@ -476,11 +493,25 @@ export type TimeUnitPageQuery = {
       title: string,
     } | null > | null,
   } | null > | null,
+  tasks:  Array< {
+    id: string,
+    title: string,
+  } | null > | null,
 };
 
 export type ProjectItem_projectFragment = {
   id: string,
   title: string,
+};
+
+export type TimeUnitTaskItem_taskFragment = {
+  id: string,
+  title: string,
+  done: boolean,
+  phase:  {
+    id: string,
+    title: string,
+  } | null,
 };
 
 export type TaskItem_taskFragment = {
@@ -508,16 +539,6 @@ export type PhaseItem_phaseFragment = {
       id: string,
     } | null,
   } | null > | null,
-};
-
-export type TimeUnitTaskItem_taskFragment = {
-  id: string,
-  title: string,
-  done: boolean,
-  phase:  {
-    id: string,
-    title: string,
-  } | null,
 };
 
 export type TimeUnitItem_timeUnitFragment = {
@@ -557,5 +578,15 @@ export type TimeUnitItem_phasesFragment = {
     id: string,
     title: string,
   } | null > | null,
+};
+
+export type AddTaskToTimeUnitForm_tasksFragment = {
+  id: string,
+  title: string,
+};
+
+export type TimeUnitItem_tasksFragment = {
+  id: string,
+  title: string,
 };
 /* tslint:enable */
