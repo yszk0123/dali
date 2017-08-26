@@ -1,6 +1,6 @@
 /* @flow */
-import { connectDatabase } from '../src/server/database';
-import generateFakeData from '../src/server/generateFakeData';
+import { connectDatabase } from '../dist/server/database';
+import generateFakeData from '../dist/server/generateFakeData';
 
 async function run() {
   try {
