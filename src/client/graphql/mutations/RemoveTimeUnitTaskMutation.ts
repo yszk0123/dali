@@ -22,28 +22,22 @@ export function buildMutationOptions(
 
   return {
     mutation,
-    variables: mutationVariables,
-    optimisticResponse: {
-      __typename: 'Mutation',
-      removeTask: {
-        __typename: 'RemoveTaskPayload',
-        removedTaskId: taskId,
-      },
+    variables: {
+      ...mutationVariables,
+      timeUnitId: null,
     },
-    update: (store, { data: { removeTask } = { removeTask: null } }) => {
+    update: (store, { data: { task } = { task: null } }) => {
       const data = store.readFragment<TimeUnitItem_timeUnitFragment>({
         fragment: TimeUnitItem_timeUnit,
         fragmentName: 'TimeUnitItem_timeUnit',
         variables,
         id: dataIdFromObject(timeUnit),
       });
-      if (!data || !data.tasks || !removeTask) {
+      if (!data || !data.tasks || !task) {
         return;
       }
 
-      data.tasks = data.tasks.filter(
-        (p: any) => p.id !== removeTask.removedTaskId,
-      );
+      data.tasks = data.tasks.filter((p: any) => p.id !== task.id);
       store.writeFragment({
         fragment: TimeUnitItem_timeUnit,
         fragmentName: 'TimeUnitItem_timeUnit',

@@ -26,7 +26,7 @@ import { DateOnly } from '../interfaces';
 import TimeUnitTaskItem from './TimeUnitTaskItem';
 
 const SmallIconButtonGroup = styled(IconButtonGroup)`
-  margin-right: 1rem;
+  padding-right: 1rem;
   float: right;
   font-size: ${({ theme }) => theme.shared.fontSize};
 `;
@@ -34,13 +34,13 @@ const SmallIconButtonGroup = styled(IconButtonGroup)`
 const SummaryWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
   flex-wrap: wrap;
 `;
 
 const Wrapper = styled.div`
-  padding-top: 0.4rem;
-  border-top: 1px solid #e4eaf7;
+  padding: 1.2rem;
   background: ${({ isOver }: ThemedProps<{ isOver: boolean }>) =>
     isOver ? '#c0e3fb' : 'inherit'};
 `;
@@ -101,11 +101,12 @@ export function TimeUnitItem({
     <div>
       <Wrapper isOver={isOver}>
         <div>
-          {timeUnit.position &&
+          {timeUnit.position != null &&
             <span>
               <TimeLabel position={timeUnit.position} />{' '}
             </span>}
           <TitleInput
+            defaultLabel="Description"
             title={timeUnit.description || ''}
             onChange={updateDescription}
           />

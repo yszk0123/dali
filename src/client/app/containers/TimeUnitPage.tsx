@@ -5,7 +5,6 @@ import * as timeUnitPageQuery from '../../graphql/querySchema/TimeUnitPage.graph
 import styled from '../styles/StyledComponents';
 import NoUserSelectArea from '../components/NoUserSelectArea';
 import { DateOnly } from '../interfaces';
-// import AddTaskUnitModal from './AddTaskUnitModal';
 import TimeUnitItem from './TimeUnitItem';
 import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 
@@ -17,8 +16,13 @@ const List = styled.div`
   flex-direction: column;
 `;
 
+interface ListItemProps {
+  highlightLine?: boolean;
+}
 const ListItem = styled.div`
-  margin-bottom: 1rem;
+  border-top: ${({ highlightLine }: ListItemProps) =>
+    highlightLine ? '1px solid #ccc' : 'none'};
+  margin: 0.4rem 0;
   align-content: center;
 `;
 
@@ -58,7 +62,7 @@ export function TimeUnitPage({
       <List>
         {timeUnits &&
           getSparseTimeUnits(timeUnits).map((timeUnit, position) =>
-            <ListItem key={position}>
+            <ListItem key={position} highlightLine={!!timeUnit}>
               {timeUnit
                 ? <TimeUnitItem
                     date={date}

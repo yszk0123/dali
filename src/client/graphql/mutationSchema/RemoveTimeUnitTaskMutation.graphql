@@ -1,5 +1,8 @@
-mutation RemoveTimeUnitTask($taskId: ID!) {
-  removeTask(taskId: $taskId) {
-    removedTaskId
+#import "../querySchema/TimeUnitTaskItem_task.graphql"
+
+mutation RemoveTimeUnitTask($taskId: ID!, $timeUnitId: ID) {
+  task: updateTask(taskId: $taskId, timeUnitId: $timeUnitId) {
+    id
+    ...TimeUnitTaskItem_task
   }
 }

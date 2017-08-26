@@ -22,8 +22,7 @@ import DoneCheckbox from '../components/DoneCheckbox';
 import PhaseTaskItem from './PhaseTaskItem';
 
 const Wrapper = styled.div`
-  padding-top: 0.4rem;
-  border-top: 1px solid #e4eaf7;
+  padding: 1.2rem 1.4rem;
   background: ${({ isOver }: ThemedProps<{ isOver: boolean }>) =>
     isOver ? '#c0e3fb' : 'inherit'};
 `;
@@ -63,28 +62,36 @@ export function PhaseItem({
     <div>
       <Wrapper isOver={isOver}>
         <DoneCheckbox done={phase.done} onChange={toggleDone} />
-        <TitleInput title={phase.title} onChange={updateTitle} />
-        <span> (</span>
         <TitleSelect
           selectedId={phase.project && phase.project.id}
           onChange={setProject}
           items={projects || []}
         />
-        <span>) </span>
+        {' > '}
+        <TitleInput
+          defaultLabel="Project"
+          title={phase.title}
+          onChange={updateTitle}
+        />
         <Icon icon="trash" onClick={removePhase} />
+        {phase.tasks &&
+          phase.tasks.map(
+            task =>
+              task &&
+              <PhaseTaskItem
+                key={task.id}
+                task={task}
+                phaseId={phase.id}
+                remove={removeTask}
+              />,
+          )}
+        <TitleInput
+          defaultLabel="New Task"
+          title=""
+          fullWidth
+          onChange={createTask}
+        />
       </Wrapper>
-      {phase.tasks &&
-        phase.tasks.map(
-          task =>
-            task &&
-            <PhaseTaskItem
-              key={task.id}
-              task={task}
-              phaseId={phase.id}
-              remove={removeTask}
-            />,
-        )}
-      <TitleInput title="" onChange={createTask} />
     </div>,
   );
 }
@@ -118,7 +125,7 @@ const withData = compose(
         mutate(
           RemovePhaseTaskMutation.buildMutationOptions(
             { taskId: task.id },
-            { done: false },
+            { phaseDone: false, taskDone: false },
             phase,
           ),
         ),
@@ -131,7 +138,7 @@ const withData = compose(
         mutate(
           CreatePhaseTaskMutation.buildMutationOptions(
             { title, phaseId: phase.id },
-            { done: false },
+            { phaseDone: false, taskDone: false },
             phase,
           ),
         ),
@@ -144,7 +151,7 @@ const withData = compose(
         mutate(
           RemovePhaseMutation.buildMutationOptions(
             { phaseId: phase.id },
-            { done: false },
+            { phaseDone: false, taskDone: false },
           ),
         ),
     }),
@@ -156,7 +163,7 @@ const withData = compose(
         mutate(
           UpdatePhaseMutation.buildMutationOptions(
             { title, phaseId: phase.id },
-            { done: false },
+            { phaseDone: false, taskDone: false },
             phase,
           ),
         ),
@@ -165,7 +172,7 @@ const withData = compose(
         mutate(
           UpdatePhaseMutation.buildMutationOptions(
             { done: !phase.done, phaseId: phase.id },
-            { done: false },
+            { phaseDone: false, taskDone: false },
             phase,
           ),
         ),
@@ -179,7 +186,7 @@ const withData = compose(
         mutate(
           SetProjectToPhaseMutation.buildMutationOptions(
             { phaseId: phase.id, projectId },
-            { done: false },
+            { phaseDone: false, taskDone: false },
           ),
         ),
     }),
@@ -189,7 +196,10 @@ const withData = compose(
       moveTaskToPhase: (taskId: string, phaseId: string) =>
         mutate &&
         mutate(
-          MoveTaskToPhaseMutation.buildMutationOptions({ taskId, phaseId }, {}),
+          MoveTaskToPhaseMutation.buildMutationOptions(
+            { taskId, phaseId },
+            { phaseDone: false, taskDone: false },
+          ),
         ),
     }),
   }),

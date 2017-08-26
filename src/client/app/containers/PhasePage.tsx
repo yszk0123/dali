@@ -7,9 +7,15 @@ import {
 } from 'schema';
 import * as phasePageQuery from '../../graphql/querySchema/PhasePage.graphql';
 import * as CreatePhaseMutation from '../../graphql/mutations/CreatePhaseMutation';
+import styled from '../styles/StyledComponents';
 import Button from '../components/Button';
 import Dummy from '../Dummy';
 import PhaseItem from './PhaseItem';
+
+const PhaseItemWrapper = styled.div`
+  margin: 1.6rem 0;
+  border-top: 1px solid #ccc;
+`;
 
 interface PhasePageProps {
   isLogin: boolean;
@@ -20,14 +26,15 @@ type Props = QueryProps & PhasePageQuery & PhasePageProps;
 
 interface State {
   title: string;
-  done: boolean;
+  phaseDone: boolean;
+  taskDone: boolean;
 }
 
 export class PhasePage extends React.Component<
   ChildProps<Props, Response>,
   State
 > {
-  state = { title: '', done: false };
+  state = { title: '', phaseDone: false, taskDone: false };
 
   private handleCreatePhaseClick = (event: React.MouseEvent<HTMLElement>) => {
     const { title } = this.state;
@@ -46,18 +53,31 @@ export class PhasePage extends React.Component<
     });
   };
 
-  private handleDoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  private handlePhaseDoneChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const { refetch } = this.props;
-    const done = !!event.target.checked;
+    const phaseDone = !!event.target.checked;
 
-    this.setState({ done }, () => {
-      refetch({ done });
+    this.setState<'phaseDone'>({ phaseDone }, () => {
+      refetch({ phaseDone });
+    });
+  };
+
+  private handleTaskDoneChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { refetch } = this.props;
+    const taskDone = !!event.target.checked;
+
+    this.setState<'taskDone'>({ taskDone }, () => {
+      refetch({ taskDone });
     });
   };
 
   render() {
     const { isLogin, phases, projects } = this.props;
-    const { title, done } = this.state;
+    const { title, phaseDone, taskDone } = this.state;
 
     if (!isLogin) {
       return <span>Loading...</span>;
@@ -65,20 +85,28 @@ export class PhasePage extends React.Component<
 
     return (
       <div>
-        <label htmlFor="phaseDone">Done: </label>
+        <label htmlFor="phaseDone">PhaseDone: </label>
         <input
+          id="phaseDone"
           type="checkbox"
-          checked={done}
-          onChange={this.handleDoneChange}
+          checked={phaseDone}
+          onChange={this.handlePhaseDoneChange}
         />
-        <div>
-          {phases &&
-            phases.map(
-              phase =>
-                phase &&
-                <PhaseItem key={phase.id} phase={phase} projects={projects} />,
-            )}
-        </div>
+        <label htmlFor="taskDone">TaskDone: </label>
+        <input
+          id="taskDone"
+          type="checkbox"
+          checked={taskDone}
+          onChange={this.handleTaskDoneChange}
+        />
+        {phases &&
+          phases.map(
+            phase =>
+              phase &&
+              <PhaseItemWrapper key={phase.id}>
+                <PhaseItem phase={phase} projects={projects} />
+              </PhaseItemWrapper>,
+          )}
         <input type="text" value={title} onChange={this.handleTitleChange} />
         <Button onClick={this.handleCreatePhaseClick}>Add</Button>
       </div>
@@ -89,7 +117,7 @@ export class PhasePage extends React.Component<
 const withData = compose(
   graphql<Response & PhasePageQuery, {}, Props>(phasePageQuery, {
     options: {
-      variables: { done: false },
+      variables: { phaseDone: false, taskDone: false },
     },
     props: ({ data }) => ({
       ...data,
@@ -101,7 +129,10 @@ const withData = compose(
       createPhase: (title: string) =>
         mutate &&
         mutate(
-          CreatePhaseMutation.buildMutationOptions({ title }, { done: false }),
+          CreatePhaseMutation.buildMutationOptions(
+            { title },
+            { phaseDone: false, taskDone: false },
+          ),
         ),
     }),
   }),

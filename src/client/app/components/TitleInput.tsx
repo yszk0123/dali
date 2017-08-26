@@ -2,8 +2,10 @@ import * as React from 'react';
 import TitlePlaceholder from './TitlePlaceholder';
 
 interface Props {
-  onChange(title: string): void;
+  defaultLabel?: string;
   title: string;
+  fullWidth?: boolean;
+  onChange(title: string): void;
 }
 
 export default class TitleInput extends React.Component {
@@ -59,20 +61,26 @@ export default class TitleInput extends React.Component {
   }
 
   render() {
+    const { fullWidth, defaultLabel } = this.props;
     const { title, isEditing } = this.state;
 
     if (!isEditing) {
       return (
         <TitlePlaceholder
+          defaultLabel={defaultLabel}
           label={title}
+          fullWidth={fullWidth}
           onClick={this._handlePlaceholderClick}
         />
       );
     }
 
+    const style = fullWidth ? { display: 'block', width: '100%' } : {};
+
     return (
       <input
         type="text"
+        style={style}
         value={title}
         onChange={this._handleTitleChange}
         onBlur={this._handleBlur}

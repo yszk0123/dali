@@ -27,7 +27,7 @@ export function TaskItem({
   connectDragSource,
 }: Props) {
   return connectDragSource(
-    <span style={{ opacity: isDragging ? 0.5 : 1 }}>
+    <div style={{ opacity: isDragging ? 0.5 : 1 }}>
       <TaskLabel
         icon="times-circle"
         label={task.title}
@@ -35,7 +35,7 @@ export function TaskItem({
         onLabelClick={toggleDone}
         onRemoveButtonClick={() => remove(task)}
       />
-    </span>,
+    </div>,
   );
 }
 
@@ -67,7 +67,7 @@ const withData = compose(
         mutate(
           UpdatePhaseTaskMutation.buildMutationOptions(
             { ...input, taskId: task.id },
-            { done: false },
+            { phaseDone: false, taskDone: false },
             task,
           ),
         ),
@@ -76,7 +76,7 @@ const withData = compose(
         mutate(
           UpdatePhaseTaskMutation.buildMutationOptions(
             { done: !task.done, taskId: task.id },
-            { done: false },
+            { phaseDone: false, taskDone: false },
             task,
           ),
         ),

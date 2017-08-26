@@ -18,7 +18,7 @@ const NavBarWrapper = styled.div`
 `;
 
 const NavBarItem = styled.div`
-  margin: 0.8rem 0.4rem;
+  padding: 0.4rem 0.2rem;
 
   a {
     color: #c8cfef;

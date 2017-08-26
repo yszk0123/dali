@@ -8,7 +8,7 @@ fragment PhaseItem_phase on Phase {
     id
     title
   }
-  tasks {
+  tasks(done: $taskDone) {
     id
     ...TaskItem_task
   }

@@ -21,10 +21,6 @@ input TaskOrder {
   direction: OrderDirection!
 }
 
-type RemoveTaskPayload {
-  removedTaskId: ID
-}
-
 type Query {
   tasks(
     done: Boolean
@@ -34,6 +30,10 @@ type Query {
     offset: ListOffset
     orderBy: TaskOrder
   ): [Task]
+}
+
+type RemoveTaskPayload {
+  removedTaskId: ID
 }
 
 type Mutation {

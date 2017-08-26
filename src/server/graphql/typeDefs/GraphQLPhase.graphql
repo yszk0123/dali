@@ -5,7 +5,28 @@ type Phase {
   description: String
   done: Boolean!
   project: Project
-  tasks: [Task]
+  tasks(done: Boolean): [Task]
+}
+
+enum PhaseOrderField {
+  TITLE
+  CREATED_AT
+  UPDATED_AT
+}
+
+input PhaseOrder {
+  field: PhaseOrderField!
+  direction: OrderDirection!
+}
+
+type Query {
+  phases(
+    projectId: ID
+    done: Boolean
+    limit: ListLimit
+    offset: ListOffset
+    orderBy: PhaseOrder
+  ): [Phase]
 }
 
 type RemovePhasePayload {
@@ -16,16 +37,6 @@ type MoveTaskToPhasePayload {
   task: Task
   sourcePhase: Phase
   targetPhase: Phase
-}
-
-type Query {
-  phases(
-    projectId: ID
-    done: Boolean
-    limit: ListLimit
-    offset: ListOffset
-    orderBy: ListOrder
-  ): [Phase]
 }
 
 type Mutation {

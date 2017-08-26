@@ -6,6 +6,7 @@ mutation UpdatePhase(
   $description: String
   $done: Boolean
   $projectId: ID
+  $taskDone: Boolean
 ) {
   updatePhase(
     phaseId: $phaseId

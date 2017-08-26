@@ -59,6 +59,7 @@ export class CreateTimeUnitTaskForm extends React.Component<
     const { title, selectedPhaseId } = this.state;
 
     this.props.createTask(selectedPhaseId, title);
+    this.reset();
   };
 
   private handleAdd = (taskId: string) => {
@@ -68,7 +69,15 @@ export class CreateTimeUnitTaskForm extends React.Component<
       return;
     }
     addTask(task);
+    this.reset();
   };
+
+  private reset() {
+    this.setState({
+      title: '',
+      selectedPhaseId: null,
+    });
+  }
 
   render() {
     const { createTask, phases, tasks } = this.props;
@@ -77,13 +86,23 @@ export class CreateTimeUnitTaskForm extends React.Component<
     return (
       <div>
         <TitleSelect
+          defaultLabel="Phase"
           selectedId={selectedPhaseId}
           onChange={this.handlePhaseSelect}
           items={phases}
         />
-        <TitleInput title={title} onChange={this.handleTitleChange} />
+        <TitleInput
+          defaultLabel="New Task"
+          title={title}
+          onChange={this.handleTitleChange}
+        />
         <button onClick={this.handleCreate}>OK</button>
-        <TitleSelect selectedId="" onChange={this.handleAdd} items={tasks} />
+        <TitleSelect
+          defaultLabel="Task"
+          selectedId=""
+          onChange={this.handleAdd}
+          items={tasks}
+        />
       </div>
     );
   }
