@@ -453,6 +453,30 @@ export type ProjectPageQuery = {
   } | null,
 };
 
+export type ReportPageQueryVariables = {
+  date: string,
+};
+
+export type ReportPageQuery = {
+  timeUnits:  Array< {
+    id: string,
+    date: string,
+    tasks:  Array< {
+      id: string,
+      title: string,
+      done: boolean,
+      phase:  {
+        id: string,
+        title: string,
+        project:  {
+          id: string,
+          title: string,
+        } | null,
+      } | null,
+    } | null > | null,
+  } | null > | null,
+};
+
 export type RoutesQuery = {
   currentUser:  {
     id: string,

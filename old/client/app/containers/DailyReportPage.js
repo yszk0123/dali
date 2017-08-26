@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { createRefetchContainer, graphql } from 'react-relay';
-import { flatten, uniqBy, groupBy, toPairs, repeat } from 'lodash';
 import getNodesFromConnection from '../../shared/utils/getNodesFromConnection';
 import ClipboardButton from '../components/ClipboardButton';
 import Button from '../components/Button';
@@ -44,33 +43,6 @@ export class DailyReportPage extends React.Component {
     });
 
     this.props.relay.refetch(refetchVariables, null);
-  }
-
-  // TODO: Move this logic to server side
-  _calculateTasksByProject() {
-    const { viewer } = this.props;
-
-    return toPairs(
-      groupBy(
-        flatten(
-          getNodesFromConnection(viewer.dailySchedule.timeUnits).map(timeUnit =>
-            getNodesFromConnection(timeUnit.doneTaskUnits).map(taskUnit => ({
-              id: taskUnit.id,
-              title: taskUnit.phase.title,
-              phaseId: taskUnit.phase.id,
-              project:
-                (taskUnit.phase.project &&
-                  taskUnit.phase.project.title) ||
-                DEFAULT_PROJECT_NAME,
-            })),
-          ),
-        ),
-        task => task.project,
-      ),
-    ).map(([project, tasks]) => ({
-      project,
-      tasks: uniqBy(tasks, 'phaseId'),
-    }));
   }
 
   _renderAsList(tasksByProject) {
@@ -147,58 +119,3 @@ export class DailyReportPage extends React.Component {
     );
   }
 }
-
-export default createRefetchContainer(
-  DailyReportPage,
-  graphql.experimental`
-    fragment DailyReportPage_viewer on User
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 100 }
-        date: { type: "Date!" }
-      ) {
-      id
-      todoPhases: phases(first: $count, done: false)
-        @connection(key: "DailyReportPage_todoPhases") {
-        edges {
-          node {
-            id
-            title
-          }
-        }
-      }
-      dailySchedule(date: $date) {
-        date
-        timeUnits(first: $count) @connection(key: "DailyReportPage_timeUnits") {
-          edges {
-            node {
-              id
-              doneTaskUnits: taskUnits(first: $count)
-                @connection(key: "DailyReportPage_doneTaskUnits") {
-                edges {
-                  node {
-                    id
-                    phase {
-                      id
-                      title
-                      project {
-                        id
-                        title
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `,
-  graphql.experimental`
-    query DailyReportPageRefetchQuery($count: Int, $date: Date!) {
-      viewer {
-        ...DailyReportPage_viewer @arguments(count: $count, date: $date)
-      }
-    }
-  `,
-);

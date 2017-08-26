@@ -10,8 +10,7 @@ import Day from '../components/Day';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import Dummy from '../Dummy';
 import TimeUnitPage from './TimeUnitPage';
-// import ReportPage from './DailyReportPage';
-const ReportPage = Dummy;
+import ReportPage from './ReportPage';
 
 interface Props {
   isLogin: boolean;

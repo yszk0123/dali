@@ -1,0 +1,19 @@
+query ReportPage($date: DateOnly!) {
+  timeUnits(date: $date) {
+    id
+    date
+    tasks {
+      id
+      title
+      done
+      phase {
+        id
+        title
+        project {
+          id
+          title
+        }
+      }
+    }
+  }
+}

@@ -8,14 +8,13 @@ import PropsRoute from '../../shared/components/PropsRoute';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import Dummy from '../Dummy';
 import DateSwitch from './DateSwitch';
-// import DashboardPage from './DashboardPage';
-// import TimeUnitPage from './TimeUnitPage';
 import LoginPage from './LoginPage';
 import NavBar from './NavBar';
 import ProjectPage from './ProjectPage';
 import SignupPage from './SignupPage';
 import PhasePage from './PhasePage';
 import ProfilePage from './ProfilePage';
+// import DashboardPage from './DashboardPage';
 const DashboardPage = Dummy;
 
 const MainContent = styled.div`margin: 1.8rem;`;
