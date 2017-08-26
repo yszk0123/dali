@@ -41,9 +41,7 @@ export function TaskItem({
 
 const taskSource: DragSourceSpec<Props> = {
   beginDrag: ({ task }) => ({
-    // fromTimeUnitId: timeUnit.id,
     taskId: task.id,
-    // phaseId: taskUnit.phase.id,
   }),
   endDrag: (_, monitor) => {
     if (!monitor) {

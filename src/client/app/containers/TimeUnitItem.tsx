@@ -3,6 +3,7 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { TimeUnitItem_timeUnitFragment, TaskItem_taskFragment } from 'schema';
 import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
 import * as UpdateTimeUnitMutation from '../../graphql/mutations/UpdateTimeUnitMutation';
+import * as MoveTaskToTimeUnitMutation from '../../graphql/mutations/MoveTaskToTimeUnitMutation';
 import * as RemoveTimeUnitMutation from '../../graphql/mutations/RemoveTimeUnitMutation';
 import styled, { ThemedProps } from '../styles/StyledComponents';
 import Icon from '../components/Icon';
@@ -73,6 +74,7 @@ interface OwnProps {
 
 type Props = OwnProps & {
   updateDescription(input: { title: string }): void;
+  moveTaskToTimeUnit(taskId: string, timeUnitId: string): void;
   removeTimeUnit(): void;
   connectDropTarget: ConnectDropTarget;
   isOver: boolean;
@@ -113,7 +115,7 @@ export function TimeUnitItem({
 }
 
 const taskTarget: DropTargetSpec<Props> = {
-  drop: ({ timeUnit }, monitor) => {
+  drop: ({ timeUnit, moveTaskToTimeUnit }, monitor) => {
     if (!monitor || !timeUnit) {
       return;
     }
@@ -129,6 +131,8 @@ const taskTarget: DropTargetSpec<Props> = {
     ) {
       return { canMove: false };
     }
+
+    moveTaskToTimeUnit(taskId, timeUnit.id);
 
     return { canMove: true, toTimeUnitId: timeUnit.id };
   },
@@ -156,6 +160,18 @@ const withData = compose(
             { description, timeUnitId: timeUnit.id },
             { done: false },
             timeUnit,
+          ),
+        ),
+    }),
+  }),
+  graphql<Response, OwnProps, Props>(MoveTaskToTimeUnitMutation.mutation, {
+    props: ({ mutate }) => ({
+      moveTaskToPhase: (taskId: string, timeUnitId: string) =>
+        mutate &&
+        mutate(
+          MoveTaskToTimeUnitMutation.buildMutationOptions(
+            { taskId, timeUnitId },
+            {},
           ),
         ),
     }),

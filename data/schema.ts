@@ -135,6 +135,30 @@ export type MoveTaskToPhaseMutation = {
   } | null,
 };
 
+export type MoveTaskToTimeUnitMutationVariables = {
+  taskId: string,
+  timeUnitId: string,
+};
+
+export type MoveTaskToTimeUnitMutation = {
+  moveTaskToTimeUnit:  {
+    task:  {
+      id: string,
+      title: string,
+      done: boolean,
+      phase:  {
+        id: string,
+      } | null,
+    } | null,
+    sourceTimeUnit:  {
+      id: string,
+    } | null,
+    targetTimeUnit:  {
+      id: string,
+    } | null,
+  } | null,
+};
+
 export type RemovePhaseMutationVariables = {
   phaseId: string,
 };
