@@ -28,7 +28,7 @@ function getSparseTimeUnits(
   const sparseTimeUnits = Array.from(Array(MAX_TIME_UNITS));
 
   timeUnits.forEach(timeUnit => {
-    if (timeUnit && timeUnit.position) {
+    if (timeUnit && timeUnit.position != null) {
       sparseTimeUnits[timeUnit.position] = timeUnit;
     }
   });
