@@ -82,11 +82,7 @@ export default function createResolvers({
 
         return { task, sourcePhase, targetPhase };
       },
-      setProjectToPhase: async (
-        root,
-        { phaseId, projectId },
-        { user },
-      ) => {
+      setProjectToPhase: async (root, { phaseId, projectId }, { user }) => {
         const phase = await Phase.findById(phaseId, {
           where: { ownerId: user.id },
           rejectOnEmpty: true,
