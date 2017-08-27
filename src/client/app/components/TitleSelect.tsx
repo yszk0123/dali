@@ -1,4 +1,7 @@
 import * as React from 'react';
+import * as Select from 'react-select';
+import { Option } from 'react-select';
+import toNonEmptyArray from '../utils/toNonEmptyArray';
 import TitlePlaceholder from './TitlePlaceholder';
 
 interface SelectItem {
@@ -7,9 +10,11 @@ interface SelectItem {
 }
 
 interface Props {
+  resetAfterSelect?: boolean;
   defaultLabel?: string;
   selectedId: string | null;
   items: (SelectItem | null)[];
+  onCreate?(title: string): void;
   onChange(id: string | null): void;
 }
 
@@ -24,7 +29,7 @@ export default class TitleSelect extends React.Component<Props, State> {
     super(props);
     this.state = {
       selectedId: props.selectedId,
-      title: this.getTitleById(props.selectedId),
+      title: this.getTitleById(props.selectedId) || '',
       isEditing: false,
     };
   }
@@ -43,34 +48,49 @@ export default class TitleSelect extends React.Component<Props, State> {
     });
   };
 
-  private handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedId = event.target.value;
+  private handleChange = (option: Option<string> | null) => {
+    if (!option || !option.value || !option.label) {
+      return;
+    }
 
-    this.setState({
-      selectedId,
-      title: this.getTitleById(selectedId),
-    });
+    const {
+      selectedId: originalSelectedId,
+      resetAfterSelect,
+      onCreate,
+      onChange,
+    } = this.props;
+
+    if (onCreate && !this.getTitleById(option.value)) {
+      onCreate(option.value);
+    } else if (option.value !== originalSelectedId) {
+      onChange(option.value);
+    }
+
+    if (resetAfterSelect) {
+      this.reset();
+    } else {
+      this.setState({
+        selectedId: option.value,
+        title: option.label,
+        isEditing: false,
+      });
+    }
   };
 
   private handleBlur = () => {
-    this.select();
+    this.reset();
   };
 
-  private getTitleById(selectedId: string | null) {
+  private getTitleById(selectedId: string | null): string | null {
     const { items } = this.props;
     const item = items.find(item => !!item && item.id === selectedId);
-    return item ? item.title : '';
+    return item ? item.title : null;
   }
 
-  private select() {
-    const { selectedId: originalSelectedId, onChange } = this.props;
-    const { selectedId } = this.state;
-
-    if (selectedId !== originalSelectedId) {
-      onChange(selectedId);
-    }
-
+  private reset() {
     this.setState({
+      selectedId: null,
+      title: '',
       isEditing: false,
     });
   }
@@ -89,21 +109,21 @@ export default class TitleSelect extends React.Component<Props, State> {
       );
     }
 
+    const options = toNonEmptyArray(items).map(item => ({
+      value: item.id,
+      label: item.title,
+    }));
+
     return (
-      <select
+      <Select.Creatable
+        autoBlur
+        autofocus
+        openOnFocus
         value={selectedId || ''}
         onChange={this.handleChange}
         onBlur={this.handleBlur}
-      >
-        <option value="" />
-        {items.map(
-          item =>
-            item &&
-            <option key={item.id} value={item.id}>
-              {item.title}
-            </option>,
-        )}
-      </select>
+        options={options}
+      />
     );
   }
 }

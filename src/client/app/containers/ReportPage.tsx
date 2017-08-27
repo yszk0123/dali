@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
+import { RouteComponentProps } from 'react-router-dom';
+import { subDays, addDays } from 'date-fns';
 import { flatten, groupBy, toPairs, repeat } from 'lodash';
 import { ReportPageQuery } from 'schema';
 import * as reportPageQuery from '../../graphql/querySchema/ReportPage.graphql';
 import ClipboardButton from '../components/ClipboardButton';
+import DateSwitch from '../components/DateSwitch';
 import styled from '../styles/StyledComponents';
+import toDaliDate from '../utils/toDaliDate';
+import getToday from '../utils/getToday';
 import NoUserSelectArea from '../components/NoUserSelectArea';
 import { DateOnly } from '../interfaces';
 
@@ -16,13 +21,12 @@ const TextArea = styled.textarea`
   min-height: 30rem;
 `;
 
-interface OwnProps {
-  date: DateOnly;
-}
+type OwnProps = RouteComponentProps<any>;
 
 type Props = QueryProps &
   ReportPageQuery &
   OwnProps & {
+    date: DateOnly;
     result: any;
     markdown: string;
   };
@@ -37,37 +41,46 @@ export function ReportPage({
   if (loading || !result) {
     return null;
   }
+  const prev = toDaliDate(subDays(date, 1));
+  const next = toDaliDate(addDays(date, 1));
 
   return (
-    <ul>
-      {result.map((task: any) =>
-        <li key={task.id}>
-          <h3>
-            {task.project}
-          </h3>
-          <ul>
-            {task.tasks.map((task: any) =>
-              <li key={task.id}>
-                <h4>
-                  {task.phase}
-                </h4>
-                <ul>
-                  {task.tasks.map((task: any) =>
-                    <li key={task.id}>
-                      {task.title}
-                    </li>,
-                  )}
-                </ul>
-              </li>,
-            )}
-          </ul>
-        </li>,
-      )}
-      <hr />
-      <TextArea id="reportAsMarkdown" readOnly value={markdown} />
-      <ClipboardButton target="#reportAsMarkdown" />
-      <button onClick={refetch}>Update</button>
-    </ul>
+    <div>
+      <DateSwitch
+        date={date}
+        previousLink={`/report/${prev}`}
+        nextLink={`/report/${next}`}
+      />
+      <ul>
+        {result.map((task: any) =>
+          <li key={task.id}>
+            <h3>
+              {task.project}
+            </h3>
+            <ul>
+              {task.tasks.map((task: any) =>
+                <li key={task.id}>
+                  <h4>
+                    {task.phase}
+                  </h4>
+                  <ul>
+                    {task.tasks.map((task: any) =>
+                      <li key={task.id}>
+                        {task.title}
+                      </li>,
+                    )}
+                  </ul>
+                </li>,
+              )}
+            </ul>
+          </li>,
+        )}
+        <hr />
+        <TextArea id="reportAsMarkdown" readOnly value={markdown} />
+        <ClipboardButton target="#reportAsMarkdown" />
+        <button onClick={refetch}>Update</button>
+      </ul>
+    </div>
   );
 }
 
@@ -133,13 +146,15 @@ function renderAsMarkdown(result: any): string {
 
 const withData = compose(
   graphql<Response & ReportPageQuery, OwnProps, Props>(reportPageQuery, {
-    options: ({ date }) => ({
-      variables: { date },
+    options: ({ match }) => ({
+      variables: { date: match.params.date || getToday() },
+      fetchPolicy: 'network-only',
     }),
-    props: ({ data }) => {
+    props: ({ data, ownProps: { match } }) => {
       const result = data && groupTasks(data.timeUnits);
       return {
         ...data,
+        date: match.params.date || getToday(),
         result,
         markdown: renderAsMarkdown(result),
         loading: data && (data.loading || !data.timeUnits),

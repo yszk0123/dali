@@ -85,15 +85,15 @@ export class LoginPage extends React.Component<
       <div>
         <label htmlFor="email">Email: </label>
         <input
-          id="email"
-          type="text"
+          name="email"
+          type="email"
           value={email}
           onChange={this.handleEmailChange}
         />
         <label htmlFor="password">Password: </label>
         <input
-          id="password"
-          type="text"
+          name="password"
+          type="password"
           value={password}
           onChange={this.handlePasswordChange}
         />

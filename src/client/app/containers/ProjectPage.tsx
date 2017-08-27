@@ -80,6 +80,9 @@ export class ProjectPage extends React.Component<
 
 const withData = compose(
   graphql<Response & ProjectPageQuery, {}, Props>(projectPageQuery, {
+    options: {
+      fetchPolicy: 'network-only',
+    },
     props: ({ data }) => ({
       ...data,
       isLogin: data && data.currentUser,

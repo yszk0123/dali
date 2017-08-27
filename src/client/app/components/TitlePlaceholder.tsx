@@ -9,7 +9,7 @@ const Placeholder = styled.span`
   display: ${({ fullWidth }: PlaceholderProps) =>
     fullWidth ? 'block' : 'inline-block'};
   width: ${({ fullWidth }) => (fullWidth ? '100%' : '')};
-  padding: 0.4rem 1.2rem;
+  padding: 0.4rem 0.8rem;
   border-bottom: 1px solid #e4eaf7;
   color: ${({ nolabel }) => (nolabel ? '#888' : '#111')};
 `;
