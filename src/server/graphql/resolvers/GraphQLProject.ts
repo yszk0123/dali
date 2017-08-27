@@ -1,6 +1,6 @@
-import { resolver } from 'graphql-sequelize';
 import { camelCase, omitBy, isUndefined } from 'lodash';
 import { IResolvers, IModels, IContext } from '../interfaces';
+import resolver from '../utils/resolver';
 
 interface Input {
   models: IModels;
@@ -16,16 +16,7 @@ export default function createResolvers({
       phases: resolver(Project.Phases),
     },
     Query: {
-      projects: resolver(Project, {
-        list: true,
-        before: (findOptions: any, { orderBy }: any, context: IContext) => {
-          if (orderBy) {
-            findOptions.order = [[camelCase(orderBy.field), orderBy.direction]];
-          }
-
-          return findOptions;
-        },
-      }),
+      projects: resolver(Project, { list: true }),
     },
     Mutation: {
       createProject: async (root, { title }, { user }) => {

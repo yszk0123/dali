@@ -1,5 +1,5 @@
-import { resolver } from 'graphql-sequelize';
 import { IModels, IResolvers } from '../interfaces';
+import resolver from '../utils/resolver';
 
 interface Input {
   models: IModels;
