@@ -22,7 +22,7 @@ function createRawSchema({ models }: Input): IPartialSchemaDefinition {
 export function createSchema({ models }: Input): any {
   const schema = makeExecutableSchema(createRawSchema({ models }));
 
-  addMockFunctionsToSchema({ schema, preserveResolvers: true });
+  // addMockFunctionsToSchema({ schema, preserveResolvers: true });
 
   return schema;
 }
