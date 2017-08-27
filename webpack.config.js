@@ -30,6 +30,7 @@ module.exports = (env = {}) => {
         'whatwg-fetch',
         'normalize.css',
         'font-awesome/css/font-awesome.min.css',
+        './node_modules/react-select/dist/react-select.css',
         env.autoReload && `webpack-dev-server/client?http://0.0.0.0:${appPort}`,
         './src/client/app/assets/app.css',
         './src/client/app/index.tsx',
