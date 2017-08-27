@@ -27,8 +27,25 @@ describe('server', () => {
     };
   });
 
-  it('succeeds', async () => {
-    await generateFakeData({ sequelize, models });
+  it('fails before login', async () => {
+    const { user } = await generateFakeData({ sequelize, models });
+
+    const query = gql`
+      query TestQuery {
+        projects {
+          title
+        }
+      }
+    `;
+
+    await expect(graphql(schema, query, null, contextValue)).rejects.toEqual(
+      new Error('Current user not found'),
+    );
+  });
+
+  it('succeeds after login', async () => {
+    const { user } = await generateFakeData({ sequelize, models });
+    contextValue.user = user;
 
     const query = gql`
       query TestQuery {

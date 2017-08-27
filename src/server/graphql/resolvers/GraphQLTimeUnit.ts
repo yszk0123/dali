@@ -1,6 +1,6 @@
-import { resolver } from 'graphql-sequelize';
 import { camelCase, omitBy, isUndefined } from 'lodash';
 import { IResolvers, IModels, IContext } from '../interfaces';
+import resolver from '../utils/resolver';
 
 interface Input {
   models: IModels;

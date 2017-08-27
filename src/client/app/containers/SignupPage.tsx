@@ -32,16 +32,13 @@ export class SignupPage extends React.Component<
   ChildProps<Props, Response>,
   State
 > {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-      nickname: 'foo',
-      firstName: 'bar',
-      lastName: 'baz',
-    };
-  }
+  state = {
+    email: '',
+    password: '',
+    nickname: '',
+    firstName: 'bar',
+    lastName: 'baz',
+  };
 
   private handleSignupButtonClick = () => {
     this.signup();
@@ -59,6 +56,14 @@ export class SignupPage extends React.Component<
     const password = event.target.value;
 
     this.setState({ password });
+  };
+
+  private handleNicknameChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const nickname = event.target.value;
+
+    this.setState({ nickname });
   };
 
   private signup() {
@@ -80,7 +85,7 @@ export class SignupPage extends React.Component<
 
   render() {
     const { isSignup, from, signup } = this.props;
-    const { email, password } = this.state;
+    const { email, password, nickname } = this.state;
     const canSignup = this.isValid();
 
     if (isSignup) {
@@ -103,10 +108,17 @@ export class SignupPage extends React.Component<
           value={password}
           onChange={this.handlePasswordChange}
         />
+        <label htmlFor="nickname">Nickname: </label>
+        <input
+          id="nickname"
+          type="text"
+          value={nickname}
+          onChange={this.handleNicknameChange}
+        />
         <Button onClick={this.handleSignupButtonClick} disabled={!canSignup}>
           Signup
         </Button>
-        <Link to="/signup">Signup</Link>
+        <Link to="/login">Login</Link>
       </div>
     );
   }

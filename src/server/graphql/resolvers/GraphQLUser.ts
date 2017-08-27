@@ -1,5 +1,5 @@
-import { resolver } from 'graphql-sequelize';
 import { IModels, IResolvers } from '../interfaces';
+import resolver from '../utils/resolver';
 
 interface Input {
   models: IModels;
@@ -47,16 +47,14 @@ export default function createResolvers({
           context,
         );
 
-        // TODO: Return InvalidEmailOrPasswordError
+        if (!user) {
+          throw new Error('Invalid email or password');
+        }
 
         return user;
       },
-      logout: async (
-        root,
-        { email, password },
-        { AuthService },
-      ): Promise<any> => {
-        await AuthService.logout();
+      logout: async (root, { email, password }, context): Promise<any> => {
+        await context.AuthService.logout(context);
         return null;
       },
     },

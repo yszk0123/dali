@@ -53,7 +53,7 @@ async function login(
   return { user };
 }
 
-async function logout(data: any, context: IContext): Promise<any> {
+async function logout(context: IContext): Promise<any> {
   const user: any = null;
 
   if (context.session) {

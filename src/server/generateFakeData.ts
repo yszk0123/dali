@@ -9,8 +9,8 @@ interface GenerateFakeDataInput {
 export default async function generateFakeData({
   sequelize,
   models: { User, Project, Phase, Task, TimeUnit },
-}: GenerateFakeDataInput) {
-  await sequelize.transaction(async transaction => {
+}: GenerateFakeDataInput): Promise<any> {
+  return await sequelize.transaction(async transaction => {
     const user = await User.create(
       {
         email: 'test@gmail.com',
@@ -41,7 +41,7 @@ export default async function generateFakeData({
         { transaction },
       ),
     ]);
-    await Promise.all([
+    const tasks = await Promise.all([
       Task.create(
         {
           ownerId: user.id,
@@ -59,7 +59,7 @@ export default async function generateFakeData({
         { transaction },
       ),
     ]);
-    await Promise.all([
+    const timeUnits = await Promise.all([
       TimeUnit.create(
         {
           ownerId: user.id,
@@ -93,5 +93,7 @@ export default async function generateFakeData({
         { transaction },
       ),
     ]);
+
+    return { user, projects, phases, tasks, timeUnits };
   });
 }
