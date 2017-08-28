@@ -11,9 +11,12 @@ import { DateOnly } from '../interfaces';
 import * as CreateTimeUnitMutation from '../../graphql/mutations/CreateTimeUnitMutation';
 
 const Wrapper = styled.div`
-  color: #888;
   cursor: pointer;
+  padding: 0 1rem;
+  color: #888;
 `;
+
+const TimeLabelWrapper = styled.span`margin-left: 0.8rem;`;
 
 interface OwnProps {
   date: DateOnly;
@@ -26,10 +29,11 @@ type Props = OwnProps & {
 
 export function EmptyTimeUnitItem({ create, position }: Props) {
   return (
-    <Wrapper>
-      <span onClick={create}>
-        <Icon icon="plus" /> <TimeLabel position={position} />
-      </span>
+    <Wrapper onClick={create}>
+      <Icon icon="plus" />
+      <TimeLabelWrapper>
+        <TimeLabel position={position} />
+      </TimeLabelWrapper>
     </Wrapper>
   );
 }

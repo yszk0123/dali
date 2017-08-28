@@ -5,5 +5,9 @@ fragment TimeUnitTaskItem_task on Task {
   phase {
     id
     title
+    project {
+      id
+      title
+    }
   }
 }

@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
+import { RouteComponentProps } from 'react-router-dom';
+import { subDays, addDays } from 'date-fns';
 import { TimeUnitPageQuery, TimeUnitItem_timeUnitFragment } from 'schema';
 import * as timeUnitPageQuery from '../../graphql/querySchema/TimeUnitPage.graphql';
 import styled from '../styles/StyledComponents';
-import NoUserSelectArea from '../components/NoUserSelectArea';
+import DateSwitch from '../components/DateSwitch';
 import { DateOnly } from '../interfaces';
+import toDaliDate from '../utils/toDaliDate';
+import getToday from '../utils/getToday';
 import TimeUnitItem from './TimeUnitItem';
 import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 
@@ -40,11 +44,12 @@ function getSparseTimeUnits(
   return sparseTimeUnits;
 }
 
-interface OwnProps {
-  date: DateOnly;
-}
+type OwnProps = RouteComponentProps<any>;
 
-type Props = QueryProps & TimeUnitPageQuery & OwnProps;
+type Props = QueryProps &
+  TimeUnitPageQuery & {
+    date: DateOnly;
+  };
 
 export function TimeUnitPage({
   date,
@@ -56,9 +61,16 @@ export function TimeUnitPage({
   if (loading || !phases || !tasks) {
     return null;
   }
+  const prev = toDaliDate(subDays(date, 1));
+  const next = toDaliDate(addDays(date, 1));
 
   return (
-    <NoUserSelectArea>
+    <div>
+      <DateSwitch
+        date={date}
+        previousLink={`/timeUnit/${prev}`}
+        nextLink={`/timeUnit/${next}`}
+      />
       <List>
         {timeUnits &&
           getSparseTimeUnits(timeUnits).map((timeUnit, position) =>
@@ -74,17 +86,19 @@ export function TimeUnitPage({
             </ListItem>,
           )}
       </List>
-    </NoUserSelectArea>
+    </div>
   );
 }
 
 const withData = compose(
   graphql<Response & TimeUnitPageQuery, OwnProps, Props>(timeUnitPageQuery, {
-    options: ({ date }) => ({
-      variables: { date },
+    options: ({ match }) => ({
+      variables: { date: match.params.date || getToday() },
+      fetchPolicy: 'network-only',
     }),
-    props: ({ data }) => ({
+    props: ({ data, ownProps: { match } }) => ({
       ...data,
+      date: match.params.date || getToday(),
       loading: data && (data.loading || !data.timeUnits),
     }),
   }),

@@ -26,6 +26,10 @@ export type AddTaskToTimeUnitMutation = {
     phase:  {
       id: string,
       title: string,
+      project:  {
+        id: string,
+        title: string,
+      } | null,
     } | null,
   } | null,
 };
@@ -105,9 +109,12 @@ export type CreateTimeUnitMutation = {
       phase:  {
         id: string,
         title: string,
+        project:  {
+          id: string,
+          title: string,
+        } | null,
       } | null,
     } | null > | null,
-    description: string | null,
     date: string,
     position: number | null,
   } | null,
@@ -127,6 +134,10 @@ export type CreateTimeUnitTaskMutation = {
     phase:  {
       id: string,
       title: string,
+      project:  {
+        id: string,
+        title: string,
+      } | null,
     } | null,
     title: string,
     done: boolean,
@@ -188,6 +199,10 @@ export type MoveTaskToTimeUnitMutation = {
       phase:  {
         id: string,
         title: string,
+        project:  {
+          id: string,
+          title: string,
+        } | null,
       } | null,
     } | null,
     sourceTimeUnit:  {
@@ -252,6 +267,10 @@ export type RemoveTimeUnitTaskMutation = {
     phase:  {
       id: string,
       title: string,
+      project:  {
+        id: string,
+        title: string,
+      } | null,
     } | null,
   } | null,
 };
@@ -367,7 +386,6 @@ export type UpdateTimeUnitMutationVariables = {
 export type UpdateTimeUnitMutation = {
   updateTimeUnit:  {
     id: string,
-    description: string | null,
     date: string,
     position: number | null,
     tasks:  Array< {
@@ -377,6 +395,10 @@ export type UpdateTimeUnitMutation = {
       phase:  {
         id: string,
         title: string,
+        project:  {
+          id: string,
+          title: string,
+        } | null,
       } | null,
     } | null > | null,
   } | null,
@@ -399,6 +421,10 @@ export type UpdateTimeUnitTaskMutation = {
     phase:  {
       id: string,
       title: string,
+      project:  {
+        id: string,
+        title: string,
+      } | null,
     } | null,
   } | null,
 };
@@ -507,7 +533,6 @@ export type TimeUnitPageQueryVariables = {
 export type TimeUnitPageQuery = {
   timeUnits:  Array< {
     id: string,
-    description: string | null,
     date: string,
     position: number | null,
     tasks:  Array< {
@@ -517,6 +542,10 @@ export type TimeUnitPageQuery = {
       phase:  {
         id: string,
         title: string,
+        project:  {
+          id: string,
+          title: string,
+        } | null,
       } | null,
     } | null > | null,
   } | null > | null,
@@ -535,6 +564,10 @@ export type TimeUnitPageQuery = {
     phase:  {
       id: string,
       title: string,
+      project:  {
+        id: string,
+        title: string,
+      } | null,
     } | null,
   } | null > | null,
 };
@@ -551,6 +584,10 @@ export type TimeUnitTaskItem_taskFragment = {
   phase:  {
     id: string,
     title: string,
+    project:  {
+      id: string,
+      title: string,
+    } | null,
   } | null,
 };
 
@@ -583,7 +620,6 @@ export type PhaseItem_phaseFragment = {
 
 export type TimeUnitItem_timeUnitFragment = {
   id: string,
-  description: string | null,
   date: string,
   position: number | null,
   tasks:  Array< {
@@ -593,6 +629,10 @@ export type TimeUnitItem_timeUnitFragment = {
     phase:  {
       id: string,
       title: string,
+      project:  {
+        id: string,
+        title: string,
+      } | null,
     } | null,
   } | null > | null,
 };
@@ -632,6 +672,10 @@ export type TimeUnitItem_tasksFragment = {
   phase:  {
     id: string,
     title: string,
+    project:  {
+      id: string,
+      title: string,
+    } | null,
   } | null,
 };
 /* tslint:enable */

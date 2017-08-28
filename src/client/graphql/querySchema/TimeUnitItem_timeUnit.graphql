@@ -2,7 +2,6 @@
 
 fragment TimeUnitItem_timeUnit on TimeUnit {
   id
-  description
   date
   position
   tasks {

@@ -27,6 +27,18 @@ const Wrapper = styled.div`
     isOver ? '#c0e3fb' : 'inherit'};
 `;
 
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
+const TrashIcon = styled(Icon)`
+  float: right;
+`;
+
+const TitleInputWrapper = styled.div`margin-top: 0.8rem;`;
+
 interface OwnProps {
   projects: (PhaseItem_projectsFragment | null)[] | null;
   phase: PhaseItem_phaseFragment;
@@ -61,19 +73,21 @@ export function PhaseItem({
   return connectDropTarget(
     <div>
       <Wrapper isOver={isOver}>
-        <DoneCheckbox done={phase.done} onChange={toggleDone} />
-        <TitleSelect
-          selectedId={phase.project && phase.project.id}
-          onChange={setProject}
-          items={projects || []}
-        />
-        {' > '}
-        <TitleInput
-          defaultLabel="Project"
-          title={phase.title}
-          onChange={updateTitle}
-        />
-        <Icon icon="trash" onClick={removePhase} />
+        <Header>
+          <DoneCheckbox done={phase.done} onChange={toggleDone} />
+          <TitleSelect
+            selectedId={phase.project && phase.project.id}
+            onChange={setProject}
+            items={projects || []}
+          />
+          {' > '}
+          <TitleInput
+            defaultLabel="Project"
+            title={phase.title}
+            onChange={updateTitle}
+          />
+          <TrashIcon large icon="trash" onClick={removePhase} />
+        </Header>
         {phase.tasks &&
           phase.tasks.map(
             task =>
@@ -85,12 +99,14 @@ export function PhaseItem({
                 remove={removeTask}
               />,
           )}
-        <TitleInput
-          defaultLabel="New Task"
-          title=""
-          fullWidth
-          onChange={createTask}
-        />
+        <TitleInputWrapper>
+          <TitleInput
+            defaultLabel="New Task"
+            title=""
+            fullWidth
+            onChange={createTask}
+          />
+        </TitleInputWrapper>
       </Wrapper>
     </div>,
   );

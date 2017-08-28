@@ -1,10 +1,30 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import { DragSource, DragSourceSpec, ConnectDragSource } from 'react-dnd';
+import {
+  DragSource,
+  DragSourceSpec,
+  ConnectDragSource,
+  ConnectDragPreview,
+} from 'react-dnd';
 import { TaskItem_taskFragment } from 'schema';
 import * as UpdatePhaseTaskMutation from '../../graphql/mutations/UpdatePhaseTaskMutation';
+import styled, { ThemedProps } from '../styles/StyledComponents';
 import TaskLabel from '../components/TaskLabel';
+import Icon from '../components/Icon';
 import ItemTypes from '../constants/ItemTypes';
+
+interface WrapperProps {
+  isDragging: boolean;
+}
+
+const Wrapper = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  opacity: ${({ isDragging }: ThemedProps<WrapperProps>) =>
+    isDragging ? 0.5 : 1};
+`;
 
 interface OwnProps {
   task: TaskItem_taskFragment;
@@ -14,27 +34,38 @@ interface OwnProps {
 }
 
 type Props = OwnProps & {
+  updateTitle(title: string): void;
   toggleDone(): void;
   isDragging: boolean;
   connectDragSource: ConnectDragSource;
+  connectDragPreview: ConnectDragPreview;
 };
 
 export function TaskItem({
   task,
+  updateTitle,
   toggleDone,
   remove,
   isDragging,
   connectDragSource,
+  connectDragPreview,
 }: Props) {
-  return connectDragSource(
-    <div style={{ opacity: isDragging ? 0.5 : 1 }}>
-      <TaskLabel
-        icon="times-circle"
-        label={task.title}
-        done={task.done}
-        onLabelClick={toggleDone}
-        onRemoveButtonClick={() => remove(task)}
-      />
+  return connectDragPreview(
+    <div>
+      <Wrapper isDragging={isDragging}>
+        {connectDragSource(
+          <div>
+            <Icon cursor icon="bars" />
+          </div>,
+        )}
+        <TaskLabel
+          label={task.title}
+          done={task.done}
+          onCheckboxChange={toggleDone}
+          onLabelChange={updateTitle}
+          onRemoveButtonClick={() => remove(task)}
+        />
+      </Wrapper>
     </div>,
   );
 }
@@ -62,11 +93,11 @@ const taskSource: DragSourceSpec<Props> = {
 const withData = compose(
   graphql<Response, OwnProps, Props>(UpdatePhaseTaskMutation.mutation, {
     props: ({ mutate, ownProps: { task } }) => ({
-      updateTitle: (input: { title: string }) =>
+      updateTitle: (title: string) =>
         mutate &&
         mutate(
           UpdatePhaseTaskMutation.buildMutationOptions(
-            { ...input, taskId: task.id },
+            { title, taskId: task.id },
             { phaseDone: false, taskDone: false },
             task,
           ),
@@ -84,6 +115,7 @@ const withData = compose(
   }),
   DragSource(ItemTypes.TASK_UNIT, taskSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging(),
   })),
 );

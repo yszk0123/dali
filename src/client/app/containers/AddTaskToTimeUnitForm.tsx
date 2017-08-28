@@ -22,6 +22,12 @@ const ListItem = styled.div`
   align-content: center;
 `;
 
+const ErrorMessage = styled.span`
+  padding: 0.8rem;
+  font-size: 80%;
+  color: red;
+`;
+
 interface OwnProps {
   timeUnit: TimeUnitItem_timeUnitFragment;
   phases: (AddTaskToTimeUnitForm_phasesFragment | null)[];
@@ -35,7 +41,7 @@ type Props = OwnProps & {
 
 interface State {
   selectedPhaseId: string | null;
-  title: string;
+  error: string | null;
 }
 
 export class CreateTimeUnitTaskForm extends React.Component<
@@ -43,20 +49,16 @@ export class CreateTimeUnitTaskForm extends React.Component<
   State
 > {
   state = {
-    title: '',
     selectedPhaseId: null,
+    error: null,
   };
 
   private handlePhaseSelect = (selectedPhaseId: string) => {
     this.setState({ selectedPhaseId });
   };
 
-  private handleTitleChange = (title: string) => {
-    this.setState({ title });
-  };
-
-  private handleCreate = () => {
-    const { title, selectedPhaseId } = this.state;
+  private handleCreate = (title: string) => {
+    const { selectedPhaseId } = this.state;
 
     this.props.createTask(selectedPhaseId, title);
     this.reset();
@@ -66,6 +68,7 @@ export class CreateTimeUnitTaskForm extends React.Component<
     const { addTask, tasks } = this.props;
     const task = tasks.find(task => !!task && task.id === taskId);
     if (!task) {
+      this.setState({ error: 'task not found' });
       return;
     }
     addTask(task);
@@ -74,14 +77,13 @@ export class CreateTimeUnitTaskForm extends React.Component<
 
   private reset() {
     this.setState({
-      title: '',
-      selectedPhaseId: null,
+      error: null,
     });
   }
 
   render() {
     const { createTask, phases, tasks } = this.props;
-    const { selectedPhaseId, title } = this.state;
+    const { selectedPhaseId, error } = this.state;
 
     return (
       <div>
@@ -91,18 +93,18 @@ export class CreateTimeUnitTaskForm extends React.Component<
           onChange={this.handlePhaseSelect}
           items={phases}
         />
-        <TitleInput
-          defaultLabel="New Task"
-          title={title}
-          onChange={this.handleTitleChange}
-        />
-        <button onClick={this.handleCreate}>OK</button>
         <TitleSelect
           defaultLabel="Task"
           selectedId=""
+          onCreate={this.handleCreate}
           onChange={this.handleAdd}
           items={tasks}
+          resetAfterSelect
         />
+        {error &&
+          <ErrorMessage>
+            {error}
+          </ErrorMessage>}
       </div>
     );
   }

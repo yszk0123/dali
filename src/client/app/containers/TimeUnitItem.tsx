@@ -27,19 +27,20 @@ import TimeUnitTaskItem from './TimeUnitTaskItem';
 
 const SmallIconButtonGroup = styled(IconButtonGroup)`
   padding-right: 1rem;
-  float: right;
   font-size: ${({ theme }) => theme.shared.fontSize};
 `;
 
-const SummaryWrapper = styled.div`
+const AddTaskToTimeUnitFormWrapper = styled.div`margin-top: 0.8rem;`;
+
+const Header = styled.span`
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  flex-direction: column;
-  flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const Wrapper = styled.div`
+  width: 100%;
   padding: 1.2rem;
   background: ${({ isOver }: ThemedProps<{ isOver: boolean }>) =>
     isOver ? '#c0e3fb' : 'inherit'};
@@ -53,13 +54,13 @@ interface TaskSummaryProps {
 
 function TaskSummary({ tasks, timeUnit, removeTask }: TaskSummaryProps) {
   return (
-    <SummaryWrapper>
+    <div>
       {tasks.map(
         task =>
           task &&
           <TimeUnitTaskItem key={task.id} task={task} remove={removeTask} />,
       )}
-    </SummaryWrapper>
+    </div>
   );
 }
 
@@ -100,31 +101,28 @@ export function TimeUnitItem({
   return connectDropTarget(
     <div>
       <Wrapper isOver={isOver}>
-        <div>
+        <Header>
           {timeUnit.position != null &&
             <span>
               <TimeLabel position={timeUnit.position} />{' '}
             </span>}
-          <TitleInput
-            defaultLabel="Description"
-            title={timeUnit.description || ''}
-            onChange={updateDescription}
-          />
           <SmallIconButtonGroup>
             <RemoveButton onClick={removeTimeUnit} />
           </SmallIconButtonGroup>
-        </div>
+        </Header>
         {timeUnit.tasks &&
           <TaskSummary
             tasks={timeUnit.tasks}
             timeUnit={timeUnit}
             removeTask={removeTask}
           />}
-        <AddTaskToTimeUnitForm
-          timeUnit={timeUnit}
-          phases={phases}
-          tasks={tasks}
-        />
+        <AddTaskToTimeUnitFormWrapper>
+          <AddTaskToTimeUnitForm
+            timeUnit={timeUnit}
+            phases={phases}
+            tasks={tasks}
+          />
+        </AddTaskToTimeUnitFormWrapper>
       </Wrapper>
     </div>,
   );

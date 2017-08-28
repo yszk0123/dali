@@ -24,8 +24,8 @@ type State = {
   email: string;
   password: string;
   nickname: string;
-  firstName: string;
-  lastName: string;
+  firstName: string | null;
+  lastName: string | null;
 };
 
 export class SignupPage extends React.Component<
@@ -36,8 +36,8 @@ export class SignupPage extends React.Component<
     email: '',
     password: '',
     nickname: '',
-    firstName: 'bar',
-    lastName: 'baz',
+    firstName: null,
+    lastName: null,
   };
 
   private handleSignupButtonClick = () => {
@@ -78,9 +78,9 @@ export class SignupPage extends React.Component<
   }
 
   private isValid() {
-    const { email, password, nickname, firstName, lastName } = this.state;
+    const { email, password, nickname } = this.state;
 
-    return email && password && nickname && firstName && lastName;
+    return email && password && nickname;
   }
 
   render() {
@@ -96,21 +96,21 @@ export class SignupPage extends React.Component<
       <div>
         <label htmlFor="email">Email: </label>
         <input
-          id="email"
-          type="text"
+          name="email"
+          type="email"
           value={email}
           onChange={this.handleEmailChange}
         />
         <label htmlFor="password">Password: </label>
         <input
-          id="password"
-          type="text"
+          name="password"
+          type="password"
           value={password}
           onChange={this.handlePasswordChange}
         />
         <label htmlFor="nickname">Nickname: </label>
         <input
-          id="nickname"
+          name="nickname"
           type="text"
           value={nickname}
           onChange={this.handleNicknameChange}

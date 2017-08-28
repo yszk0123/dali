@@ -1,56 +1,61 @@
 import * as React from 'react';
 import styled from '../styles/StyledComponents';
 import Icon from './Icon';
+import DoneCheckbox from './DoneCheckbox';
+import TitleInput from './TitleInput';
 
-const Side = styled.div`
-  padding: 0.4rem;
+const SubLabel = styled.div`
+  padding: 0.4rem 0;
   font-size: 0.8rem;
   color: gray;
 `;
 
 const Label = styled.div`
-  font-size: 1.6rem;
-  padding: 0.8rem;
+  display: flex;
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  align-items: center;
   color: #111;
-  cursor: pointer;
+`;
+
+const Content = styled.div`
+  flex-grow: 4;
+  padding: 0 2.4rem 0 0.8rem;
+`;
+
+const FIcon = styled(Icon)`
+  flex-grow: 1;
 `;
 
 interface Props {
-  icon: string;
   label: string;
   subLabel?: string | null;
   done: boolean;
-  onLabelClick: React.MouseEventHandler<HTMLElement>;
+  onCheckboxChange: React.ChangeEventHandler<HTMLInputElement>;
+  onLabelChange(title: string): void;
   onRemoveButtonClick: React.MouseEventHandler<HTMLElement>;
 }
 
 export default function TaskLabel({
-  icon,
   label,
   subLabel,
   done,
-  onLabelClick,
+  onCheckboxChange,
+  onLabelChange,
   onRemoveButtonClick,
   ...rest,
 }: Props) {
-  const displayText = done
-    ? <del>
-        {label}
-      </del>
-    : label;
-
   return (
     <Label {...rest}>
-      {subLabel &&
-        <Side>
-          {subLabel}
-        </Side>}
-      <Icon
-        color="primary"
-        icon="times-circle"
-        onClick={onRemoveButtonClick}
-      />{' '}
-      <span onClick={onLabelClick}>{displayText}</span>
+      <DoneCheckbox done={done} onChange={onCheckboxChange} />
+      <Content>
+        {subLabel &&
+          <SubLabel>
+            {subLabel}
+          </SubLabel>}
+        <TitleInput fullWidth title={label} onChange={onLabelChange} />
+      </Content>
+      <FIcon icon="archive" onClick={onRemoveButtonClick} />
     </Label>
   );
 }
