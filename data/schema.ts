@@ -433,6 +433,10 @@ export type AddTaskToTimeUnitFormQuery = {
   phases:  Array< {
     id: string,
     title: string,
+    project:  {
+      id: string,
+      title: string,
+    } | null,
     tasks:  Array< {
       id: string,
       title: string,
@@ -441,6 +445,10 @@ export type AddTaskToTimeUnitFormQuery = {
   tasks:  Array< {
     id: string,
     title: string,
+    phase:  {
+      id: string,
+      title: string,
+    } | null,
   } | null > | null,
 };
 
@@ -464,6 +472,7 @@ export type NavBarQuery = {
 };
 
 export type PhasePageQueryVariables = {
+  projectId?: string | null,
   phaseDone?: boolean | null,
   taskUsed?: boolean | null,
 };
@@ -634,6 +643,10 @@ export type TimeUnitItem_timeUnitFragment = {
 export type AddTaskToTimeUnitForm_phasesFragment = {
   id: string,
   title: string,
+  project:  {
+    id: string,
+    title: string,
+  } | null,
   tasks:  Array< {
     id: string,
     title: string,
@@ -643,6 +656,10 @@ export type AddTaskToTimeUnitForm_phasesFragment = {
 export type AddTaskToTimeUnitForm_tasksFragment = {
   id: string,
   title: string,
+  phase:  {
+    id: string,
+    title: string,
+  } | null,
 };
 
 export type PhaseItem_projectsFragment = {

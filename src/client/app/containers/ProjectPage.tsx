@@ -7,7 +7,7 @@ import styled from '../styles/StyledComponents';
 import Button from '../components/Button';
 import ProjectItem from './ProjectItem';
 
-const ProjectItemWrapper = styled.div`margin: 1rem;`;
+const StyledProjectItem = styled(ProjectItem)`margin: 1rem;`;
 
 interface ProjectPageProps {
   isLogin: boolean;
@@ -50,10 +50,7 @@ export class ProjectPage extends React.Component<
       projects &&
       projects.map(
         project =>
-          project &&
-          <ProjectItemWrapper key={project.id}>
-            <ProjectItem project={project} />
-          </ProjectItemWrapper>,
+          project && <StyledProjectItem key={project.id} project={project} />,
       )
     );
   }
@@ -71,8 +68,10 @@ export class ProjectPage extends React.Component<
         <div>
           {this.renderProjects()}
         </div>
-        <input type="text" value={title} onChange={this.handleTitleChange} />
-        <Button onClick={this.handleAddProjectClick}>Add</Button>
+        <div>
+          <input type="text" value={title} onChange={this.handleTitleChange} />
+          <Button onClick={this.handleAddProjectClick}>Add</Button>
+        </div>
       </div>
     );
   }

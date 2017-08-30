@@ -5,6 +5,7 @@ interface PlaceholderProps {
   fullWidth?: boolean;
   nolabel?: boolean;
 }
+
 const Placeholder = styled.span`
   display: ${({ fullWidth }: PlaceholderProps) =>
     fullWidth ? 'block' : 'inline-block'};

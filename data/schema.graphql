@@ -97,7 +97,7 @@ type Project {
   owner: User!
   visibility: ProjectVisibility!
   members: [Member]
-  phases: [Phase]
+  phases(projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: PhaseOrder): [Phase]
 }
 
 input ProjectOrder {

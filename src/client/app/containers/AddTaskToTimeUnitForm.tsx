@@ -12,20 +12,11 @@ import * as addTaskToTimeUnitFormQuery from '../../graphql/querySchema/AddTaskTo
 import * as CreateTimeUnitTaskMutation from '../../graphql/mutations/CreateTimeUnitTaskMutation';
 import * as AddTaskToTimeUnitMutation from '../../graphql/mutations/AddTaskToTimeUnitMutation';
 
-const List = styled.div`
-  minWidth: 300px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ListItem = styled.div`
-  margin-bottom: 1rem;
-  align-content: center;
-`;
+const Wrapper = styled.div`font-size: 1.6rem;`;
 
 const ErrorMessage = styled.span`
   padding: 0.8rem;
-  font-size: 80%;
+  font-size: 1.4rem;
   color: red;
 `;
 
@@ -76,6 +67,10 @@ export class CreateTimeUnitTaskForm extends React.Component<
     this.close();
   };
 
+  private handleBlur = () => {
+    this.close();
+  };
+
   private close() {
     const { onClose } = this.props;
 
@@ -90,27 +85,44 @@ export class CreateTimeUnitTaskForm extends React.Component<
     const { createTask, phases, tasks } = this.props;
     const { selectedPhaseId, error } = this.state;
 
+    const mappedPhases = (phases || []).map(
+      item =>
+        item && {
+          id: item.id,
+          title: `${(item.project && item.project.title) ||
+            ''} > ${item.title}`,
+        },
+    );
+    const mappedTasks = (tasks || []).map(
+      item =>
+        item && {
+          id: item.id,
+          title: `${(item.phase && item.phase.title) || ''} > ${item.title}`,
+        },
+    );
+
     return (
-      <div>
+      <Wrapper>
         <TitleSelect
           defaultLabel="Phase"
           selectedId={selectedPhaseId}
           onChange={this.handlePhaseSelect}
-          items={phases || []}
+          items={mappedPhases}
         />
         <TitleSelect
           defaultLabel="Task"
           selectedId=""
           onCreate={this.handleCreate}
           onChange={this.handleAdd}
-          items={tasks || []}
+          onBlur={this.handleBlur}
+          items={mappedTasks}
           resetAfterSelect
         />
         {error &&
           <ErrorMessage>
             {error}
           </ErrorMessage>}
-      </div>
+      </Wrapper>
     );
   }
 }

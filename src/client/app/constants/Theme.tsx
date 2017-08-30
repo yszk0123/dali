@@ -1,7 +1,14 @@
-export default {
+import ThemeInterface from '../styles/ThemeInterface';
+
+const Theme: ThemeInterface = {
   shared: {
     fontSize: '1.6rem',
     marginBottom: '1.6rem',
+  },
+  navBar: {
+    default: {
+      color: '#c8cfef',
+    },
   },
   timeLabel: {
     fontSize: '1.2rem',
@@ -28,3 +35,5 @@ export default {
     space: '0.8rem',
   },
 };
+
+export default Theme;

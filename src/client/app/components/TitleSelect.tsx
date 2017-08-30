@@ -16,6 +16,7 @@ interface Props {
   items: (SelectItem | null)[];
   onCreate?(title: string): void;
   onChange(id: string | null): void;
+  onBlur?(): void;
 }
 
 interface State {
@@ -78,7 +79,10 @@ export default class TitleSelect extends React.Component<Props, State> {
   };
 
   private handleBlur = () => {
+    const { onBlur } = this.props;
+
     this.reset();
+    onBlur && onBlur();
   };
 
   private getTitleById(selectedId: string | null): string | null {

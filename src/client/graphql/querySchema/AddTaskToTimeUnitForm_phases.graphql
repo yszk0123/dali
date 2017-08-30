@@ -1,6 +1,10 @@
 fragment AddTaskToTimeUnitForm_phases on Phase {
   id
   title
+  project {
+    id
+    title
+  }
   tasks(used: false) {
     id
     title

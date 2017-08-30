@@ -25,13 +25,19 @@ const Wrapper = styled.div`
   padding: 1.2rem 1.4rem;
   background: ${({ isOver }: ThemedProps<{ isOver: boolean }>) =>
     isOver ? '#c0e3fb' : 'inherit'};
+  font-size: 1.6rem;
 `;
 
 const Header = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
 `;
+
+const HeaderMain = styled.div`flex-grow: 1;`;
+
+const PhaseTaskItemWrapper = styled.div`margin-left: 1rem;`;
 
 const TrashIcon = styled(Icon)`
   float: right;
@@ -75,29 +81,33 @@ export function PhaseItem({
       <Wrapper isOver={isOver}>
         <Header>
           <DoneCheckbox done={phase.done} onChange={toggleDone} />
-          <TitleSelect
-            selectedId={phase.project && phase.project.id}
-            onChange={setProject}
-            items={projects || []}
-          />
-          {' > '}
-          <TitleInput
-            defaultLabel="Project"
-            title={phase.title}
-            onChange={updateTitle}
-          />
+          <HeaderMain>
+            <TitleSelect
+              selectedId={phase.project && phase.project.id}
+              onChange={setProject}
+              items={projects || []}
+            />
+            {'>'}
+            <TitleInput
+              defaultLabel="Project"
+              title={phase.title}
+              onChange={updateTitle}
+            />
+          </HeaderMain>
           <TrashIcon large icon="trash" onClick={removePhase} />
         </Header>
         {phase.tasks &&
           phase.tasks.map(
             task =>
               task &&
-              <PhaseTaskItem
-                key={task.id}
-                task={task}
-                phaseId={phase.id}
-                remove={removeTask}
-              />,
+              <PhaseTaskItemWrapper>
+                <PhaseTaskItem
+                  key={task.id}
+                  task={task}
+                  phaseId={phase.id}
+                  remove={removeTask}
+                />
+              </PhaseTaskItemWrapper>,
           )}
         <TitleInputWrapper>
           <TitleInput
@@ -219,7 +229,7 @@ const withData = compose(
         ),
     }),
   }),
-  DropTarget(ItemTypes.TASK_UNIT, taskTarget, (connect, monitor) => ({
+  DropTarget(ItemTypes.TASK, taskTarget, (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver({ shallow: true }),
   })),

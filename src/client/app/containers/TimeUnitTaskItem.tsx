@@ -118,7 +118,7 @@ const withData = compose(
         ),
     }),
   }),
-  DragSource(ItemTypes.TASK_UNIT, taskSource, (connect, monitor) => ({
+  DragSource(ItemTypes.TASK, taskSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging(),

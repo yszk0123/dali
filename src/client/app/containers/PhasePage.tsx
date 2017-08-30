@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
+import { RouteComponentProps } from 'react-router-dom';
 import {
   PhasePageQuery,
   PhaseItem_phaseFragment,
@@ -21,6 +22,8 @@ interface PhasePageProps {
   isLogin: boolean;
   createPhase(title: string): void;
 }
+
+type OwnProps = RouteComponentProps<any>;
 
 type Props = QueryProps & PhasePageQuery & PhasePageProps;
 
@@ -115,17 +118,25 @@ export class PhasePage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Response & PhasePageQuery, {}, Props>(phasePageQuery, {
-    options: {
-      variables: { phaseDone: false, taskUsed: false },
+  graphql<Response & PhasePageQuery, OwnProps, Props>(phasePageQuery, {
+    options: ({ match }) => ({
+      variables: {
+        phaseDone: false,
+        taskUsed: false,
+        projectId: match.params.projectId,
+      },
       fetchPolicy: 'network-only',
-    },
+    }),
     props: ({ data }) => ({
       ...data,
       isLogin: data && data.currentUser,
     }),
   }),
-  graphql<Response & PhasePageQuery, {}, Props>(CreatePhaseMutation.mutation, {
+  graphql<
+    Response & PhasePageQuery,
+    OwnProps,
+    Props
+  >(CreatePhaseMutation.mutation, {
     props: ({ mutate }) => ({
       createPhase: (title: string) =>
         mutate &&

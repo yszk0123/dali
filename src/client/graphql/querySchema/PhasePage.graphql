@@ -1,8 +1,8 @@
 #import "./PhaseItem_phase.graphql"
 #import "./PhaseItem_projects.graphql"
 
-query PhasePage($phaseDone: Boolean, $taskUsed: Boolean) {
-  phases(limit: 100, done: $phaseDone) {
+query PhasePage($projectId: ID, $phaseDone: Boolean, $taskUsed: Boolean) {
+  phases(projectId: $projectId, limit: 100, done: $phaseDone) {
     id
     title
     ...PhaseItem_phase

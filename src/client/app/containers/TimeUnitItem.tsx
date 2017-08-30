@@ -17,6 +17,7 @@ import DoneCheckbox from '../components/DoneCheckbox';
 import InputWithButton from '../components/InputWithButton';
 import IconButtonGroup from '../components/IconButtonGroup';
 import TimeLabel from '../components/TimeLabel';
+import Button from '../components/Button';
 import ItemTypes from '../constants/ItemTypes';
 import Theme from '../constants/Theme';
 import AddTaskToTimeUnitForm from '../containers/AddTaskToTimeUnitForm';
@@ -42,6 +43,7 @@ const Wrapper = styled.div`
   padding: 1.2rem;
   background: ${({ isOver }: ThemedProps<{ isOver: boolean }>) =>
     isOver ? '#c0e3fb' : 'inherit'};
+  font-size: 1.6rem;
 `;
 
 interface TaskSummaryProps {
@@ -62,11 +64,11 @@ function TaskSummary({ tasks, timeUnit, removeTask }: TaskSummaryProps) {
   );
 }
 
-function RemoveButton({
-  onClick,
-}: {
+interface RemoveButtonProps {
   onClick: React.MouseEventHandler<HTMLElement>;
-}) {
+}
+
+function RemoveButton({ onClick }: RemoveButtonProps) {
   return <Icon icon="trash" onClick={onClick} />;
 }
 
@@ -120,9 +122,7 @@ export class TimeUnitItem extends React.Component<
         <Wrapper isOver={isOver}>
           <Header>
             {timeUnit.position != null &&
-              <span>
-                <TimeLabel position={timeUnit.position} />{' '}
-              </span>}
+              <TimeLabel activated position={timeUnit.position} />}
             <SmallIconButtonGroup>
               <RemoveButton onClick={removeTimeUnit} />
             </SmallIconButtonGroup>
@@ -140,7 +140,7 @@ export class TimeUnitItem extends React.Component<
                   onClose={this.handleCloseForm}
                 />
               </AddTaskToTimeUnitFormWrapper>
-            : <button onClick={this.handleOpenForm}>Add</button>}
+            : <Button onClick={this.handleOpenForm}>Add</Button>}
         </Wrapper>
       </div>,
     );
@@ -222,7 +222,7 @@ const withData = compose(
         ),
     }),
   }),
-  DropTarget(ItemTypes.TASK_UNIT, taskTarget, (connect, monitor) => ({
+  DropTarget(ItemTypes.TASK, taskTarget, (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver({ shallow: true }),
   })),

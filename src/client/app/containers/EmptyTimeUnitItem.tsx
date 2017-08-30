@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   color: #888;
 `;
 
-const TimeLabelWrapper = styled.span`margin-left: 0.8rem;`;
+const StyledTimeLabel = styled(TimeLabel)`margin-left: 0.8rem;`;
 
 interface OwnProps {
   date: DateOnly;
@@ -31,9 +31,7 @@ export function EmptyTimeUnitItem({ create, position }: Props) {
   return (
     <Wrapper onClick={create}>
       <Icon icon="plus" />
-      <TimeLabelWrapper>
-        <TimeLabel position={position} />
-      </TimeLabelWrapper>
+      <StyledTimeLabel position={position} />
     </Wrapper>
   );
 }

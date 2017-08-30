@@ -6,14 +6,30 @@ import styled, { withTheme, ThemedProps } from '../styles/StyledComponents';
 import { DateOnly } from '../interfaces';
 import Day from './Day';
 
-const Header = styled.div`
+const Wrapper = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  font-size: 1.4rem;
 `;
 
-const DayWrapper = styled.div`
-  font-size: 140%;
+const StyledDay = styled(Day)`
+  font-size: 1.8rem;
   font-weight: bold;
+`;
+
+const GoToPreviousButton = styled(Link)`
+  float: left;
+  padding: ${({ theme }) => theme.goButton.space};
+  cursor: pointer;
+  text-decoration: none;
+`;
+
+const GoToNextButton = styled(Link)`
+  float: left;
+  padding: ${({ theme }) => theme.goButton.space};
+  cursor: pointer;
+  text-decoration: none;
 `;
 
 type Props = {
@@ -22,53 +38,14 @@ type Props = {
   nextLink: string;
 };
 
-interface GoButtonProps {
-  left?: boolean;
-  right?: boolean;
-  link: string;
-  label: string;
-}
-
-const GoButton = withTheme<
-  ThemedProps<GoButtonProps>
->(({ theme: { goButton }, left, right, link, label }) => {
-  let style;
-  if (left) {
-    style = {
-      float: 'left',
-      padding: goButton.space,
-      marginTop: `-${goButton.space}`,
-      marginLeft: `-${goButton.space}`,
-      cursor: 'pointer',
-    };
-  }
-  if (right) {
-    style = {
-      float: 'right',
-      padding: goButton.space,
-      marginTop: `-${goButton.space}`,
-      marginRight: goButton.space,
-      cursor: 'pointer',
-    };
-  }
-
-  return (
-    <Link to={link}>
-      <span style={style}>
-        {label}
-      </span>
-    </Link>
-  );
-});
-
 export default function DateSwitch({ date, previousLink, nextLink }: Props) {
   return (
-    <Header>
-      <GoButton left label="&laquo; Previous" link={previousLink} />
-      <DayWrapper>
-        <Day date={date} />
-      </DayWrapper>
-      <GoButton right label="Next &raquo;" link={nextLink} />
-    </Header>
+    <Wrapper>
+      <GoToPreviousButton to={previousLink}>
+        &laquo; Previous
+      </GoToPreviousButton>
+      <StyledDay date={date} />
+      <GoToNextButton to={nextLink}>Next &raquo;</GoToNextButton>
+    </Wrapper>
   );
 }

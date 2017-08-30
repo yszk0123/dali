@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from '../styles/StyledComponents';
+import KeyCodes from '../constants/KeyCodes';
 import TitlePlaceholder from './TitlePlaceholder';
 
 const Input = styled.input`
@@ -16,6 +17,7 @@ interface Props {
   fullWidth?: boolean;
   onChange(title: string): void;
 }
+
 interface State {
   title: string;
   isEditing: boolean;
@@ -58,6 +60,21 @@ export default class TitleInput extends React.Component<Props, State> {
     event.currentTarget.select();
   };
 
+  private handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    switch (event.keyCode) {
+      case KeyCodes.ESCAPE:
+        this.resetTitle();
+        event.preventDefault();
+        return;
+      case KeyCodes.ENTER:
+        this.updateTitle();
+        event.preventDefault();
+        return;
+      default:
+        return;
+    }
+  };
+
   private updateTitle() {
     const { title: originalTitle, onChange } = this.props;
     const { title } = this.state;
@@ -68,6 +85,15 @@ export default class TitleInput extends React.Component<Props, State> {
 
     this.setState({
       isEditing: false,
+    });
+  }
+
+  private resetTitle() {
+    const { title: originalTitle } = this.props;
+
+    this.setState({
+      isEditing: false,
+      title: originalTitle,
     });
   }
 
@@ -94,6 +120,7 @@ export default class TitleInput extends React.Component<Props, State> {
         type="text"
         style={style}
         value={title}
+        onKeyDown={this.handleKeyDown}
         onChange={this.handleTitleChange}
         onBlur={this.handleBlur}
         onFocus={this.handleFocus}

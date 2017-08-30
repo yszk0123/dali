@@ -7,12 +7,11 @@ interface Props {
   value?: string;
 }
 
-export default class InputWithButton extends React.Component {
-  props: Props;
-  state: {
-    value: string;
-  };
+interface State {
+  value: string;
+}
 
+export default class InputWithButton extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -28,26 +27,26 @@ export default class InputWithButton extends React.Component {
     }
   }
 
-  _handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       value: event.target.value,
     });
   };
 
-  _handleKeyDown = (event: KeyboardEvent) => {
+  private handleKeyDown = (event: KeyboardEvent) => {
     if (event.which !== KeyCodes.ENTER) {
       return;
     }
     event.preventDefault();
 
-    this._submit();
+    this.submit();
   };
 
-  _handleSubmit = () => {
-    this._submit();
+  private handleSubmit = () => {
+    this.submit();
   };
 
-  _submit() {
+  private submit() {
     const { value: originalValue, onSubmit } = this.props;
     const { value } = this.state;
 
@@ -60,8 +59,8 @@ export default class InputWithButton extends React.Component {
 
     return (
       <span>
-        <input type="text" value={value} onChange={this._handleChange} />
-        <Button onClick={this._handleSubmit}>Submit</Button>
+        <input type="text" value={value} onChange={this.handleChange} />
+        <Button onClick={this.handleSubmit}>Submit</Button>
       </span>
     );
   }

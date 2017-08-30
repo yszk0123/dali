@@ -23,26 +23,13 @@ const List = styled.div`
 interface ListItemProps {
   highlightLine?: boolean;
 }
+
 const ListItem = styled.div`
   border-top: ${({ highlightLine }: ListItemProps) =>
     highlightLine ? '1px solid #ccc' : 'none'};
   margin: 0.4rem 0;
   align-content: center;
 `;
-
-function getSparseTimeUnits(
-  timeUnits: Array<TimeUnitItem_timeUnitFragment | null>,
-): TimeUnitItem_timeUnitFragment[] {
-  const sparseTimeUnits = Array.from(Array(MAX_TIME_UNITS));
-
-  timeUnits.forEach(timeUnit => {
-    if (timeUnit && timeUnit.position != null) {
-      sparseTimeUnits[timeUnit.position] = timeUnit;
-    }
-  });
-
-  return sparseTimeUnits;
-}
 
 type OwnProps = RouteComponentProps<any>;
 
@@ -77,6 +64,20 @@ export function TimeUnitPage({ date, timeUnits, loading }: Props) {
       </List>
     </div>
   );
+}
+
+function getSparseTimeUnits(
+  timeUnits: Array<TimeUnitItem_timeUnitFragment | null>,
+): TimeUnitItem_timeUnitFragment[] {
+  const sparseTimeUnits = Array.from(Array(MAX_TIME_UNITS));
+
+  timeUnits.forEach(timeUnit => {
+    if (timeUnit && timeUnit.position != null) {
+      sparseTimeUnits[timeUnit.position] = timeUnit;
+    }
+  });
+
+  return sparseTimeUnits;
 }
 
 const withData = compose(
