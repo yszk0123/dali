@@ -98,7 +98,7 @@ const withData = compose(
         mutate(
           UpdatePhaseTaskMutation.buildMutationOptions(
             { title, taskId: task.id },
-            { phaseDone: false, taskDone: false },
+            { phaseDone: false, taskUsed: false },
             task,
           ),
         ),
@@ -107,7 +107,7 @@ const withData = compose(
         mutate(
           UpdatePhaseTaskMutation.buildMutationOptions(
             { done: !task.done, taskId: task.id },
-            { phaseDone: false, taskDone: false },
+            { phaseDone: false, taskUsed: false },
             task,
           ),
         ),

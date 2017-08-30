@@ -27,14 +27,14 @@ type Props = QueryProps & PhasePageQuery & PhasePageProps;
 interface State {
   title: string;
   phaseDone: boolean;
-  taskDone: boolean;
+  taskUsed: boolean;
 }
 
 export class PhasePage extends React.Component<
   ChildProps<Props, Response>,
   State
 > {
-  state = { title: '', phaseDone: false, taskDone: false };
+  state = { title: '', phaseDone: false, taskUsed: false };
 
   private handleCreatePhaseClick = (event: React.MouseEvent<HTMLElement>) => {
     const { title } = this.state;
@@ -68,16 +68,16 @@ export class PhasePage extends React.Component<
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { refetch } = this.props;
-    const taskDone = !!event.target.checked;
+    const taskUsed = !!event.target.checked;
 
-    this.setState<'taskDone'>({ taskDone }, () => {
-      refetch({ taskDone });
+    this.setState<'taskUsed'>({ taskUsed }, () => {
+      refetch({ taskUsed });
     });
   };
 
   render() {
     const { isLogin, phases, projects } = this.props;
-    const { title, phaseDone, taskDone } = this.state;
+    const { title, phaseDone, taskUsed } = this.state;
 
     if (!isLogin) {
       return <span>Loading...</span>;
@@ -92,11 +92,11 @@ export class PhasePage extends React.Component<
           checked={phaseDone}
           onChange={this.handlePhaseDoneChange}
         />
-        <label htmlFor="taskDone">TaskDone: </label>
+        <label htmlFor="taskUsed">TaskUsed: </label>
         <input
-          id="taskDone"
+          id="taskUsed"
           type="checkbox"
-          checked={taskDone}
+          checked={taskUsed}
           onChange={this.handleTaskDoneChange}
         />
         {phases &&
@@ -117,7 +117,8 @@ export class PhasePage extends React.Component<
 const withData = compose(
   graphql<Response & PhasePageQuery, {}, Props>(phasePageQuery, {
     options: {
-      variables: { phaseDone: false, taskDone: false },
+      variables: { phaseDone: false, taskUsed: false },
+      fetchPolicy: 'network-only',
     },
     props: ({ data }) => ({
       ...data,
@@ -131,7 +132,7 @@ const withData = compose(
         mutate(
           CreatePhaseMutation.buildMutationOptions(
             { title },
-            { phaseDone: false, taskDone: false },
+            { phaseDone: false, taskUsed: false },
           ),
         ),
     }),

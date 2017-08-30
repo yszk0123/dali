@@ -141,7 +141,7 @@ const withData = compose(
         mutate(
           RemovePhaseTaskMutation.buildMutationOptions(
             { taskId: task.id },
-            { phaseDone: false, taskDone: false },
+            { phaseDone: false, taskUsed: false },
             phase,
           ),
         ),
@@ -154,7 +154,7 @@ const withData = compose(
         mutate(
           CreatePhaseTaskMutation.buildMutationOptions(
             { title, phaseId: phase.id },
-            { phaseDone: false, taskDone: false },
+            { phaseDone: false, taskUsed: false },
             phase,
           ),
         ),
@@ -167,7 +167,7 @@ const withData = compose(
         mutate(
           RemovePhaseMutation.buildMutationOptions(
             { phaseId: phase.id },
-            { phaseDone: false, taskDone: false },
+            { phaseDone: false, taskUsed: false },
           ),
         ),
     }),
@@ -179,7 +179,7 @@ const withData = compose(
         mutate(
           UpdatePhaseMutation.buildMutationOptions(
             { title, phaseId: phase.id },
-            { phaseDone: false, taskDone: false },
+            { phaseDone: false, taskUsed: false },
             phase,
           ),
         ),
@@ -188,7 +188,7 @@ const withData = compose(
         mutate(
           UpdatePhaseMutation.buildMutationOptions(
             { done: !phase.done, phaseId: phase.id },
-            { phaseDone: false, taskDone: false },
+            { phaseDone: false, taskUsed: false },
             phase,
           ),
         ),
@@ -202,7 +202,7 @@ const withData = compose(
         mutate(
           SetProjectToPhaseMutation.buildMutationOptions(
             { phaseId: phase.id, projectId },
-            { phaseDone: false, taskDone: false },
+            { phaseDone: false, taskUsed: false },
           ),
         ),
     }),
@@ -214,7 +214,7 @@ const withData = compose(
         mutate(
           MoveTaskToPhaseMutation.buildMutationOptions(
             { taskId, phaseId },
-            { phaseDone: false, taskDone: false },
+            { phaseDone: false, taskUsed: false },
           ),
         ),
     }),

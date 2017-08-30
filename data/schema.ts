@@ -39,7 +39,7 @@ export type CreatePhaseMutationVariables = {
   description?: string | null,
   done?: boolean | null,
   projectId?: string | null,
-  taskDone?: boolean | null,
+  taskUsed?: boolean | null,
 };
 
 export type CreatePhaseMutation = {
@@ -278,7 +278,7 @@ export type RemoveTimeUnitTaskMutation = {
 export type SetProjectToPhaseMutationVariables = {
   phaseId: string,
   projectId: string,
-  taskDone?: boolean | null,
+  taskUsed?: boolean | null,
 };
 
 export type SetProjectToPhaseMutation = {
@@ -321,7 +321,7 @@ export type UpdatePhaseMutationVariables = {
   description?: string | null,
   done?: boolean | null,
   projectId?: string | null,
-  taskDone?: boolean | null,
+  taskUsed?: boolean | null,
 };
 
 export type UpdatePhaseMutation = {
@@ -450,7 +450,7 @@ export type NavBarQuery = {
 
 export type PhasePageQueryVariables = {
   phaseDone?: boolean | null,
-  taskDone?: boolean | null,
+  taskUsed?: boolean | null,
 };
 
 export type PhasePageQuery = {

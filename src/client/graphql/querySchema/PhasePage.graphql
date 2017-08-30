@@ -1,7 +1,7 @@
 #import "./PhaseItem_phase.graphql"
 #import "./PhaseItem_projects.graphql"
 
-query PhasePage($phaseDone: Boolean, $taskDone: Boolean) {
+query PhasePage($phaseDone: Boolean, $taskUsed: Boolean) {
   phases(limit: 100, done: $phaseDone) {
     id
     title
@@ -9,6 +9,7 @@ query PhasePage($phaseDone: Boolean, $taskDone: Boolean) {
   }
   projects(done: false, orderBy: { field: TITLE, direction: ASC }) {
     id
+    title
     ...PhaseItem_projects
   }
   currentUser {
