@@ -3,8 +3,6 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import {
   TimeUnitItem_timeUnitFragment,
   TimeUnitTaskItem_taskFragment,
-  TimeUnitItem_phasesFragment,
-  TimeUnitItem_tasksFragment,
 } from 'schema';
 import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
 import * as UpdateTimeUnitMutation from '../../graphql/mutations/UpdateTimeUnitMutation';
@@ -75,8 +73,6 @@ function RemoveButton({
 interface OwnProps {
   date: DateOnly;
   timeUnit: TimeUnitItem_timeUnitFragment;
-  phases: (TimeUnitItem_phasesFragment | null)[];
-  tasks: (TimeUnitItem_tasksFragment | null)[];
 }
 
 type Props = OwnProps & {
@@ -88,44 +84,67 @@ type Props = OwnProps & {
   isOver: boolean;
 };
 
-export function TimeUnitItem({
-  removeTimeUnit,
-  timeUnit,
-  phases,
-  tasks,
-  removeTask,
-  connectDropTarget,
-  updateDescription,
-  isOver,
-}: Props) {
-  return connectDropTarget(
-    <div>
-      <Wrapper isOver={isOver}>
-        <Header>
-          {timeUnit.position != null &&
-            <span>
-              <TimeLabel position={timeUnit.position} />{' '}
-            </span>}
-          <SmallIconButtonGroup>
-            <RemoveButton onClick={removeTimeUnit} />
-          </SmallIconButtonGroup>
-        </Header>
-        {timeUnit.tasks &&
-          <TaskSummary
-            tasks={timeUnit.tasks}
-            timeUnit={timeUnit}
-            removeTask={removeTask}
-          />}
-        <AddTaskToTimeUnitFormWrapper>
-          <AddTaskToTimeUnitForm
-            timeUnit={timeUnit}
-            phases={phases}
-            tasks={tasks}
-          />
-        </AddTaskToTimeUnitFormWrapper>
-      </Wrapper>
-    </div>,
-  );
+interface State {
+  isEditing: boolean;
+}
+
+export class TimeUnitItem extends React.Component<
+  ChildProps<Props, Response>,
+  State
+> {
+  state = {
+    isEditing: false,
+  };
+
+  private handleOpenForm = () => {
+    this.setState({ isEditing: true });
+  };
+
+  private handleCloseForm = () => {
+    this.setState({ isEditing: false });
+  };
+
+  render() {
+    const {
+      removeTimeUnit,
+      timeUnit,
+      removeTask,
+      connectDropTarget,
+      updateDescription,
+      isOver,
+    } = this.props;
+    const { isEditing } = this.state;
+
+    return connectDropTarget(
+      <div>
+        <Wrapper isOver={isOver}>
+          <Header>
+            {timeUnit.position != null &&
+              <span>
+                <TimeLabel position={timeUnit.position} />{' '}
+              </span>}
+            <SmallIconButtonGroup>
+              <RemoveButton onClick={removeTimeUnit} />
+            </SmallIconButtonGroup>
+          </Header>
+          {timeUnit.tasks &&
+            <TaskSummary
+              tasks={timeUnit.tasks}
+              timeUnit={timeUnit}
+              removeTask={removeTask}
+            />}
+          {isEditing
+            ? <AddTaskToTimeUnitFormWrapper>
+                <AddTaskToTimeUnitForm
+                  timeUnit={timeUnit}
+                  onClose={this.handleCloseForm}
+                />
+              </AddTaskToTimeUnitFormWrapper>
+            : <button onClick={this.handleOpenForm}>Add</button>}
+        </Wrapper>
+      </div>,
+    );
+  }
 }
 
 const taskTarget: DropTargetSpec<Props> = {

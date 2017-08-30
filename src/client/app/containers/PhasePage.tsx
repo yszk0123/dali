@@ -125,7 +125,7 @@ const withData = compose(
       isLogin: data && data.currentUser,
     }),
   }),
-  graphql<Response & PhasePageProps, {}, Props>(CreatePhaseMutation.mutation, {
+  graphql<Response & PhasePageQuery, {}, Props>(CreatePhaseMutation.mutation, {
     props: ({ mutate }) => ({
       createPhase: (title: string) =>
         mutate &&

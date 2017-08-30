@@ -1,6 +1,0 @@
-#import "./AddTaskToTimeUnitForm_phases.graphql"
-
-fragment TimeUnitItem_phases on Phase {
-  id
-  ...AddTaskToTimeUnitForm_phases
-}

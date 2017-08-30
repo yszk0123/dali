@@ -51,14 +51,8 @@ type Props = QueryProps &
     date: DateOnly;
   };
 
-export function TimeUnitPage({
-  date,
-  timeUnits,
-  loading,
-  phases,
-  tasks,
-}: Props) {
-  if (loading || !phases || !tasks) {
+export function TimeUnitPage({ date, timeUnits, loading }: Props) {
+  if (loading) {
     return null;
   }
   const prev = toDaliDate(subDays(date, 1));
@@ -76,12 +70,7 @@ export function TimeUnitPage({
           getSparseTimeUnits(timeUnits).map((timeUnit, position) =>
             <ListItem key={position} highlightLine={!!timeUnit}>
               {timeUnit
-                ? <TimeUnitItem
-                    date={date}
-                    timeUnit={timeUnit}
-                    phases={phases}
-                    tasks={tasks}
-                  />
+                ? <TimeUnitItem date={date} timeUnit={timeUnit} />
                 : <EmptyTimeUnitItem date={date} position={position} />}
             </ListItem>,
           )}

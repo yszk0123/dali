@@ -429,6 +429,21 @@ export type UpdateTimeUnitTaskMutation = {
   } | null,
 };
 
+export type AddTaskToTimeUnitFormQuery = {
+  phases:  Array< {
+    id: string,
+    title: string,
+    tasks:  Array< {
+      id: string,
+      title: string,
+    } | null > | null,
+  } | null > | null,
+  tasks:  Array< {
+    id: string,
+    title: string,
+  } | null > | null,
+};
+
 export type AppQuery = {
   currentUser:  {
     id: string,
@@ -549,27 +564,6 @@ export type TimeUnitPageQuery = {
       } | null,
     } | null > | null,
   } | null > | null,
-  phases:  Array< {
-    id: string,
-    title: string,
-    tasks:  Array< {
-      id: string,
-      title: string,
-    } | null > | null,
-  } | null > | null,
-  tasks:  Array< {
-    id: string,
-    title: string,
-    done: boolean,
-    phase:  {
-      id: string,
-      title: string,
-      project:  {
-        id: string,
-        title: string,
-      } | null,
-    } | null,
-  } | null > | null,
 };
 
 export type ProjectItem_projectFragment = {
@@ -637,21 +631,7 @@ export type TimeUnitItem_timeUnitFragment = {
   } | null > | null,
 };
 
-export type PhaseItem_projectsFragment = {
-  id: string,
-  title: string,
-};
-
 export type AddTaskToTimeUnitForm_phasesFragment = {
-  id: string,
-  title: string,
-  tasks:  Array< {
-    id: string,
-    title: string,
-  } | null > | null,
-};
-
-export type TimeUnitItem_phasesFragment = {
   id: string,
   title: string,
   tasks:  Array< {
@@ -665,17 +645,8 @@ export type AddTaskToTimeUnitForm_tasksFragment = {
   title: string,
 };
 
-export type TimeUnitItem_tasksFragment = {
+export type PhaseItem_projectsFragment = {
   id: string,
   title: string,
-  done: boolean,
-  phase:  {
-    id: string,
-    title: string,
-    project:  {
-      id: string,
-      title: string,
-    } | null,
-  } | null,
 };
 /* tslint:enable */

@@ -200,6 +200,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "used",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "phaseId",
                   "description": "",
                   "type": {
@@ -667,6 +677,16 @@
               "name": "tasks",
               "description": "",
               "args": [
+                {
+                  "name": "used",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
                 {
                   "name": "done",
                   "description": "",
