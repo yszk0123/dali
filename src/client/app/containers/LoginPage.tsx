@@ -8,9 +8,12 @@ import {
   QueryProps,
 } from 'react-apollo';
 import { LoginPageQuery } from 'schema';
+import styled from '../styles/StyledComponents';
 import * as LoginMutation from '../../graphql/mutations/LoginMutation';
 import * as loginPageQuery from '../../graphql/querySchema/LoginPage.graphql';
 import Button from '../components/Button';
+
+const Wrapper = styled.div`font-size: 1.6rem;`;
 
 interface LoginPageProps {
   isLogin: boolean;
@@ -82,26 +85,32 @@ export class LoginPage extends React.Component<
     }
 
     return (
-      <div>
-        <label htmlFor="email">Email: </label>
-        <input
-          name="email"
-          type="email"
-          value={email}
-          onChange={this.handleEmailChange}
-        />
-        <label htmlFor="password">Password: </label>
-        <input
-          name="password"
-          type="password"
-          value={password}
-          onChange={this.handlePasswordChange}
-        />
-        <Button onClick={this.handleLoginButtonClick} disabled={!canLogin}>
-          Login
-        </Button>
-        <Link to="/signup">Signup</Link>
-      </div>
+      <Wrapper>
+        <div>
+          <label htmlFor="email">Email </label>
+          <input
+            name="email"
+            type="email"
+            value={email}
+            onChange={this.handleEmailChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Password </label>
+          <input
+            name="password"
+            type="password"
+            value={password}
+            onChange={this.handlePasswordChange}
+          />
+        </div>
+        <div>
+          <Button onClick={this.handleLoginButtonClick} disabled={!canLogin}>
+            Login
+          </Button>
+          <Link to="/signup">Signup</Link>
+        </div>
+      </Wrapper>
     );
   }
 }

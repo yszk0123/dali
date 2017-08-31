@@ -8,9 +8,12 @@ import {
   QueryProps,
 } from 'react-apollo';
 import { SignupPageQuery } from 'schema';
+import styled from '../styles/StyledComponents';
 import * as SignupMutation from '../../graphql/mutations/SignupMutation';
 import * as signupPageQuery from '../../graphql/querySchema/SignupPage.graphql';
 import Button from '../components/Button';
+
+const Wrapper = styled.div`font-size: 1.6rem;`;
 
 interface SignupPageProps {
   isSignup: boolean;
@@ -93,33 +96,41 @@ export class SignupPage extends React.Component<
     }
 
     return (
-      <div>
-        <label htmlFor="email">Email: </label>
-        <input
-          name="email"
-          type="email"
-          value={email}
-          onChange={this.handleEmailChange}
-        />
-        <label htmlFor="password">Password: </label>
-        <input
-          name="password"
-          type="password"
-          value={password}
-          onChange={this.handlePasswordChange}
-        />
-        <label htmlFor="nickname">Nickname: </label>
-        <input
-          name="nickname"
-          type="text"
-          value={nickname}
-          onChange={this.handleNicknameChange}
-        />
-        <Button onClick={this.handleSignupButtonClick} disabled={!canSignup}>
-          Signup
-        </Button>
-        <Link to="/login">Login</Link>
-      </div>
+      <Wrapper>
+        <div>
+          <label htmlFor="email">Email </label>
+          <input
+            name="email"
+            type="email"
+            value={email}
+            onChange={this.handleEmailChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Password </label>
+          <input
+            name="password"
+            type="password"
+            value={password}
+            onChange={this.handlePasswordChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="nickname">Nickname </label>
+          <input
+            name="nickname"
+            type="text"
+            value={nickname}
+            onChange={this.handleNicknameChange}
+          />
+        </div>
+        <div>
+          <Button onClick={this.handleSignupButtonClick} disabled={!canSignup}>
+            Signup
+          </Button>
+          <Link to="/login">Login</Link>
+        </div>
+      </Wrapper>
     );
   }
 }

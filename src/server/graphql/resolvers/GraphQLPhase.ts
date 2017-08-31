@@ -13,7 +13,19 @@ export default function createResolvers({
     Phase: {
       owner: resolver(Phase.Owner),
       project: resolver(Phase.Project),
-      tasks: resolver(Phase.Tasks),
+      tasks: resolver(Phase.Tasks, {
+        before: (findOptions: any, { used }: any, context: IContext) => {
+          const where = {};
+
+          if (used != null) {
+            Object.assign(where, { timeUnitId: used ? { $not: null } : null });
+          }
+
+          findOptions.where = where;
+
+          return findOptions;
+        },
+      }),
     },
     Query: {
       phases: resolver(Phase, { list: true }),

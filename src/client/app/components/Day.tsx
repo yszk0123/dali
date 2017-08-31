@@ -4,9 +4,9 @@ interface Props {
   date: string;
 }
 
-export default function Day({ date }: Props) {
+export default function Day({ date, ...rest }: Props) {
   return (
-    <div>
+    <div {...rest}>
       {date}
     </div>
   );

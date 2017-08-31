@@ -6,31 +6,40 @@ import * as LogoutMutation from '../../graphql/mutations/LogoutMutation';
 import * as navBarQuery from '../../graphql/querySchema/NavBar.graphql';
 import styled from '../styles/StyledComponents';
 import Button from '../components/Button';
+import Icon from '../components/Icon';
 
 const NavBarWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 0 0.6rem;
+  padding: 0.6rem 1.2rem;
   overflow-x: scroll;
   background: #112ca5;
+  font-size: 1.4rem;
 `;
 
-const NavBarItem = styled.div`
+const NavBarButton = styled(Button)`
   padding: 0.4rem 0.2rem;
 
   a {
-    color: #c8cfef;
+    color: ${({ theme }) => theme.navBar.default.color};
     text-decoration: none;
   }
 `;
 
 const NavBarLink = styled(Link)`
   padding: 0.8rem 0.4rem;
-  color: #c8cfef;
+  color: ${({ theme }) => theme.navBar.default.color};
   text-decoration: none;
 `;
+
+// TODO: Implement
+interface DropdownProps {}
+
+function Dropdown(props: DropdownProps) {
+  return <Icon icon="bars" />;
+}
 
 interface NavBarProps {
   isLogin: boolean;
@@ -42,17 +51,18 @@ type Props = Response & NavBarQuery & QueryProps & NavBarProps;
 export function NavBar({ isLogin, onLogout }: Props) {
   return (
     <NavBarWrapper>
-      <NavBarLink to="/">Dashboard</NavBarLink>
+      <NavBarLink to="/">
+        <Icon icon="home" />
+      </NavBarLink>
       <NavBarLink to="/project">Project</NavBarLink>
       <NavBarLink to="/phase">Phase</NavBarLink>
       <NavBarLink to="/timeUnit">TimeUnit</NavBarLink>
       <NavBarLink to="/report">Report</NavBarLink>
-      <NavBarLink to="/options">Options</NavBarLink>
-      <NavBarLink to="/profile">Profile</NavBarLink>
-      {isLogin &&
-        <NavBarItem>
-          <Button onClick={onLogout}>Logout</Button>
-        </NavBarItem>}
+      {isLogin && <NavBarButton onClick={onLogout}>Logout</NavBarButton>}
+      <Dropdown>
+        <NavBarLink to="/options">Options</NavBarLink>
+        <NavBarLink to="/profile">Profile</NavBarLink>
+      </Dropdown>
     </NavBarWrapper>
   );
 }

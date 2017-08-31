@@ -17,7 +17,20 @@ export default function createResolvers({
       assignee: resolver(Task.Assignee),
     },
     Query: {
-      tasks: resolver(Task, { list: true }),
+      tasks: resolver(Task, {
+        list: true,
+        before: (findOptions: any, { used }: any, context: IContext) => {
+          const where = {};
+
+          if (used != null) {
+            Object.assign(where, { timeUnitId: used ? { $not: null } : null });
+          }
+
+          findOptions.where = where;
+
+          return findOptions;
+        },
+      }),
     },
     Mutation: {
       createTask: async (

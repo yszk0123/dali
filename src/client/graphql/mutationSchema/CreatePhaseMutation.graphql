@@ -5,7 +5,7 @@ mutation CreatePhase(
   $description: String
   $done: Boolean
   $projectId: ID
-  $taskDone: Boolean
+  $taskUsed: Boolean
 ) {
   createPhase(
     title: $title

@@ -37,6 +37,8 @@ export default function createResolvers({
             Object.assign(where, { date });
           }
 
+          // FIXME: findOptions.where = where;
+
           return findOptions;
         },
       }),

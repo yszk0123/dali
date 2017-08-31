@@ -24,6 +24,7 @@ input TaskOrder {
 type Query {
   tasks(
     done: Boolean
+    used: Boolean
     phaseId: ID
     timeUnitId: ID
     limit: ListLimit

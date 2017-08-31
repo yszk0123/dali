@@ -76,7 +76,7 @@ type Phase {
   description: String
   done: Boolean!
   project: Project
-  tasks(done: Boolean): [Task]
+  tasks(used: Boolean, done: Boolean): [Task]
 }
 
 input PhaseOrder {
@@ -97,7 +97,7 @@ type Project {
   owner: User!
   visibility: ProjectVisibility!
   members: [Member]
-  phases: [Phase]
+  phases(projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: PhaseOrder): [Phase]
 }
 
 input ProjectOrder {
@@ -121,7 +121,7 @@ type Query {
   members(limit: ListLimit, offset: ListOffset, order: ListOrder): [Member]
   phases(projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: PhaseOrder): [Phase]
   projects(done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: ProjectOrder): [Project]
-  tasks(done: Boolean, phaseId: ID, timeUnitId: ID, limit: ListLimit, offset: ListOffset, orderBy: TaskOrder): [Task]
+  tasks(done: Boolean, used: Boolean, phaseId: ID, timeUnitId: ID, limit: ListLimit, offset: ListOffset, orderBy: TaskOrder): [Task]
   timeUnits(date: DateOnly, after: DateOnly, before: DateOnly, limit: ListLimit, offset: ListOffset, order: TimeUnitOrder): [TimeUnit]
   currentUser: User
 }

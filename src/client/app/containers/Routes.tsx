@@ -18,7 +18,7 @@ import ReportPage from './ReportPage';
 // import DashboardPage from './DashboardPage';
 const DashboardPage = Dummy;
 
-const MainContent = styled.div`padding: 1.8rem 0;`;
+const MainContent = styled.div`padding: 0.8rem 0;`;
 
 interface RoutesProps {
   isLogin: boolean;
@@ -36,6 +36,11 @@ export function Routes({ isLogin }: Props) {
             exact
             path="/"
             component={DashboardPage}
+            isLogin={isLogin}
+          />
+          <PropsPrivateRoute
+            path="/project/:projectId/phase"
+            component={PhasePage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute

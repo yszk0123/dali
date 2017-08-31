@@ -2,8 +2,8 @@ import * as React from 'react';
 import styled, { Color, ThemedProps } from '../styles/StyledComponents';
 
 interface IProps {
-  cursor?: boolean;
   color?: Color;
+  cursor?: boolean;
   large?: boolean;
   onClick?: React.MouseEventHandler<HTMLElement>;
 }
@@ -20,13 +20,9 @@ I.defaultProps = {
   color: 'default',
 };
 
-interface Props {
+type Props = IProps & {
   icon: string;
-  large?: boolean;
-  cursor?: boolean;
-  color?: Color;
-  onClick?: React.MouseEventHandler<HTMLElement>;
-}
+};
 
 export default function Icon({ cursor, icon, large, color, onClick }: Props) {
   return (

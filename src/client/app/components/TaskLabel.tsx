@@ -23,7 +23,7 @@ const Content = styled.div`
   padding: 0 2.4rem 0 0.8rem;
 `;
 
-const FIcon = styled(Icon)`
+const RightSideIcon = styled(Icon)`
   flex-grow: 1;
 `;
 
@@ -55,7 +55,7 @@ export default function TaskLabel({
           </SubLabel>}
         <TitleInput fullWidth title={label} onChange={onLabelChange} />
       </Content>
-      <FIcon icon="archive" onClick={onRemoveButtonClick} />
+      <RightSideIcon icon="archive" onClick={onRemoveButtonClick} />
     </Label>
   );
 }

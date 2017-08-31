@@ -3,6 +3,11 @@ export default interface ThemeInterface {
     fontSize: string;
     marginBottom: string;
   };
+  navBar: {
+    default: {
+      color: string;
+    };
+  };
   timeLabel: {
     fontSize: string;
   };

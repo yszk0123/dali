@@ -5,7 +5,7 @@ type Phase {
   description: String
   done: Boolean!
   project: Project
-  tasks(done: Boolean): [Task]
+  tasks(used: Boolean, done: Boolean): [Task]
 }
 
 enum PhaseOrderField {

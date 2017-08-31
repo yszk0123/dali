@@ -3,8 +3,6 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import {
   TimeUnitItem_timeUnitFragment,
   TimeUnitTaskItem_taskFragment,
-  TimeUnitItem_phasesFragment,
-  TimeUnitItem_tasksFragment,
 } from 'schema';
 import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
 import * as UpdateTimeUnitMutation from '../../graphql/mutations/UpdateTimeUnitMutation';
@@ -19,6 +17,7 @@ import DoneCheckbox from '../components/DoneCheckbox';
 import InputWithButton from '../components/InputWithButton';
 import IconButtonGroup from '../components/IconButtonGroup';
 import TimeLabel from '../components/TimeLabel';
+import Button from '../components/Button';
 import ItemTypes from '../constants/ItemTypes';
 import Theme from '../constants/Theme';
 import AddTaskToTimeUnitForm from '../containers/AddTaskToTimeUnitForm';
@@ -44,6 +43,7 @@ const Wrapper = styled.div`
   padding: 1.2rem;
   background: ${({ isOver }: ThemedProps<{ isOver: boolean }>) =>
     isOver ? '#c0e3fb' : 'inherit'};
+  font-size: 1.6rem;
 `;
 
 interface TaskSummaryProps {
@@ -64,19 +64,17 @@ function TaskSummary({ tasks, timeUnit, removeTask }: TaskSummaryProps) {
   );
 }
 
-function RemoveButton({
-  onClick,
-}: {
+interface RemoveButtonProps {
   onClick: React.MouseEventHandler<HTMLElement>;
-}) {
+}
+
+function RemoveButton({ onClick }: RemoveButtonProps) {
   return <Icon icon="trash" onClick={onClick} />;
 }
 
 interface OwnProps {
   date: DateOnly;
   timeUnit: TimeUnitItem_timeUnitFragment;
-  phases: (TimeUnitItem_phasesFragment | null)[];
-  tasks: (TimeUnitItem_tasksFragment | null)[];
 }
 
 type Props = OwnProps & {
@@ -88,44 +86,65 @@ type Props = OwnProps & {
   isOver: boolean;
 };
 
-export function TimeUnitItem({
-  removeTimeUnit,
-  timeUnit,
-  phases,
-  tasks,
-  removeTask,
-  connectDropTarget,
-  updateDescription,
-  isOver,
-}: Props) {
-  return connectDropTarget(
-    <div>
-      <Wrapper isOver={isOver}>
-        <Header>
-          {timeUnit.position != null &&
-            <span>
-              <TimeLabel position={timeUnit.position} />{' '}
-            </span>}
-          <SmallIconButtonGroup>
-            <RemoveButton onClick={removeTimeUnit} />
-          </SmallIconButtonGroup>
-        </Header>
-        {timeUnit.tasks &&
-          <TaskSummary
-            tasks={timeUnit.tasks}
-            timeUnit={timeUnit}
-            removeTask={removeTask}
-          />}
-        <AddTaskToTimeUnitFormWrapper>
-          <AddTaskToTimeUnitForm
-            timeUnit={timeUnit}
-            phases={phases}
-            tasks={tasks}
-          />
-        </AddTaskToTimeUnitFormWrapper>
-      </Wrapper>
-    </div>,
-  );
+interface State {
+  isEditing: boolean;
+}
+
+export class TimeUnitItem extends React.Component<
+  ChildProps<Props, Response>,
+  State
+> {
+  state = {
+    isEditing: false,
+  };
+
+  private handleOpenForm = () => {
+    this.setState({ isEditing: true });
+  };
+
+  private handleCloseForm = () => {
+    this.setState({ isEditing: false });
+  };
+
+  render() {
+    const {
+      removeTimeUnit,
+      timeUnit,
+      removeTask,
+      connectDropTarget,
+      updateDescription,
+      isOver,
+    } = this.props;
+    const { isEditing } = this.state;
+
+    return connectDropTarget(
+      <div>
+        <Wrapper isOver={isOver}>
+          <Header>
+            {timeUnit.position != null &&
+              <TimeLabel activated position={timeUnit.position} />}
+            <SmallIconButtonGroup>
+              <RemoveButton onClick={removeTimeUnit} />
+            </SmallIconButtonGroup>
+          </Header>
+          {timeUnit.tasks &&
+            <TaskSummary
+              tasks={timeUnit.tasks}
+              timeUnit={timeUnit}
+              removeTask={removeTask}
+            />}
+          {isEditing
+            ? <AddTaskToTimeUnitFormWrapper>
+                <AddTaskToTimeUnitForm
+                  timeUnit={timeUnit}
+                  onClose={this.handleCloseForm}
+                />
+              </AddTaskToTimeUnitFormWrapper>
+            : <Button onClick={this.handleOpenForm}>Add</Button>}
+        </Wrapper>
+      </div>,
+    );
+  }
 }
 
 const taskTarget: DropTargetSpec<Props> = {
@@ -203,7 +222,7 @@ const withData = compose(
         ),
     }),
   }),
-  DropTarget(ItemTypes.TASK_UNIT, taskTarget, (connect, monitor) => ({
+  DropTarget(ItemTypes.TASK, taskTarget, (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver({ shallow: true }),
   })),

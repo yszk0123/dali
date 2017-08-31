@@ -23,26 +23,13 @@ const List = styled.div`
 interface ListItemProps {
   highlightLine?: boolean;
 }
+
 const ListItem = styled.div`
   border-top: ${({ highlightLine }: ListItemProps) =>
     highlightLine ? '1px solid #ccc' : 'none'};
   margin: 0.4rem 0;
   align-content: center;
 `;
-
-function getSparseTimeUnits(
-  timeUnits: Array<TimeUnitItem_timeUnitFragment | null>,
-): TimeUnitItem_timeUnitFragment[] {
-  const sparseTimeUnits = Array.from(Array(MAX_TIME_UNITS));
-
-  timeUnits.forEach(timeUnit => {
-    if (timeUnit && timeUnit.position != null) {
-      sparseTimeUnits[timeUnit.position] = timeUnit;
-    }
-  });
-
-  return sparseTimeUnits;
-}
 
 type OwnProps = RouteComponentProps<any>;
 
@@ -51,14 +38,8 @@ type Props = QueryProps &
     date: DateOnly;
   };
 
-export function TimeUnitPage({
-  date,
-  timeUnits,
-  loading,
-  phases,
-  tasks,
-}: Props) {
-  if (loading || !phases || !tasks) {
+export function TimeUnitPage({ date, timeUnits, loading }: Props) {
+  if (loading) {
     return null;
   }
   const prev = toDaliDate(subDays(date, 1));
@@ -76,18 +57,27 @@ export function TimeUnitPage({
           getSparseTimeUnits(timeUnits).map((timeUnit, position) =>
             <ListItem key={position} highlightLine={!!timeUnit}>
               {timeUnit
-                ? <TimeUnitItem
-                    date={date}
-                    timeUnit={timeUnit}
-                    phases={phases}
-                    tasks={tasks}
-                  />
+                ? <TimeUnitItem date={date} timeUnit={timeUnit} />
                 : <EmptyTimeUnitItem date={date} position={position} />}
             </ListItem>,
           )}
       </List>
     </div>
   );
+}
+
+function getSparseTimeUnits(
+  timeUnits: Array<TimeUnitItem_timeUnitFragment | null>,
+): TimeUnitItem_timeUnitFragment[] {
+  const sparseTimeUnits = Array.from(Array(MAX_TIME_UNITS));
+
+  timeUnits.forEach(timeUnit => {
+    if (timeUnit && timeUnit.position != null) {
+      sparseTimeUnits[timeUnit.position] = timeUnit;
+    }
+  });
+
+  return sparseTimeUnits;
 }
 
 const withData = compose(

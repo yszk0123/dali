@@ -6,11 +6,11 @@ import { flatten, groupBy, toPairs, repeat } from 'lodash';
 import { ReportPageQuery } from 'schema';
 import * as reportPageQuery from '../../graphql/querySchema/ReportPage.graphql';
 import ClipboardButton from '../components/ClipboardButton';
+import Button from '../components/Button';
 import DateSwitch from '../components/DateSwitch';
 import styled from '../styles/StyledComponents';
 import toDaliDate from '../utils/toDaliDate';
 import getToday from '../utils/getToday';
-import NoUserSelectArea from '../components/NoUserSelectArea';
 import { DateOnly } from '../interfaces';
 
 const DEFAULT_PROJECT_NAME = 'Default';
@@ -51,6 +51,8 @@ export function ReportPage({
         previousLink={`/report/${prev}`}
         nextLink={`/report/${next}`}
       />
+      <ClipboardButton target="#reportAsMarkdown" />
+      <Button onClick={refetch}>Update</Button>
       <ul>
         {result.map((task: any) =>
           <li key={task.id}>
@@ -77,8 +79,6 @@ export function ReportPage({
         )}
         <hr />
         <TextArea id="reportAsMarkdown" readOnly value={markdown} />
-        <ClipboardButton target="#reportAsMarkdown" />
-        <button onClick={refetch}>Update</button>
       </ul>
     </div>
   );

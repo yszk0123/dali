@@ -1,18 +1,8 @@
 #import "./TimeUnitItem_timeUnit.graphql"
-#import "./TimeUnitItem_phases.graphql"
-#import "./TimeUnitItem_tasks.graphql"
 
 query TimeUnitPage($date: DateOnly) {
   timeUnits(date: $date) {
     id
     ...TimeUnitItem_timeUnit
-  }
-  phases(done: false) {
-    id
-    ...TimeUnitItem_phases
-  }
-  tasks(done: false) {
-    id
-    ...TimeUnitItem_tasks
   }
 }

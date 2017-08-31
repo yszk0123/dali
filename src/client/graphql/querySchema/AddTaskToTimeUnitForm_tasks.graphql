@@ -1,4 +1,8 @@
 fragment AddTaskToTimeUnitForm_tasks on Task {
   id
   title
+  phase {
+    id
+    title
+  }
 }

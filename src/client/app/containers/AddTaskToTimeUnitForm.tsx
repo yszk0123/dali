@@ -1,43 +1,35 @@
 import * as React from 'react';
 import { graphql, compose, ChildProps } from 'react-apollo';
 import {
-  TimeUnitItem_timeUnitFragment,
-  AddTaskToTimeUnitForm_phasesFragment,
+  AddTaskToTimeUnitFormQuery,
   AddTaskToTimeUnitForm_tasksFragment,
+  TimeUnitItem_timeUnitFragment,
 } from 'schema';
 import styled from '../styles/StyledComponents';
 import TitleSelect from '../components/TitleSelect';
 import TitleInput from '../components/TitleInput';
+import * as addTaskToTimeUnitFormQuery from '../../graphql/querySchema/AddTaskToTimeUnitForm.graphql';
 import * as CreateTimeUnitTaskMutation from '../../graphql/mutations/CreateTimeUnitTaskMutation';
 import * as AddTaskToTimeUnitMutation from '../../graphql/mutations/AddTaskToTimeUnitMutation';
 
-const List = styled.div`
-  minWidth: 300px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ListItem = styled.div`
-  margin-bottom: 1rem;
-  align-content: center;
-`;
+const Wrapper = styled.div`font-size: 1.6rem;`;
 
 const ErrorMessage = styled.span`
   padding: 0.8rem;
-  font-size: 80%;
+  font-size: 1.4rem;
   color: red;
 `;
 
 interface OwnProps {
   timeUnit: TimeUnitItem_timeUnitFragment;
-  phases: (AddTaskToTimeUnitForm_phasesFragment | null)[];
-  tasks: (AddTaskToTimeUnitForm_tasksFragment | null)[];
+  onClose?(): void;
 }
 
-type Props = OwnProps & {
-  createTask(phaseId: string | null, title: string): void;
-  addTask(task: AddTaskToTimeUnitForm_tasksFragment): void;
-};
+type Props = AddTaskToTimeUnitFormQuery &
+  OwnProps & {
+    createTask(phaseId: string | null, title: string): void;
+    addTask(task: AddTaskToTimeUnitForm_tasksFragment): void;
+  };
 
 interface State {
   selectedPhaseId: string | null;
@@ -61,56 +53,94 @@ export class CreateTimeUnitTaskForm extends React.Component<
     const { selectedPhaseId } = this.state;
 
     this.props.createTask(selectedPhaseId, title);
-    this.reset();
+    this.close();
   };
 
   private handleAdd = (taskId: string) => {
     const { addTask, tasks } = this.props;
-    const task = tasks.find(task => !!task && task.id === taskId);
+    const task = tasks && tasks.find(task => !!task && task.id === taskId);
     if (!task) {
       this.setState({ error: 'task not found' });
       return;
     }
     addTask(task);
-    this.reset();
+    this.close();
   };
 
-  private reset() {
+  private handleBlur = () => {
+    this.close();
+  };
+
+  private close() {
+    const { onClose } = this.props;
+
     this.setState({
       error: null,
     });
+
+    onClose && onClose();
   }
 
   render() {
     const { createTask, phases, tasks } = this.props;
     const { selectedPhaseId, error } = this.state;
 
+    const mappedPhases = (phases || []).map(
+      item =>
+        item && {
+          id: item.id,
+          title: `${(item.project && item.project.title) ||
+            ''} > ${item.title}`,
+        },
+    );
+    const mappedTasks = (tasks || []).map(
+      item =>
+        item && {
+          id: item.id,
+          title: `${(item.phase && item.phase.title) || ''} > ${item.title}`,
+        },
+    );
+
     return (
-      <div>
+      <Wrapper>
         <TitleSelect
           defaultLabel="Phase"
           selectedId={selectedPhaseId}
           onChange={this.handlePhaseSelect}
-          items={phases}
+          items={mappedPhases}
         />
         <TitleSelect
           defaultLabel="Task"
           selectedId=""
           onCreate={this.handleCreate}
           onChange={this.handleAdd}
-          items={tasks}
+          onBlur={this.handleBlur}
+          items={mappedTasks}
           resetAfterSelect
         />
         {error &&
           <ErrorMessage>
             {error}
           </ErrorMessage>}
-      </div>
+      </Wrapper>
     );
   }
 }
 
 const withData = compose(
+  graphql<
+    Response & AddTaskToTimeUnitFormQuery,
+    OwnProps,
+    Props
+  >(addTaskToTimeUnitFormQuery, {
+    options: {
+      variables: { phaseDone: false, taskUsed: false },
+      fetchPolicy: 'network-only',
+    },
+    props: ({ data }) => ({
+      ...data,
+    }),
+  }),
   graphql<Response, OwnProps, Props>(AddTaskToTimeUnitMutation.mutation, {
     props: ({ mutate, ownProps: { timeUnit } }) => ({
       addTask: (task: AddTaskToTimeUnitForm_tasksFragment) =>
