@@ -6,7 +6,7 @@ import {
   ConnectDragSource,
   ConnectDragPreview,
 } from 'react-dnd';
-import { TaskItem_taskFragment } from 'schema';
+import { PhaseTaskItem_taskFragment } from 'schema';
 import * as UpdatePhaseTaskMutation from '../../graphql/mutations/UpdatePhaseTaskMutation';
 import styled, { ThemedProps } from '../styles/StyledComponents';
 import TaskLabel from '../components/TaskLabel';
@@ -27,9 +27,9 @@ const Wrapper = styled.div`
 `;
 
 interface OwnProps {
-  task: TaskItem_taskFragment;
+  task: PhaseTaskItem_taskFragment;
   phaseId?: string;
-  remove(task: TaskItem_taskFragment): void;
+  remove(task: PhaseTaskItem_taskFragment): void;
   timeUnitId?: string;
 }
 

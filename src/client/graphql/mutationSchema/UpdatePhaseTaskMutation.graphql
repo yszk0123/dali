@@ -1,4 +1,4 @@
-#import "../querySchema/TaskItem.graphql"
+#import "../querySchema/PhaseTaskItem.graphql"
 
 mutation UpdatePhaseTask(
   $taskId: ID!
@@ -18,6 +18,6 @@ mutation UpdatePhaseTask(
   ) {
     id
     title
-    ...TaskItem_task
+    ...PhaseTaskItem_task
   }
 }

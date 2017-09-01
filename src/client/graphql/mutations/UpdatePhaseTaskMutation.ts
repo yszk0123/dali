@@ -3,7 +3,7 @@ import { MutationOptions } from 'apollo-client';
 import {
   UpdatePhaseTaskMutationVariables as MutationVariables,
   UpdatePhaseTaskMutation as Mutation,
-  TaskItem_taskFragment,
+  PhaseTaskItem_taskFragment,
 } from 'schema';
 import * as mutation from '../mutationSchema/UpdatePhaseTaskMutation.graphql';
 
@@ -14,7 +14,7 @@ export { mutation, MutationVariables, Mutation };
 export function buildMutationOptions(
   mutationVariables: MutationVariables,
   variables: QueryVariables = {},
-  task: TaskItem_taskFragment,
+  task: PhaseTaskItem_taskFragment,
 ): MutationOptions<Mutation> {
   const { title, description, done, phaseId, timeUnitId } = mutationVariables;
 

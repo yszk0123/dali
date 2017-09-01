@@ -4,7 +4,7 @@ import {
   MoveTaskToPhaseMutationVariables as MutationVariables,
   MoveTaskToPhaseMutation as Mutation,
   PhaseItem_phaseFragment as Fragment,
-  TaskItem_taskFragment,
+  PhaseTaskItem_taskFragment,
 } from 'schema';
 import * as PhaseItem_phase from '../querySchema/PhaseItem_phase.graphql';
 import * as mutation from '../mutationSchema/MoveTaskToPhaseMutation.graphql';

@@ -3,7 +3,10 @@
  */
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import { TimeUnitItem_timeUnitFragment, TaskItem_taskFragment } from 'schema';
+import {
+  TimeUnitItem_timeUnitFragment,
+  PhaseTaskItem_taskFragment,
+} from 'schema';
 import styled from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TimeLabel from '../components/TimeLabel';

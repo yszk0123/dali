@@ -301,6 +301,32 @@ export type SetProjectToPhaseMutation = {
   } | null,
 };
 
+export type SetTimeUnitToTaskMutationVariables = {
+  timeUnitId: string,
+  taskId: string,
+  taskUsed?: boolean | null,
+};
+
+export type SetTimeUnitToTaskMutation = {
+  setProjectToPhase:  {
+    id: string,
+    title: string,
+    done: boolean,
+    project:  {
+      id: string,
+      title: string,
+    } | null,
+    tasks:  Array< {
+      id: string,
+      title: string,
+      done: boolean,
+      phase:  {
+        id: string,
+      } | null,
+    } | null > | null,
+  } | null,
+};
+
 export type SignupMutationVariables = {
   email: string,
   password: string,
@@ -594,7 +620,7 @@ export type TimeUnitTaskItem_taskFragment = {
   } | null,
 };
 
-export type TaskItem_taskFragment = {
+export type PhaseTaskItem_taskFragment = {
   id: string,
   title: string,
   done: boolean,

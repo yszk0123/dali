@@ -1,0 +1,8 @@
+#import "../querySchema/PhaseTaskItem.graphql"
+
+mutation SetTimeUnitToTask($timeUnitId: ID!, $taskId: ID!, $taskUsed: Boolean) {
+  setProjectToPhase(phaseId: $phaseId, projectId: $projectId) {
+    id
+    ...PhaseItem_phase
+  }
+}

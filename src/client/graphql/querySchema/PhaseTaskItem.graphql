@@ -1,4 +1,4 @@
-fragment TaskItem_task on Task {
+fragment PhaseTaskItem_task on Task {
   id
   title
   done

@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import {
   PhasePageQuery,
   PhaseItem_phaseFragment,
-  TaskItem_taskFragment,
+  PhaseTaskItem_taskFragment,
 } from 'schema';
 import * as phasePageQuery from '../../graphql/querySchema/PhasePage.graphql';
 import * as CreatePhaseMutation from '../../graphql/mutations/CreatePhaseMutation';
