@@ -5,9 +5,5 @@ interface Props {
 }
 
 export default function Day({ date, ...rest }: Props) {
-  return (
-    <div {...rest}>
-      {date}
-    </div>
-  );
+  return <div {...rest}>{date}</div>;
 }

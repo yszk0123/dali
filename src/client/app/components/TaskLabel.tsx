@@ -23,9 +23,7 @@ const Content = styled.div`
   padding: 0 2.4rem 0 0.8rem;
 `;
 
-const RightSideIcon = styled(Icon)`
-  flex-grow: 1;
-`;
+const RightSideIcon = styled(Icon)`flex-grow: 1;`;
 
 interface Props {
   label: string;
@@ -49,10 +47,7 @@ export default function TaskLabel({
     <Label {...rest}>
       <DoneCheckbox done={done} onChange={onCheckboxChange} />
       <Content>
-        {subLabel &&
-          <SubLabel>
-            {subLabel}
-          </SubLabel>}
+        {subLabel && <SubLabel>{subLabel}</SubLabel>}
         <TitleInput fullWidth title={label} onChange={onLabelChange} />
       </Content>
       <RightSideIcon icon="archive" onClick={onRemoveButtonClick} />

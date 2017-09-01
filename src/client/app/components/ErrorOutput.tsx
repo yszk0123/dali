@@ -14,9 +14,5 @@ interface Props {
 }
 
 export default function ErrorOutput({ error }: Props) {
-  return (
-    <Wrapper>
-      {error.message}
-    </Wrapper>
-  );
+  return <Wrapper>{error.message}</Wrapper>;
 }

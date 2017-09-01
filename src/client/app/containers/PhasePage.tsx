@@ -105,10 +105,11 @@ export class PhasePage extends React.Component<
         {phases &&
           phases.map(
             phase =>
-              phase &&
-              <PhaseItemWrapper key={phase.id}>
-                <PhaseItem phase={phase} projects={projects} />
-              </PhaseItemWrapper>,
+              phase && (
+                <PhaseItemWrapper key={phase.id}>
+                  <PhaseItem phase={phase} projects={projects} />
+                </PhaseItemWrapper>
+              ),
           )}
         <input type="text" value={title} onChange={this.handleTitleChange} />
         <Button onClick={this.handleCreatePhaseClick}>Add</Button>

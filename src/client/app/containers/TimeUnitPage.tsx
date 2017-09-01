@@ -54,13 +54,15 @@ export function TimeUnitPage({ date, timeUnits, loading }: Props) {
       />
       <List>
         {timeUnits &&
-          getSparseTimeUnits(timeUnits).map((timeUnit, position) =>
+          getSparseTimeUnits(timeUnits).map((timeUnit, position) => (
             <ListItem key={position} highlightLine={!!timeUnit}>
-              {timeUnit
-                ? <TimeUnitItem date={date} timeUnit={timeUnit} />
-                : <EmptyTimeUnitItem date={date} position={position} />}
-            </ListItem>,
-          )}
+              {timeUnit ? (
+                <TimeUnitItem date={date} timeUnit={timeUnit} />
+              ) : (
+                <EmptyTimeUnitItem date={date} position={position} />
+              )}
+            </ListItem>
+          ))}
       </List>
     </div>
   );

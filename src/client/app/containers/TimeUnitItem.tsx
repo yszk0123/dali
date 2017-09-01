@@ -57,8 +57,9 @@ function TaskSummary({ tasks, timeUnit, removeTask }: TaskSummaryProps) {
     <div>
       {tasks.map(
         task =>
-          task &&
-          <TimeUnitTaskItem key={task.id} task={task} remove={removeTask} />,
+          task && (
+            <TimeUnitTaskItem key={task.id} task={task} remove={removeTask} />
+          ),
       )}
     </div>
   );
@@ -121,26 +122,30 @@ export class TimeUnitItem extends React.Component<
       <div>
         <Wrapper isOver={isOver}>
           <Header>
-            {timeUnit.position != null &&
-              <TimeLabel activated position={timeUnit.position} />}
+            {timeUnit.position != null && (
+              <TimeLabel activated position={timeUnit.position} />
+            )}
             <SmallIconButtonGroup>
               <RemoveButton onClick={removeTimeUnit} />
             </SmallIconButtonGroup>
           </Header>
-          {timeUnit.tasks &&
+          {timeUnit.tasks && (
             <TaskSummary
               tasks={timeUnit.tasks}
               timeUnit={timeUnit}
               removeTask={removeTask}
-            />}
-          {isEditing
-            ? <AddTaskToTimeUnitFormWrapper>
-                <AddTaskToTimeUnitForm
-                  timeUnit={timeUnit}
-                  onClose={this.handleCloseForm}
-                />
-              </AddTaskToTimeUnitFormWrapper>
-            : <Button onClick={this.handleOpenForm}>Add</Button>}
+            />
+          )}
+          {isEditing ? (
+            <AddTaskToTimeUnitFormWrapper>
+              <AddTaskToTimeUnitForm
+                timeUnit={timeUnit}
+                onClose={this.handleCloseForm}
+              />
+            </AddTaskToTimeUnitFormWrapper>
+          ) : (
+            <Button onClick={this.handleOpenForm}>Add</Button>
+          )}
         </Wrapper>
       </div>,
     );

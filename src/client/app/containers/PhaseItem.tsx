@@ -39,9 +39,7 @@ const HeaderMain = styled.div`flex-grow: 1;`;
 
 const PhaseTaskItemWrapper = styled.div`margin-left: 1rem;`;
 
-const TrashIcon = styled(Icon)`
-  float: right;
-`;
+const TrashIcon = styled(Icon)`float: right;`;
 
 const TitleInputWrapper = styled.div`margin-top: 0.8rem;`;
 
@@ -99,15 +97,16 @@ export function PhaseItem({
         {phase.tasks &&
           phase.tasks.map(
             task =>
-              task &&
-              <PhaseTaskItemWrapper>
-                <PhaseTaskItem
-                  key={task.id}
-                  task={task}
-                  phaseId={phase.id}
-                  remove={removeTask}
-                />
-              </PhaseTaskItemWrapper>,
+              task && (
+                <PhaseTaskItemWrapper>
+                  <PhaseTaskItem
+                    key={task.id}
+                    task={task}
+                    phaseId={phase.id}
+                    remove={removeTask}
+                  />
+                </PhaseTaskItemWrapper>
+              ),
           )}
         <TitleInputWrapper>
           <TitleInput

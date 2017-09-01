@@ -118,10 +118,7 @@ export class CreateTimeUnitTaskForm extends React.Component<
           items={mappedTasks}
           resetAfterSelect
         />
-        {error &&
-          <ErrorMessage>
-            {error}
-          </ErrorMessage>}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
       </Wrapper>
     );
   }
