@@ -20,7 +20,7 @@ const StyledTimeLabel = styled(TimeLabel)`margin-left: 0.8rem;`;
 
 interface OwnProps {
   date: DateOnly;
-  position: number;
+  position: number | null;
 }
 
 type Props = OwnProps & {
@@ -31,7 +31,7 @@ export function EmptyTimeUnitItem({ create, position }: Props) {
   return (
     <Wrapper onClick={create}>
       <Icon icon="plus" />
-      <StyledTimeLabel position={position} />
+      {position == null ? 'Whole day' : <StyledTimeLabel position={position} />}
     </Wrapper>
   );
 }

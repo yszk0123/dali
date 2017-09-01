@@ -45,6 +45,28 @@ export function TimeUnitPage({ date, timeUnits, loading }: Props) {
   const prev = toDaliDate(subDays(date, 1));
   const next = toDaliDate(addDays(date, 1));
 
+  let wholeDay, times;
+
+  if (timeUnits) {
+    const { wholeDayTimeUnit, sortedTimeUnits } = parseTimeUnits(timeUnits);
+
+    wholeDay = wholeDayTimeUnit ? (
+      <TimeUnitItem date={date} timeUnit={wholeDayTimeUnit} />
+    ) : (
+      <EmptyTimeUnitItem date={date} position={null} />
+    );
+
+    times = sortedTimeUnits.map((timeUnit, position) => (
+      <ListItem key={position} highlightLine={!!timeUnit}>
+        {timeUnit ? (
+          <TimeUnitItem date={date} timeUnit={timeUnit} />
+        ) : (
+          <EmptyTimeUnitItem date={date} position={position} />
+        )}
+      </ListItem>
+    ));
+  }
+
   return (
     <div>
       <DateSwitch
@@ -53,33 +75,36 @@ export function TimeUnitPage({ date, timeUnits, loading }: Props) {
         nextLink={`/timeUnit/${next}`}
       />
       <List>
-        {timeUnits &&
-          getSparseTimeUnits(timeUnits).map((timeUnit, position) => (
-            <ListItem key={position} highlightLine={!!timeUnit}>
-              {timeUnit ? (
-                <TimeUnitItem date={date} timeUnit={timeUnit} />
-              ) : (
-                <EmptyTimeUnitItem date={date} position={position} />
-              )}
-            </ListItem>
-          ))}
+        {wholeDay}
+        {times}
       </List>
     </div>
   );
 }
 
-function getSparseTimeUnits(
+interface ParsedTimeUnits {
+  wholeDayTimeUnit: TimeUnitItem_timeUnitFragment | null;
+  sortedTimeUnits: TimeUnitItem_timeUnitFragment[];
+}
+
+function parseTimeUnits(
   timeUnits: Array<TimeUnitItem_timeUnitFragment | null>,
-): TimeUnitItem_timeUnitFragment[] {
-  const sparseTimeUnits = Array.from(Array(MAX_TIME_UNITS));
+): ParsedTimeUnits {
+  const sortedTimeUnits = Array.from(Array(MAX_TIME_UNITS));
+  let wholeDayTimeUnit = null;
 
   timeUnits.forEach(timeUnit => {
-    if (timeUnit && timeUnit.position != null) {
-      sparseTimeUnits[timeUnit.position] = timeUnit;
+    if (!timeUnit) {
+      return;
+    }
+    if (timeUnit.position != null) {
+      sortedTimeUnits[timeUnit.position] = timeUnit;
+    } else {
+      wholeDayTimeUnit = timeUnit;
     }
   });
 
-  return sparseTimeUnits;
+  return { wholeDayTimeUnit, sortedTimeUnits };
 }
 
 const withData = compose(
