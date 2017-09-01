@@ -97,16 +97,14 @@ export function PhaseItem({
         {phase.tasks &&
           phase.tasks.map(
             task =>
-              task && (
-                <PhaseTaskItemWrapper>
-                  <PhaseTaskItem
-                    key={task.id}
-                    task={task}
-                    phaseId={phase.id}
-                    remove={removeTask}
-                  />
-                </PhaseTaskItemWrapper>
-              ),
+              task &&
+              <PhaseTaskItemWrapper key={task.id}>
+                <PhaseTaskItem
+                  task={task}
+                  phaseId={phase.id}
+                  remove={removeTask}
+                />
+              </PhaseTaskItemWrapper>,
           )}
         <TitleInputWrapper>
           <TitleInput
