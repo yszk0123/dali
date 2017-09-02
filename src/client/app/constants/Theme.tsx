@@ -10,6 +10,11 @@ const Theme: ThemeInterface = {
       color: '#c8cfef',
     },
   },
+  dropDown: {
+    default: {
+      color: '#111',
+    },
+  },
   timeLabel: {
     fontSize: '1.2rem',
   },

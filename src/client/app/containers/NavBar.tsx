@@ -7,6 +7,7 @@ import * as navBarQuery from '../../graphql/querySchema/NavBar.graphql';
 import styled from '../styles/StyledComponents';
 import Button from '../components/Button';
 import Icon from '../components/Icon';
+import DropDownMenu from '../components/DropDownMenu';
 
 const NavBarWrapper = styled.div`
   display: flex;
@@ -30,16 +31,9 @@ const NavBarButton = styled(Button)`
 
 const NavBarLink = styled(Link)`
   padding: 0.8rem 0.4rem;
-  color: ${({ theme }) => theme.navBar.default.color};
+  color: ${({ theme }) => theme.dropDown.default.color};
   text-decoration: none;
 `;
-
-// TODO: Implement
-interface DropdownProps {}
-
-function Dropdown(props: DropdownProps) {
-  return <Icon icon="bars" />;
-}
 
 interface NavBarProps {
   isLogin: boolean;
@@ -48,31 +42,53 @@ interface NavBarProps {
 
 type Props = Response & NavBarQuery & QueryProps & NavBarProps;
 
-export function NavBar({ isLogin, onLogout }: Props) {
-  return (
-    <NavBarWrapper>
-      <NavBarLink to="/">
-        <Icon icon="home" />
-      </NavBarLink>
-      <NavBarLink to="/project">
-        <Icon icon="tags" />
-      </NavBarLink>
-      <NavBarLink to="/phase">
-        <Icon icon="tasks" />
-      </NavBarLink>
-      <NavBarLink to="/timeUnit">
-        <Icon icon="calendar" />
-      </NavBarLink>
-      <NavBarLink to="/report">
-        <Icon icon="file-text" />
-      </NavBarLink>
-      {isLogin && <NavBarButton onClick={onLogout}>Logout</NavBarButton>}
-      <Dropdown>
-        <NavBarLink to="/options">Options</NavBarLink>
-        <NavBarLink to="/profile">Profile</NavBarLink>
-      </Dropdown>
-    </NavBarWrapper>
-  );
+interface State {
+  isOpen: boolean;
+}
+
+export class NavBar extends React.Component<Props, State> {
+  state = { isOpen: false };
+
+  private handleToggle = () => {
+    const { isOpen } = this.state;
+
+    this.setState({ isOpen: !isOpen });
+  };
+
+  private handleClose = () => {
+    this.setState({ isOpen: false });
+  };
+
+  render() {
+    const { isLogin, onLogout } = this.props;
+    const { isOpen } = this.state;
+
+    return (
+      <NavBarWrapper>
+        <NavBarLink to="/project">
+          <Icon icon="tags" />
+        </NavBarLink>
+        <NavBarLink to="/phase">
+          <Icon icon="tasks" />
+        </NavBarLink>
+        <NavBarLink to="/timeUnit">
+          <Icon icon="calendar" />
+        </NavBarLink>
+        <NavBarLink to="/report">
+          <Icon icon="file-text" />
+        </NavBarLink>
+        <DropDownMenu
+          isOpen={isOpen}
+          toggleElement={<Icon icon="bars" onClick={this.handleToggle} />}
+          onRequestClose={this.handleClose}
+        >
+          <NavBarLink to="/options">Options</NavBarLink>
+          <NavBarLink to="/profile">Profile</NavBarLink>
+          {isLogin && <NavBarButton onClick={onLogout}>Logout</NavBarButton>}
+        </DropDownMenu>
+      </NavBarWrapper>
+    );
+  }
 }
 
 const withData = compose(

@@ -6,7 +6,6 @@ import styled from '../styles/StyledComponents';
 import * as routesQuery from '../../graphql/querySchema/Routes.graphql';
 import PropsRoute from '../../shared/components/PropsRoute';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
-import Dummy from '../Dummy';
 import LoginPage from './LoginPage';
 import NavBar from './NavBar';
 import ProjectPage from './ProjectPage';
@@ -15,8 +14,6 @@ import PhasePage from './PhasePage';
 import ProfilePage from './ProfilePage';
 import TimeUnitPage from './TimeUnitPage';
 import ReportPage from './ReportPage';
-// import DashboardPage from './DashboardPage';
-const DashboardPage = Dummy;
 
 const MainContent = styled.div`padding: 0.8rem 0;`;
 
@@ -35,7 +32,7 @@ export function Routes({ isLogin }: Props) {
           <PropsPrivateRoute
             exact
             path="/"
-            component={DashboardPage}
+            component={TimeUnitPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
