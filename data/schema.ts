@@ -468,6 +468,10 @@ export type UpdateTaskMutation = {
   updateTask:  {
     id: string,
     title: string,
+    phase:  {
+      id: string,
+      title: string,
+    } | null,
   } | null,
 };
 
@@ -672,6 +676,10 @@ export type TaskPageQuery = {
   task:  {
     id: string,
     title: string,
+    phase:  {
+      id: string,
+      title: string,
+    } | null,
   } | null,
   phases:  Array< {
     id: string,
@@ -788,6 +796,10 @@ export type TimeUnitItem_timeUnitFragment = {
 export type TaskPage_taskFragment = {
   id: string,
   title: string,
+  phase:  {
+    id: string,
+    title: string,
+  } | null,
 };
 
 export type AddTaskToTimeUnitForm_phasesFragment = {

@@ -6,6 +6,12 @@ import * as TASK_PAGE_QUERY from '../../graphql/querySchema/TaskPage.graphql';
 import * as UpdateTaskMutation from '../../graphql/mutations/UpdateTaskMutation';
 import styled from '../styles/StyledComponents';
 import TitleInput from '../components/TitleInput';
+import TitleSelect from '../components/TitleSelect';
+import Icon from '../components/Icon';
+import List from '../components/List';
+import ListItem from '../components/ListItem';
+
+const Wrapper = styled.div`font-size: 1.6rem;`;
 
 type Data = Response & TaskPageQuery;
 
@@ -18,6 +24,7 @@ type Props = QueryProps &
   TaskPageQuery & {
     isLogin: boolean;
     updateTitle(title: string): void;
+    setPhase(phaseId: string): void;
   };
 
 interface State {
@@ -29,16 +36,40 @@ export class TaskPage extends React.Component<
   State
 > {
   render() {
-    const { isLogin, task, updateTitle } = this.props;
+    const { isLogin, task, phases, updateTitle, setPhase } = this.props;
 
-    if (!isLogin || !task) {
+    if (!isLogin || !task || !phases) {
       return <span>Loading...</span>;
     }
 
+    const mappedPhases = (phases || []).map(
+      phase =>
+        phase && {
+          id: phase.id,
+          title: `${(phase.project && phase.project.title) ||
+            ''} > ${phase.title}`,
+        },
+    );
+
+    const phaseTitle = (task.phase && task.phase.title) || '';
+
     return (
-      <div>
-        <TitleInput fullWidth title={task.title} onChange={updateTitle} />
-      </div>
+      <Wrapper>
+        <List>
+          <ListItem leftIcon={<Icon icon="tasks" />}>
+            <TitleSelect
+              defaultLabel="Phase"
+              fullWidth
+              selectedId={(task.phase && task.phase.id) || null}
+              onChange={setPhase}
+              items={mappedPhases}
+            />
+          </ListItem>
+          <ListItem leftIcon={<Icon icon="list" />}>
+            <TitleInput fullWidth title={task.title} onChange={updateTitle} />
+          </ListItem>
+        </List>
+      </Wrapper>
     );
   }
 }
@@ -68,6 +99,16 @@ const withData = compose(
         mutate(
           UpdateTaskMutation.buildMutationOptions(
             { taskId: task.id, title },
+            queryVariables,
+            task,
+          ),
+        ),
+      setPhase: (phaseId: string) =>
+        task &&
+        mutate &&
+        mutate(
+          UpdateTaskMutation.buildMutationOptions(
+            { taskId: task.id, phaseId },
             queryVariables,
             task,
           ),

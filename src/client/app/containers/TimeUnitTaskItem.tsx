@@ -6,6 +6,7 @@ import {
   ConnectDragSource,
   ConnectDragPreview,
 } from 'react-dnd';
+import { Link } from 'react-router-dom';
 import { TimeUnitTaskItem_taskFragment } from 'schema';
 import * as UpdateTimeUnitTaskMutation from '../../graphql/mutations/UpdateTimeUnitTaskMutation';
 import styled, { ThemedProps } from '../styles/StyledComponents';
@@ -70,6 +71,9 @@ export function TimeUnitTaskItem({
           onLabelChange={updateTitle}
           onRemoveButtonClick={() => remove(task)}
         />
+        <Link to={`/tasks/${task.id}`}>
+          <Icon icon="edit" />
+        </Link>
       </Wrapper>
     </div>,
   );

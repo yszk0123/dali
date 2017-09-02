@@ -1,4 +1,8 @@
 fragment TaskPage_task on Task {
   id
   title
+  phase {
+    id
+    title
+  }
 }
