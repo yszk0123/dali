@@ -95,13 +95,20 @@ export class CreateTimeUnitTaskForm extends React.Component<
             ''} > ${item.title}`,
         },
     );
-    const mappedTasks = (tasks || []).map(
-      item =>
-        item && {
-          id: item.id,
-          title: `${(item.phase && item.phase.title) || ''} > ${item.title}`,
-        },
-    );
+    const mappedTasks =
+      selectedPhaseId != null
+        ? (tasks || [])
+            .filter(
+              item => item && item.phase && item.phase.id === selectedPhaseId,
+            )
+        : (tasks || []).map(
+            item =>
+              item && {
+                id: item.id,
+                title: `${(item.phase && item.phase.title) ||
+                  ''} > ${item.title}`,
+              },
+          );
 
     return (
       <Wrapper>
