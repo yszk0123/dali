@@ -1,11 +1,11 @@
 import { defaults } from 'lodash';
 import { MutationOptions } from 'apollo-client';
 import {
-  UpdateProjectMutationVariables as MutationVariables,
-  UpdateProjectMutation as Mutation,
-  ProjectItem_projectFragment,
+  UpdateGroupMutationVariables as MutationVariables,
+  UpdateGroupMutation as Mutation,
+  GroupItem_groupFragment,
 } from 'schema';
-import * as mutation from '../mutationSchema/UpdateProjectMutation.graphql';
+import * as mutation from '../mutationSchema/UpdateGroupMutation.graphql';
 
 type QueryVariables = {};
 
@@ -14,7 +14,7 @@ export { mutation, MutationVariables, Mutation };
 export function buildMutationOptions(
   mutationVariables: MutationVariables,
   variables: QueryVariables = {},
-  project: ProjectItem_projectFragment,
+  group: GroupItem_groupFragment,
 ): MutationOptions<Mutation> {
   const { title, groupId } = mutationVariables;
 
@@ -23,9 +23,9 @@ export function buildMutationOptions(
     variables: mutationVariables,
     optimisticResponse: {
       __typename: 'Mutation',
-      updateProject: {
-        __typename: 'Project',
-        ...defaults({ title, groupId }, project),
+      updateGroup: {
+        __typename: 'Group',
+        ...defaults({ title, groupId }, group),
       },
     },
   };

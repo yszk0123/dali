@@ -22,7 +22,7 @@ export default function createResolvers({
           { orderBy, before, after, date }: any,
           context: IContext,
         ) => {
-          const where = {};
+          const where = { ...findOptions.where };
 
           if (orderBy) {
             findOptions.order = [[camelCase(orderBy.field), orderBy.direction]];

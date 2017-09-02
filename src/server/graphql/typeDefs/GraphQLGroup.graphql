@@ -1,0 +1,43 @@
+type Group {
+  id: ID!
+  title: String!
+  owner: User!
+  projects(
+    projectId: ID
+    done: Boolean
+    limit: ListLimit
+    offset: ListOffset
+    orderBy: PhaseOrder
+  ): [Project]
+}
+
+type RemoveGroupPayload {
+  removedGroupId: ID!
+}
+
+enum GroupOrderField {
+  TITLE
+  CREATED_AT
+  UPDATED_AT
+}
+
+input GroupOrder {
+  field: GroupOrderField!
+  direction: OrderDirection!
+}
+
+type Query {
+  groups(
+    id: ID
+    limit: ListLimit
+    offset: ListOffset
+    orderBy: ProjectOrder
+  ): [Group]
+}
+
+type Mutation {
+  createGroup(title: String!, done: Boolean, groupId: ID): Group
+  updateGroup(groupId: ID!, title: String!, done: Boolean, groupId: ID): Group
+  removeGroup(groupId: ID!): RemoveGroupPayload
+  addProjectToGroup(projectId: ID!, groupId: ID!): Group
+}

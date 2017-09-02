@@ -1,3 +1,4 @@
+import { Sequelize } from 'sequelize';
 import { camelCase, omitBy, isUndefined } from 'lodash';
 import { ISource, IResolvers, IModels, IContext } from '../interfaces';
 import resolver from '../utils/resolver';
@@ -15,7 +16,7 @@ export default function createResolvers({
       project: resolver(Phase.Project),
       tasks: resolver(Phase.Tasks, {
         before: (findOptions: any, { used }: any, context: IContext) => {
-          const where = {};
+          const where = { ...findOptions.where };
 
           if (used != null) {
             Object.assign(where, { timeUnitId: used ? { $not: null } : null });
@@ -28,7 +29,20 @@ export default function createResolvers({
       }),
     },
     Query: {
-      phases: resolver(Phase, { list: true }),
+      phases: resolver(Phase, {
+        list: true,
+        before: (findOptions: any, { groupId }: any, context: IContext) => {
+          const where = { ...findOptions.where };
+
+          if (groupId != null) {
+            findOptions.include = [{ model: Project, where: { groupId } }];
+          }
+
+          findOptions.where = where;
+
+          return findOptions;
+        },
+      }),
     },
     Mutation: {
       createPhase: async (

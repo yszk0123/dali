@@ -1,0 +1,9 @@
+#import "../querySchema/GroupItem_group.graphql"
+
+mutation CreateGroup($title: String!) {
+  createGroup(title: $title) {
+    id
+    title
+    ...GroupItem_group
+  }
+}

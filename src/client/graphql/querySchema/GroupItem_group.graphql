@@ -1,0 +1,4 @@
+fragment GroupItem_group on Group {
+  id
+  title
+}

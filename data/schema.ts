@@ -10,6 +10,10 @@ export type AddPhaseToProjectMutation = {
   addPhaseToProject:  {
     id: string,
     title: string,
+    group:  {
+      id: string,
+      title: string,
+    } | null,
   } | null,
 };
 
@@ -31,6 +35,17 @@ export type AddTaskToTimeUnitMutation = {
         title: string,
       } | null,
     } | null,
+  } | null,
+};
+
+export type CreateGroupMutationVariables = {
+  title: string,
+};
+
+export type CreateGroupMutation = {
+  createGroup:  {
+    id: string,
+    title: string,
   } | null,
 };
 
@@ -90,6 +105,10 @@ export type CreateProjectMutation = {
   createProject:  {
     id: string,
     title: string,
+    group:  {
+      id: string,
+      title: string,
+    } | null,
   } | null,
 };
 
@@ -214,6 +233,16 @@ export type MoveTaskToTimeUnitMutation = {
   } | null,
 };
 
+export type RemoveGroupMutationVariables = {
+  groupId: string,
+};
+
+export type RemoveGroupMutation = {
+  removeGroup:  {
+    removedGroupId: string,
+  } | null,
+};
+
 export type RemovePhaseMutationVariables = {
   phaseId: string,
 };
@@ -275,6 +304,22 @@ export type RemoveTimeUnitTaskMutation = {
   } | null,
 };
 
+export type SetGroupToProjectMutationVariables = {
+  groupId: string,
+  projectId: string,
+};
+
+export type SetGroupToProjectMutation = {
+  setGroupToProject:  {
+    id: string,
+    title: string,
+    group:  {
+      id: string,
+      title: string,
+    } | null,
+  } | null,
+};
+
 export type SetProjectToPhaseMutationVariables = {
   phaseId: string,
   projectId: string,
@@ -332,6 +377,18 @@ export type SignupMutation = {
   } | null,
 };
 
+export type UpdateGroupMutationVariables = {
+  groupId: string,
+  title?: string | null,
+};
+
+export type UpdateGroupMutation = {
+  updateGroup:  {
+    id: string,
+    title: string,
+  } | null,
+};
+
 export type UpdatePhaseMutationVariables = {
   phaseId: string,
   title?: string | null,
@@ -383,13 +440,18 @@ export type UpdatePhaseTaskMutation = {
 
 export type UpdateProjectMutationVariables = {
   projectId: string,
-  title: string,
+  title?: string | null,
+  groupId?: string | null,
 };
 
 export type UpdateProjectMutation = {
   updateProject:  {
     id: string,
     title: string,
+    group:  {
+      id: string,
+      title: string,
+    } | null,
   } | null,
 };
 
@@ -476,6 +538,16 @@ export type AppQuery = {
   } | null,
 };
 
+export type GroupPageQuery = {
+  groups:  Array< {
+    id: string,
+    title: string,
+  } | null > | null,
+  currentUser:  {
+    id: string,
+  } | null,
+};
+
 export type LoginPageQuery = {
   currentUser:  {
     id: string,
@@ -489,6 +561,7 @@ export type NavBarQuery = {
 };
 
 export type PhasePageQueryVariables = {
+  groupId?: string | null,
   projectId?: string | null,
   phaseDone?: boolean | null,
   taskUsed?: boolean | null,
@@ -523,6 +596,14 @@ export type PhasePageQuery = {
 
 export type ProjectPageQuery = {
   projects:  Array< {
+    id: string,
+    title: string,
+    group:  {
+      id: string,
+      title: string,
+    } | null,
+  } | null > | null,
+  groups:  Array< {
     id: string,
     title: string,
   } | null > | null,
@@ -595,6 +676,10 @@ export type TimeUnitPageQuery = {
 export type ProjectItem_projectFragment = {
   id: string,
   title: string,
+  group:  {
+    id: string,
+    title: string,
+  } | null,
 };
 
 export type TimeUnitTaskItem_taskFragment = {
@@ -609,6 +694,11 @@ export type TimeUnitTaskItem_taskFragment = {
       title: string,
     } | null,
   } | null,
+};
+
+export type GroupItem_groupFragment = {
+  id: string,
+  title: string,
 };
 
 export type PhaseTaskItem_taskFragment = {
@@ -680,6 +770,11 @@ export type AddTaskToTimeUnitForm_tasksFragment = {
 };
 
 export type PhaseItem_projectsFragment = {
+  id: string,
+  title: string,
+};
+
+export type ProjectItem_groupsFragment = {
   id: string,
   title: string,
 };

@@ -65,8 +65,11 @@ export class NavBar extends React.Component<Props, State> {
 
     return (
       <NavBarWrapper>
-        <NavBarLink to="/project">
+        <NavBarLink to="/groups">
           <Icon icon="tags" />
+        </NavBarLink>
+        <NavBarLink to="/project">
+          <Icon icon="tag" />
         </NavBarLink>
         <NavBarLink to="/phase">
           <Icon icon="tasks" />

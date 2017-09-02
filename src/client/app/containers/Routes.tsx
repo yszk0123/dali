@@ -8,6 +8,7 @@ import PropsRoute from '../../shared/components/PropsRoute';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import LoginPage from './LoginPage';
 import NavBar from './NavBar';
+import GroupPage from './GroupPage';
 import ProjectPage from './ProjectPage';
 import SignupPage from './SignupPage';
 import PhasePage from './PhasePage';
@@ -36,8 +37,18 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
+            path="/groups/:groupId/phases"
+            component={PhasePage}
+            isLogin={isLogin}
+          />
+          <PropsPrivateRoute
             path="/project/:projectId/phase"
             component={PhasePage}
+            isLogin={isLogin}
+          />
+          <PropsPrivateRoute
+            path="/groups"
+            component={GroupPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute

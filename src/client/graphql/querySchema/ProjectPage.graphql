@@ -1,9 +1,14 @@
-#import "./ProjectItem.graphql"
+#import "./ProjectItem_project.graphql"
+#import "./ProjectItem_groups.graphql"
 
 query ProjectPage {
   projects {
     id
     ...ProjectItem_project
+  }
+  groups {
+    id
+    ...ProjectItem_groups
   }
   currentUser {
     id

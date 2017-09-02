@@ -8,6 +8,7 @@ export interface IPartialSchemaDefinition {
 }
 
 export type IModels = {
+  Group: any;
   Member: any;
   Project: any;
   Task: any;

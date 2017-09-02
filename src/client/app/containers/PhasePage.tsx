@@ -124,6 +124,7 @@ const withData = compose(
       variables: {
         phaseDone: false,
         taskUsed: false,
+        groupId: match.params.groupId,
         projectId: match.params.projectId,
       },
       fetchPolicy: 'network-only',

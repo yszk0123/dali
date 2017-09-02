@@ -44,13 +44,19 @@ export class ProjectPage extends React.Component<
   };
 
   private renderProjects() {
-    const { projects } = this.props;
+    const { projects, groups } = this.props;
 
     return (
       projects &&
       projects.map(
         project =>
-          project && <StyledProjectItem key={project.id} project={project} />,
+          project && (
+            <StyledProjectItem
+              key={project.id}
+              project={project}
+              groups={groups || []}
+            />
+          ),
       )
     );
   }

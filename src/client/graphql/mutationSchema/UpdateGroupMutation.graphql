@@ -1,0 +1,9 @@
+#import "../querySchema/GroupItem_group.graphql"
+
+mutation UpdateGroup($groupId: ID!, $title: String) {
+  updateGroup(groupId: $groupId, title: $title) {
+    id
+    title
+    ...GroupItem_group
+  }
+}

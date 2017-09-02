@@ -1,0 +1,8 @@
+#import "../querySchema/ProjectItem_project.graphql"
+
+mutation SetGroupToProject($groupId: ID!, $projectId: ID!) {
+  setGroupToProject(groupId: $groupId, projectId: $projectId) {
+    id
+    ...ProjectItem_project
+  }
+}

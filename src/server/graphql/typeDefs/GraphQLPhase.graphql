@@ -21,6 +21,7 @@ input PhaseOrder {
 
 type Query {
   phases(
+    groupId: ID
     projectId: ID
     done: Boolean
     limit: ListLimit

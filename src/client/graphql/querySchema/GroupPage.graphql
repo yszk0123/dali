@@ -1,0 +1,11 @@
+#import "./GroupItem_group.graphql"
+
+query GroupPage {
+  groups {
+    id
+    ...GroupItem_group
+  }
+  currentUser {
+    id
+  }
+}

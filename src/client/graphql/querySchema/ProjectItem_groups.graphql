@@ -1,0 +1,4 @@
+fragment ProjectItem_groups on Group {
+  id
+  title
+}
