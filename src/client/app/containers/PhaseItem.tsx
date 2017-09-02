@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import {
+  PhasePageQueryVariables,
   PhaseItem_phaseFragment,
   PhaseItem_projectsFragment,
   PhaseTaskItem_taskFragment,
@@ -37,15 +38,19 @@ const Header = styled.div`
 
 const HeaderMain = styled.div`flex-grow: 1;`;
 
-const PhaseTaskItemWrapper = styled.div`margin-left: 1rem;`;
+const PhaseTaskItemWrapper = styled.div`margin-left: 1.6rem;`;
 
 const TrashIcon = styled(Icon)`float: right;`;
 
-const TitleInputWrapper = styled.div`margin-top: 0.8rem;`;
+const TitleInputWrapper = styled.div`
+  margin-left: 1.6rem;
+  margin-top: 0.8rem;
+`;
 
 interface OwnProps {
   projects: (PhaseItem_projectsFragment | null)[] | null;
   phase: PhaseItem_phaseFragment;
+  queryVariables: PhasePageQueryVariables;
 }
 
 type Props = OwnProps & {
@@ -70,6 +75,7 @@ export function PhaseItem({
   toggleDone,
   setProject,
   connectDropTarget,
+  queryVariables,
   isOver,
 }: Props) {
   return connectDropTarget(
@@ -101,6 +107,7 @@ export function PhaseItem({
                     task={task}
                     phaseId={phase.id}
                     remove={removeTask}
+                    queryVariables={queryVariables}
                   />
                 </PhaseTaskItemWrapper>
               ),
@@ -141,51 +148,51 @@ const taskTarget: DropTargetSpec<Props> = {
 
 const withData = compose(
   graphql<Response, OwnProps, Props>(RemovePhaseTaskMutation.mutation, {
-    props: ({ mutate, ownProps: { phase } }) => ({
+    props: ({ mutate, ownProps: { phase, queryVariables } }) => ({
       removeTask: (task: PhaseTaskItem_taskFragment) =>
         mutate &&
         mutate(
           RemovePhaseTaskMutation.buildMutationOptions(
             { taskId: task.id },
-            { phaseDone: false, taskUsed: false },
+            queryVariables,
             phase,
           ),
         ),
     }),
   }),
   graphql<Response, OwnProps, Props>(CreatePhaseTaskMutation.mutation, {
-    props: ({ mutate, ownProps: { phase } }) => ({
+    props: ({ mutate, ownProps: { phase, queryVariables } }) => ({
       createTask: (title: string) =>
         mutate &&
         mutate(
           CreatePhaseTaskMutation.buildMutationOptions(
             { title, phaseId: phase.id },
-            { phaseDone: false, taskUsed: false },
+            queryVariables,
             phase,
           ),
         ),
     }),
   }),
   graphql<Response, OwnProps, Props>(RemovePhaseMutation.mutation, {
-    props: ({ mutate, ownProps: { phase } }) => ({
+    props: ({ mutate, ownProps: { phase, queryVariables } }) => ({
       removePhase: () =>
         mutate &&
         mutate(
           RemovePhaseMutation.buildMutationOptions(
             { phaseId: phase.id },
-            { phaseDone: false, taskUsed: false },
+            queryVariables,
           ),
         ),
     }),
   }),
   graphql<Response, OwnProps, Props>(UpdatePhaseMutation.mutation, {
-    props: ({ mutate, ownProps: { phase } }) => ({
+    props: ({ mutate, ownProps: { phase, queryVariables } }) => ({
       updateTitle: (title: string) =>
         mutate &&
         mutate(
           UpdatePhaseMutation.buildMutationOptions(
             { title, phaseId: phase.id },
-            { phaseDone: false, taskUsed: false },
+            queryVariables,
             phase,
           ),
         ),
@@ -194,33 +201,33 @@ const withData = compose(
         mutate(
           UpdatePhaseMutation.buildMutationOptions(
             { done: !phase.done, phaseId: phase.id },
-            { phaseDone: false, taskUsed: false },
+            queryVariables,
             phase,
           ),
         ),
     }),
   }),
   graphql<Response, OwnProps, Props>(SetProjectToPhaseMutation.mutation, {
-    props: ({ mutate, ownProps: { phase } }) => ({
+    props: ({ mutate, ownProps: { phase, queryVariables } }) => ({
       setProject: (projectId: string | null) =>
         projectId &&
         mutate &&
         mutate(
           SetProjectToPhaseMutation.buildMutationOptions(
             { phaseId: phase.id, projectId },
-            { phaseDone: false, taskUsed: false },
+            queryVariables,
           ),
         ),
     }),
   }),
   graphql<Response, OwnProps, Props>(MoveTaskToPhaseMutation.mutation, {
-    props: ({ mutate, ownProps: { phase } }) => ({
+    props: ({ mutate, ownProps: { phase, queryVariables } }) => ({
       moveTaskToPhase: (taskId: string, phaseId: string) =>
         mutate &&
         mutate(
           MoveTaskToPhaseMutation.buildMutationOptions(
             { taskId, phaseId },
-            { phaseDone: false, taskUsed: false },
+            queryVariables,
           ),
         ),
     }),

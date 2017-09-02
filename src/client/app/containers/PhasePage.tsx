@@ -3,29 +3,31 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
 import {
   PhasePageQuery,
+  PhasePageQueryVariables,
   PhaseItem_phaseFragment,
   PhaseTaskItem_taskFragment,
 } from 'schema';
-import * as phasePageQuery from '../../graphql/querySchema/PhasePage.graphql';
+import * as PHASE_PAGE_QUERY from '../../graphql/querySchema/PhasePage.graphql';
 import * as CreatePhaseMutation from '../../graphql/mutations/CreatePhaseMutation';
 import styled from '../styles/StyledComponents';
 import Button from '../components/Button';
 import Dummy from '../Dummy';
 import PhaseItem from './PhaseItem';
 
-const PhaseItemWrapper = styled.div`
-  margin: 1.6rem 0;
-  border-top: 1px solid #ccc;
-`;
+const PhaseItemWrapper = styled.div`margin: 1.6rem 0;`;
 
-interface PhasePageProps {
-  isLogin: boolean;
-  createPhase(title: string): void;
-}
+type Data = Response & PhasePageQuery;
 
-type OwnProps = RouteComponentProps<any>;
+type OwnProps = RouteComponentProps<any> & {
+  queryVariables: PhasePageQueryVariables;
+};
 
-type Props = QueryProps & PhasePageQuery & PhasePageProps;
+type Props = QueryProps &
+  PhasePageQuery &
+  OwnProps & {
+    isLogin: boolean;
+    createPhase(title: string): void;
+  };
 
 interface State {
   title: string;
@@ -79,7 +81,7 @@ export class PhasePage extends React.Component<
   };
 
   render() {
-    const { isLogin, phases, projects } = this.props;
+    const { isLogin, phases, projects, queryVariables } = this.props;
     const { title, phaseDone, taskUsed } = this.state;
 
     if (!isLogin) {
@@ -107,7 +109,11 @@ export class PhasePage extends React.Component<
             phase =>
               phase && (
                 <PhaseItemWrapper key={phase.id}>
-                  <PhaseItem phase={phase} projects={projects} />
+                  <PhaseItem
+                    phase={phase}
+                    projects={projects}
+                    queryVariables={queryVariables}
+                  />
                 </PhaseItemWrapper>
               ),
           )}
@@ -119,7 +125,7 @@ export class PhasePage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Response & PhasePageQuery, OwnProps, Props>(phasePageQuery, {
+  graphql<Data, OwnProps, Props>(PHASE_PAGE_QUERY, {
     options: ({ match }) => ({
       variables: {
         phaseDone: false,
@@ -129,24 +135,23 @@ const withData = compose(
       },
       fetchPolicy: 'network-only',
     }),
-    props: ({ data }) => ({
+    props: ({ data, ownProps: { match } }) => ({
       ...data,
+      queryVariables: {
+        phaseDone: false,
+        taskUsed: false,
+        groupId: match.params.groupId,
+        projectId: match.params.projectId,
+      },
       isLogin: data && data.currentUser,
     }),
   }),
-  graphql<
-    Response & PhasePageQuery,
-    OwnProps,
-    Props
-  >(CreatePhaseMutation.mutation, {
-    props: ({ mutate }) => ({
+  graphql<Data, OwnProps, Props>(CreatePhaseMutation.mutation, {
+    props: ({ mutate, ownProps: { queryVariables } }) => ({
       createPhase: (title: string) =>
         mutate &&
         mutate(
-          CreatePhaseMutation.buildMutationOptions(
-            { title },
-            { phaseDone: false, taskUsed: false },
-          ),
+          CreatePhaseMutation.buildMutationOptions({ title }, queryVariables),
         ),
     }),
   }),

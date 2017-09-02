@@ -1,0 +1,8 @@
+fragment TaskPage_phases on Phase {
+  id
+  title
+  project {
+    id
+    title
+  }
+}

@@ -17,6 +17,7 @@ export default function createResolvers({
       assignee: resolver(Task.Assignee),
     },
     Query: {
+      task: resolver(Task),
       tasks: resolver(Task, {
         list: true,
         before: (findOptions: any, { used }: any, context: IContext) => {
@@ -91,7 +92,25 @@ export default function createResolvers({
 
         return task;
       },
-      setTimeUnitToTask: async (root, { date, position, taskId }, { user }) => {
+      setTimeUnitToTask: async (root, { timeUnitId, taskId }, { user }) => {
+        const timeUnit = await TimeUnit.findOne({
+          where: { id: timeUnitId, ownerId: user.id },
+          rejectOnEmpty: true,
+        });
+        const task = await Task.findOne({
+          where: { id: taskId, ownerId: user.id },
+          rejectOnEmpty: true,
+        });
+
+        await task.setTimeUnit(timeUnit);
+
+        return task;
+      },
+      setOrCreateTimeUnitToTask: async (
+        root,
+        { date, position, taskId },
+        { user },
+      ) => {
         const [timeUnit, _created] = await TimeUnit.findOrCreate({
           where: { date, position, ownerId: user.id },
           defaults: { date, position, ownerId: user.id },

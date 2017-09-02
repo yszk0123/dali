@@ -1,0 +1,22 @@
+#import "../querySchema/TaskPage_task.graphql"
+
+mutation UpdateTask(
+  $taskId: ID!
+  $title: String
+  $description: String
+  $done: Boolean
+  $phaseId: ID
+  $timeUnitId: ID
+) {
+  updateTask(
+    taskId: $taskId
+    title: $title
+    description: $description
+    done: $done
+    phaseId: $phaseId
+    timeUnitId: $timeUnitId
+  ) {
+    id
+    ...TaskPage_task
+  }
+}

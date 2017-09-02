@@ -77,7 +77,8 @@ type Mutation {
   updateTask(taskId: ID!, title: String, description: String, done: Boolean, phaseId: ID, timeUnitId: ID): Task
   removeTask(taskId: ID!): RemoveTaskPayload
   setPhaseToTask(phaseId: ID!, taskId: ID!): Task
-  setTimeUnitToTask(date: DateOnly!, position: Int, taskId: ID!): Task
+  setTimeUnitToTask(timeUnitId: ID!, taskId: ID!): Task
+  setOrCreateTimeUnitToTask(date: DateOnly!, position: Int, taskId: ID!): Task
   createTimeUnit(description: String, date: DateOnly!, position: Int): TimeUnit
   updateTimeUnit(timeUnitId: ID!, description: String, date: DateOnly, position: Int): TimeUnit
   moveTaskToTimeUnit(taskId: ID!, timeUnitId: ID!): MoveTaskToTimeUnitPayload
@@ -147,6 +148,7 @@ type Query {
   members(limit: ListLimit, offset: ListOffset, order: ListOrder): [Member]
   phases(groupId: ID, projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: PhaseOrder): [Phase]
   projects(groupId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: ProjectOrder): [Project]
+  task(id: ID!): Task
   tasks(done: Boolean, used: Boolean, phaseId: ID, timeUnitId: ID, limit: ListLimit, offset: ListOffset, orderBy: TaskOrder): [Task]
   timeUnits(date: DateOnly, after: DateOnly, before: DateOnly, limit: ListLimit, offset: ListOffset, order: TimeUnitOrder): [TimeUnit]
   currentUser: User

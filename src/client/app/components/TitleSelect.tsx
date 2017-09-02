@@ -12,6 +12,7 @@ interface SelectItem {
 interface Props {
   resetAfterSelect?: boolean;
   defaultLabel?: string;
+  fullWidth?: boolean;
   selectedId: string | null;
   items: (SelectItem | null)[];
   onCreate?(title: string): void;
@@ -92,20 +93,23 @@ export default class TitleSelect extends React.Component<Props, State> {
   }
 
   private reset() {
+    const { selectedId } = this.props;
+
     this.setState({
-      selectedId: null,
-      title: '',
+      selectedId,
+      title: this.getTitleById(selectedId) || '',
       isEditing: false,
     });
   }
 
   render() {
-    const { defaultLabel, items } = this.props;
+    const { defaultLabel, fullWidth, items } = this.props;
     const { title, selectedId, isEditing } = this.state;
 
     if (!isEditing) {
       return (
         <TitlePlaceholder
+          fullWidth={fullWidth}
           defaultLabel={defaultLabel}
           label={title}
           onClick={this.handlePlaceholderClick}

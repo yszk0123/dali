@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import {
+  TimeUnitPageQueryVariables,
   TimeUnitItem_timeUnitFragment,
   TimeUnitTaskItem_taskFragment,
 } from 'schema';
@@ -30,6 +31,7 @@ const SmallIconButtonGroup = styled(IconButtonGroup)`
 `;
 
 const AddTaskToTimeUnitFormWrapper = styled.div`margin-top: 0.8rem;`;
+const StyledButton = styled(Button)`margin-left: 1.6rem;`;
 
 const Header = styled.span`
   display: flex;
@@ -38,32 +40,15 @@ const Header = styled.span`
   justify-content: space-between;
 `;
 
+const TimeUnitTaskItemWrapper = styled.div`margin-left: 1.6rem;`;
+
 const Wrapper = styled.div`
   width: 100%;
-  padding: 1.2rem;
+  padding: 0.8rem;
   background: ${({ isOver }: ThemedProps<{ isOver: boolean }>) =>
     isOver ? '#c0e3fb' : 'inherit'};
   font-size: 1.6rem;
 `;
-
-interface TaskSummaryProps {
-  tasks: Array<TimeUnitTaskItem_taskFragment | null>;
-  timeUnit: TimeUnitItem_timeUnitFragment;
-  removeTask(task: TimeUnitTaskItem_taskFragment): void;
-}
-
-function TaskSummary({ tasks, timeUnit, removeTask }: TaskSummaryProps) {
-  return (
-    <div>
-      {tasks.map(
-        task =>
-          task && (
-            <TimeUnitTaskItem key={task.id} task={task} remove={removeTask} />
-          ),
-      )}
-    </div>
-  );
-}
 
 interface RemoveButtonProps {
   onClick: React.MouseEventHandler<HTMLElement>;
@@ -76,6 +61,7 @@ function RemoveButton({ onClick }: RemoveButtonProps) {
 interface OwnProps {
   date: DateOnly;
   timeUnit: TimeUnitItem_timeUnitFragment;
+  queryVariables: TimeUnitPageQueryVariables;
 }
 
 type Props = OwnProps & {
@@ -129,13 +115,15 @@ export class TimeUnitItem extends React.Component<
               <RemoveButton onClick={removeTimeUnit} />
             </SmallIconButtonGroup>
           </Header>
-          {timeUnit.tasks && (
-            <TaskSummary
-              tasks={timeUnit.tasks}
-              timeUnit={timeUnit}
-              removeTask={removeTask}
-            />
-          )}
+          {timeUnit.tasks &&
+            timeUnit.tasks.map(
+              task =>
+                task && (
+                  <TimeUnitTaskItemWrapper key={task.id}>
+                    <TimeUnitTaskItem task={task} remove={removeTask} />
+                  </TimeUnitTaskItemWrapper>
+                ),
+            )}
           {isEditing ? (
             <AddTaskToTimeUnitFormWrapper>
               <AddTaskToTimeUnitForm
@@ -144,7 +132,7 @@ export class TimeUnitItem extends React.Component<
               />
             </AddTaskToTimeUnitFormWrapper>
           ) : (
-            <Button onClick={this.handleOpenForm}>Add</Button>
+            <StyledButton onClick={this.handleOpenForm}>Add</StyledButton>
           )}
         </Wrapper>
       </div>,
@@ -178,51 +166,51 @@ const taskTarget: DropTargetSpec<Props> = {
 
 const withData = compose(
   graphql<Response, OwnProps, Props>(RemoveTimeUnitTaskMutation.mutation, {
-    props: ({ mutate, ownProps: { timeUnit } }) => ({
+    props: ({ mutate, ownProps: { timeUnit, queryVariables } }) => ({
       removeTask: (task: TimeUnitTaskItem_taskFragment) =>
         mutate &&
         mutate(
           RemoveTimeUnitTaskMutation.buildMutationOptions(
             { taskId: task.id },
-            { done: false },
+            queryVariables,
             timeUnit,
           ),
         ),
     }),
   }),
   graphql<Response, OwnProps, Props>(RemoveTimeUnitMutation.mutation, {
-    props: ({ mutate, ownProps: { date, timeUnit } }) => ({
+    props: ({ mutate, ownProps: { date, timeUnit, queryVariables } }) => ({
       removeTimeUnit: (title: string) =>
         mutate &&
         mutate(
           RemoveTimeUnitMutation.buildMutationOptions(
             { timeUnitId: timeUnit.id },
-            { date },
+            queryVariables,
           ),
         ),
     }),
   }),
   graphql<Response, OwnProps, Props>(UpdateTimeUnitMutation.mutation, {
-    props: ({ mutate, ownProps: { timeUnit } }) => ({
+    props: ({ mutate, ownProps: { timeUnit, queryVariables } }) => ({
       updateDescription: (description: string) =>
         mutate &&
         mutate(
           UpdateTimeUnitMutation.buildMutationOptions(
             { description, timeUnitId: timeUnit.id },
-            { done: false },
+            queryVariables,
             timeUnit,
           ),
         ),
     }),
   }),
   graphql<Response, OwnProps, Props>(MoveTaskToTimeUnitMutation.mutation, {
-    props: ({ mutate }) => ({
+    props: ({ mutate, ownProps: { queryVariables } }) => ({
       moveTaskToTimeUnit: (taskId: string, timeUnitId: string) =>
         mutate &&
         mutate(
           MoveTaskToTimeUnitMutation.buildMutationOptions(
             { taskId, timeUnitId },
-            {},
+            queryVariables,
           ),
         ),
     }),

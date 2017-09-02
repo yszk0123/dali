@@ -17,7 +17,11 @@ query PhasePage(
     title
     ...PhaseItem_phase
   }
-  projects(done: false, orderBy: { field: TITLE, direction: ASC }) {
+  projects(
+    done: false
+    groupId: $groupId
+    orderBy: { field: TITLE, direction: ASC }
+  ) {
     id
     title
     ...PhaseItem_projects
