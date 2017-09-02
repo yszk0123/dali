@@ -93,9 +93,11 @@ export default class TitleSelect extends React.Component<Props, State> {
   }
 
   private reset() {
+    const { selectedId } = this.props;
+
     this.setState({
-      selectedId: null,
-      title: '',
+      selectedId,
+      title: this.getTitleById(selectedId) || '',
       isEditing: false,
     });
   }
