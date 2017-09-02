@@ -38,11 +38,14 @@ const Header = styled.div`
 
 const HeaderMain = styled.div`flex-grow: 1;`;
 
-const PhaseTaskItemWrapper = styled.div`margin-left: 1rem;`;
+const PhaseTaskItemWrapper = styled.div`margin-left: 1.6rem;`;
 
 const TrashIcon = styled(Icon)`float: right;`;
 
-const TitleInputWrapper = styled.div`margin-top: 0.8rem;`;
+const TitleInputWrapper = styled.div`
+  margin-left: 1.6rem;
+  margin-top: 0.8rem;
+`;
 
 interface OwnProps {
   projects: (PhaseItem_projectsFragment | null)[] | null;

@@ -14,10 +14,7 @@ import Button from '../components/Button';
 import Dummy from '../Dummy';
 import PhaseItem from './PhaseItem';
 
-const PhaseItemWrapper = styled.div`
-  margin: 1.6rem 0;
-  border-top: 1px solid #ccc;
-`;
+const PhaseItemWrapper = styled.div`margin: 1.6rem 0;`;
 
 type Data = Response & PhasePageQuery;
 

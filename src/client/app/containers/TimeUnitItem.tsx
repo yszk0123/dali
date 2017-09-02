@@ -30,6 +30,7 @@ const SmallIconButtonGroup = styled(IconButtonGroup)`
 `;
 
 const AddTaskToTimeUnitFormWrapper = styled.div`margin-top: 0.8rem;`;
+const StyledButton = styled(Button)`margin-left: 1.6rem;`;
 
 const Header = styled.span`
   display: flex;
@@ -38,32 +39,15 @@ const Header = styled.span`
   justify-content: space-between;
 `;
 
+const TimeUnitTaskItemWrapper = styled.div`margin-left: 1.6rem;`;
+
 const Wrapper = styled.div`
   width: 100%;
-  padding: 1.2rem;
+  padding: 0.8rem;
   background: ${({ isOver }: ThemedProps<{ isOver: boolean }>) =>
     isOver ? '#c0e3fb' : 'inherit'};
   font-size: 1.6rem;
 `;
-
-interface TaskSummaryProps {
-  tasks: Array<TimeUnitTaskItem_taskFragment | null>;
-  timeUnit: TimeUnitItem_timeUnitFragment;
-  removeTask(task: TimeUnitTaskItem_taskFragment): void;
-}
-
-function TaskSummary({ tasks, timeUnit, removeTask }: TaskSummaryProps) {
-  return (
-    <div>
-      {tasks.map(
-        task =>
-          task && (
-            <TimeUnitTaskItem key={task.id} task={task} remove={removeTask} />
-          ),
-      )}
-    </div>
-  );
-}
 
 interface RemoveButtonProps {
   onClick: React.MouseEventHandler<HTMLElement>;
@@ -129,13 +113,15 @@ export class TimeUnitItem extends React.Component<
               <RemoveButton onClick={removeTimeUnit} />
             </SmallIconButtonGroup>
           </Header>
-          {timeUnit.tasks && (
-            <TaskSummary
-              tasks={timeUnit.tasks}
-              timeUnit={timeUnit}
-              removeTask={removeTask}
-            />
-          )}
+          {timeUnit.tasks &&
+            timeUnit.tasks.map(
+              task =>
+                task && (
+                  <TimeUnitTaskItemWrapper key={task.id}>
+                    <TimeUnitTaskItem task={task} remove={removeTask} />
+                  </TimeUnitTaskItemWrapper>
+                ),
+            )}
           {isEditing ? (
             <AddTaskToTimeUnitFormWrapper>
               <AddTaskToTimeUnitForm
@@ -144,7 +130,7 @@ export class TimeUnitItem extends React.Component<
               />
             </AddTaskToTimeUnitFormWrapper>
           ) : (
-            <Button onClick={this.handleOpenForm}>Add</Button>
+            <StyledButton onClick={this.handleOpenForm}>Add</StyledButton>
           )}
         </Wrapper>
       </div>,

@@ -20,13 +20,7 @@ const List = styled.div`
   flex-direction: column;
 `;
 
-interface ListItemProps {
-  highlightLine?: boolean;
-}
-
 const ListItem = styled.div`
-  border-top: ${({ highlightLine }: ListItemProps) =>
-    highlightLine ? '1px solid #ccc' : 'none'};
   margin: 0.4rem 0;
   align-content: center;
 `;
@@ -57,7 +51,7 @@ export function TimeUnitPage({ date, timeUnits, loading }: Props) {
     );
 
     times = sortedTimeUnits.map((timeUnit, position) => (
-      <ListItem key={position} highlightLine={!!timeUnit}>
+      <ListItem key={position}>
         {timeUnit ? (
           <TimeUnitItem date={date} timeUnit={timeUnit} />
         ) : (
