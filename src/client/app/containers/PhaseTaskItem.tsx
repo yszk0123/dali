@@ -6,7 +6,7 @@ import {
   ConnectDragSource,
   ConnectDragPreview,
 } from 'react-dnd';
-import { PhaseTaskItem_taskFragment } from 'schema';
+import { PhasePageQueryVariables, PhaseTaskItem_taskFragment } from 'schema';
 import * as UpdatePhaseTaskMutation from '../../graphql/mutations/UpdatePhaseTaskMutation';
 import * as SetTimeUnitToTaskMutation from '../../graphql/mutations/SetTimeUnitToTaskMutation';
 import styled, { ThemedProps } from '../styles/StyledComponents';
@@ -34,6 +34,7 @@ interface OwnProps {
   phaseId?: string;
   remove(task: PhaseTaskItem_taskFragment): void;
   timeUnitId?: string;
+  queryVariables: PhasePageQueryVariables;
 }
 
 type Props = OwnProps & {
@@ -98,13 +99,13 @@ const taskSource: DragSourceSpec<Props> = {
 
 const withData = compose(
   graphql<Response, OwnProps, Props>(UpdatePhaseTaskMutation.mutation, {
-    props: ({ mutate, ownProps: { task } }) => ({
+    props: ({ mutate, ownProps: { task, queryVariables } }) => ({
       updateTitle: (title: string) =>
         mutate &&
         mutate(
           UpdatePhaseTaskMutation.buildMutationOptions(
             { title, taskId: task.id },
-            { phaseDone: false, taskUsed: false },
+            queryVariables,
             task,
           ),
         ),
@@ -113,7 +114,7 @@ const withData = compose(
         mutate(
           UpdatePhaseTaskMutation.buildMutationOptions(
             { done: !task.done, taskId: task.id },
-            { phaseDone: false, taskUsed: false },
+            queryVariables,
             task,
           ),
         ),
