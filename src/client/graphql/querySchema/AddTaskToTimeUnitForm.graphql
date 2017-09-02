@@ -2,7 +2,7 @@
 #import "./AddTaskToTimeUnitForm_tasks.graphql"
 
 query AddTaskToTimeUnitForm {
-  phases {
+  phases(done: false) {
     id
     ...AddTaskToTimeUnitForm_phases
   }
