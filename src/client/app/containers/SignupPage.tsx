@@ -10,7 +10,7 @@ import {
 import { SignupPageQuery } from 'schema';
 import styled from '../styles/StyledComponents';
 import * as SignupMutation from '../../graphql/mutations/SignupMutation';
-import * as signupPageQuery from '../../graphql/querySchema/SignupPage.graphql';
+import * as SIGNUP_PAGE_QUERY from '../../graphql/querySchema/SignupPage.graphql';
 import Button from '../components/Button';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;
@@ -136,7 +136,7 @@ export class SignupPage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Response & SignupPageQuery>(signupPageQuery, {
+  graphql<Response & SignupPageQuery>(SIGNUP_PAGE_QUERY, {
     props: ({ data }) => ({
       isSignup: data && data.currentUser,
     }),

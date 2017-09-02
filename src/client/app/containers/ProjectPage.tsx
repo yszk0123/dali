@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { ProjectPageQuery } from 'schema';
-import * as projectPageQuery from '../../graphql/querySchema/ProjectPage.graphql';
+import * as PROJECT_PAGE_QUERY from '../../graphql/querySchema/ProjectPage.graphql';
 import * as CreateProjectMutation from '../../graphql/mutations/CreateProjectMutation';
 import styled from '../styles/StyledComponents';
 import Button from '../components/Button';
@@ -9,12 +9,15 @@ import ProjectItem from './ProjectItem';
 
 const StyledProjectItem = styled(ProjectItem)`margin: 1rem;`;
 
-interface ProjectPageProps {
-  isLogin: boolean;
-  createProject(title: string): void;
-}
+type Data = Response & ProjectPageQuery;
 
-type Props = QueryProps & ProjectPageQuery & ProjectPageProps;
+interface OwnProps {}
+
+type Props = QueryProps &
+  ProjectPageQuery & {
+    isLogin: boolean;
+    createProject(title: string): void;
+  };
 
 interface State {
   title: string;
@@ -82,7 +85,7 @@ export class ProjectPage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Response & ProjectPageQuery, {}, Props>(projectPageQuery, {
+  graphql<Data, OwnProps, Props>(PROJECT_PAGE_QUERY, {
     options: {
       fetchPolicy: 'network-only',
     },
@@ -91,11 +94,7 @@ const withData = compose(
       isLogin: data && data.currentUser,
     }),
   }),
-  graphql<
-    Response & ProjectPageQuery,
-    {},
-    Props
-  >(CreateProjectMutation.mutation, {
+  graphql<Data, OwnProps, Props>(CreateProjectMutation.mutation, {
     props: ({ mutate }) => ({
       createProject: (title: string) =>
         mutate && mutate(CreateProjectMutation.buildMutationOptions({ title })),

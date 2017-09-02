@@ -147,6 +147,7 @@ type Query {
   members(limit: ListLimit, offset: ListOffset, order: ListOrder): [Member]
   phases(groupId: ID, projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: PhaseOrder): [Phase]
   projects(groupId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: ProjectOrder): [Project]
+  task(id: ID!): Task
   tasks(done: Boolean, used: Boolean, phaseId: ID, timeUnitId: ID, limit: ListLimit, offset: ListOffset, orderBy: TaskOrder): [Task]
   timeUnits(date: DateOnly, after: DateOnly, before: DateOnly, limit: ListLimit, offset: ListOffset, order: TimeUnitOrder): [TimeUnit]
   currentUser: User

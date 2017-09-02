@@ -22,6 +22,7 @@ input TaskOrder {
 }
 
 type Query {
+  task(id: ID!): Task
   tasks(
     done: Boolean
     used: Boolean

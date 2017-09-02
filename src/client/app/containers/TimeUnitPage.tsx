@@ -3,7 +3,7 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
 import { subDays, addDays } from 'date-fns';
 import { TimeUnitPageQuery, TimeUnitItem_timeUnitFragment } from 'schema';
-import * as timeUnitPageQuery from '../../graphql/querySchema/TimeUnitPage.graphql';
+import * as TIME_UNIT_PAGE_QUERY from '../../graphql/querySchema/TimeUnitPage.graphql';
 import styled from '../styles/StyledComponents';
 import DateSwitch from '../components/DateSwitch';
 import { DateOnly } from '../interfaces';
@@ -108,7 +108,7 @@ function parseTimeUnits(
 }
 
 const withData = compose(
-  graphql<Response & TimeUnitPageQuery, OwnProps, Props>(timeUnitPageQuery, {
+  graphql<Response & TimeUnitPageQuery, OwnProps, Props>(TIME_UNIT_PAGE_QUERY, {
     options: ({ match }) => ({
       variables: { date: match.params.date || getToday() },
       fetchPolicy: 'network-only',

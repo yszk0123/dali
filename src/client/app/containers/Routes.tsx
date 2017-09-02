@@ -10,6 +10,7 @@ import LoginPage from './LoginPage';
 import NavBar from './NavBar';
 import GroupPage from './GroupPage';
 import ProjectPage from './ProjectPage';
+import TaskPage from './TaskPage';
 import SignupPage from './SignupPage';
 import PhasePage from './PhasePage';
 import ProfilePage from './ProfilePage';
@@ -74,6 +75,11 @@ export function Routes({ isLogin }: Props) {
           <PropsPrivateRoute
             path="/report/:date"
             component={ReportPage}
+            isLogin={isLogin}
+          />
+          <PropsPrivateRoute
+            path="/tasks/:taskId"
+            component={TaskPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute

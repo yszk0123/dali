@@ -7,7 +7,7 @@ import {
   PhaseItem_phaseFragment,
   PhaseTaskItem_taskFragment,
 } from 'schema';
-import * as phasePageQuery from '../../graphql/querySchema/PhasePage.graphql';
+import * as PHASE_PAGE_QUERY from '../../graphql/querySchema/PhasePage.graphql';
 import * as CreatePhaseMutation from '../../graphql/mutations/CreatePhaseMutation';
 import styled from '../styles/StyledComponents';
 import Button from '../components/Button';
@@ -128,7 +128,7 @@ export class PhasePage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Data, OwnProps, Props>(phasePageQuery, {
+  graphql<Data, OwnProps, Props>(PHASE_PAGE_QUERY, {
     options: ({ match }) => ({
       variables: {
         phaseDone: false,

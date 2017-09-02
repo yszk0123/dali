@@ -17,6 +17,7 @@ export default function createResolvers({
       assignee: resolver(Task.Assignee),
     },
     Query: {
+      task: resolver(Task),
       tasks: resolver(Task, {
         list: true,
         before: (findOptions: any, { used }: any, context: IContext) => {

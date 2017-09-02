@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { subDays, addDays } from 'date-fns';
 import { flatten, groupBy, toPairs, repeat } from 'lodash';
 import { ReportPageQuery } from 'schema';
-import * as reportPageQuery from '../../graphql/querySchema/ReportPage.graphql';
+import * as REPORT_PAGE_QUERY from '../../graphql/querySchema/ReportPage.graphql';
 import ClipboardButton from '../components/ClipboardButton';
 import Button from '../components/Button';
 import DateSwitch from '../components/DateSwitch';
@@ -139,7 +139,7 @@ function renderAsMarkdown(result: any): string {
 }
 
 const withData = compose(
-  graphql<Response & ReportPageQuery, OwnProps, Props>(reportPageQuery, {
+  graphql<Response & ReportPageQuery, OwnProps, Props>(REPORT_PAGE_QUERY, {
     options: ({ match }) => ({
       variables: { date: match.params.date || getToday() },
       fetchPolicy: 'network-only',

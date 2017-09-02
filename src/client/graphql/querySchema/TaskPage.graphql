@@ -1,0 +1,16 @@
+#import "./TaskPage_task.graphql"
+#import "./TaskPage_phases.graphql"
+
+query TaskPage($taskId: ID!) {
+  task(id: $taskId) {
+    id
+    ...TaskPage_task
+  }
+  phases(done: false, orderBy: { field: TITLE, direction: ASC }) {
+    id
+    ...TaskPage_phases
+  }
+  currentUser {
+    id
+  }
+}

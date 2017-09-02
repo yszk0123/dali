@@ -1,0 +1,4 @@
+fragment TaskPage_task on Task {
+  id
+  title
+}
