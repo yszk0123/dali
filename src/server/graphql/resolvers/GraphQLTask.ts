@@ -20,7 +20,7 @@ export default function createResolvers({
       tasks: resolver(Task, {
         list: true,
         before: (findOptions: any, { used }: any, context: IContext) => {
-          const where = {};
+          const where = { ...findOptions.where };
 
           if (used != null) {
             Object.assign(where, { timeUnitId: used ? { $not: null } : null });

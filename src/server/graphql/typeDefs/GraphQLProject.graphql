@@ -8,7 +8,9 @@ type Project {
   id: ID!
   title: String!
   description: String
+  done: Boolean!
   owner: User!
+  group: Group
   visibility: ProjectVisibility!
   members: [Member]
   phases(
@@ -37,6 +39,7 @@ input ProjectOrder {
 
 type Query {
   projects(
+    groupId: ID
     done: Boolean
     limit: ListLimit
     offset: ListOffset
@@ -45,8 +48,14 @@ type Query {
 }
 
 type Mutation {
-  createProject(title: String!): Project
-  updateProject(projectId: ID!, title: String!): Project
+  createProject(title: String!, done: Boolean, groupId: ID): Project
+  updateProject(
+    projectId: ID!
+    title: String
+    done: Boolean
+    groupId: ID
+  ): Project
   removeProject(projectId: ID!): RemoveProjectPayload
   addPhaseToProject(phaseId: ID!, projectId: ID!): Project
+  setGroupToProject(groupId: ID!, projectId: ID!): Project
 }

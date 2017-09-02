@@ -1,7 +1,7 @@
-#import "../querySchema/ProjectItem.graphql"
+#import "../querySchema/ProjectItem_project.graphql"
 
-mutation UpdateProject($projectId: ID!, $title: String!) {
-  updateProject(projectId: $projectId, title: $title) {
+mutation UpdateProject($projectId: ID!, $title: String, $groupId: ID) {
+  updateProject(projectId: $projectId, title: $title, groupId: $groupId) {
     id
     title
     ...ProjectItem_project

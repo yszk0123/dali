@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import { ProjectItem_projectFragment } from 'schema';
+import {
+  ProjectItem_projectFragment,
+  ProjectItem_groupsFragment,
+} from 'schema';
 import styled from '../styles/StyledComponents';
 import Icon from '../components/Icon';
 import TitleInput from '../components/TitleInput';
+import TitleSelect from '../components/TitleSelect';
 import * as RemoveProjectMutation from '../../graphql/mutations/RemoveProjectMutation';
 import * as UpdateProjectMutation from '../../graphql/mutations/UpdateProjectMutation';
 
@@ -19,21 +23,35 @@ const TitleInputWrapper = styled.span`flex-grow: 1;`;
 
 type OwnProps = {
   project: ProjectItem_projectFragment;
+  groups: (ProjectItem_groupsFragment | null)[];
 };
 
 interface ProjectItemProps {
   remove(): void;
   updateTitle(title: string): void;
+  setGroup(groupId: string): void;
 }
 
 type Props = QueryProps & OwnProps & ProjectItemProps;
 
-export function ProjectItem({ project, remove, updateTitle }: Props) {
+export function ProjectItem({
+  project,
+  groups,
+  remove,
+  updateTitle,
+  setGroup,
+}: Props) {
   return (
     <Wrapper>
-      <Link to={`/project/${project.id}/phase`}>
+      <Link to={`/projects/${project.id}/phases`}>
         <Icon icon="arrow-right" />
       </Link>
+      <TitleSelect
+        defaultLabel="Group"
+        selectedId={project.group && project.group.id}
+        onChange={setGroup}
+        items={groups}
+      />
       <TitleInputWrapper>
         <TitleInput title={project.title} onChange={updateTitle} />
       </TitleInputWrapper>
@@ -59,6 +77,15 @@ const withData = compose(
         mutate(
           UpdateProjectMutation.buildMutationOptions(
             { title, projectId: project.id },
+            {},
+            project,
+          ),
+        ),
+      setGroup: (groupId: string) =>
+        mutate &&
+        mutate(
+          UpdateProjectMutation.buildMutationOptions(
+            { groupId, projectId: project.id },
             {},
             project,
           ),

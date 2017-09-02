@@ -1,4 +1,4 @@
-#import "../querySchema/ProjectItem.graphql"
+#import "../querySchema/ProjectItem_project.graphql"
 
 mutation CreateProject($title: String!) {
   createProject(title: $title) {

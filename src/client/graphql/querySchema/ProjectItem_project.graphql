@@ -1,4 +1,8 @@
 fragment ProjectItem_project on Project {
   id
   title
+  group {
+    id
+    title
+  }
 }

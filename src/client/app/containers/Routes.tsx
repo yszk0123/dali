@@ -8,6 +8,7 @@ import PropsRoute from '../../shared/components/PropsRoute';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import LoginPage from './LoginPage';
 import NavBar from './NavBar';
+import GroupPage from './GroupPage';
 import ProjectPage from './ProjectPage';
 import SignupPage from './SignupPage';
 import PhasePage from './PhasePage';
@@ -36,17 +37,27 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/project/:projectId/phase"
+            path="/groups/:groupId/phases"
             component={PhasePage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/project"
+            path="/projects/:projectId/phases"
+            component={PhasePage}
+            isLogin={isLogin}
+          />
+          <PropsPrivateRoute
+            path="/groups"
+            component={GroupPage}
+            isLogin={isLogin}
+          />
+          <PropsPrivateRoute
+            path="/projects"
             component={ProjectPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/phase"
+            path="/phases"
             component={PhasePage}
             isLogin={isLogin}
           />
@@ -56,7 +67,7 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/timeUnit/:date"
+            path="/timeUnits/:date"
             component={TimeUnitPage}
             isLogin={isLogin}
           />
@@ -66,7 +77,7 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/timeUnit"
+            path="/timeUnits"
             component={TimeUnitPage}
             isLogin={isLogin}
           />

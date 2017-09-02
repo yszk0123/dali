@@ -72,8 +72,6 @@ export function PhaseItem({
   connectDropTarget,
   isOver,
 }: Props) {
-  const projectTitle = phase.project && phase.project.title;
-
   return connectDropTarget(
     <div>
       <Wrapper isOver={isOver}>
