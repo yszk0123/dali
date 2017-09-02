@@ -55,5 +55,5 @@ type Mutation {
   ): Task
   removeTask(taskId: ID!): RemoveTaskPayload
   setPhaseToTask(phaseId: ID!, taskId: ID!): Task
-  setTimeUnitToTask(timeUnitId: ID!, taskId: ID!): Task
+  setTimeUnitToTask(date: DateOnly!, position: Int, taskId: ID!): Task
 }

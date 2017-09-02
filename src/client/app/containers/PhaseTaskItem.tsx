@@ -8,10 +8,13 @@ import {
 } from 'react-dnd';
 import { PhaseTaskItem_taskFragment } from 'schema';
 import * as UpdatePhaseTaskMutation from '../../graphql/mutations/UpdatePhaseTaskMutation';
+import * as SetTimeUnitToTaskMutation from '../../graphql/mutations/SetTimeUnitToTaskMutation';
 import styled, { ThemedProps } from '../styles/StyledComponents';
 import TaskLabel from '../components/TaskLabel';
+import TimeUnitSelect from '../components/TimeUnitSelect';
 import Icon from '../components/Icon';
 import ItemTypes from '../constants/ItemTypes';
+import { DateOnly } from '../interfaces';
 
 interface WrapperProps {
   isDragging: boolean;
@@ -35,16 +38,18 @@ interface OwnProps {
 
 type Props = OwnProps & {
   updateTitle(title: string): void;
+  setTimeUnit(date: DateOnly, position: number | null): void;
   toggleDone(): void;
   isDragging: boolean;
   connectDragSource: ConnectDragSource;
   connectDragPreview: ConnectDragPreview;
 };
 
-export function TaskItem({
+export function PhaseTaskItem({
   task,
   updateTitle,
   toggleDone,
+  setTimeUnit,
   remove,
   isDragging,
   connectDragSource,
@@ -65,6 +70,7 @@ export function TaskItem({
           onLabelChange={updateTitle}
           onRemoveButtonClick={() => remove(task)}
         />
+        <TimeUnitSelect onSelect={setTimeUnit} />
       </Wrapper>
     </div>,
   );
@@ -113,6 +119,18 @@ const withData = compose(
         ),
     }),
   }),
+  graphql<Response, OwnProps, Props>(SetTimeUnitToTaskMutation.mutation, {
+    props: ({ mutate, ownProps: { task } }) => ({
+      setTimeUnit: (date: DateOnly, position: number | null) =>
+        mutate &&
+        mutate(
+          SetTimeUnitToTaskMutation.buildMutationOptions(
+            { date, position, taskId: task.id },
+            {},
+          ),
+        ),
+    }),
+  }),
   DragSource(ItemTypes.TASK, taskSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview(),
@@ -120,4 +138,4 @@ const withData = compose(
   })),
 );
 
-export default withData(TaskItem);
+export default withData(PhaseTaskItem);

@@ -302,28 +302,19 @@ export type SetProjectToPhaseMutation = {
 };
 
 export type SetTimeUnitToTaskMutationVariables = {
-  timeUnitId: string,
+  date: string,
+  position?: number | null,
   taskId: string,
-  taskUsed?: boolean | null,
 };
 
 export type SetTimeUnitToTaskMutation = {
-  setProjectToPhase:  {
+  setTimeUnitToTask:  {
     id: string,
     title: string,
     done: boolean,
-    project:  {
+    phase:  {
       id: string,
-      title: string,
     } | null,
-    tasks:  Array< {
-      id: string,
-      title: string,
-      done: boolean,
-      phase:  {
-        id: string,
-      } | null,
-    } | null > | null,
   } | null,
 };
 

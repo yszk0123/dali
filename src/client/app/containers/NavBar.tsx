@@ -54,10 +54,18 @@ export function NavBar({ isLogin, onLogout }: Props) {
       <NavBarLink to="/">
         <Icon icon="home" />
       </NavBarLink>
-      <NavBarLink to="/project">Project</NavBarLink>
-      <NavBarLink to="/phase">Phase</NavBarLink>
-      <NavBarLink to="/timeUnit">TimeUnit</NavBarLink>
-      <NavBarLink to="/report">Report</NavBarLink>
+      <NavBarLink to="/project">
+        <Icon icon="tags" />
+      </NavBarLink>
+      <NavBarLink to="/phase">
+        <Icon icon="tasks" />
+      </NavBarLink>
+      <NavBarLink to="/timeUnit">
+        <Icon icon="calendar" />
+      </NavBarLink>
+      <NavBarLink to="/report">
+        <Icon icon="file-text" />
+      </NavBarLink>
       {isLogin && <NavBarButton onClick={onLogout}>Logout</NavBarButton>}
       <Dropdown>
         <NavBarLink to="/options">Options</NavBarLink>
