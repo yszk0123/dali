@@ -68,13 +68,13 @@ export class NavBar extends React.Component<Props, State> {
         <NavBarLink to="/groups">
           <Icon icon="tags" />
         </NavBarLink>
-        <NavBarLink to="/project">
+        <NavBarLink to="/projects">
           <Icon icon="tag" />
         </NavBarLink>
-        <NavBarLink to="/phase">
+        <NavBarLink to="/phases">
           <Icon icon="tasks" />
         </NavBarLink>
-        <NavBarLink to="/timeUnit">
+        <NavBarLink to="/timeUnits">
           <Icon icon="calendar" />
         </NavBarLink>
         <NavBarLink to="/report">

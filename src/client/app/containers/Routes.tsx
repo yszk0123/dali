@@ -42,7 +42,7 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/project/:projectId/phase"
+            path="/projects/:projectId/phases"
             component={PhasePage}
             isLogin={isLogin}
           />
@@ -52,12 +52,12 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/project"
+            path="/projects"
             component={ProjectPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/phase"
+            path="/phases"
             component={PhasePage}
             isLogin={isLogin}
           />
@@ -67,7 +67,7 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/timeUnit/:date"
+            path="/timeUnits/:date"
             component={TimeUnitPage}
             isLogin={isLogin}
           />
@@ -77,7 +77,7 @@ export function Routes({ isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/timeUnit"
+            path="/timeUnits"
             component={TimeUnitPage}
             isLogin={isLogin}
           />

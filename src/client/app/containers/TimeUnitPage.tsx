@@ -71,8 +71,8 @@ export function TimeUnitPage({ date, timeUnits, loading }: Props) {
     <div>
       <DateSwitch
         date={date}
-        previousLink={`/timeUnit/${prev}`}
-        nextLink={`/timeUnit/${next}`}
+        previousLink={`/timeUnits/${prev}`}
+        nextLink={`/timeUnits/${next}`}
       />
       <List>
         {wholeDay}
