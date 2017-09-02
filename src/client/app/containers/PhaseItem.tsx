@@ -3,7 +3,7 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import {
   PhaseItem_phaseFragment,
   PhaseItem_projectsFragment,
-  TaskItem_taskFragment,
+  PhaseTaskItem_taskFragment,
 } from 'schema';
 import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
 import styled, { ThemedProps } from '../styles/StyledComponents';
@@ -39,9 +39,7 @@ const HeaderMain = styled.div`flex-grow: 1;`;
 
 const PhaseTaskItemWrapper = styled.div`margin-left: 1rem;`;
 
-const TrashIcon = styled(Icon)`
-  float: right;
-`;
+const TrashIcon = styled(Icon)`float: right;`;
 
 const TitleInputWrapper = styled.div`margin-top: 0.8rem;`;
 
@@ -53,7 +51,7 @@ interface OwnProps {
 type Props = OwnProps & {
   createTask(title: string): void;
   removePhase: React.MouseEventHandler<HTMLElement>;
-  removeTask(task: TaskItem_taskFragment): void;
+  removeTask(task: PhaseTaskItem_taskFragment): void;
   updateTitle(title: string): void;
   toggleDone(): void;
   setProject(projectId: string | null): void;
@@ -99,15 +97,15 @@ export function PhaseItem({
         {phase.tasks &&
           phase.tasks.map(
             task =>
-              task &&
-              <PhaseTaskItemWrapper>
-                <PhaseTaskItem
-                  key={task.id}
-                  task={task}
-                  phaseId={phase.id}
-                  remove={removeTask}
-                />
-              </PhaseTaskItemWrapper>,
+              task && (
+                <PhaseTaskItemWrapper key={task.id}>
+                  <PhaseTaskItem
+                    task={task}
+                    phaseId={phase.id}
+                    remove={removeTask}
+                  />
+                </PhaseTaskItemWrapper>
+              ),
           )}
         <TitleInputWrapper>
           <TitleInput
@@ -146,7 +144,7 @@ const taskTarget: DropTargetSpec<Props> = {
 const withData = compose(
   graphql<Response, OwnProps, Props>(RemovePhaseTaskMutation.mutation, {
     props: ({ mutate, ownProps: { phase } }) => ({
-      removeTask: (task: TaskItem_taskFragment) =>
+      removeTask: (task: PhaseTaskItem_taskFragment) =>
         mutate &&
         mutate(
           RemovePhaseTaskMutation.buildMutationOptions(

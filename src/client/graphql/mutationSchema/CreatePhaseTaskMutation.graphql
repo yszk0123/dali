@@ -1,4 +1,4 @@
-#import "../querySchema/TaskItem.graphql"
+#import "../querySchema/PhaseTaskItem.graphql"
 
 mutation CreatePhaseTask(
   $title: String!
@@ -19,6 +19,6 @@ mutation CreatePhaseTask(
       id
       title
     }
-    ...TaskItem_task
+    ...PhaseTaskItem_task
   }
 }

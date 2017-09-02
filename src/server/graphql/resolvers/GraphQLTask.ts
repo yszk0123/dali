@@ -91,10 +91,10 @@ export default function createResolvers({
 
         return task;
       },
-      setTimeUnitToTask: async (root, { timeUnitId, taskId }, { user }) => {
-        const timeUnit = await TimeUnit.findOne({
-          where: { id: timeUnitId, ownerId: user.id },
-          rejectOnEmpty: true,
+      setTimeUnitToTask: async (root, { date, position, taskId }, { user }) => {
+        const [timeUnit, _created] = await TimeUnit.findOrCreate({
+          where: { date, position, ownerId: user.id },
+          defaults: { date, position, ownerId: user.id },
         });
         const task = await Task.findOne({
           where: { id: taskId, ownerId: user.id },

@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import {
   PhasePageQuery,
   PhaseItem_phaseFragment,
-  TaskItem_taskFragment,
+  PhaseTaskItem_taskFragment,
 } from 'schema';
 import * as phasePageQuery from '../../graphql/querySchema/PhasePage.graphql';
 import * as CreatePhaseMutation from '../../graphql/mutations/CreatePhaseMutation';
@@ -105,10 +105,11 @@ export class PhasePage extends React.Component<
         {phases &&
           phases.map(
             phase =>
-              phase &&
-              <PhaseItemWrapper key={phase.id}>
-                <PhaseItem phase={phase} projects={projects} />
-              </PhaseItemWrapper>,
+              phase && (
+                <PhaseItemWrapper key={phase.id}>
+                  <PhaseItem phase={phase} projects={projects} />
+                </PhaseItemWrapper>
+              ),
           )}
         <input type="text" value={title} onChange={this.handleTitleChange} />
         <Button onClick={this.handleCreatePhaseClick}>Add</Button>

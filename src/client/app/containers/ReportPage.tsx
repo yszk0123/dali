@@ -54,29 +54,23 @@ export function ReportPage({
       <ClipboardButton target="#reportAsMarkdown" />
       <Button onClick={refetch}>Update</Button>
       <ul>
-        {result.map((task: any) =>
+        {result.map((task: any) => (
           <li key={task.id}>
-            <h3>
-              {task.project}
-            </h3>
+            <h3>{task.project}</h3>
             <ul>
-              {task.tasks.map((task: any) =>
+              {task.tasks.map((task: any) => (
                 <li key={task.id}>
-                  <h4>
-                    {task.phase}
-                  </h4>
+                  <h4>{task.phase}</h4>
                   <ul>
-                    {task.tasks.map((task: any) =>
-                      <li key={task.id}>
-                        {task.title}
-                      </li>,
-                    )}
+                    {task.tasks.map((task: any) => (
+                      <li key={task.id}>{task.title}</li>
+                    ))}
                   </ul>
-                </li>,
-              )}
+                </li>
+              ))}
             </ul>
-          </li>,
-        )}
+          </li>
+        ))}
         <hr />
         <TextArea id="reportAsMarkdown" readOnly value={markdown} />
       </ul>

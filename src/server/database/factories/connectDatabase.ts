@@ -11,12 +11,9 @@ type Output = {
 };
 
 export default async function connectDatabase(): Promise<Output> {
-  const sequelize = new Sequelize(
-    serverConfig.databaseUrl,
-    {
-      dialect: 'postgres',
-    } as any,
-  );
+  const sequelize = new Sequelize(serverConfig.databaseUrl, {
+    dialect: 'postgres',
+  } as any);
   const models: any = {};
 
   modelNames.forEach(name => {

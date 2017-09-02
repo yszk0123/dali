@@ -65,9 +65,7 @@ export class ProjectPage extends React.Component<
 
     return (
       <div>
-        <div>
-          {this.renderProjects()}
-        </div>
+        <div>{this.renderProjects()}</div>
         <div>
           <input type="text" value={title} onChange={this.handleTitleChange} />
           <Button onClick={this.handleAddProjectClick}>Add</Button>

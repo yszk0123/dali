@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled, { ThemedProps } from '../styles/StyledComponents';
+import mapPositionToTimeRange from '../utils/mapPositionToTimeRange';
 
 interface WrapperProps {
   activated: boolean;
@@ -22,14 +23,4 @@ export default function TimeLabel({ activated, position }: Props) {
       {mapPositionToTimeRange(position)}
     </Wrapper>
   );
-}
-
-function mapPositionToTimeRange(position: number): string {
-  const odd = position % 2 === 0;
-  const startHour = Math.floor(position / 2);
-  const endHour = odd ? startHour : startHour + 1;
-  const startMinute = odd ? '00' : '30';
-  const endMinute = !odd ? '00' : '30';
-
-  return `${startHour}:${startMinute}~${endHour}:${endMinute}`;
 }

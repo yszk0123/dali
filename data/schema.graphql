@@ -54,7 +54,7 @@ type Mutation {
   updateTask(taskId: ID!, title: String, description: String, done: Boolean, phaseId: ID, timeUnitId: ID): Task
   removeTask(taskId: ID!): RemoveTaskPayload
   setPhaseToTask(phaseId: ID!, taskId: ID!): Task
-  setTimeUnitToTask(timeUnitId: ID!, taskId: ID!): Task
+  setTimeUnitToTask(date: DateOnly!, position: Int, taskId: ID!): Task
   createTimeUnit(description: String, date: DateOnly!, position: Int): TimeUnit
   updateTimeUnit(timeUnitId: ID!, description: String, date: DateOnly, position: Int): TimeUnit
   moveTaskToTimeUnit(taskId: ID!, timeUnitId: ID!): MoveTaskToTimeUnitPayload

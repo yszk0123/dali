@@ -1,4 +1,4 @@
-#import "./TaskItem.graphql"
+#import "./PhaseTaskItem.graphql"
 
 fragment PhaseItem_phase on Phase {
   id
@@ -10,6 +10,6 @@ fragment PhaseItem_phase on Phase {
   }
   tasks(used: $taskUsed) {
     id
-    ...TaskItem_task
+    ...PhaseTaskItem_task
   }
 }

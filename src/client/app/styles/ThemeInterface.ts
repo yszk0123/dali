@@ -8,6 +8,11 @@ export default interface ThemeInterface {
       color: string;
     };
   };
+  dropDown: {
+    default: {
+      color: string;
+    };
+  };
   timeLabel: {
     fontSize: string;
   };

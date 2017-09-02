@@ -8,9 +8,7 @@ interface Props {
 export default function Card({ title, children }: Props) {
   return (
     <div>
-      <h2>
-        {title}
-      </h2>
+      <h2>{title}</h2>
       {children}
     </div>
   );
