@@ -353,7 +353,7 @@ export type SetTimeUnitToTaskMutationVariables = {
 };
 
 export type SetTimeUnitToTaskMutation = {
-  setTimeUnitToTask:  {
+  setOrCreateTimeUnitToTask:  {
     id: string,
     title: string,
     done: boolean,

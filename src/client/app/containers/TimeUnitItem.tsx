@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import {
+  TimeUnitPageQueryVariables,
   TimeUnitItem_timeUnitFragment,
   TimeUnitTaskItem_taskFragment,
 } from 'schema';
@@ -60,6 +61,7 @@ function RemoveButton({ onClick }: RemoveButtonProps) {
 interface OwnProps {
   date: DateOnly;
   timeUnit: TimeUnitItem_timeUnitFragment;
+  queryVariables: TimeUnitPageQueryVariables;
 }
 
 type Props = OwnProps & {
@@ -164,51 +166,51 @@ const taskTarget: DropTargetSpec<Props> = {
 
 const withData = compose(
   graphql<Response, OwnProps, Props>(RemoveTimeUnitTaskMutation.mutation, {
-    props: ({ mutate, ownProps: { timeUnit } }) => ({
+    props: ({ mutate, ownProps: { timeUnit, queryVariables } }) => ({
       removeTask: (task: TimeUnitTaskItem_taskFragment) =>
         mutate &&
         mutate(
           RemoveTimeUnitTaskMutation.buildMutationOptions(
             { taskId: task.id },
-            { done: false },
+            queryVariables,
             timeUnit,
           ),
         ),
     }),
   }),
   graphql<Response, OwnProps, Props>(RemoveTimeUnitMutation.mutation, {
-    props: ({ mutate, ownProps: { date, timeUnit } }) => ({
+    props: ({ mutate, ownProps: { date, timeUnit, queryVariables } }) => ({
       removeTimeUnit: (title: string) =>
         mutate &&
         mutate(
           RemoveTimeUnitMutation.buildMutationOptions(
             { timeUnitId: timeUnit.id },
-            { date },
+            queryVariables,
           ),
         ),
     }),
   }),
   graphql<Response, OwnProps, Props>(UpdateTimeUnitMutation.mutation, {
-    props: ({ mutate, ownProps: { timeUnit } }) => ({
+    props: ({ mutate, ownProps: { timeUnit, queryVariables } }) => ({
       updateDescription: (description: string) =>
         mutate &&
         mutate(
           UpdateTimeUnitMutation.buildMutationOptions(
             { description, timeUnitId: timeUnit.id },
-            { done: false },
+            queryVariables,
             timeUnit,
           ),
         ),
     }),
   }),
   graphql<Response, OwnProps, Props>(MoveTaskToTimeUnitMutation.mutation, {
-    props: ({ mutate }) => ({
+    props: ({ mutate, ownProps: { queryVariables } }) => ({
       moveTaskToTimeUnit: (taskId: string, timeUnitId: string) =>
         mutate &&
         mutate(
           MoveTaskToTimeUnitMutation.buildMutationOptions(
             { taskId, timeUnitId },
-            {},
+            queryVariables,
           ),
         ),
     }),

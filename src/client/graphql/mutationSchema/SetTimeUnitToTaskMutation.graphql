@@ -1,7 +1,7 @@
 #import "../querySchema/PhaseTaskItem.graphql"
 
 mutation SetTimeUnitToTask($date: DateOnly!, $position: Int, $taskId: ID!) {
-  setTimeUnitToTask(date: $date, position: $position, taskId: $taskId) {
+  setOrCreateTimeUnitToTask(date: $date, position: $position, taskId: $taskId) {
     id
     ...PhaseTaskItem_task
   }

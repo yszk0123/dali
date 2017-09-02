@@ -2,7 +2,11 @@ import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
 import { subDays, addDays } from 'date-fns';
-import { TimeUnitPageQuery, TimeUnitItem_timeUnitFragment } from 'schema';
+import {
+  TimeUnitPageQuery,
+  TimeUnitPageQueryVariables,
+  TimeUnitItem_timeUnitFragment,
+} from 'schema';
 import * as TIME_UNIT_PAGE_QUERY from '../../graphql/querySchema/TimeUnitPage.graphql';
 import styled from '../styles/StyledComponents';
 import DateSwitch from '../components/DateSwitch';
@@ -25,14 +29,22 @@ const ListItem = styled.div`
   align-content: center;
 `;
 
-type OwnProps = RouteComponentProps<any>;
+type OwnProps = RouteComponentProps<any> & {
+  queryVariables: TimeUnitPageQueryVariables;
+};
 
 type Props = QueryProps &
+  OwnProps &
   TimeUnitPageQuery & {
     date: DateOnly;
   };
 
-export function TimeUnitPage({ date, timeUnits, loading }: Props) {
+export function TimeUnitPage({
+  date,
+  timeUnits,
+  loading,
+  queryVariables,
+}: Props) {
   if (loading) {
     return null;
   }
@@ -45,7 +57,11 @@ export function TimeUnitPage({ date, timeUnits, loading }: Props) {
     const { wholeDayTimeUnit, sortedTimeUnits } = parseTimeUnits(timeUnits);
 
     wholeDay = wholeDayTimeUnit ? (
-      <TimeUnitItem date={date} timeUnit={wholeDayTimeUnit} />
+      <TimeUnitItem
+        date={date}
+        timeUnit={wholeDayTimeUnit}
+        queryVariables={queryVariables}
+      />
     ) : (
       <EmptyTimeUnitItem date={date} position={null} />
     );
@@ -53,7 +69,11 @@ export function TimeUnitPage({ date, timeUnits, loading }: Props) {
     times = sortedTimeUnits.map((timeUnit, position) => (
       <ListItem key={position}>
         {timeUnit ? (
-          <TimeUnitItem date={date} timeUnit={timeUnit} />
+          <TimeUnitItem
+            date={date}
+            timeUnit={timeUnit}
+            queryVariables={queryVariables}
+          />
         ) : (
           <EmptyTimeUnitItem date={date} position={position} />
         )}
@@ -111,6 +131,7 @@ const withData = compose(
       ...data,
       date: match.params.date || getToday(),
       loading: data && (data.loading || !data.timeUnits),
+      queryVariables: { date: match.params.date || getToday() },
     }),
   }),
 );
