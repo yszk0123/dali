@@ -29,11 +29,6 @@ export default async function setupAppServer({
     path.join(publicDir, 'favicon.ico'),
   ) as express.RequestHandler);
 
-  // TODO: Don't use process.env.NODE_ENV in production code
-  if (process.env.NODE_ENV !== 'production') {
-    const createDevMiddlewares = require('../middlewares/WebpackDevMiddlewares');
-    app.use(...(createDevMiddlewares.default || createDevMiddlewares)());
-  }
   app.use(graphqlRouter);
   app.use(express.static(publicDir));
 
