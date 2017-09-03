@@ -3,7 +3,7 @@ services:
   dali-app:
     container_name: dali-app
     image: yszk0123/dali-app
-    command: yarn start:with-migrate
+    command: yarn db:migrate && yarn start
     env_file:
       - .env
       - app.env

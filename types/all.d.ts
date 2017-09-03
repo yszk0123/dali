@@ -6,6 +6,10 @@ declare module '*.graphql' {
   export = hoge;
 }
 
+declare module 'react-hot-loader' {
+  export const AppContainer: any;
+}
+
 declare module 'react-dnd-html5-backend' {
   const value: any;
   export default value;

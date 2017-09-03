@@ -8,7 +8,7 @@
     "strict": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es6",
+    "target": "ES2015",
     "jsx": "react",
     "lib": [
       "es5",

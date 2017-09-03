@@ -5,9 +5,9 @@
     "sourceMap": true,
     "allowJs": true,
     "strict": true,
-    "module": "commonjs",
+    "module": "ES2015",
     "moduleResolution": "node",
-    "target": "es6",
+    "target": "ES2015",
     "jsx": "react",
     "lib": [
       "es5",

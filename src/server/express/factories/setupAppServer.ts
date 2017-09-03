@@ -28,6 +28,7 @@ export default async function setupAppServer({
   app.use(favicon(
     path.join(publicDir, 'favicon.ico'),
   ) as express.RequestHandler);
+
   app.use(graphqlRouter);
   app.use(express.static(publicDir));
 

@@ -8,6 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const webpack = require('webpack');
+require('dotenv').config();
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -19,19 +20,22 @@ const sharedPlugins = [
   }),
 ].filter(Boolean);
 
-module.exports = (env = {}) => {
-  const appPort = env.appPort || process.env.APP_PORT || 3000;
-  const graphQLPort = env.graphQLPort || process.env.GRAPHQL_PORT || 3001;
+module.exports = () => {
+  const appPort = process.env.APP_PORT || 3000;
+  const graphQLPort = process.env.GRAPHQL_PORT || 3001;
+  const webpackPort = process.env.WEBPACK_PORT || 3002;
 
   return {
     devtool: isProduction ? undefined : 'source-map',
     entry: {
       app: [
+        'react-hot-loader/patch',
         'whatwg-fetch',
+        !isProduction &&
+          `webpack-dev-server/client?http://localhost:${webpackPort}`,
         'normalize.css',
         'font-awesome/css/font-awesome.min.css',
         './node_modules/react-select/dist/react-select.css',
-        env.autoReload && `webpack-dev-server/client?http://0.0.0.0:${appPort}`,
         './src/client/app/assets/app.css',
         './src/client/app/index.tsx',
       ].filter(Boolean),
@@ -43,10 +47,13 @@ module.exports = (env = {}) => {
     },
     devServer: {
       contentBase: path.join(__dirname, 'dist', 'public'),
-      proxy: { '/graphql': `http://localhost:${graphQLPort}` },
+      port: webpackPort,
       publicPath: '/',
-      historyApiFallback: true,
       stats: { colors: true },
+      proxy: {
+        '**': `http://localhost:${appPort}`,
+        changeOrigin: true,
+      },
       overlay: {
         errors: true,
       },
@@ -62,6 +69,8 @@ module.exports = (env = {}) => {
         title: 'Dali',
       }),
       new HtmlWebpackHarddiskPlugin(),
+      !isProduction && new webpack.HotModuleReplacementPlugin(),
+      !isProduction && new webpack.NoEmitOnErrorsPlugin(),
       new AutoDllPlugin({
         context: __dirname,
         filename: '[name].[hash].js',
@@ -147,7 +156,10 @@ module.exports = (env = {}) => {
           loader: 'babel-loader',
           exclude: /node_modules/,
         },
-        { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
+        {
+          test: /\.tsx?$/,
+          loaders: ['react-hot-loader/webpack', 'awesome-typescript-loader'],
+        },
         {
           enforce: 'pre',
           test: /\.js$/,
