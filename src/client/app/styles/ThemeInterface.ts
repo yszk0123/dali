@@ -6,6 +6,8 @@ export default interface ThemeInterface {
   navBar: {
     default: {
       color: string;
+      heightPx: number;
+      compactHeightPx: number;
     };
   };
   dropDown: {

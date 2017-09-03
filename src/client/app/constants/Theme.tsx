@@ -8,6 +8,8 @@ const Theme: ThemeInterface = {
   navBar: {
     default: {
       color: '#c8cfef',
+      heightPx: 44,
+      compactHeightPx: 32,
     },
   },
   dropDown: {
