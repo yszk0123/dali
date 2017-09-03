@@ -21,6 +21,7 @@ import TimeUnitPage from './TimeUnitPage';
 import ReportPage from './ReportPage';
 
 const SCROLL_HEIGHT = 44;
+const Z_INDEX = 1000;
 
 const MainContent = styled.div`padding: 0 0;`;
 
@@ -37,7 +38,7 @@ export function Routes({ y, isLogin }: Props) {
 
   return (
     <div>
-      <FixedHeader height={height}>
+      <FixedHeader height={height} zIndex={Z_INDEX}>
         <NavBar />
       </FixedHeader>
       <MainContent>

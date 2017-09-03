@@ -8,6 +8,7 @@ import FixedHeader from './FixedHeader';
 import Day from './Day';
 
 const HEIGHT = 32;
+const Z_INDEX = 100;
 
 const Wrapper = styled.div`
   display: flex;
@@ -45,7 +46,7 @@ type Props = {
 
 export default function DateSwitch({ date, previousLink, nextLink }: Props) {
   return (
-    <FixedHeader height={HEIGHT} fullWidth>
+    <FixedHeader height={HEIGHT} fullWidth zIndex={Z_INDEX}>
       <Wrapper>
         <GoToPreviousButton to={previousLink}>
           &laquo; Previous

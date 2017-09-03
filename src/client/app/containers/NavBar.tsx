@@ -9,10 +9,13 @@ import Button from '../components/Button';
 import Icon from '../components/Icon';
 import DropDownMenu from '../components/DropDownMenu';
 
+const DROPDOWN_Z_INDEX = 999;
+
 const NavBarWrapper = styled.div`
   display: flex;
   position: fixed;
   top: 0;
+  padding: 0 1.6rem;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -31,6 +34,12 @@ const NavBarButton = styled(Button)`
 `;
 
 const NavBarLink = styled(Link)`
+  padding: 0.8rem 0.4rem;
+  color: ${({ theme }) => theme.navBar.default.color};
+  text-decoration: none;
+`;
+
+const DropDownLink = styled(Link)`
   padding: 0.8rem 0.4rem;
   color: ${({ theme }) => theme.dropDown.default.color};
   text-decoration: none;
@@ -70,32 +79,25 @@ export class NavBar extends React.Component<Props, State> {
 
     return (
       <NavBarWrapper style={{ height }}>
-        <NavBarLink to="/groups">
-          <Icon icon="tags" />
-        </NavBarLink>
-        <NavBarLink to="/projects">
-          <Icon icon="tag" />
-        </NavBarLink>
-        <NavBarLink to="/timeUnits">
-          <Icon icon="calendar" />
-        </NavBarLink>
-        <NavBarLink to="/report">
-          <Icon icon="file-text" />
-        </NavBarLink>
+        <NavBarLink to="/groups">GROUP</NavBarLink>
+        <NavBarLink to="/projects">PROJECT</NavBarLink>
+        <NavBarLink to="/timeUnits">TIMEUNIT</NavBarLink>
+        <NavBarLink to="/report">REPORT</NavBarLink>
         <DropDownMenu
           isOpen={isOpen}
+          zIndex={DROPDOWN_Z_INDEX}
           toggleElement={<Icon icon="bars" onClick={this.handleToggle} />}
-          onRequestClose={this.handleClose}
+          onClick={this.handleClose}
         >
-          <NavBarLink to="/phases">
+          <DropDownLink to="/phases">
             <Icon icon="tasks" /> Phases
-          </NavBarLink>
-          <NavBarLink to="/settings">
+          </DropDownLink>
+          <DropDownLink to="/settings">
             <Icon icon="cog" /> Settings
-          </NavBarLink>
-          <NavBarLink to="/profile">
+          </DropDownLink>
+          <DropDownLink to="/profile">
             <Icon icon="user" /> Profile
-          </NavBarLink>
+          </DropDownLink>
           {isLogin && <NavBarButton onClick={onLogout}>Logout</NavBarButton>}
         </DropDownMenu>
       </NavBarWrapper>
