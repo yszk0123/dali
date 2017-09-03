@@ -1,11 +1,8 @@
 version: "3"
 services:
   dali-app:
-    command: yarn watch:start
-    environment:
-      APP_PORT: 3000
+    command: yarn start:dev
     ports:
       - "3000:3000"
-      - "3001:3001"
     volumes:
       - .:/app:cached
