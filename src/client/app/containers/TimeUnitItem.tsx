@@ -31,7 +31,7 @@ const SmallIconButtonGroup = styled(IconButtonGroup)`
 `;
 
 const AddTaskToTimeUnitFormWrapper = styled.div`margin-top: 0.8rem;`;
-const StyledButton = styled(Button)`margin-left: 1.6rem;`;
+const StyledButton = styled(Button)`margin-left: 3.2rem;`;
 
 const Header = styled.span`
   display: flex;
@@ -40,7 +40,13 @@ const Header = styled.span`
   justify-content: space-between;
 `;
 
-const TimeUnitTaskItemWrapper = styled.div`margin-left: 1.6rem;`;
+const Partition = styled.div`
+  height: 1px;
+  border-top: 1px solid rgba(180, 188, 255, 0.6);
+  flex-grow: 1;
+`;
+
+const TimeUnitTaskItemWrapper = styled.div`margin-left: 2.4rem;`;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -103,6 +109,7 @@ export class TimeUnitItem extends React.Component<
       isOver,
     } = this.props;
     const { isEditing } = this.state;
+    const hasTask = timeUnit.tasks && timeUnit.tasks.length;
 
     return connectDropTarget(
       <div>
@@ -111,9 +118,12 @@ export class TimeUnitItem extends React.Component<
             {timeUnit.position != null && (
               <TimeLabel activated position={timeUnit.position} />
             )}
-            <SmallIconButtonGroup>
-              <RemoveButton onClick={removeTimeUnit} />
-            </SmallIconButtonGroup>
+            <Partition />
+            {!hasTask && (
+              <SmallIconButtonGroup>
+                <RemoveButton onClick={removeTimeUnit} />
+              </SmallIconButtonGroup>
+            )}
           </Header>
           {timeUnit.tasks &&
             timeUnit.tasks.map(
