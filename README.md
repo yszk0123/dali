@@ -10,6 +10,10 @@ Create a `.env` file in the root directory.
 `.env`:
 
 ```
+APP_PORT=80
+GRAPHQL_PORT=3001
+WEBPACK_PORT=3002
+
 NGINX_FILES_PATH=./nginx
 POSTGRES_DB=dali
 POSTGRES_PASSWORD=password
@@ -20,8 +24,6 @@ RUN_MIGRATE=false
 `app.env`:
 
 ```
-APP_PORT=80
-GRAPHQL_PORT=3001
 DATABASE_URL=postgres://foobar:password@dali-database:5432/dali
 SECRET=secret
 VIRTUAL_HOST=localhost
@@ -34,8 +36,7 @@ LETSENCRYPT_HOST=app.example.com
 # Development
 
 - `$ yarn` installs dependencies
-- `$ yarn watch` watches file change
-- `$ yarn watch:start` starts the development server
+- `$ yarn watch` starts the development server
 - `$ yarn watch:test` runs test suite in watch mode
 - `$ yarn test` runs the complete test suite
 - `$ docker-compose -f docker-compose.yml -f docker-compose.development.yml up -d` prepares services
@@ -43,7 +44,6 @@ LETSENCRYPT_HOST=app.example.com
 ## How to Update Schema
 
 - `$ yarn graphql:generate` updates schema file
-- `$ yarn watch:start` restarts the server
 
 Make sure to commit `data/schema.*` after update.
 
