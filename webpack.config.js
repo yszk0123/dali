@@ -27,11 +27,12 @@ module.exports = (env = {}) => {
     devtool: isProduction ? undefined : 'source-map',
     entry: {
       app: [
+        'react-hot-loader/patch',
         'whatwg-fetch',
         'normalize.css',
         'font-awesome/css/font-awesome.min.css',
         './node_modules/react-select/dist/react-select.css',
-        env.autoReload && `webpack-dev-server/client?http://0.0.0.0:${appPort}`,
+        !isProduction && 'webpack-hot-middleware/client',
         './src/client/app/assets/app.css',
         './src/client/app/index.tsx',
       ].filter(Boolean),
@@ -62,6 +63,8 @@ module.exports = (env = {}) => {
         title: 'Dali',
       }),
       new HtmlWebpackHarddiskPlugin(),
+      !isProduction && new webpack.HotModuleReplacementPlugin(),
+      !isProduction && new webpack.NoEmitOnErrorsPlugin(),
       new AutoDllPlugin({
         context: __dirname,
         filename: '[name].[hash].js',
@@ -147,7 +150,10 @@ module.exports = (env = {}) => {
           loader: 'babel-loader',
           exclude: /node_modules/,
         },
-        { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
+        {
+          test: /\.tsx?$/,
+          loaders: ['react-hot-loader/webpack', 'awesome-typescript-loader'],
+        },
         {
           enforce: 'pre',
           test: /\.js$/,

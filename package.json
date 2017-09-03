@@ -86,6 +86,7 @@
     "react-dnd-html5-backend": "^2.4.1",
     "react-dnd-touch-backend": "^0.3.14",
     "react-dom": "^15.5.4",
+    "react-hot-loader": "next",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-select": "^1.0.0-rc.5",
@@ -143,7 +144,8 @@
     "typescript": "^2.5.2",
     "url-loader": "^0.5.9",
     "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-hot-middleware": "^2.18.2",
     "webpack-manifest-plugin": "^1.3.1"
   }
 }
