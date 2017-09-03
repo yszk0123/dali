@@ -30,7 +30,11 @@ const SmallIconButtonGroup = styled(IconButtonGroup)`
   font-size: ${({ theme }) => theme.shared.fontSize};
 `;
 
-const AddTaskToTimeUnitFormWrapper = styled.div`margin-top: 0.8rem;`;
+const AddTaskToTimeUnitFormWrapper = styled.div`
+  margin-left: 5.6rem;
+  margin-top: 0.8rem;
+`;
+
 const StyledButton = styled(Button)`margin-left: 3.2rem;`;
 
 const Header = styled.span`

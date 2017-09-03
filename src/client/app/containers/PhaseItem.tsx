@@ -43,7 +43,7 @@ const PhaseTaskItemWrapper = styled.div`margin-left: 1.6rem;`;
 const TrashIcon = styled(Icon)`float: right;`;
 
 const TitleInputWrapper = styled.div`
-  margin-left: 1.6rem;
+  margin-left: 5.6rem;
   margin-top: 0.8rem;
 `;
 
