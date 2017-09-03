@@ -71,9 +71,6 @@ export class NavBar extends React.Component<Props, State> {
         <NavBarLink to="/projects">
           <Icon icon="tag" />
         </NavBarLink>
-        <NavBarLink to="/phases">
-          <Icon icon="tasks" />
-        </NavBarLink>
         <NavBarLink to="/timeUnits">
           <Icon icon="calendar" />
         </NavBarLink>
@@ -85,8 +82,15 @@ export class NavBar extends React.Component<Props, State> {
           toggleElement={<Icon icon="bars" onClick={this.handleToggle} />}
           onRequestClose={this.handleClose}
         >
-          <NavBarLink to="/options">Options</NavBarLink>
-          <NavBarLink to="/profile">Profile</NavBarLink>
+          <NavBarLink to="/phases">
+            <Icon icon="tasks" /> Phases
+          </NavBarLink>
+          <NavBarLink to="/settings">
+            <Icon icon="cog" /> Settings
+          </NavBarLink>
+          <NavBarLink to="/profile">
+            <Icon icon="user" /> Profile
+          </NavBarLink>
           {isLogin && <NavBarButton onClick={onLogout}>Logout</NavBarButton>}
         </DropDownMenu>
       </NavBarWrapper>
