@@ -26,7 +26,7 @@ module.exports = () => {
   const webpackPort = process.env.WEBPACK_PORT || 3002;
 
   return {
-    devtool: isProduction ? undefined : 'source-map',
+    // devtool: isProduction ? undefined : 'source-map',
     entry: {
       app: [
         'react-hot-loader/patch',
@@ -160,15 +160,15 @@ module.exports = () => {
           test: /\.tsx?$/,
           loaders: ['react-hot-loader/webpack', 'awesome-typescript-loader'],
         },
-        {
-          enforce: 'pre',
-          test: /\.js$/,
-          loader: 'source-map-loader',
-          include: [
-            path.resolve(__dirname, 'data'),
-            path.resolve(__dirname, 'src'),
-          ],
-        },
+        // {
+        //   enforce: 'pre',
+        //   test: /\.js$/,
+        //   loader: 'source-map-loader',
+        //   include: [
+        //     path.resolve(__dirname, 'data'),
+        //     path.resolve(__dirname, 'src'),
+        //   ],
+        // },
       ],
     },
     stats: {
