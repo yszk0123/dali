@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { graphql, compose, ChildProps } from 'react-apollo';
+import { withStateHandlers } from 'recompose';
+import { graphql, QueryProps, compose, ChildProps } from 'react-apollo';
 import {
   AddTaskToTimeUnitFormQuery,
   AddTaskToTimeUnitForm_tasksFragment,
@@ -8,7 +9,7 @@ import {
 import styled from '../styles/StyledComponents';
 import TitleSelect from '../components/TitleSelect';
 import TitleInput from '../components/TitleInput';
-import * as addTaskToTimeUnitFormQuery from '../../graphql/querySchema/AddTaskToTimeUnitForm.graphql';
+import * as ADD_TASK_TO_TIME_UNIT_FORM_QUERY from '../../graphql/querySchema/AddTaskToTimeUnitForm.graphql';
 import * as CreateTimeUnitTaskMutation from '../../graphql/mutations/CreateTimeUnitTaskMutation';
 import * as AddTaskToTimeUnitMutation from '../../graphql/mutations/AddTaskToTimeUnitMutation';
 
@@ -23,12 +24,16 @@ const ErrorMessage = styled.span`
 type Data = Response & AddTaskToTimeUnitFormQuery;
 
 interface OwnProps {
+  isActivated: boolean;
   timeUnit: TimeUnitItem_timeUnitFragment;
   onClose?(): void;
 }
 
 type Props = AddTaskToTimeUnitFormQuery &
+  QueryProps &
   OwnProps & {
+    activate(): void;
+    deactivate(): void;
     createTask(phaseId: string | null, title: string): void;
     addTask(task: AddTaskToTimeUnitForm_tasksFragment): void;
   };
@@ -74,17 +79,18 @@ export class CreateTimeUnitTaskForm extends React.Component<
   };
 
   private close() {
-    const { onClose } = this.props;
+    const { deactivate, onClose } = this.props;
 
     this.setState({
       error: null,
     });
 
     onClose && onClose();
+    deactivate();
   }
 
   render() {
-    const { createTask, phases, tasks } = this.props;
+    const { createTask, activate, phases, tasks } = this.props;
     const { selectedPhaseId, error } = this.state;
 
     const mappedPhases = (phases || []).map(
@@ -116,11 +122,13 @@ export class CreateTimeUnitTaskForm extends React.Component<
           defaultLabel="Phase"
           selectedId={selectedPhaseId}
           onChange={this.handlePhaseSelect}
+          onOpen={activate}
           items={mappedPhases}
         />
         <TitleSelect
           defaultLabel="Task"
           selectedId=""
+          onOpen={activate}
           onCreate={this.handleCreate}
           onChange={this.handleAdd}
           onBlur={this.handleBlur}
@@ -134,10 +142,11 @@ export class CreateTimeUnitTaskForm extends React.Component<
 }
 
 const withData = compose(
-  graphql<Data, OwnProps, Props>(addTaskToTimeUnitFormQuery, {
-    options: {
+  graphql<Data, OwnProps, Props>(ADD_TASK_TO_TIME_UNIT_FORM_QUERY, {
+    options: ({ isActivated }) => ({
       fetchPolicy: 'network-only',
-    },
+      skip: !isActivated,
+    }),
     props: ({ data }) => ({
       ...data,
     }),
@@ -171,4 +180,10 @@ const withData = compose(
   }),
 );
 
-export default withData(CreateTimeUnitTaskForm);
+export default withStateHandlers(
+  ({ isActivated = false }) => ({ isActivated }),
+  {
+    activate: () => () => ({ isActivated: true }),
+    deactivate: () => () => ({ isActivated: false }),
+  },
+)(withData(CreateTimeUnitTaskForm));

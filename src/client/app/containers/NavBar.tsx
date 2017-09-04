@@ -4,17 +4,21 @@ import { graphql, compose, withApollo, QueryProps } from 'react-apollo';
 import { NavBarQuery } from 'schema';
 import * as LogoutMutation from '../../graphql/mutations/LogoutMutation';
 import * as navBarQuery from '../../graphql/querySchema/NavBar.graphql';
-import styled from '../styles/StyledComponents';
+import styled, { ThemedProps } from '../styles/StyledComponents';
 import Button from '../components/Button';
 import Icon from '../components/Icon';
 import DropDownMenu from '../components/DropDownMenu';
 
+const DROPDOWN_Z_INDEX = 999;
+
 const NavBarWrapper = styled.div`
   display: flex;
+  position: fixed;
+  top: 0;
+  padding: 0 1.6rem;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 0.6rem 1.2rem;
   overflow-x: scroll;
   background: #112ca5;
   font-size: 1.4rem;
@@ -31,16 +35,26 @@ const NavBarButton = styled(Button)`
 
 const NavBarLink = styled(Link)`
   padding: 0.8rem 0.4rem;
+  color: ${({ theme }) => theme.navBar.default.color};
+  text-decoration: none;
+`;
+
+const DropDownLink = styled(Link)`
+  padding: 0.8rem 0.4rem;
   color: ${({ theme }) => theme.dropDown.default.color};
   text-decoration: none;
 `;
 
-interface NavBarProps {
-  isLogin: boolean;
-  onLogout(): void;
-}
+interface OwnProps {}
 
-type Props = Response & NavBarQuery & QueryProps & NavBarProps;
+type Props = Response &
+  NavBarQuery &
+  QueryProps &
+  OwnProps & {
+    height: number;
+    isLogin: boolean;
+    onLogout(): void;
+  };
 
 interface State {
   isOpen: boolean;
@@ -60,33 +74,30 @@ export class NavBar extends React.Component<Props, State> {
   };
 
   render() {
-    const { isLogin, onLogout } = this.props;
+    const { height, isLogin, onLogout } = this.props;
     const { isOpen } = this.state;
 
     return (
-      <NavBarWrapper>
-        <NavBarLink to="/groups">
-          <Icon icon="tags" />
-        </NavBarLink>
-        <NavBarLink to="/projects">
-          <Icon icon="tag" />
-        </NavBarLink>
-        <NavBarLink to="/phases">
-          <Icon icon="tasks" />
-        </NavBarLink>
-        <NavBarLink to="/timeUnits">
-          <Icon icon="calendar" />
-        </NavBarLink>
-        <NavBarLink to="/report">
-          <Icon icon="file-text" />
-        </NavBarLink>
+      <NavBarWrapper style={{ height }}>
+        <NavBarLink to="/groups">GROUP</NavBarLink>
+        <NavBarLink to="/projects">PROJECT</NavBarLink>
+        <NavBarLink to="/timeUnits">TIMEUNIT</NavBarLink>
+        <NavBarLink to="/report">REPORT</NavBarLink>
         <DropDownMenu
           isOpen={isOpen}
+          zIndex={DROPDOWN_Z_INDEX}
           toggleElement={<Icon icon="bars" onClick={this.handleToggle} />}
-          onRequestClose={this.handleClose}
+          onClick={this.handleClose}
         >
-          <NavBarLink to="/options">Options</NavBarLink>
-          <NavBarLink to="/profile">Profile</NavBarLink>
+          <DropDownLink to="/phases">
+            <Icon icon="tasks" /> Phases
+          </DropDownLink>
+          <DropDownLink to="/settings">
+            <Icon icon="cog" /> Settings
+          </DropDownLink>
+          <DropDownLink to="/profile">
+            <Icon icon="user" /> Profile
+          </DropDownLink>
           {isLogin && <NavBarButton onClick={onLogout}>Logout</NavBarButton>}
         </DropDownMenu>
       </NavBarWrapper>
@@ -95,7 +106,7 @@ export class NavBar extends React.Component<Props, State> {
 }
 
 const withData = compose(
-  graphql<Response & NavBarQuery, {}, Response & QueryProps>(navBarQuery, {
+  graphql<Response & NavBarQuery, OwnProps, Props>(navBarQuery, {
     props: ({ data }) => ({
       isLogin: data && data.currentUser,
     }),

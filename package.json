@@ -10,8 +10,7 @@
     "build": "npm-run-all clean -p build:*",
     "build:assets": "cpx src/public/**/*.* dist/public",
     "build:client": "webpack",
-    "build:graphql":
-      "cpx 'src/server/graphql/**/*.graphql' dist/server/graphql",
+    "build:graphql": "cpx 'src/server/graphql/**/*.graphql' dist/server/graphql",
     "build:server": "tsc -p tsconfig.server.json",
     "clean": "rm -rf dist",
     "db:migrate": "sequelize db:migrate",
@@ -20,31 +19,22 @@
     "db:migrate:version": "sequelize version",
     "db:seed": "echo \"To Be Implemented\" && exit 1",
     "db:seed:reset": "node -r babel-register ./scripts/generateFakeData.js",
-    "format":
-      "prettier './src/**/*.{js,jsx,ts,tsx}' --write --single-quote --trailing-comma all",
-    "graphql:generate":
-      "npm-run-all graphql:generate:schema graphql:generate:json graphql:generate:type",
-    "graphql:generate:json":
-      "apollo-codegen introspect-schema data/schema.graphql --output data/schema.json",
-    "graphql:generate:schema":
-      "node -r babel-register ./scripts/generateSchema.js",
-    "graphql:generate:type":
-      "apollo-codegen generate 'src/client/graphql/**/*.graphql' --schema data/schema.json --target typescript --output data/schema.ts",
+    "format": "prettier './src/**/*.{js,jsx,ts,tsx}' --write --single-quote --trailing-comma all",
+    "graphql:generate": "npm-run-all graphql:generate:schema graphql:generate:json graphql:generate:type",
+    "graphql:generate:json": "apollo-codegen introspect-schema data/schema.graphql --output data/schema.json",
+    "graphql:generate:schema": "node -r babel-register ./scripts/generateSchema.js",
+    "graphql:generate:type": "apollo-codegen generate 'src/client/graphql/**/*.graphql' --schema data/schema.json --target typescript --output data/schema.ts",
     "lint": "eslint ./src ./data --ext .ts --ext tsx --fix",
     "release": "NODE_ENV=production yarn build",
     "repl": "node -r babel-register -r ./scripts/repl.js",
     "start": "node ./dist/server/index.js",
-    "start:dev":
-      "npm-run-all clean build:assets build:server -p watch:server start:dev:server",
-    "start:dev:server":
-      "nodemon --watch ./dist/server --watch ./dist/shared --delay 2 ./dist/server/index.js",
+    "start:dev": "npm-run-all clean build:assets build:server -p watch:server start:dev:server",
+    "start:dev:server": "nodemon --watch ./dist/server --watch ./dist/shared --delay 2 ./dist/server/index.js",
     "test": "NODE_ENV=test jest --config jestrc.json",
-    "test:ci":
-      "jest --config jestrc.json --coverage && cat ./coverage/lcov.info | coveralls",
+    "test:ci": "jest --config jestrc.json --coverage && cat ./coverage/lcov.info | coveralls",
     "watch": "run-p watch:client:*",
     "watch:client:client": "webpack-dev-server --hotOnly",
-    "watch:client:graphql-type":
-      "nodemon --exec 'yarn graphql:generate:type' --watch ./src/client/graphql --ext graphql --delay 1",
+    "watch:client:graphql-type": "nodemon --exec 'yarn graphql:generate:type' --watch ./src/client/graphql --ext graphql --delay 1",
     "watch:server": "run-p watch:server:*",
     "watch:server:graphql": "yarn build:graphql -- --watch",
     "watch:server:server": "yarn build:server -- --watch",
@@ -62,6 +52,7 @@
     "@types/react-redux": "^5.0.6",
     "@types/react-router-dom": "^4.0.7",
     "@types/react-select": "^1.0.54",
+    "@types/recompose": "^0.24.1",
     "@types/redux-logger": "^3.0.2",
     "@types/sequelize": "^4.0.73",
     "@types/serve-favicon": "^2.2.29",
@@ -102,6 +93,7 @@
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-select": "^1.0.0-rc.5",
+    "recompose": "^0.25.0",
     "redux": "^3.7.2",
     "sequelize": "^4.8.0",
     "sequelize-cli": "^2.8.0",

@@ -11,10 +11,15 @@ import * as PHASE_PAGE_QUERY from '../../graphql/querySchema/PhasePage.graphql';
 import * as CreatePhaseMutation from '../../graphql/mutations/CreatePhaseMutation';
 import styled from '../styles/StyledComponents';
 import Button from '../components/Button';
+import TitleInput from '../components/TitleInput';
 import Dummy from '../Dummy';
 import PhaseItem from './PhaseItem';
 
+const Wrapper = styled.div`font-size: 1.6rem;`;
+
 const PhaseItemWrapper = styled.div`margin: 1.6rem 0;`;
+
+const TitleInputWrapper = styled.div`margin: 1.6rem 0.8rem;`;
 
 type Data = Response & PhasePageQuery;
 
@@ -30,7 +35,6 @@ type Props = QueryProps &
   };
 
 interface State {
-  title: string;
   phaseDone: boolean;
   taskUsed: boolean;
 }
@@ -39,24 +43,7 @@ export class PhasePage extends React.Component<
   ChildProps<Props, Response>,
   State
 > {
-  state = { title: '', phaseDone: false, taskUsed: false };
-
-  private handleCreatePhaseClick = (event: React.MouseEvent<HTMLElement>) => {
-    const { title } = this.state;
-
-    if (title) {
-      this.props.createPhase(title);
-      this.setState({
-        title: '',
-      });
-    }
-  };
-
-  private handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      title: event.target.value,
-    });
-  };
+  state = { phaseDone: false, taskUsed: false };
 
   private handlePhaseDoneChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -81,15 +68,21 @@ export class PhasePage extends React.Component<
   };
 
   render() {
-    const { isLogin, phases, projects, queryVariables } = this.props;
-    const { title, phaseDone, taskUsed } = this.state;
+    const {
+      isLogin,
+      phases,
+      projects,
+      createPhase,
+      queryVariables,
+    } = this.props;
+    const { phaseDone, taskUsed } = this.state;
 
     if (!isLogin) {
       return <span>Loading...</span>;
     }
 
     return (
-      <div>
+      <Wrapper>
         <label htmlFor="phaseDone">PhaseDone: </label>
         <input
           id="phaseDone"
@@ -117,9 +110,15 @@ export class PhasePage extends React.Component<
                 </PhaseItemWrapper>
               ),
           )}
-        <input type="text" value={title} onChange={this.handleTitleChange} />
-        <Button onClick={this.handleCreatePhaseClick}>Add</Button>
-      </div>
+        <TitleInputWrapper>
+          <TitleInput
+            defaultLabel="New Phase"
+            title=""
+            fullWidth
+            onChange={createPhase}
+          />
+        </TitleInputWrapper>
+      </Wrapper>
     );
   }
 }

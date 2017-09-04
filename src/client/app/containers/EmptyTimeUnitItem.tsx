@@ -8,18 +8,25 @@ import {
   PhaseTaskItem_taskFragment,
 } from 'schema';
 import styled from '../styles/StyledComponents';
-import Icon from '../components/Icon';
 import TimeLabel from '../components/TimeLabel';
 import { DateOnly } from '../interfaces';
 import * as CreateTimeUnitMutation from '../../graphql/mutations/CreateTimeUnitMutation';
 
 const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
   cursor: pointer;
   padding: 0 1rem;
   color: #888;
 `;
 
 const StyledTimeLabel = styled(TimeLabel)`margin-left: 0.8rem;`;
+
+const Partition = styled.div`
+  height: 1px;
+  border-top: 1px solid rgba(221, 221, 238, 0.3);
+  flex-grow: 1;
+`;
 
 interface OwnProps {
   date: DateOnly;
@@ -33,8 +40,8 @@ type Props = OwnProps & {
 export function EmptyTimeUnitItem({ create, position }: Props) {
   return (
     <Wrapper onClick={create}>
-      <Icon icon="plus" />
       {position == null ? 'Whole day' : <StyledTimeLabel position={position} />}
+      <Partition />
     </Wrapper>
   );
 }

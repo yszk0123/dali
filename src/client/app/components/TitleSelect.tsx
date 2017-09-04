@@ -18,6 +18,7 @@ interface Props {
   onCreate?(title: string): void;
   onChange(id: string | null): void;
   onBlur?(): void;
+  onOpen?(): void;
 }
 
 interface State {
@@ -103,7 +104,7 @@ export default class TitleSelect extends React.Component<Props, State> {
   }
 
   render() {
-    const { defaultLabel, fullWidth, items } = this.props;
+    const { defaultLabel, fullWidth, items, onOpen } = this.props;
     const { title, selectedId, isEditing } = this.state;
 
     if (!isEditing) {
@@ -128,6 +129,7 @@ export default class TitleSelect extends React.Component<Props, State> {
         autofocus
         openOnFocus
         value={selectedId || ''}
+        onOpen={onOpen}
         onChange={this.handleChange}
         onBlur={this.handleBlur}
         options={options}

@@ -3,9 +3,12 @@ import { Switch, withRouter } from 'react-router-dom';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { RoutesQuery } from 'schema';
 import styled from '../styles/StyledComponents';
+import Theme from '../constants/Theme';
 import * as routesQuery from '../../graphql/querySchema/Routes.graphql';
 import PropsRoute from '../../shared/components/PropsRoute';
 import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
+import withScrollSpy from '../components/withScrollSpy';
+import FixedHeader from '../components/FixedHeader';
 import LoginPage from './LoginPage';
 import NavBar from './NavBar';
 import GroupPage from './GroupPage';
@@ -17,18 +20,27 @@ import ProfilePage from './ProfilePage';
 import TimeUnitPage from './TimeUnitPage';
 import ReportPage from './ReportPage';
 
-const MainContent = styled.div`padding: 0.8rem 0;`;
+const SCROLL_HEIGHT = 44;
+const Z_INDEX = 1000;
 
-interface RoutesProps {
-  isLogin: boolean;
-}
+const MainContent = styled.div`padding: 0 0;`;
 
-type Props = QueryProps & RoutesQuery & RoutesProps;
+interface OwnProps {}
 
-export function Routes({ isLogin }: Props) {
+type Props = QueryProps &
+  RoutesQuery & {
+    y: number | null;
+    isLogin: boolean;
+  };
+
+export function Routes({ y, isLogin }: Props) {
+  const height = calculateHeight(y || 0);
+
   return (
     <div>
-      <NavBar />
+      <FixedHeader height={height} zIndex={Z_INDEX}>
+        <NavBar />
+      </FixedHeader>
       <MainContent>
         <Switch>
           <PropsPrivateRoute
@@ -101,12 +113,21 @@ export function Routes({ isLogin }: Props) {
 }
 
 const withData = compose(
-  graphql<RoutesQuery, {}, Props>(routesQuery, {
+  graphql<RoutesQuery, OwnProps, Props>(routesQuery, {
     props: ({ data }) => ({
       isLogin: data && data.currentUser,
     }),
   }),
+  withScrollSpy(y => Math.min(y, SCROLL_HEIGHT)),
   withRouter,
 );
 
 export default withData(Routes);
+
+function calculateHeight(y: number): number {
+  const { compactHeightPx, heightPx } = Theme.navBar.default;
+
+  return (
+    heightPx - Math.min(1, y / SCROLL_HEIGHT) * (heightPx - compactHeightPx)
+  );
+}

@@ -30,8 +30,12 @@ const SmallIconButtonGroup = styled(IconButtonGroup)`
   font-size: ${({ theme }) => theme.shared.fontSize};
 `;
 
-const AddTaskToTimeUnitFormWrapper = styled.div`margin-top: 0.8rem;`;
-const StyledButton = styled(Button)`margin-left: 1.6rem;`;
+const AddTaskToTimeUnitFormWrapper = styled.div`
+  margin-left: 5.6rem;
+  margin-top: 0.8rem;
+`;
+
+const StyledButton = styled(Button)`margin-left: 3.2rem;`;
 
 const Header = styled.span`
   display: flex;
@@ -40,7 +44,13 @@ const Header = styled.span`
   justify-content: space-between;
 `;
 
-const TimeUnitTaskItemWrapper = styled.div`margin-left: 1.6rem;`;
+const Partition = styled.div`
+  height: 1px;
+  border-top: 1px solid rgba(180, 188, 255, 0.6);
+  flex-grow: 1;
+`;
+
+const TimeUnitTaskItemWrapper = styled.div`margin-left: 2.4rem;`;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -73,71 +83,45 @@ type Props = OwnProps & {
   isOver: boolean;
 };
 
-interface State {
-  isEditing: boolean;
-}
+export function TimeUnitItem({
+  removeTimeUnit,
+  timeUnit,
+  removeTask,
+  connectDropTarget,
+  updateDescription,
+  isOver,
+}: Props) {
+  const hasTask = timeUnit.tasks && timeUnit.tasks.length;
 
-export class TimeUnitItem extends React.Component<
-  ChildProps<Props, Response>,
-  State
-> {
-  state = {
-    isEditing: false,
-  };
-
-  private handleOpenForm = () => {
-    this.setState({ isEditing: true });
-  };
-
-  private handleCloseForm = () => {
-    this.setState({ isEditing: false });
-  };
-
-  render() {
-    const {
-      removeTimeUnit,
-      timeUnit,
-      removeTask,
-      connectDropTarget,
-      updateDescription,
-      isOver,
-    } = this.props;
-    const { isEditing } = this.state;
-
-    return connectDropTarget(
-      <div>
-        <Wrapper isOver={isOver}>
-          <Header>
-            {timeUnit.position != null && (
-              <TimeLabel activated position={timeUnit.position} />
-            )}
+  return connectDropTarget(
+    <div>
+      <Wrapper isOver={isOver}>
+        <Header>
+          {timeUnit.position != null && (
+            <TimeLabel activated position={timeUnit.position} />
+          )}
+          <Partition />
+          {!hasTask && (
             <SmallIconButtonGroup>
               <RemoveButton onClick={removeTimeUnit} />
             </SmallIconButtonGroup>
-          </Header>
-          {timeUnit.tasks &&
-            timeUnit.tasks.map(
-              task =>
-                task && (
-                  <TimeUnitTaskItemWrapper key={task.id}>
-                    <TimeUnitTaskItem task={task} remove={removeTask} />
-                  </TimeUnitTaskItemWrapper>
-                ),
-            )}
-          {isEditing ? (
-            <AddTaskToTimeUnitFormWrapper>
-              <AddTaskToTimeUnitForm
-                timeUnit={timeUnit}
-                onClose={this.handleCloseForm}
-              />
-            </AddTaskToTimeUnitFormWrapper>
-          ) : (
-            <StyledButton onClick={this.handleOpenForm}>Add</StyledButton>
           )}
-        </Wrapper>
-      </div>,
-    );
-  }
+        </Header>
+        {timeUnit.tasks &&
+          timeUnit.tasks.map(
+            task =>
+              task && (
+                <TimeUnitTaskItemWrapper key={task.id}>
+                  <TimeUnitTaskItem task={task} remove={removeTask} />
+                </TimeUnitTaskItemWrapper>
+              ),
+          )}
+        <AddTaskToTimeUnitFormWrapper>
+          <AddTaskToTimeUnitForm timeUnit={timeUnit} />
+        </AddTaskToTimeUnitFormWrapper>
+      </Wrapper>
+    </div>,
+  );
 }
 
 const taskTarget: DropTargetSpec<Props> = {

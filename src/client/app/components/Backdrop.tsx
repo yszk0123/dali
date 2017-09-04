@@ -1,7 +1,12 @@
-import styled from '../styles/StyledComponents';
+import styled, { ThemedProps } from '../styles/StyledComponents';
+
+interface Props {
+  zIndex?: number;
+}
 
 const Backdrop = styled.div`
-  position: absolute;
+  position: fixed;
+  z-index: ${({ zIndex }: ThemedProps<Props>) => '' + zIndex};
   left: 0;
   right: 0;
   top: 0;

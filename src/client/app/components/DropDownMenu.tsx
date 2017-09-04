@@ -1,9 +1,14 @@
 import * as React from 'react';
-import styled from '../styles/StyledComponents';
+import styled, { ThemedProps } from '../styles/StyledComponents';
 import Backdrop from './Backdrop';
 
+interface ContentProps {
+  zIndex?: number;
+}
+
 const Content = styled.div`
-  position: absolute;
+  position: fixed;
+  z-index: ${({ zIndex }: ThemedProps<ContentProps>) => '' + zIndex};
   right: 1rem;
   padding: 1rem;
   display: flex;
@@ -16,6 +21,8 @@ interface Props {
   children: React.ReactNode[];
   toggleElement: React.ReactElement<any>;
   isOpen: boolean;
+  zIndex?: number;
+  onClick?(): void;
   onRequestClose?(): void;
 }
 
@@ -23,21 +30,27 @@ interface State {}
 
 export default class DropDownMenu extends React.Component<Props, State> {
   private handleClick = () => {
-    const { isOpen, onRequestClose } = this.props;
+    const { isOpen, onClick, onRequestClose } = this.props;
 
     if (isOpen && onRequestClose) {
       onRequestClose();
     }
+
+    onClick && onClick();
   };
 
   render() {
-    const { toggleElement, isOpen, children } = this.props;
+    const { toggleElement, isOpen, zIndex, children, onClick } = this.props;
 
     return (
       <div>
         {toggleElement}
-        {isOpen && <Backdrop onClick={this.handleClick} />}
-        {isOpen && <Content>{children}</Content>}
+        {isOpen && <Backdrop zIndex={zIndex} onClick={this.handleClick} />}
+        {isOpen && (
+          <Content zIndex={zIndex} onClick={onClick}>
+            {children}
+          </Content>
+        )}
       </div>
     );
   }

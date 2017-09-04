@@ -4,13 +4,19 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import styled, { withTheme, ThemedProps } from '../styles/StyledComponents';
 import { DateOnly } from '../interfaces';
+import FixedHeader from './FixedHeader';
 import Day from './Day';
+
+const HEIGHT = 32;
+const Z_INDEX = 100;
 
 const Wrapper = styled.div`
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
   font-size: 1.4rem;
+  background: white;
 `;
 
 const StyledDay = styled(Day)`
@@ -40,12 +46,14 @@ type Props = {
 
 export default function DateSwitch({ date, previousLink, nextLink }: Props) {
   return (
-    <Wrapper>
-      <GoToPreviousButton to={previousLink}>
-        &laquo; Previous
-      </GoToPreviousButton>
-      <StyledDay date={date} />
-      <GoToNextButton to={nextLink}>Next &raquo;</GoToNextButton>
-    </Wrapper>
+    <FixedHeader height={HEIGHT} fullWidth zIndex={Z_INDEX}>
+      <Wrapper>
+        <GoToPreviousButton to={previousLink}>
+          &laquo; Previous
+        </GoToPreviousButton>
+        <StyledDay date={date} />
+        <GoToNextButton to={nextLink}>Next &raquo;</GoToNextButton>
+      </Wrapper>
+    </FixedHeader>
   );
 }

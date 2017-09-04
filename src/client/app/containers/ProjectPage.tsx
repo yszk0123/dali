@@ -4,10 +4,15 @@ import { ProjectPageQuery } from 'schema';
 import * as PROJECT_PAGE_QUERY from '../../graphql/querySchema/ProjectPage.graphql';
 import * as CreateProjectMutation from '../../graphql/mutations/CreateProjectMutation';
 import styled from '../styles/StyledComponents';
+import TitleInput from '../components/TitleInput';
 import Button from '../components/Button';
 import ProjectItem from './ProjectItem';
 
+const Wrapper = styled.div`font-size: 1.6rem;`;
+
 const StyledProjectItem = styled(ProjectItem)`margin: 1rem;`;
+
+const TitleInputWrapper = styled.div`margin: 1.6rem 0.8rem;`;
 
 type Data = Response & ProjectPageQuery;
 
@@ -19,33 +24,12 @@ type Props = QueryProps &
     createProject(title: string): void;
   };
 
-interface State {
-  title: string;
-}
+interface State {}
 
 export class ProjectPage extends React.Component<
   ChildProps<Props, Response>,
   State
 > {
-  state = { title: '' };
-
-  private handleAddProjectClick = (event: React.MouseEvent<HTMLElement>) => {
-    const { title } = this.state;
-
-    if (title) {
-      this.props.createProject(title);
-      this.setState({
-        title: '',
-      });
-    }
-  };
-
-  private handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      title: event.target.value,
-    });
-  };
-
   private renderProjects() {
     const { projects, groups } = this.props;
 
@@ -65,21 +49,24 @@ export class ProjectPage extends React.Component<
   }
 
   render() {
-    const { isLogin } = this.props;
-    const { title } = this.state;
+    const { isLogin, createProject } = this.props;
 
     if (!isLogin) {
       return <span>Loading...</span>;
     }
 
     return (
-      <div>
+      <Wrapper>
         <div>{this.renderProjects()}</div>
-        <div>
-          <input type="text" value={title} onChange={this.handleTitleChange} />
-          <Button onClick={this.handleAddProjectClick}>Add</Button>
-        </div>
-      </div>
+        <TitleInputWrapper>
+          <TitleInput
+            defaultLabel="New Project"
+            title=""
+            fullWidth
+            onChange={createProject}
+          />
+        </TitleInputWrapper>
+      </Wrapper>
     );
   }
 }
