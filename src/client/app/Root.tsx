@@ -12,9 +12,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import dataIdFromObject from '../shared/utils/dataIdFromObject';
 import isTouchSupported from '../shared/utils/isTouchSupported';
 import configureStore from '../redux/factories/configureStore';
-import Theme from './constants/Theme';
+import Theme from '../shared/constants/Theme';
+import { ThemeProvider } from '../shared/styles/StyledComponents';
 import App from './containers/App';
-import { ThemeProvider } from './styles/StyledComponents';
 
 const store = configureStore();
 

@@ -23,7 +23,7 @@
     "graphql:generate": "npm-run-all graphql:generate:schema graphql:generate:json graphql:generate:type",
     "graphql:generate:json": "apollo-codegen introspect-schema data/schema.graphql --output data/schema.json",
     "graphql:generate:schema": "node -r babel-register ./scripts/generateSchema.js",
-    "graphql:generate:type": "apollo-codegen generate 'src/client/graphql/**/*.graphql' --schema data/schema.json --target typescript --output data/schema.ts",
+    "graphql:generate:type": "apollo-codegen generate 'src/client/**/*.graphql' --schema data/schema.json --target typescript --output data/schema.ts",
     "lint": "eslint ./src ./data --ext .ts --ext tsx --fix",
     "release": "NODE_ENV=production yarn build",
     "repl": "node -r babel-register -r ./scripts/repl.js",

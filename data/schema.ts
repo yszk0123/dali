@@ -1,40 +1,28 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
-export type AddPhaseToProjectMutationVariables = {
-  phaseId: string,
-  projectId: string,
-};
-
-export type AddPhaseToProjectMutation = {
-  addPhaseToProject:  {
+export type LogoutMutation = {
+  logout:  {
     id: string,
-    title: string,
-    group:  {
-      id: string,
-      title: string,
-    } | null,
   } | null,
 };
 
-export type AddTaskToTimeUnitMutationVariables = {
-  timeUnitId: string,
-  taskId: string,
+export type AppQuery = {
+  currentUser:  {
+    id: string,
+    nickname: string,
+  } | null,
 };
 
-export type AddTaskToTimeUnitMutation = {
-  task:  {
+export type NavBarQuery = {
+  currentUser:  {
     id: string,
-    title: string,
-    done: boolean,
-    phase:  {
-      id: string,
-      title: string,
-      project:  {
-        id: string,
-        title: string,
-      } | null,
-    } | null,
+  } | null,
+};
+
+export type RoutesQuery = {
+  currentUser:  {
+    id: string,
   } | null,
 };
 
@@ -46,6 +34,55 @@ export type CreateGroupMutation = {
   createGroup:  {
     id: string,
     title: string,
+  } | null,
+};
+
+export type RemoveGroupMutationVariables = {
+  groupId: string,
+};
+
+export type RemoveGroupMutation = {
+  removeGroup:  {
+    removedGroupId: string,
+  } | null,
+};
+
+export type UpdateGroupMutationVariables = {
+  groupId: string,
+  title?: string | null,
+};
+
+export type UpdateGroupMutation = {
+  updateGroup:  {
+    id: string,
+    title: string,
+  } | null,
+};
+
+export type GroupPageQuery = {
+  groups:  Array< {
+    id: string,
+    title: string,
+  } | null > | null,
+  currentUser:  {
+    id: string,
+  } | null,
+};
+
+export type LoginMutationVariables = {
+  email: string,
+  password: string,
+};
+
+export type LoginMutation = {
+  login:  {
+    id: string,
+  } | null,
+};
+
+export type LoginPageQuery = {
+  currentUser:  {
+    id: string,
   } | null,
 };
 
@@ -97,6 +134,192 @@ export type CreatePhaseTaskMutation = {
   } | null,
 };
 
+export type MoveTaskToPhaseMutationVariables = {
+  taskId: string,
+  phaseId: string,
+};
+
+export type MoveTaskToPhaseMutation = {
+  moveTaskToPhase:  {
+    task:  {
+      id: string,
+      title: string,
+      done: boolean,
+      phase:  {
+        id: string,
+      } | null,
+    } | null,
+    sourcePhase:  {
+      id: string,
+    } | null,
+    targetPhase:  {
+      id: string,
+    } | null,
+  } | null,
+};
+
+export type RemovePhaseMutationVariables = {
+  phaseId: string,
+};
+
+export type RemovePhaseMutation = {
+  removePhase:  {
+    removedPhaseId: string | null,
+  } | null,
+};
+
+export type RemovePhaseTaskMutationVariables = {
+  taskId: string,
+};
+
+export type RemovePhaseTaskMutation = {
+  removeTask:  {
+    removedTaskId: string | null,
+  } | null,
+};
+
+export type SetProjectToPhaseMutationVariables = {
+  phaseId: string,
+  projectId: string,
+  taskUsed?: boolean | null,
+};
+
+export type SetProjectToPhaseMutation = {
+  setProjectToPhase:  {
+    id: string,
+    title: string,
+    done: boolean,
+    project:  {
+      id: string,
+      title: string,
+    } | null,
+    tasks:  Array< {
+      id: string,
+      title: string,
+      done: boolean,
+      phase:  {
+        id: string,
+      } | null,
+    } | null > | null,
+  } | null,
+};
+
+export type SetTimeUnitToTaskMutationVariables = {
+  date: string,
+  position?: number | null,
+  taskId: string,
+};
+
+export type SetTimeUnitToTaskMutation = {
+  setOrCreateTimeUnitToTask:  {
+    id: string,
+    title: string,
+    done: boolean,
+    phase:  {
+      id: string,
+    } | null,
+  } | null,
+};
+
+export type UpdatePhaseMutationVariables = {
+  phaseId: string,
+  title?: string | null,
+  description?: string | null,
+  done?: boolean | null,
+  projectId?: string | null,
+  taskUsed?: boolean | null,
+};
+
+export type UpdatePhaseMutation = {
+  updatePhase:  {
+    id: string,
+    title: string,
+    done: boolean,
+    project:  {
+      id: string,
+      title: string,
+    } | null,
+    tasks:  Array< {
+      id: string,
+      title: string,
+      done: boolean,
+      phase:  {
+        id: string,
+      } | null,
+    } | null > | null,
+  } | null,
+};
+
+export type UpdatePhaseTaskMutationVariables = {
+  taskId: string,
+  title?: string | null,
+  description?: string | null,
+  done?: boolean | null,
+  phaseId?: string | null,
+  timeUnitId?: string | null,
+};
+
+export type UpdatePhaseTaskMutation = {
+  updateTask:  {
+    id: string,
+    title: string,
+    done: boolean,
+    phase:  {
+      id: string,
+    } | null,
+  } | null,
+};
+
+export type PhasePageQueryVariables = {
+  groupId?: string | null,
+  projectId?: string | null,
+  phaseDone?: boolean | null,
+  taskUsed?: boolean | null,
+};
+
+export type PhasePageQuery = {
+  phases:  Array< {
+    id: string,
+    title: string,
+    done: boolean,
+    project:  {
+      id: string,
+      title: string,
+    } | null,
+    tasks:  Array< {
+      id: string,
+      title: string,
+      done: boolean,
+      phase:  {
+        id: string,
+      } | null,
+    } | null > | null,
+  } | null > | null,
+  projects:  Array< {
+    id: string,
+    title: string,
+  } | null > | null,
+  currentUser:  {
+    id: string,
+  } | null,
+};
+
+export type AddPhaseToProjectMutationVariables = {
+  phaseId: string,
+  projectId: string,
+};
+
+export type AddPhaseToProjectMutation = {
+  addPhaseToProject:  {
+    id: string,
+    title: string,
+    group:  {
+      id: string,
+      title: string,
+    } | null,
+  } | null,
+};
+
 export type CreateProjectMutationVariables = {
   title: string,
 };
@@ -108,6 +331,178 @@ export type CreateProjectMutation = {
     group:  {
       id: string,
       title: string,
+    } | null,
+  } | null,
+};
+
+export type RemoveProjectMutationVariables = {
+  projectId: string,
+};
+
+export type RemoveProjectMutation = {
+  removeProject:  {
+    removedProjectId: string,
+  } | null,
+};
+
+export type SetGroupToProjectMutationVariables = {
+  groupId: string,
+  projectId: string,
+};
+
+export type SetGroupToProjectMutation = {
+  setGroupToProject:  {
+    id: string,
+    title: string,
+    group:  {
+      id: string,
+      title: string,
+    } | null,
+  } | null,
+};
+
+export type UpdateProjectMutationVariables = {
+  projectId: string,
+  title?: string | null,
+  groupId?: string | null,
+};
+
+export type UpdateProjectMutation = {
+  updateProject:  {
+    id: string,
+    title: string,
+    group:  {
+      id: string,
+      title: string,
+    } | null,
+  } | null,
+};
+
+export type ProjectPageQuery = {
+  projects:  Array< {
+    id: string,
+    title: string,
+    group:  {
+      id: string,
+      title: string,
+    } | null,
+  } | null > | null,
+  groups:  Array< {
+    id: string,
+    title: string,
+  } | null > | null,
+  currentUser:  {
+    id: string,
+  } | null,
+};
+
+export type ReportPageQueryVariables = {
+  date: string,
+};
+
+export type ReportPageQuery = {
+  timeUnits:  Array< {
+    id: string,
+    date: string,
+    tasks:  Array< {
+      id: string,
+      title: string,
+      done: boolean,
+      phase:  {
+        id: string,
+        title: string,
+        project:  {
+          id: string,
+          title: string,
+        } | null,
+      } | null,
+    } | null > | null,
+  } | null > | null,
+};
+
+export type SignupMutationVariables = {
+  email: string,
+  password: string,
+  nickname: string,
+  firstName?: string | null,
+  lastName?: string | null,
+};
+
+export type SignupMutation = {
+  signup:  {
+    id: string,
+  } | null,
+};
+
+export type SignupPageQuery = {
+  currentUser:  {
+    id: string,
+  } | null,
+};
+
+export type UpdateTaskMutationVariables = {
+  taskId: string,
+  title?: string | null,
+  description?: string | null,
+  done?: boolean | null,
+  phaseId?: string | null,
+  timeUnitId?: string | null,
+};
+
+export type UpdateTaskMutation = {
+  updateTask:  {
+    id: string,
+    title: string,
+    phase:  {
+      id: string,
+      title: string,
+    } | null,
+  } | null,
+};
+
+export type TaskPageQueryVariables = {
+  taskId: string,
+};
+
+export type TaskPageQuery = {
+  task:  {
+    id: string,
+    title: string,
+    phase:  {
+      id: string,
+      title: string,
+    } | null,
+  } | null,
+  phases:  Array< {
+    id: string,
+    title: string,
+    project:  {
+      id: string,
+      title: string,
+    } | null,
+  } | null > | null,
+  currentUser:  {
+    id: string,
+  } | null,
+};
+
+export type AddTaskToTimeUnitMutationVariables = {
+  timeUnitId: string,
+  taskId: string,
+};
+
+export type AddTaskToTimeUnitMutation = {
+  task:  {
+    id: string,
+    title: string,
+    done: boolean,
+    phase:  {
+      id: string,
+      title: string,
+      project:  {
+        id: string,
+        title: string,
+      } | null,
     } | null,
   } | null,
 };
@@ -163,47 +558,6 @@ export type CreateTimeUnitTaskMutation = {
   } | null,
 };
 
-export type LoginMutationVariables = {
-  email: string,
-  password: string,
-};
-
-export type LoginMutation = {
-  login:  {
-    id: string,
-  } | null,
-};
-
-export type LogoutMutation = {
-  logout:  {
-    id: string,
-  } | null,
-};
-
-export type MoveTaskToPhaseMutationVariables = {
-  taskId: string,
-  phaseId: string,
-};
-
-export type MoveTaskToPhaseMutation = {
-  moveTaskToPhase:  {
-    task:  {
-      id: string,
-      title: string,
-      done: boolean,
-      phase:  {
-        id: string,
-      } | null,
-    } | null,
-    sourcePhase:  {
-      id: string,
-    } | null,
-    targetPhase:  {
-      id: string,
-    } | null,
-  } | null,
-};
-
 export type MoveTaskToTimeUnitMutationVariables = {
   taskId: string,
   timeUnitId: string,
@@ -230,46 +584,6 @@ export type MoveTaskToTimeUnitMutation = {
     targetTimeUnit:  {
       id: string,
     } | null,
-  } | null,
-};
-
-export type RemoveGroupMutationVariables = {
-  groupId: string,
-};
-
-export type RemoveGroupMutation = {
-  removeGroup:  {
-    removedGroupId: string,
-  } | null,
-};
-
-export type RemovePhaseMutationVariables = {
-  phaseId: string,
-};
-
-export type RemovePhaseMutation = {
-  removePhase:  {
-    removedPhaseId: string | null,
-  } | null,
-};
-
-export type RemovePhaseTaskMutationVariables = {
-  taskId: string,
-};
-
-export type RemovePhaseTaskMutation = {
-  removeTask:  {
-    removedTaskId: string | null,
-  } | null,
-};
-
-export type RemoveProjectMutationVariables = {
-  projectId: string,
-};
-
-export type RemoveProjectMutation = {
-  removeProject:  {
-    removedProjectId: string,
   } | null,
 };
 
@@ -300,177 +614,6 @@ export type RemoveTimeUnitTaskMutation = {
         id: string,
         title: string,
       } | null,
-    } | null,
-  } | null,
-};
-
-export type SetGroupToProjectMutationVariables = {
-  groupId: string,
-  projectId: string,
-};
-
-export type SetGroupToProjectMutation = {
-  setGroupToProject:  {
-    id: string,
-    title: string,
-    group:  {
-      id: string,
-      title: string,
-    } | null,
-  } | null,
-};
-
-export type SetProjectToPhaseMutationVariables = {
-  phaseId: string,
-  projectId: string,
-  taskUsed?: boolean | null,
-};
-
-export type SetProjectToPhaseMutation = {
-  setProjectToPhase:  {
-    id: string,
-    title: string,
-    done: boolean,
-    project:  {
-      id: string,
-      title: string,
-    } | null,
-    tasks:  Array< {
-      id: string,
-      title: string,
-      done: boolean,
-      phase:  {
-        id: string,
-      } | null,
-    } | null > | null,
-  } | null,
-};
-
-export type SetTimeUnitToTaskMutationVariables = {
-  date: string,
-  position?: number | null,
-  taskId: string,
-};
-
-export type SetTimeUnitToTaskMutation = {
-  setOrCreateTimeUnitToTask:  {
-    id: string,
-    title: string,
-    done: boolean,
-    phase:  {
-      id: string,
-    } | null,
-  } | null,
-};
-
-export type SignupMutationVariables = {
-  email: string,
-  password: string,
-  nickname: string,
-  firstName?: string | null,
-  lastName?: string | null,
-};
-
-export type SignupMutation = {
-  signup:  {
-    id: string,
-  } | null,
-};
-
-export type UpdateGroupMutationVariables = {
-  groupId: string,
-  title?: string | null,
-};
-
-export type UpdateGroupMutation = {
-  updateGroup:  {
-    id: string,
-    title: string,
-  } | null,
-};
-
-export type UpdatePhaseMutationVariables = {
-  phaseId: string,
-  title?: string | null,
-  description?: string | null,
-  done?: boolean | null,
-  projectId?: string | null,
-  taskUsed?: boolean | null,
-};
-
-export type UpdatePhaseMutation = {
-  updatePhase:  {
-    id: string,
-    title: string,
-    done: boolean,
-    project:  {
-      id: string,
-      title: string,
-    } | null,
-    tasks:  Array< {
-      id: string,
-      title: string,
-      done: boolean,
-      phase:  {
-        id: string,
-      } | null,
-    } | null > | null,
-  } | null,
-};
-
-export type UpdatePhaseTaskMutationVariables = {
-  taskId: string,
-  title?: string | null,
-  description?: string | null,
-  done?: boolean | null,
-  phaseId?: string | null,
-  timeUnitId?: string | null,
-};
-
-export type UpdatePhaseTaskMutation = {
-  updateTask:  {
-    id: string,
-    title: string,
-    done: boolean,
-    phase:  {
-      id: string,
-    } | null,
-  } | null,
-};
-
-export type UpdateProjectMutationVariables = {
-  projectId: string,
-  title?: string | null,
-  groupId?: string | null,
-};
-
-export type UpdateProjectMutation = {
-  updateProject:  {
-    id: string,
-    title: string,
-    group:  {
-      id: string,
-      title: string,
-    } | null,
-  } | null,
-};
-
-export type UpdateTaskMutationVariables = {
-  taskId: string,
-  title?: string | null,
-  description?: string | null,
-  done?: boolean | null,
-  phaseId?: string | null,
-  timeUnitId?: string | null,
-};
-
-export type UpdateTaskMutation = {
-  updateTask:  {
-    id: string,
-    title: string,
-    phase:  {
-      id: string,
-      title: string,
     } | null,
   } | null,
 };
@@ -551,149 +694,6 @@ export type AddTaskToTimeUnitFormQuery = {
   } | null > | null,
 };
 
-export type AppQuery = {
-  currentUser:  {
-    id: string,
-    nickname: string,
-  } | null,
-};
-
-export type GroupPageQuery = {
-  groups:  Array< {
-    id: string,
-    title: string,
-  } | null > | null,
-  currentUser:  {
-    id: string,
-  } | null,
-};
-
-export type LoginPageQuery = {
-  currentUser:  {
-    id: string,
-  } | null,
-};
-
-export type NavBarQuery = {
-  currentUser:  {
-    id: string,
-  } | null,
-};
-
-export type PhasePageQueryVariables = {
-  groupId?: string | null,
-  projectId?: string | null,
-  phaseDone?: boolean | null,
-  taskUsed?: boolean | null,
-};
-
-export type PhasePageQuery = {
-  phases:  Array< {
-    id: string,
-    title: string,
-    done: boolean,
-    project:  {
-      id: string,
-      title: string,
-    } | null,
-    tasks:  Array< {
-      id: string,
-      title: string,
-      done: boolean,
-      phase:  {
-        id: string,
-      } | null,
-    } | null > | null,
-  } | null > | null,
-  projects:  Array< {
-    id: string,
-    title: string,
-  } | null > | null,
-  currentUser:  {
-    id: string,
-  } | null,
-};
-
-export type ProjectPageQuery = {
-  projects:  Array< {
-    id: string,
-    title: string,
-    group:  {
-      id: string,
-      title: string,
-    } | null,
-  } | null > | null,
-  groups:  Array< {
-    id: string,
-    title: string,
-  } | null > | null,
-  currentUser:  {
-    id: string,
-  } | null,
-};
-
-export type ReportPageQueryVariables = {
-  date: string,
-};
-
-export type ReportPageQuery = {
-  timeUnits:  Array< {
-    id: string,
-    date: string,
-    tasks:  Array< {
-      id: string,
-      title: string,
-      done: boolean,
-      phase:  {
-        id: string,
-        title: string,
-        project:  {
-          id: string,
-          title: string,
-        } | null,
-      } | null,
-    } | null > | null,
-  } | null > | null,
-};
-
-export type RoutesQuery = {
-  currentUser:  {
-    id: string,
-  } | null,
-};
-
-export type SignupPageQuery = {
-  currentUser:  {
-    id: string,
-  } | null,
-};
-
-export type TaskPageQueryVariables = {
-  taskId: string,
-};
-
-export type TaskPageQuery = {
-  task:  {
-    id: string,
-    title: string,
-    phase:  {
-      id: string,
-      title: string,
-    } | null,
-  } | null,
-  phases:  Array< {
-    id: string,
-    title: string,
-    project:  {
-      id: string,
-      title: string,
-    } | null,
-  } | null > | null,
-  currentUser:  {
-    id: string,
-  } | null,
-};
-
 export type TimeUnitPageQueryVariables = {
   date?: string | null,
 };
@@ -717,29 +717,6 @@ export type TimeUnitPageQuery = {
       } | null,
     } | null > | null,
   } | null > | null,
-};
-
-export type ProjectItem_projectFragment = {
-  id: string,
-  title: string,
-  group:  {
-    id: string,
-    title: string,
-  } | null,
-};
-
-export type TimeUnitTaskItem_taskFragment = {
-  id: string,
-  title: string,
-  done: boolean,
-  phase:  {
-    id: string,
-    title: string,
-    project:  {
-      id: string,
-      title: string,
-    } | null,
-  } | null,
 };
 
 export type GroupItem_groupFragment = {
@@ -774,6 +751,57 @@ export type PhaseItem_phaseFragment = {
   } | null > | null,
 };
 
+export type PhaseItem_projectsFragment = {
+  id: string,
+  title: string,
+};
+
+export type ProjectItem_projectFragment = {
+  id: string,
+  title: string,
+  group:  {
+    id: string,
+    title: string,
+  } | null,
+};
+
+export type ProjectItem_groupsFragment = {
+  id: string,
+  title: string,
+};
+
+export type TaskPage_taskFragment = {
+  id: string,
+  title: string,
+  phase:  {
+    id: string,
+    title: string,
+  } | null,
+};
+
+export type TaskPage_phasesFragment = {
+  id: string,
+  title: string,
+  project:  {
+    id: string,
+    title: string,
+  } | null,
+};
+
+export type TimeUnitTaskItem_taskFragment = {
+  id: string,
+  title: string,
+  done: boolean,
+  phase:  {
+    id: string,
+    title: string,
+    project:  {
+      id: string,
+      title: string,
+    } | null,
+  } | null,
+};
+
 export type TimeUnitItem_timeUnitFragment = {
   id: string,
   date: string,
@@ -793,15 +821,6 @@ export type TimeUnitItem_timeUnitFragment = {
   } | null > | null,
 };
 
-export type TaskPage_taskFragment = {
-  id: string,
-  title: string,
-  phase:  {
-    id: string,
-    title: string,
-  } | null,
-};
-
 export type AddTaskToTimeUnitForm_phasesFragment = {
   id: string,
   title: string,
@@ -819,25 +838,6 @@ export type AddTaskToTimeUnitForm_tasksFragment = {
   id: string,
   title: string,
   phase:  {
-    id: string,
-    title: string,
-  } | null,
-};
-
-export type PhaseItem_projectsFragment = {
-  id: string,
-  title: string,
-};
-
-export type ProjectItem_groupsFragment = {
-  id: string,
-  title: string,
-};
-
-export type TaskPage_phasesFragment = {
-  id: string,
-  title: string,
-  project:  {
     id: string,
     title: string,
   } | null,

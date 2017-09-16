@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { graphql, QueryProps } from 'react-apollo';
 import { AppQuery } from 'schema';
-import * as appQuery from '../../graphql/querySchema/App.graphql';
-import ErrorOutput from '../components/ErrorOutput';
-import LoadingIndicator from '../components/LoadingIndicator';
+import * as appQuery from '../querySchema/App.graphql';
+import ErrorOutput from '../../shared/components/ErrorOutput';
+import LoadingIndicator from '../../shared/components/LoadingIndicator';
 import Routes from './Routes';
 
 interface AppProps {

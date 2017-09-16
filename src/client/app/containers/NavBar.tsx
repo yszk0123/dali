@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { graphql, compose, withApollo, QueryProps } from 'react-apollo';
 import { NavBarQuery } from 'schema';
-import * as LogoutMutation from '../../graphql/mutations/LogoutMutation';
-import * as navBarQuery from '../../graphql/querySchema/NavBar.graphql';
-import styled, { ThemedProps } from '../styles/StyledComponents';
-import Button from '../components/Button';
-import Icon from '../components/Icon';
-import DropDownMenu from '../components/DropDownMenu';
+import * as LogoutMutation from '../mutations/LogoutMutation';
+import * as navBarQuery from '../querySchema/NavBar.graphql';
+import styled, { ThemedProps } from '../../shared/styles/StyledComponents';
+import Button from '../../shared/components/Button';
+import Icon from '../../shared/components/Icon';
+import DropDownMenu from '../../shared/components/DropDownMenu';
 
 const DROPDOWN_Z_INDEX = 999;
 
