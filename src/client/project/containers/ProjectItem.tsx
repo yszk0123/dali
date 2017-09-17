@@ -5,10 +5,8 @@ import {
   ProjectItem_projectFragment,
   ProjectItem_groupsFragment,
 } from 'schema';
-import styled from '../../shared/styles/StyledComponents';
-import Icon from '../../shared/components/Icon';
-import TitleInput from '../../shared/components/TitleInput';
-import TitleSelect from '../../shared/components/TitleSelect';
+import { styled } from '../../shared/styles';
+import { Icon, TitleInput, TitleSelect } from '../../shared/components';
 import { RemoveProject, UpdateProject } from '../mutations';
 
 const Wrapper = styled.div`

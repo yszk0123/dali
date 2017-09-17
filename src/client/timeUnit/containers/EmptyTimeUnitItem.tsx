@@ -7,9 +7,9 @@ import {
   TimeUnitItem_timeUnitFragment,
   PhaseTaskItem_taskFragment,
 } from 'schema';
-import styled from '../../shared/styles/StyledComponents';
+import { styled } from '../../shared/styles';
 import TimeLabel from '../components/TimeLabel';
-import { DateOnly } from '../../app/interfaces';
+import { DateOnly } from '../../shared/interfaces';
 import { CreateTimeUnit } from '../mutations';
 
 const Wrapper = styled.div`

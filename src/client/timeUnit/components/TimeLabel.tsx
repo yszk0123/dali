@@ -1,6 +1,6 @@
 import * as React from 'react';
-import styled, { ThemedProps } from '../../shared/styles/StyledComponents';
-import mapPositionToTimeRange from '../../shared/utils/mapPositionToTimeRange';
+import { styled, ThemedProps } from '../../shared/styles';
+import { mapPositionToTimeRange } from '../../shared/utils';
 
 interface WrapperProps {
   activated: boolean;

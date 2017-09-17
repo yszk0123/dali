@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import { camelCase, omitBy, isUndefined } from 'lodash';
 import { ISource, IResolvers, IModels, IContext } from '../interfaces';
-import resolver from '../utils/resolver';
+import { resolver } from '../utils';
 
 interface Input {
   models: IModels;

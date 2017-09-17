@@ -2,8 +2,8 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import styled, { withTheme, ThemedProps } from '../styles/StyledComponents';
-import { DateOnly } from '../../app/interfaces';
+import { styled, withTheme, ThemedProps } from '../styles';
+import { DateOnly } from '../interfaces';
 import FixedHeader from './FixedHeader';
 import Day from './Day';
 

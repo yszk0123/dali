@@ -2,22 +2,24 @@ import * as React from 'react';
 import { Switch, withRouter } from 'react-router-dom';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { RoutesQuery } from 'schema';
-import styled from '../../shared/styles/StyledComponents';
-import Theme from '../../shared/constants/Theme';
-import * as routesQuery from '../querySchema/Routes.graphql';
-import PropsRoute from '../../shared/components/PropsRoute';
-import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
-import withScrollSpy from '../../shared/components/withScrollSpy';
-import FixedHeader from '../../shared/components/FixedHeader';
-import LoginPage from '../../login/containers/LoginPage';
-import GroupPage from '../../group/containers/GroupPage';
-import ProjectPage from '../../project/containers/ProjectPage';
-import TaskPage from '../../task/containers/TaskPage';
-import SignupPage from '../../signup/containers/SignupPage';
-import PhasePage from '../../phase/containers/PhasePage';
-import ProfilePage from '../../profile/containers/ProfilePage';
-import TimeUnitPage from '../../timeUnit/containers/TimeUnitPage';
-import ReportPage from '../../report/containers/ReportPage';
+import { styled } from '../../shared/styles';
+import { Theme } from '../../shared/constants';
+import * as ROUTES_QUERY from '../querySchema/Routes.graphql';
+import {
+  PropsRoute,
+  PropsPrivateRoute,
+  FixedHeader,
+  withScrollSpy,
+} from '../../shared/components';
+import { LoginPage } from '../../login';
+import { GroupPage } from '../../group';
+import { ProjectPage } from '../../project';
+import { TaskPage } from '../../task';
+import { SignupPage } from '../../signup';
+import { PhasePage } from '../../phase';
+import { ProfilePage } from '../../profile';
+import { TimeUnitPage } from '../../timeUnit';
+import { ReportPage } from '../../report';
 import NavBar from './NavBar';
 
 const SCROLL_HEIGHT = 44;
@@ -113,7 +115,7 @@ export function Routes({ y, isLogin }: Props) {
 }
 
 const withData = compose(
-  graphql<RoutesQuery, OwnProps, Props>(routesQuery, {
+  graphql<RoutesQuery, OwnProps, Props>(ROUTES_QUERY, {
     props: ({ data }) => ({
       isLogin: data && data.currentUser,
     }),

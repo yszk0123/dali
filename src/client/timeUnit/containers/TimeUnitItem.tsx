@@ -6,24 +6,25 @@ import {
   TimeUnitTaskItem_taskFragment,
 } from 'schema';
 import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
+import { styled, ThemedProps } from '../../shared/styles';
+import {
+  Button,
+  TitleInput,
+  TitlePlaceholder,
+  DoneCheckbox,
+  InputWithButton,
+  Icon,
+  IconButtonGroup,
+} from '../../shared/components';
+import { ItemTypes, Theme } from '../../shared/constants';
+import { DateOnly } from '../../shared/interfaces';
 import {
   UpdateTimeUnit,
   MoveTaskToTimeUnit,
   RemoveTimeUnit,
   RemoveTimeUnitTask,
 } from '../mutations';
-import styled, { ThemedProps } from '../../shared/styles/StyledComponents';
-import Icon from '../../shared/components/Icon';
-import TitleInput from '../../shared/components/TitleInput';
-import TitlePlaceholder from '../../shared/components/TitlePlaceholder';
-import DoneCheckbox from '../../shared/components/DoneCheckbox';
-import InputWithButton from '../../shared/components/InputWithButton';
-import IconButtonGroup from '../../shared/components/IconButtonGroup';
 import TimeLabel from '../components/TimeLabel';
-import Button from '../../shared/components/Button';
-import ItemTypes from '../../shared/constants/ItemTypes';
-import Theme from '../../shared/constants/Theme';
-import { DateOnly } from '../../app/interfaces';
 import AddTaskToTimeUnitForm from './AddTaskToTimeUnitForm';
 import TimeUnitTaskItem from './TimeUnitTaskItem';
 

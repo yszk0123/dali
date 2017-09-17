@@ -3,11 +3,9 @@ import { Link } from 'react-router-dom';
 import { graphql, compose, withApollo, QueryProps } from 'react-apollo';
 import { NavBarQuery } from 'schema';
 import { Logout } from '../mutations';
-import * as navBarQuery from '../querySchema/NavBar.graphql';
-import styled, { ThemedProps } from '../../shared/styles/StyledComponents';
-import Button from '../../shared/components/Button';
-import Icon from '../../shared/components/Icon';
-import DropDownMenu from '../../shared/components/DropDownMenu';
+import * as NAV_BAR_QUERY from '../querySchema/NavBar.graphql';
+import { styled, ThemedProps } from '../../shared/styles';
+import { Button, Icon, DropDownMenu } from '../../shared/components';
 
 const DROPDOWN_Z_INDEX = 999;
 
@@ -106,7 +104,7 @@ export class NavBar extends React.Component<Props, State> {
 }
 
 const withData = compose(
-  graphql<Response & NavBarQuery, OwnProps, Props>(navBarQuery, {
+  graphql<Response & NavBarQuery, OwnProps, Props>(NAV_BAR_QUERY, {
     props: ({ data }) => ({
       isLogin: data && data.currentUser,
     }),

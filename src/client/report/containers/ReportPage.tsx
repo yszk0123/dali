@@ -5,13 +5,10 @@ import { subDays, addDays } from 'date-fns';
 import { flatten, groupBy, toPairs, repeat } from 'lodash';
 import { ReportPageQuery } from 'schema';
 import * as REPORT_PAGE_QUERY from '../querySchema/ReportPage.graphql';
-import ClipboardButton from '../../shared/components/ClipboardButton';
-import Button from '../../shared/components/Button';
-import DateSwitch from '../../shared/components/DateSwitch';
-import styled from '../../shared/styles/StyledComponents';
-import toDaliDate from '../../shared/utils/toDaliDate';
-import getToday from '../../shared/utils/getToday';
-import { DateOnly } from '../../app/interfaces';
+import { Button, ClipboardButton, DateSwitch } from '../../shared/components';
+import { styled } from '../../shared/styles';
+import { getToday, toDaliDate } from '../../shared/utils';
+import { DateOnly } from '../../shared/interfaces';
 
 const DEFAULT_PROJECT_NAME = 'Default';
 

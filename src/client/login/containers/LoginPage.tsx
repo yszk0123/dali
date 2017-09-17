@@ -8,10 +8,10 @@ import {
   QueryProps,
 } from 'react-apollo';
 import { LoginPageQuery } from 'schema';
-import styled from '../../shared/styles/StyledComponents';
+import { styled } from '../../shared/styles';
 import { Login } from '../mutations';
 import * as LOGIN_PAGE_QUERY from '../querySchema/LoginPage.graphql';
-import Button from '../../shared/components/Button';
+import { Button } from '../../shared/components';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;
 

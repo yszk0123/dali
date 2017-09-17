@@ -8,10 +8,10 @@ import {
   QueryProps,
 } from 'react-apollo';
 import { SignupPageQuery } from 'schema';
-import styled from '../../shared/styles/StyledComponents';
+import { styled } from '../../shared/styles';
 import { Signup } from '../mutations';
 import * as SIGNUP_PAGE_QUERY from '../querySchema/SignupPage.graphql';
-import Button from '../../shared/components/Button';
+import { Button } from '../../shared/components';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;
 

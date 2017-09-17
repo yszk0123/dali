@@ -7,9 +7,14 @@ import {
   PhaseTaskItem_taskFragment,
 } from 'schema';
 import { DropTarget, DropTargetSpec, ConnectDropTarget } from 'react-dnd';
-import styled, { ThemedProps } from '../../shared/styles/StyledComponents';
-import Icon from '../../shared/components/Icon';
-import TitleInput from '../../shared/components/TitleInput';
+import { styled, ThemedProps } from '../../shared/styles';
+import {
+  Icon,
+  TitleInput,
+  TitlePlaceholder,
+  TitleSelect,
+  DoneCheckbox,
+} from '../../shared/components';
 import {
   CreatePhaseTask,
   RemovePhase,
@@ -18,10 +23,7 @@ import {
   RemovePhaseTask,
   MoveTaskToPhase,
 } from '../mutations';
-import ItemTypes from '../../shared/constants/ItemTypes';
-import TitlePlaceholder from '../../shared/components/TitlePlaceholder';
-import TitleSelect from '../../shared/components/TitleSelect';
-import DoneCheckbox from '../../shared/components/DoneCheckbox';
+import { ItemTypes } from '../../shared/constants';
 import PhaseTaskItem from './PhaseTaskItem';
 
 const Wrapper = styled.div`

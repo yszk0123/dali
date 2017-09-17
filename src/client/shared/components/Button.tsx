@@ -1,4 +1,4 @@
-import styled from '../styles/StyledComponents';
+import { styled } from '../styles';
 
 const Button = styled.button`
   font-size: 1rem;

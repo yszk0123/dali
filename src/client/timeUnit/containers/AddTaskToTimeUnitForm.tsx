@@ -6,9 +6,8 @@ import {
   AddTaskToTimeUnitForm_tasksFragment,
   TimeUnitItem_timeUnitFragment,
 } from 'schema';
-import styled from '../../shared/styles/StyledComponents';
-import TitleSelect from '../../shared/components/TitleSelect';
-import TitleInput from '../../shared/components/TitleInput';
+import { styled } from '../../shared/styles';
+import { TitleInput, TitleSelect } from '../../shared/components';
 import * as ADD_TASK_TO_TIME_UNIT_FORM_QUERY from '../querySchema/AddTaskToTimeUnitForm.graphql';
 import { CreateTimeUnitTask, AddTaskToTimeUnit } from '../mutations';
 

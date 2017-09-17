@@ -9,10 +9,8 @@ import {
 } from 'schema';
 import * as PHASE_PAGE_QUERY from '../querySchema/PhasePage.graphql';
 import { CreatePhase } from '../mutations';
-import styled from '../../shared/styles/StyledComponents';
-import Button from '../../shared/components/Button';
-import TitleInput from '../../shared/components/TitleInput';
-import Dummy from '../../app/Dummy';
+import { styled } from '../../shared/styles';
+import { Button, TitleInput } from '../../shared/components';
 import PhaseItem from './PhaseItem';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;

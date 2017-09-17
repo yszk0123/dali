@@ -2,9 +2,8 @@ import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import { GroupItem_groupFragment } from 'schema';
-import styled from '../../shared/styles/StyledComponents';
-import Icon from '../../shared/components/Icon';
-import TitleInput from '../../shared/components/TitleInput';
+import { styled } from '../../shared/styles';
+import { Icon, TitleInput } from '../../shared/components';
 import { UpdateGroup, RemoveGroup } from '../mutations';
 
 const Wrapper = styled.div`

@@ -1,6 +1,6 @@
 import { camelCase, omitBy, isUndefined } from 'lodash';
 import { IResolvers, IModels, IContext } from '../interfaces';
-import resolver from '../utils/resolver';
+import { resolver } from '../utils';
 
 interface Input {
   models: IModels;

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import styled, { ThemedProps } from '../styles/StyledComponents';
-import Theme from '../constants/Theme';
+import { styled, ThemedProps } from '../styles';
+import { Theme } from '../constants';
 
 const Wrapper = styled.div`
   display: flex;

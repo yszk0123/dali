@@ -4,12 +4,14 @@ import { RouteComponentProps } from 'react-router-dom';
 import { TaskPageQuery } from 'schema';
 import * as TASK_PAGE_QUERY from '../querySchema/TaskPage.graphql';
 import { UpdateTask } from '../mutations';
-import styled from '../../shared/styles/StyledComponents';
-import TitleInput from '../../shared/components/TitleInput';
-import TitleSelect from '../../shared/components/TitleSelect';
-import Icon from '../../shared/components/Icon';
-import List from '../../shared/components/List';
-import ListItem from '../../shared/components/ListItem';
+import { styled } from '../../shared/styles';
+import {
+  Icon,
+  List,
+  ListItem,
+  TitleInput,
+  TitleSelect,
+} from '../../shared/components';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;
 

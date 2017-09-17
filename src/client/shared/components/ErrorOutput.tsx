@@ -1,12 +1,12 @@
 import * as React from 'react';
-import styled from '../styles/StyledComponents';
+import { styled } from '../styles';
 
 const Wrapper = styled.div`
-  backgtimeUnit: #f62;
+  backgtimeunit: #f62;
   padding: 10px;
   color: white;
-  minWidth: 200px;
-  minHeight: 50px;
+  minwidth: 200px;
+  minheight: 50px;
 `;
 
 interface Props {

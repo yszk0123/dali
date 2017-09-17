@@ -1,4 +1,4 @@
-import { DateOnly } from '../../app/interfaces';
+import { DateOnly } from '../interfaces';
 
 function pad(n: number): string {
   return n < 10 ? `0${n}` : `${n}`;

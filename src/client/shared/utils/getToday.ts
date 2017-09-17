@@ -1,4 +1,4 @@
-import { DateOnly } from '../../app/interfaces';
+import { DateOnly } from '../interfaces';
 import toDaliDate from './toDaliDate';
 
 export default function getToday(): DateOnly {

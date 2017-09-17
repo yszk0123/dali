@@ -1,4 +1,4 @@
-import styled, { ThemedProps } from '../styles/StyledComponents';
+import { styled, ThemedProps } from '../styles';
 
 interface Props {
   zIndex?: number;

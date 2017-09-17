@@ -1,4 +1,4 @@
-import ThemeInterface from '../styles/ThemeInterface';
+import { ThemeInterface } from '../styles';
 
 const Theme: ThemeInterface = {
   shared: {

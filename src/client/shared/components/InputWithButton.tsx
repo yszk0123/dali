@@ -1,5 +1,5 @@
 import * as React from 'react';
-import KeyCodes from '../constants/KeyCodes';
+import { KeyCodes } from '../constants';
 import Button from './Button';
 
 interface Props {

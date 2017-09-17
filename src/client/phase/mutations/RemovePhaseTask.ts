@@ -6,7 +6,7 @@ import {
 } from 'schema';
 import * as PhaseItem_phase from '../querySchema/PhaseItem_phase.graphql';
 import * as mutation from '../mutationSchema/RemovePhaseTaskMutation.graphql';
-import dataIdFromObject from '../../shared/utils/dataIdFromObject';
+import { dataIdFromObject } from '../../shared/utils';
 
 type QueryVariables = {};
 

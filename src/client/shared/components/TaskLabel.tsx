@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from '../styles/StyledComponents';
+import { styled } from '../styles';
 import Icon from './Icon';
 import DoneCheckbox from './DoneCheckbox';
 import TitleInput from './TitleInput';

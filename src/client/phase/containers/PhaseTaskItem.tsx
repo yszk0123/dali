@@ -8,12 +8,11 @@ import {
 } from 'react-dnd';
 import { PhasePageQueryVariables, PhaseTaskItem_taskFragment } from 'schema';
 import { UpdatePhaseTask, SetTimeUnitToTask } from '../mutations';
-import styled, { ThemedProps } from '../../shared/styles/StyledComponents';
-import TaskLabel from '../../shared/components/TaskLabel';
-import TimeUnitSelect from '../components/TimeUnitSelect';
-import Icon from '../../shared/components/Icon';
-import ItemTypes from '../../shared/constants/ItemTypes';
-import { DateOnly } from '../../app/interfaces';
+import { styled, ThemedProps } from '../../shared/styles';
+import { ItemTypes } from '../../shared/constants';
+import { Icon, TaskLabel } from '../../shared/components';
+import { TimeUnitSelect } from '../components';
+import { DateOnly } from '../../shared/interfaces';
 
 interface WrapperProps {
   isDragging: boolean;

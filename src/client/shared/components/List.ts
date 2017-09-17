@@ -1,4 +1,4 @@
-import styled from '../styles/StyledComponents';
+import { styled } from '../styles';
 
 export default styled.div`
   display: flex;

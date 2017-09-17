@@ -2,10 +2,9 @@ import * as React from 'react';
 import * as Select from 'react-select';
 import { Option } from 'react-select';
 import { times } from 'lodash';
-import { DateOnly } from '../../app/interfaces';
-import mapPositionToTimeRange from '../../shared/utils/mapPositionToTimeRange';
-import toDaliDate from '../../shared/utils/toDaliDate';
-import Icon from '../../shared/components/Icon';
+import { DateOnly } from '../../shared/interfaces';
+import { mapPositionToTimeRange, toDaliDate } from '../../shared/utils';
+import { Icon } from '../../shared/components';
 
 const MAX_TIME_UNITS = 48;
 

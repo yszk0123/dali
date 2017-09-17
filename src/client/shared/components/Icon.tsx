@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled, { Color, ThemedProps } from '../styles/StyledComponents';
+import { styled, Color, ThemedProps } from '../styles';
 
 interface IProps {
   color?: Color;

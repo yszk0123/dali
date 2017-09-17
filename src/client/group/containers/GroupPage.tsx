@@ -3,9 +3,8 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { GroupPageQuery } from 'schema';
 import * as GROUP_PAGE from '../querySchema/GroupPage.graphql';
 import { CreateGroup } from '../mutations';
-import styled from '../../shared/styles/StyledComponents';
-import Button from '../../shared/components/Button';
-import TitleInput from '../../shared/components/TitleInput';
+import { styled } from '../../shared/styles';
+import { Button, TitleInput } from '../../shared/components';
 import GroupItem from './GroupItem';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;

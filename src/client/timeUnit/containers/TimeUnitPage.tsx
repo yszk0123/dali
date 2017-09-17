@@ -8,18 +8,17 @@ import {
   TimeUnitItem_timeUnitFragment,
 } from 'schema';
 import * as TIME_UNIT_PAGE_QUERY from '../querySchema/TimeUnitPage.graphql';
-import styled from '../../shared/styles/StyledComponents';
-import DateSwitch from '../../shared/components/DateSwitch';
-import { DateOnly } from '../../app/interfaces';
-import toDaliDate from '../../shared/utils/toDaliDate';
-import getToday from '../../shared/utils/getToday';
+import { styled } from '../../shared/styles';
+import { DateSwitch } from '../../shared/components';
+import { DateOnly } from '../../shared/interfaces';
+import { getToday, toDaliDate } from '../../shared/utils';
 import TimeUnitItem from './TimeUnitItem';
 import EmptyTimeUnitItem from './EmptyTimeUnitItem';
 
 const MAX_TIME_UNITS = 48;
 
 const List = styled.div`
-  minWidth: 300px;
+  minwidth: 300px;
   display: flex;
   flex-direction: column;
 `;

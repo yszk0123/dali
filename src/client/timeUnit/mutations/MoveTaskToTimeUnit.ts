@@ -7,7 +7,7 @@ import {
 } from 'schema';
 import * as TimeUnitItem_timeUnit from '../querySchema/TimeUnitItem_timeUnit.graphql';
 import * as mutation from '../mutationSchema/MoveTaskToTimeUnitMutation.graphql';
-import dataIdFromObject from '../../shared/utils/dataIdFromObject';
+import { dataIdFromObject } from '../../shared/utils';
 
 type QueryVariables = {};
 

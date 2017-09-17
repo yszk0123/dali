@@ -3,9 +3,8 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { ProjectPageQuery } from 'schema';
 import * as PROJECT_PAGE_QUERY from '../querySchema/ProjectPage.graphql';
 import { CreateProject } from '../mutations';
-import styled from '../../shared/styles/StyledComponents';
-import TitleInput from '../../shared/components/TitleInput';
-import Button from '../../shared/components/Button';
+import { styled } from '../../shared/styles';
+import { Button, TitleInput } from '../../shared/components';
 import ProjectItem from './ProjectItem';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;

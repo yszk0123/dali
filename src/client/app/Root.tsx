@@ -8,10 +8,9 @@ import {
   createNetworkInterface,
 } from 'react-apollo';
 import { BrowserRouter as Router } from 'react-router-dom';
-import dataIdFromObject from '../shared/utils/dataIdFromObject';
-import isTouchSupported from '../shared/utils/isTouchSupported';
-import Theme from '../shared/constants/Theme';
-import { ThemeProvider } from '../shared/styles/StyledComponents';
+import { dataIdFromObject, isTouchSupported } from '../shared/utils';
+import { Theme } from '../shared/constants';
+import { ThemeProvider } from '../shared/styles';
 import App from './containers/App';
 
 const dragDropBackend = isTouchSupported() ? TouchBackend : HTML5Backend;

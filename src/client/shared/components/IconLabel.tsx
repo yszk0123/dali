@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from '../styles/StyledComponents';
+import { styled } from '../styles';
 
 const Label = styled.span`
   display: inline-block;

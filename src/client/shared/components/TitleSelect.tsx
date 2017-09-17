@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Select from 'react-select';
 import { Option } from 'react-select';
-import toNonEmptyArray from '../utils/toNonEmptyArray';
+import { toNonEmptyArray } from '../utils';
 import TitlePlaceholder from './TitlePlaceholder';
 
 interface SelectItem {

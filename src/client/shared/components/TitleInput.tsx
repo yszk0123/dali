@@ -1,6 +1,6 @@
 import * as React from 'react';
-import styled from '../styles/StyledComponents';
-import KeyCodes from '../constants/KeyCodes';
+import { styled } from '../styles';
+import { KeyCodes } from '../constants';
 import TitlePlaceholder from './TitlePlaceholder';
 
 const Input = styled.input`
