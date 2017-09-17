@@ -10,7 +10,7 @@ import {
 import styled from '../../shared/styles/StyledComponents';
 import TimeLabel from '../components/TimeLabel';
 import { DateOnly } from '../../app/interfaces';
-import * as CreateTimeUnitMutation from '../mutations/CreateTimeUnitMutation';
+import { CreateTimeUnit } from '../mutations';
 
 const Wrapper = styled.div`
   display: flex;
@@ -47,16 +47,10 @@ export function EmptyTimeUnitItem({ create, position }: Props) {
 }
 
 const withData = compose(
-  graphql<Response, OwnProps, Props>(CreateTimeUnitMutation.mutation, {
+  graphql<Response, OwnProps, Props>(CreateTimeUnit.mutation, {
     props: ({ mutate, ownProps: { date, position } }) => ({
       create: () =>
-        mutate &&
-        mutate(
-          CreateTimeUnitMutation.buildMutationOptions(
-            { date, position },
-            { date },
-          ),
-        ),
+        mutate && mutate(CreateTimeUnit.build({ date, position }, { date })),
     }),
   }),
 );

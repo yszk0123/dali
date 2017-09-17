@@ -7,8 +7,7 @@ import {
   ConnectDragPreview,
 } from 'react-dnd';
 import { PhasePageQueryVariables, PhaseTaskItem_taskFragment } from 'schema';
-import * as UpdatePhaseTaskMutation from '../mutations/UpdatePhaseTaskMutation';
-import * as SetTimeUnitToTaskMutation from '../mutations/SetTimeUnitToTaskMutation';
+import { UpdatePhaseTask, SetTimeUnitToTask } from '../mutations';
 import styled, { ThemedProps } from '../../shared/styles/StyledComponents';
 import TaskLabel from '../../shared/components/TaskLabel';
 import TimeUnitSelect from '../components/TimeUnitSelect';
@@ -98,12 +97,12 @@ const taskSource: DragSourceSpec<Props> = {
 };
 
 const withData = compose(
-  graphql<Response, OwnProps, Props>(UpdatePhaseTaskMutation.mutation, {
+  graphql<Response, OwnProps, Props>(UpdatePhaseTask.mutation, {
     props: ({ mutate, ownProps: { task, queryVariables } }) => ({
       updateTitle: (title: string) =>
         mutate &&
         mutate(
-          UpdatePhaseTaskMutation.buildMutationOptions(
+          UpdatePhaseTask.build(
             { title, taskId: task.id },
             queryVariables,
             task,
@@ -112,7 +111,7 @@ const withData = compose(
       toggleDone: () =>
         mutate &&
         mutate(
-          UpdatePhaseTaskMutation.buildMutationOptions(
+          UpdatePhaseTask.build(
             { done: !task.done, taskId: task.id },
             queryVariables,
             task,
@@ -120,15 +119,12 @@ const withData = compose(
         ),
     }),
   }),
-  graphql<Response, OwnProps, Props>(SetTimeUnitToTaskMutation.mutation, {
+  graphql<Response, OwnProps, Props>(SetTimeUnitToTask.mutation, {
     props: ({ mutate, ownProps: { task } }) => ({
       setTimeUnit: (date: DateOnly, position: number | null) =>
         mutate &&
         mutate(
-          SetTimeUnitToTaskMutation.buildMutationOptions(
-            { date, position, taskId: task.id },
-            {},
-          ),
+          SetTimeUnitToTask.build({ date, position, taskId: task.id }, {}),
         ),
     }),
   }),

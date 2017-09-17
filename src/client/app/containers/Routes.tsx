@@ -10,7 +10,6 @@ import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
 import withScrollSpy from '../../shared/components/withScrollSpy';
 import FixedHeader from '../../shared/components/FixedHeader';
 import LoginPage from '../../login/containers/LoginPage';
-import NavBar from './NavBar';
 import GroupPage from '../../group/containers/GroupPage';
 import ProjectPage from '../../project/containers/ProjectPage';
 import TaskPage from '../../task/containers/TaskPage';
@@ -19,6 +18,7 @@ import PhasePage from '../../phase/containers/PhasePage';
 import ProfilePage from '../../profile/containers/ProfilePage';
 import TimeUnitPage from '../../timeUnit/containers/TimeUnitPage';
 import ReportPage from '../../report/containers/ReportPage';
+import NavBar from './NavBar';
 
 const SCROLL_HEIGHT = 44;
 const Z_INDEX = 1000;

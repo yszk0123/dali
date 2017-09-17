@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { graphql, compose, withApollo, QueryProps } from 'react-apollo';
 import { NavBarQuery } from 'schema';
-import * as LogoutMutation from '../mutations/LogoutMutation';
+import { Logout } from '../mutations';
 import * as navBarQuery from '../querySchema/NavBar.graphql';
 import styled, { ThemedProps } from '../../shared/styles/StyledComponents';
 import Button from '../../shared/components/Button';
@@ -112,10 +112,10 @@ const withData = compose(
     }),
   }),
   withApollo,
-  graphql<Response, { client: any }, Props>(LogoutMutation.mutation, {
+  graphql<Response, { client: any }, Props>(Logout.mutation, {
     props: ({ data, mutate, ownProps: { client } }) => ({
       onLogout: async () => {
-        mutate && (await mutate(LogoutMutation.buildMutationOptions()));
+        mutate && (await mutate(Logout.build()));
         await client.resetStore();
       },
     }),

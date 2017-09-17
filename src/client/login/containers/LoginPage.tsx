@@ -9,8 +9,8 @@ import {
 } from 'react-apollo';
 import { LoginPageQuery } from 'schema';
 import styled from '../../shared/styles/StyledComponents';
-import * as LoginMutation from '../mutations/LoginMutation';
-import * as loginPageQuery from '../querySchema/LoginPage.graphql';
+import { Login } from '../mutations';
+import * as LOGIN_PAGE_QUERY from '../querySchema/LoginPage.graphql';
 import Button from '../../shared/components/Button';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;
@@ -116,21 +116,17 @@ export class LoginPage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Response & LoginPageQuery>(loginPageQuery, {
+  graphql<Response & LoginPageQuery>(LOGIN_PAGE_QUERY, {
     props: ({ data }) => ({
       isLogin: data && data.currentUser,
     }),
   }),
   withApollo,
-  graphql<
-    Response,
-    { client: any; location: any },
-    Props
-  >(LoginMutation.mutation, {
+  graphql<Response, { client: any; location: any }, Props>(Login.mutation, {
     props: ({ mutate, ownProps: { client, location } }) => ({
       from: (location.state && location.state.from) || { pathname: '/' },
       login: async (input: { email: string; password: string }) => {
-        mutate && (await mutate(LoginMutation.buildMutationOptions(input)));
+        mutate && (await mutate(Login.build(input)));
         await client.resetStore();
       },
     }),

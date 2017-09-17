@@ -8,7 +8,7 @@ import {
 } from 'react-dnd';
 import { Link } from 'react-router-dom';
 import { TimeUnitTaskItem_taskFragment } from 'schema';
-import * as UpdateTimeUnitTaskMutation from '../mutations/UpdateTimeUnitTaskMutation';
+import { UpdateTimeUnitTask } from '../mutations';
 import styled, { ThemedProps } from '../../shared/styles/StyledComponents';
 import TaskLabel from '../../shared/components/TaskLabel';
 import Icon from '../../shared/components/Icon';
@@ -100,12 +100,12 @@ const taskSource: DragSourceSpec<Props> = {
 };
 
 const withData = compose(
-  graphql<Response, OwnProps, Props>(UpdateTimeUnitTaskMutation.mutation, {
+  graphql<Response, OwnProps, Props>(UpdateTimeUnitTask.mutation, {
     props: ({ mutate, ownProps: { task } }) => ({
       updateTitle: (title: string) =>
         mutate &&
         mutate(
-          UpdateTimeUnitTaskMutation.buildMutationOptions(
+          UpdateTimeUnitTask.build(
             { title, taskId: task.id },
             { done: false },
             task,
@@ -114,7 +114,7 @@ const withData = compose(
       toggleDone: () =>
         mutate &&
         mutate(
-          UpdateTimeUnitTaskMutation.buildMutationOptions(
+          UpdateTimeUnitTask.build(
             { done: !task.done, taskId: task.id },
             { done: false },
             task,

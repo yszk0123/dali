@@ -10,8 +10,7 @@ import styled from '../../shared/styles/StyledComponents';
 import TitleSelect from '../../shared/components/TitleSelect';
 import TitleInput from '../../shared/components/TitleInput';
 import * as ADD_TASK_TO_TIME_UNIT_FORM_QUERY from '../querySchema/AddTaskToTimeUnitForm.graphql';
-import * as CreateTimeUnitTaskMutation from '../mutations/CreateTimeUnitTaskMutation';
-import * as AddTaskToTimeUnitMutation from '../mutations/AddTaskToTimeUnitMutation';
+import { CreateTimeUnitTask, AddTaskToTimeUnit } from '../mutations';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;
 
@@ -103,10 +102,9 @@ export class CreateTimeUnitTaskForm extends React.Component<
     );
     const mappedTasks =
       selectedPhaseId != null
-        ? (tasks || [])
-            .filter(
-              item => item && item.phase && item.phase.id === selectedPhaseId,
-            )
+        ? (tasks || []).filter(
+            item => item && item.phase && item.phase.id === selectedPhaseId,
+          )
         : (tasks || []).map(
             item =>
               item && {
@@ -151,12 +149,12 @@ const withData = compose(
       ...data,
     }),
   }),
-  graphql<Data, OwnProps, Props>(AddTaskToTimeUnitMutation.mutation, {
+  graphql<Data, OwnProps, Props>(AddTaskToTimeUnit.mutation, {
     props: ({ mutate, ownProps: { timeUnit } }) => ({
       addTask: (task: AddTaskToTimeUnitForm_tasksFragment) =>
         mutate &&
         mutate(
-          AddTaskToTimeUnitMutation.buildMutationOptions(
+          AddTaskToTimeUnit.build(
             { timeUnitId: timeUnit.id, taskId: task.id },
             {},
             timeUnit,
@@ -164,13 +162,13 @@ const withData = compose(
         ),
     }),
   }),
-  graphql<Data, OwnProps, Props>(CreateTimeUnitTaskMutation.mutation, {
+  graphql<Data, OwnProps, Props>(CreateTimeUnitTask.mutation, {
     props: ({ mutate, ownProps: { timeUnit } }) => ({
       createTask: (phaseId: string | null, title: string) =>
         phaseId &&
         mutate &&
         mutate(
-          CreateTimeUnitTaskMutation.buildMutationOptions(
+          CreateTimeUnitTask.build(
             { title, phaseId, timeUnitId: timeUnit.id },
             {},
             timeUnit,

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { ProjectPageQuery } from 'schema';
 import * as PROJECT_PAGE_QUERY from '../querySchema/ProjectPage.graphql';
-import * as CreateProjectMutation from '../mutations/CreateProjectMutation';
+import { CreateProject } from '../mutations';
 import styled from '../../shared/styles/StyledComponents';
 import TitleInput from '../../shared/components/TitleInput';
 import Button from '../../shared/components/Button';
@@ -81,10 +81,10 @@ const withData = compose(
       isLogin: data && data.currentUser,
     }),
   }),
-  graphql<Data, OwnProps, Props>(CreateProjectMutation.mutation, {
+  graphql<Data, OwnProps, Props>(CreateProject.mutation, {
     props: ({ mutate }) => ({
       createProject: (title: string) =>
-        mutate && mutate(CreateProjectMutation.buildMutationOptions({ title })),
+        mutate && mutate(CreateProject.build({ title })),
     }),
   }),
 );

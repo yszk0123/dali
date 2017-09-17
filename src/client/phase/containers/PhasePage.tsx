@@ -8,7 +8,7 @@ import {
   PhaseTaskItem_taskFragment,
 } from 'schema';
 import * as PHASE_PAGE_QUERY from '../querySchema/PhasePage.graphql';
-import * as CreatePhaseMutation from '../mutations/CreatePhaseMutation';
+import { CreatePhase } from '../mutations';
 import styled from '../../shared/styles/StyledComponents';
 import Button from '../../shared/components/Button';
 import TitleInput from '../../shared/components/TitleInput';
@@ -145,13 +145,10 @@ const withData = compose(
       isLogin: data && data.currentUser,
     }),
   }),
-  graphql<Data, OwnProps, Props>(CreatePhaseMutation.mutation, {
+  graphql<Data, OwnProps, Props>(CreatePhase.mutation, {
     props: ({ mutate, ownProps: { queryVariables } }) => ({
       createPhase: (title: string) =>
-        mutate &&
-        mutate(
-          CreatePhaseMutation.buildMutationOptions({ title }, queryVariables),
-        ),
+        mutate && mutate(CreatePhase.build({ title }, queryVariables)),
     }),
   }),
 );

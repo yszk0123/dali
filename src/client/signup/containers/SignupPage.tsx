@@ -9,7 +9,7 @@ import {
 } from 'react-apollo';
 import { SignupPageQuery } from 'schema';
 import styled from '../../shared/styles/StyledComponents';
-import * as SignupMutation from '../mutations/SignupMutation';
+import { Signup } from '../mutations';
 import * as SIGNUP_PAGE_QUERY from '../querySchema/SignupPage.graphql';
 import Button from '../../shared/components/Button';
 
@@ -18,7 +18,7 @@ const Wrapper = styled.div`font-size: 1.6rem;`;
 interface SignupPageProps {
   isSignup: boolean;
   from: any;
-  signup(input: SignupMutation.MutationVariables): void;
+  signup(input: Signup.MutationVariables): void;
 }
 
 type Props = QueryProps & SignupPageProps;
@@ -142,15 +142,11 @@ const withData = compose(
     }),
   }),
   withApollo,
-  graphql<
-    Response,
-    { client: any; location: any },
-    Props
-  >(SignupMutation.mutation, {
+  graphql<Response, { client: any; location: any }, Props>(Signup.mutation, {
     props: ({ mutate, ownProps: { client, location } }) => ({
       from: (location.state && location.state.from) || { pathname: '/' },
-      signup: async (input: SignupMutation.MutationVariables) => {
-        mutate && (await mutate(SignupMutation.buildMutationOptions(input)));
+      signup: async (input: Signup.MutationVariables) => {
+        mutate && (await mutate(Signup.build(input)));
         await client.resetStore();
       },
     }),

@@ -5,8 +5,7 @@ import { GroupItem_groupFragment } from 'schema';
 import styled from '../../shared/styles/StyledComponents';
 import Icon from '../../shared/components/Icon';
 import TitleInput from '../../shared/components/TitleInput';
-import * as RemoveGroupMutation from '../mutations/RemoveGroupMutation';
-import * as UpdateGroupMutation from '../mutations/UpdateGroupMutation';
+import { UpdateGroup, RemoveGroup } from '../mutations';
 
 const Wrapper = styled.div`
   display: flex;
@@ -44,24 +43,16 @@ export function GroupItem({ group, remove, updateTitle, setGroup }: Props) {
 }
 
 const withData = compose(
-  graphql<Response, OwnProps, Props>(RemoveGroupMutation.mutation, {
+  graphql<Response, OwnProps, Props>(RemoveGroup.mutation, {
     props: ({ mutate, ownProps: { group } }) => ({
-      remove: () =>
-        mutate &&
-        mutate(RemoveGroupMutation.buildMutationOptions({ groupId: group.id })),
+      remove: () => mutate && mutate(RemoveGroup.build({ groupId: group.id })),
     }),
   }),
-  graphql<Response, OwnProps, Props>(UpdateGroupMutation.mutation, {
+  graphql<Response, OwnProps, Props>(UpdateGroup.mutation, {
     props: ({ mutate, ownProps: { group } }) => ({
       updateTitle: (title: string) =>
         mutate &&
-        mutate(
-          UpdateGroupMutation.buildMutationOptions(
-            { title, groupId: group.id },
-            {},
-            group,
-          ),
-        ),
+        mutate(UpdateGroup.build({ title, groupId: group.id }, {}, group)),
     }),
   }),
 );

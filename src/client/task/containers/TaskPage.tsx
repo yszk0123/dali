@@ -3,7 +3,7 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
 import { TaskPageQuery } from 'schema';
 import * as TASK_PAGE_QUERY from '../querySchema/TaskPage.graphql';
-import * as UpdateTaskMutation from '../mutations/UpdateTaskMutation';
+import { UpdateTask } from '../mutations';
 import styled from '../../shared/styles/StyledComponents';
 import TitleInput from '../../shared/components/TitleInput';
 import TitleSelect from '../../shared/components/TitleSelect';
@@ -91,27 +91,19 @@ const withData = compose(
       },
     }),
   }),
-  graphql<Data, Props, Props>(UpdateTaskMutation.mutation, {
+  graphql<Data, Props, Props>(UpdateTask.mutation, {
     props: ({ mutate, ownProps: { task, queryVariables } }) => ({
       updateTitle: (title: string) =>
         task &&
         mutate &&
         mutate(
-          UpdateTaskMutation.buildMutationOptions(
-            { taskId: task.id, title },
-            queryVariables,
-            task,
-          ),
+          UpdateTask.build({ taskId: task.id, title }, queryVariables, task),
         ),
       setPhase: (phaseId: string) =>
         task &&
         mutate &&
         mutate(
-          UpdateTaskMutation.buildMutationOptions(
-            { taskId: task.id, phaseId },
-            queryVariables,
-            task,
-          ),
+          UpdateTask.build({ taskId: task.id, phaseId }, queryVariables, task),
         ),
     }),
   }),

@@ -9,8 +9,7 @@ import styled from '../../shared/styles/StyledComponents';
 import Icon from '../../shared/components/Icon';
 import TitleInput from '../../shared/components/TitleInput';
 import TitleSelect from '../../shared/components/TitleSelect';
-import * as RemoveProjectMutation from '../mutations/RemoveProjectMutation';
-import * as UpdateProjectMutation from '../mutations/UpdateProjectMutation';
+import { RemoveProject, UpdateProject } from '../mutations';
 
 const Wrapper = styled.div`
   display: flex;
@@ -60,38 +59,25 @@ export function ProjectItem({
   );
 }
 
-const withData = compose(
-  graphql<Response, OwnProps, Props>(RemoveProjectMutation.mutation, {
+export default compose(
+  graphql<Response, OwnProps>(RemoveProject.mutation, {
     props: ({ mutate, ownProps: { project } }) => ({
       remove: () =>
-        mutate &&
-        mutate(
-          RemoveProjectMutation.buildMutationOptions({ projectId: project.id }),
-        ),
+        mutate && mutate(RemoveProject.build({ projectId: project.id })),
     }),
   }),
-  graphql<Response, OwnProps, Props>(UpdateProjectMutation.mutation, {
+  graphql<Response, OwnProps>(UpdateProject.mutation, {
     props: ({ mutate, ownProps: { project } }) => ({
       updateTitle: (title: string) =>
         mutate &&
         mutate(
-          UpdateProjectMutation.buildMutationOptions(
-            { title, projectId: project.id },
-            {},
-            project,
-          ),
+          UpdateProject.build({ title, projectId: project.id }, {}, project),
         ),
       setGroup: (groupId: string) =>
         mutate &&
         mutate(
-          UpdateProjectMutation.buildMutationOptions(
-            { groupId, projectId: project.id },
-            {},
-            project,
-          ),
+          UpdateProject.build({ groupId, projectId: project.id }, {}, project),
         ),
     }),
   }),
-);
-
-export default withData(ProjectItem);
+)(ProjectItem);

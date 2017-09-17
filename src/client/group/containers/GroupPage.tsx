@@ -2,7 +2,7 @@ import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { GroupPageQuery } from 'schema';
 import * as GROUP_PAGE from '../querySchema/GroupPage.graphql';
-import * as CreateGroupMutation from '../mutations/CreateGroupMutation';
+import { CreateGroup } from '../mutations';
 import styled from '../../shared/styles/StyledComponents';
 import Button from '../../shared/components/Button';
 import TitleInput from '../../shared/components/TitleInput';
@@ -75,10 +75,10 @@ const withData = compose(
       isLogin: data && data.currentUser,
     }),
   }),
-  graphql<Data, OwnProps, Props>(CreateGroupMutation.mutation, {
+  graphql<Data, OwnProps, Props>(CreateGroup.mutation, {
     props: ({ mutate }) => ({
       createGroup: (title: string) =>
-        mutate && mutate(CreateGroupMutation.buildMutationOptions({ title })),
+        mutate && mutate(CreateGroup.build({ title })),
     }),
   }),
 );
