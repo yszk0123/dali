@@ -2,7 +2,6 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import TouchBackend from 'react-dnd-touch-backend';
 import { DragDropContextProvider } from 'react-dnd';
 import * as React from 'react';
-import { Provider } from 'react-redux';
 import {
   ApolloClient,
   ApolloProvider,
@@ -11,12 +10,9 @@ import {
 import { BrowserRouter as Router } from 'react-router-dom';
 import dataIdFromObject from '../shared/utils/dataIdFromObject';
 import isTouchSupported from '../shared/utils/isTouchSupported';
-import configureStore from '../redux/factories/configureStore';
 import Theme from '../shared/constants/Theme';
 import { ThemeProvider } from '../shared/styles/StyledComponents';
 import App from './containers/App';
-
-const store = configureStore();
 
 const dragDropBackend = isTouchSupported() ? TouchBackend : HTML5Backend;
 
@@ -36,9 +32,7 @@ export default function Root() {
       <ApolloProvider client={client}>
         <ThemeProvider theme={Theme}>
           <Router>
-            <Provider store={store}>
-              <App />
-            </Provider>
+            <App />
           </Router>
         </ThemeProvider>
       </ApolloProvider>
