@@ -1,3 +1,25 @@
+type Action {
+  id: ID!
+  owner: User!
+  title: String!
+  description: String
+  done: Boolean!
+  task: Task
+  period: Period
+}
+
+input ActionOrder {
+  field: ActionOrderField!
+  direction: OrderDirection!
+}
+
+enum ActionOrderField {
+  TITLE
+  PRIORITY
+  CREATED_AT
+  UPDATED_AT
+}
+
 enum Authority {
   OWNER
   EDITABLE
@@ -12,7 +34,7 @@ type Group {
   id: ID!
   title: String!
   owner: User!
-  projects(projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: PhaseOrder): [Project]
+  projects(projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: TaskOrder): [Project]
 }
 
 input GroupOrder {
@@ -46,43 +68,43 @@ type Member {
   authority: Authority!
 }
 
-type MoveTaskToPhasePayload {
-  task: Task
-  sourcePhase: Phase
-  targetPhase: Phase
+type MoveActionToPeriodPayload {
+  action: Action
+  sourcePeriod: Period
+  targetPeriod: Period
 }
 
-type MoveTaskToTimeUnitPayload {
-  task: Task
-  sourceTimeUnit: TimeUnit
-  targetTimeUnit: TimeUnit
+type MoveActionToTaskPayload {
+  action: Action
+  sourceTask: Task
+  targetTask: Task
 }
 
 type Mutation {
+  createAction(title: String!, description: String, done: Boolean, taskId: ID, periodId: ID): Action
+  updateAction(actionId: ID!, title: String, description: String, done: Boolean, taskId: ID, periodId: ID): Action
+  removeAction(actionId: ID!): RemoveActionPayload
+  setTaskToAction(taskId: ID!, actionId: ID!): Action
+  setPeriodToAction(periodId: ID!, actionId: ID!): Action
+  setOrCreatePeriodToAction(date: DateOnly!, position: Int, actionId: ID!): Action
   createGroup(title: String!, done: Boolean, groupId: ID): Group
   updateGroup(groupId: ID, title: String!, done: Boolean): Group
   removeGroup(groupId: ID!): RemoveGroupPayload
   addProjectToGroup(projectId: ID!, groupId: ID!): Group
-  createPhase(title: String, description: String, done: Boolean, projectId: ID): Phase
-  updatePhase(phaseId: ID!, title: String, description: String, done: Boolean, projectId: ID): Phase
-  removePhase(phaseId: ID!): RemovePhasePayload
-  moveTaskToPhase(taskId: ID!, phaseId: ID!): MoveTaskToPhasePayload
-  setProjectToPhase(phaseId: ID!, projectId: ID!): Phase
+  createPeriod(description: String, date: DateOnly!, position: Int): Period
+  updatePeriod(periodId: ID!, description: String, date: DateOnly, position: Int): Period
+  moveActionToPeriod(actionId: ID!, periodId: ID!): MoveActionToPeriodPayload
+  removePeriod(periodId: ID!): RemovePeriodPayload
   createProject(title: String!, done: Boolean, groupId: ID): Project
   updateProject(projectId: ID!, title: String, done: Boolean, groupId: ID): Project
   removeProject(projectId: ID!): RemoveProjectPayload
-  addPhaseToProject(phaseId: ID!, projectId: ID!): Project
+  addTaskToProject(taskId: ID!, projectId: ID!): Project
   setGroupToProject(groupId: ID!, projectId: ID!): Project
-  createTask(title: String!, description: String, done: Boolean, phaseId: ID, timeUnitId: ID): Task
-  updateTask(taskId: ID!, title: String, description: String, done: Boolean, phaseId: ID, timeUnitId: ID): Task
+  createTask(title: String, description: String, done: Boolean, projectId: ID): Task
+  updateTask(taskId: ID!, title: String, description: String, done: Boolean, projectId: ID): Task
   removeTask(taskId: ID!): RemoveTaskPayload
-  setPhaseToTask(phaseId: ID!, taskId: ID!): Task
-  setTimeUnitToTask(timeUnitId: ID!, taskId: ID!): Task
-  setOrCreateTimeUnitToTask(date: DateOnly!, position: Int, taskId: ID!): Task
-  createTimeUnit(description: String, date: DateOnly!, position: Int): TimeUnit
-  updateTimeUnit(timeUnitId: ID!, description: String, date: DateOnly, position: Int): TimeUnit
-  moveTaskToTimeUnit(taskId: ID!, timeUnitId: ID!): MoveTaskToTimeUnitPayload
-  removeTimeUnit(timeUnitId: ID!): RemoveTimeUnitPayload
+  moveActionToTask(actionId: ID!, taskId: ID!): MoveActionToTaskPayload
+  setProjectToTask(taskId: ID!, projectId: ID!): Task
   signup(email: String!, password: String!, nickname: String!, firstName: String, lastName: String): User
   login(email: String!, password: String!): User
   logout: User
@@ -93,25 +115,23 @@ enum OrderDirection {
   DESC
 }
 
-type Phase {
+type Period {
   id: ID!
   owner: User!
-  title: String!
   description: String
-  done: Boolean!
-  project: Project
-  tasks(used: Boolean, done: Boolean): [Task]
+  date: DateOnly!
+  position: Int
+  actions: [Action]
 }
 
-input PhaseOrder {
-  field: PhaseOrderField!
+input PeriodOrder {
+  field: PeriodOrderField!
   direction: OrderDirection!
 }
 
-enum PhaseOrderField {
-  TITLE
-  CREATED_AT
-  UPDATED_AT
+enum PeriodOrderField {
+  DATE
+  POSITION
 }
 
 type Project {
@@ -123,7 +143,7 @@ type Project {
   group: Group
   visibility: ProjectVisibility!
   members: [Member]
-  phases(projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: PhaseOrder): [Phase]
+  tasks(projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: TaskOrder): [Task]
 }
 
 input ProjectOrder {
@@ -144,22 +164,27 @@ enum ProjectVisibility {
 }
 
 type Query {
+  action(id: ID!): Action
+  actions(done: Boolean, used: Boolean, taskId: ID, periodId: ID, limit: ListLimit, offset: ListOffset, orderBy: ActionOrder): [Action]
+  group(id: ID): Group
   groups(id: ID, limit: ListLimit, offset: ListOffset, orderBy: ProjectOrder): [Group]
   members(limit: ListLimit, offset: ListOffset, order: ListOrder): [Member]
-  phases(groupId: ID, projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: PhaseOrder): [Phase]
+  periods(date: DateOnly, after: DateOnly, before: DateOnly, limit: ListLimit, offset: ListOffset, order: PeriodOrder): [Period]
   projects(groupId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: ProjectOrder): [Project]
-  task(id: ID!): Task
-  tasks(done: Boolean, used: Boolean, phaseId: ID, timeUnitId: ID, limit: ListLimit, offset: ListOffset, orderBy: TaskOrder): [Task]
-  timeUnits(date: DateOnly, after: DateOnly, before: DateOnly, limit: ListLimit, offset: ListOffset, order: TimeUnitOrder): [TimeUnit]
+  tasks(groupId: ID, projectId: ID, done: Boolean, limit: ListLimit, offset: ListOffset, orderBy: TaskOrder): [Task]
   currentUser: User
+}
+
+type RemoveActionPayload {
+  removedActionId: ID
 }
 
 type RemoveGroupPayload {
   removedGroupId: ID!
 }
 
-type RemovePhasePayload {
-  removedPhaseId: ID
+type RemovePeriodPayload {
+  removedPeriodId: ID
 }
 
 type RemoveProjectPayload {
@@ -170,18 +195,14 @@ type RemoveTaskPayload {
   removedTaskId: ID
 }
 
-type RemoveTimeUnitPayload {
-  removedTimeUnitId: ID
-}
-
 type Task {
   id: ID!
   owner: User!
   title: String!
   description: String
   done: Boolean!
-  phase: Phase
-  timeUnit: TimeUnit
+  project: Project
+  actions(used: Boolean, done: Boolean): [Action]
   assignee: User
 }
 
@@ -192,28 +213,8 @@ input TaskOrder {
 
 enum TaskOrderField {
   TITLE
-  PRIORITY
   CREATED_AT
   UPDATED_AT
-}
-
-type TimeUnit {
-  id: ID!
-  owner: User!
-  description: String
-  date: DateOnly!
-  position: Int
-  tasks: [Task]
-}
-
-input TimeUnitOrder {
-  field: TimeUnitOrderField!
-  direction: OrderDirection!
-}
-
-enum TimeUnitOrderField {
-  DATE
-  POSITION
 }
 
 type User {

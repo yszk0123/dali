@@ -1,30 +1,42 @@
+import { Sequelize } from 'sequelize';
 import { camelCase, omitBy, isUndefined } from 'lodash';
-import { IResolvers, IModels, IContext } from '../interfaces';
-import resolver from '../utils/resolver';
+import { ISource, IResolvers, IModels, IContext } from '../interfaces';
+import { resolver } from '../utils';
 
 interface Input {
   models: IModels;
 }
 
 export default function createResolvers({
-  models: { Task, TimeUnit, Phase },
+  models: { Task, Action, Project },
 }: Input): IResolvers {
   return {
     Task: {
       owner: resolver(Task.Owner),
-      phase: resolver(Task.Phase),
-      timeUnit: resolver(Task.TimeUnit),
-      assignee: resolver(Task.Assignee),
-    },
-    Query: {
-      task: resolver(Task),
-      tasks: resolver(Task, {
-        list: true,
+      project: resolver(Task.Project),
+      actions: resolver(Task.Actions, {
         before: (findOptions: any, { used }: any, context: IContext) => {
           const where = { ...findOptions.where };
 
           if (used != null) {
-            Object.assign(where, { timeUnitId: used ? { $not: null } : null });
+            Object.assign(where, { periodId: used ? { $not: null } : null });
+          }
+
+          findOptions.where = where;
+
+          return findOptions;
+        },
+      }),
+      assignee: resolver(Task.Assignee),
+    },
+    Query: {
+      tasks: resolver(Task, {
+        list: true,
+        before: (findOptions: any, { groupId }: any, context: IContext) => {
+          const where = { ...findOptions.where };
+
+          if (groupId != null) {
+            findOptions.include = [{ model: Project, where: { groupId } }];
           }
 
           findOptions.where = where;
@@ -35,23 +47,21 @@ export default function createResolvers({
     },
     Mutation: {
       createTask: async (
-        root,
-        { title, description, done, phaseId, timeUnitId, assigneeId },
+        source,
+        { title, description, done, projectId },
         { user },
       ) => {
         return await Task.create({
+          ownerId: user.id,
           title,
           description,
           done,
-          phaseId,
-          timeUnitId,
-          assigneeId,
-          ownerId: user.id,
+          projectId,
         });
       },
       updateTask: async (
-        root,
-        { taskId, title, description, done, phaseId, timeUnitId, assigneeId },
+        source,
+        { taskId, title, description, done, projectId },
         { user },
       ) => {
         const task = await Task.findOne({
@@ -60,15 +70,12 @@ export default function createResolvers({
         });
 
         await task.update(
-          omitBy(
-            { title, description, done, phaseId, timeUnitId, assigneeId },
-            isUndefined,
-          ),
+          omitBy({ title, description, done, projectId }, isUndefined),
         );
 
         return task;
       },
-      removeTask: async (root, { taskId }, { user }) => {
+      removeTask: async (source, { taskId }, { user }) => {
         const task = await Task.findOne({
           where: { id: taskId, ownerId: user.id },
           rejectOnEmpty: true,
@@ -78,49 +85,32 @@ export default function createResolvers({
 
         return { removedTaskId: taskId };
       },
-      setPhaseToTask: async (root, { phaseId, taskId }, { user }) => {
-        const phase = await Phase.findOne({
-          where: { id: phaseId, ownerId: user.id },
+      moveActionToTask: async (root, { actionId, taskId }, { user }) => {
+        const action = await Action.findById(actionId, {
+          where: { ownerId: user.id },
           rejectOnEmpty: true,
         });
-        const task = await Task.findOne({
-          where: { id: taskId, ownerId: user.id },
+        const sourceTask = await action.getTask();
+        const targetTask = await Task.findById(taskId, {
+          where: { ownerId: user.id },
           rejectOnEmpty: true,
         });
 
-        await task.setPhase(phase);
+        await action.setTask(targetTask);
 
-        return task;
+        return { action, sourceTask, targetTask };
       },
-      setTimeUnitToTask: async (root, { timeUnitId, taskId }, { user }) => {
-        const timeUnit = await TimeUnit.findOne({
-          where: { id: timeUnitId, ownerId: user.id },
+      setProjectToTask: async (root, { taskId, projectId }, { user }) => {
+        const task = await Task.findById(taskId, {
+          where: { ownerId: user.id },
           rejectOnEmpty: true,
         });
-        const task = await Task.findOne({
-          where: { id: taskId, ownerId: user.id },
-          rejectOnEmpty: true,
-        });
-
-        await task.setTimeUnit(timeUnit);
-
-        return task;
-      },
-      setOrCreateTimeUnitToTask: async (
-        root,
-        { date, position, taskId },
-        { user },
-      ) => {
-        const [timeUnit, _created] = await TimeUnit.findOrCreate({
-          where: { date, position, ownerId: user.id },
-          defaults: { date, position, ownerId: user.id },
-        });
-        const task = await Task.findOne({
-          where: { id: taskId, ownerId: user.id },
+        const project = await Project.findById(projectId, {
+          where: { ownerId: user.id },
           rejectOnEmpty: true,
         });
 
-        await task.setTimeUnit(timeUnit);
+        await task.setProject(project);
 
         return task;
       },

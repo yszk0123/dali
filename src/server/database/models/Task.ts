@@ -24,11 +24,11 @@ export default function createTask(sequelize: Sequelize, DataTypes: DataTypes) {
 
   // FIXME
   const _Task = Task as any;
-  _Task.associate = ({ TimeUnit, Phase, User }: IModels) => {
+  _Task.associate = ({ Action, Project, User }: IModels) => {
     _Task.Owner = Task.belongsTo(User, { as: 'owner' });
     _Task.Assignee = Task.belongsTo(User, { as: 'assignee' });
-    _Task.Phase = Task.belongsTo(Phase);
-    _Task.TimeUnit = Task.belongsTo(TimeUnit, { as: 'timeUnit' });
+    _Task.Project = Task.belongsTo(Project);
+    _Task.Actions = Task.hasMany(Action);
   };
 
   return Task;

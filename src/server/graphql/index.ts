@@ -2,7 +2,7 @@ import * as path from 'path';
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
 import { IPartialSchemaDefinition, IModels } from './interfaces';
-import fileLoaderTs from './utils/fileLoaderTs';
+import { fileLoaderTs } from './utils';
 
 interface Input {
   models: IModels;

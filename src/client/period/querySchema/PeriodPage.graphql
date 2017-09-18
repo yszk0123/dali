@@ -1,0 +1,8 @@
+#import "./PeriodItem_period.graphql"
+
+query PeriodPage($date: DateOnly) {
+  periods(date: $date) {
+    id
+    ...PeriodItem_period
+  }
+}

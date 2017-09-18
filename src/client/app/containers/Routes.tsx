@@ -1,24 +1,26 @@
 import * as React from 'react';
 import { Switch, withRouter } from 'react-router-dom';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import { RoutesQuery } from 'schema';
-import styled from '../styles/StyledComponents';
-import Theme from '../constants/Theme';
-import * as routesQuery from '../../graphql/querySchema/Routes.graphql';
-import PropsRoute from '../../shared/components/PropsRoute';
-import PropsPrivateRoute from '../../shared/components/PropsPrivateRoute';
-import withScrollSpy from '../components/withScrollSpy';
-import FixedHeader from '../components/FixedHeader';
-import LoginPage from './LoginPage';
+import { RoutesQuery as Query } from 'schema';
+import { styled } from '../../shared/styles';
+import { Theme } from '../../shared/constants';
+import * as QUERY from '../querySchema/Routes.graphql';
+import {
+  PropsRoute,
+  PropsPrivateRoute,
+  FixedHeader,
+  withScrollSpy,
+} from '../../shared/components';
+import { LoginPage } from '../../login';
+import { GroupPage, GroupListPage } from '../../group';
+import { ProjectPage } from '../../project';
+import { ActionPage } from '../../action';
+import { SignupPage } from '../../signup';
+import { TaskPage } from '../../task';
+import { ProfilePage } from '../../profile';
+import { PeriodPage } from '../../period';
+import { ReportPage } from '../../report';
 import NavBar from './NavBar';
-import GroupPage from './GroupPage';
-import ProjectPage from './ProjectPage';
-import TaskPage from './TaskPage';
-import SignupPage from './SignupPage';
-import PhasePage from './PhasePage';
-import ProfilePage from './ProfilePage';
-import TimeUnitPage from './TimeUnitPage';
-import ReportPage from './ReportPage';
 
 const SCROLL_HEIGHT = 44;
 const Z_INDEX = 1000;
@@ -28,7 +30,7 @@ const MainContent = styled.div`padding: 0 0;`;
 interface OwnProps {}
 
 type Props = QueryProps &
-  RoutesQuery & {
+  Query & {
     y: number | null;
     isLogin: boolean;
   };
@@ -46,22 +48,27 @@ export function Routes({ y, isLogin }: Props) {
           <PropsPrivateRoute
             exact
             path="/"
-            component={TimeUnitPage}
+            component={PeriodPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/groups/:groupId/phases"
-            component={PhasePage}
+            path="/groups/:groupId/tasks"
+            component={TaskPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/projects/:projectId/phases"
-            component={PhasePage}
+            path="/groups/:groupId"
+            component={GroupPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
             path="/groups"
-            component={GroupPage}
+            component={GroupListPage}
+            isLogin={isLogin}
+          />
+          <PropsPrivateRoute
+            path="/projects/:projectId/tasks"
+            component={TaskPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
@@ -70,8 +77,8 @@ export function Routes({ y, isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/phases"
-            component={PhasePage}
+            path="/tasks"
+            component={TaskPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
@@ -80,8 +87,8 @@ export function Routes({ y, isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/timeUnits/:date"
-            component={TimeUnitPage}
+            path="/periods/:date"
+            component={PeriodPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
@@ -90,13 +97,13 @@ export function Routes({ y, isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/tasks/:taskId"
-            component={TaskPage}
+            path="/actions/:actionId"
+            component={ActionPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/timeUnits"
-            component={TimeUnitPage}
+            path="/periods"
+            component={PeriodPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
@@ -113,7 +120,7 @@ export function Routes({ y, isLogin }: Props) {
 }
 
 const withData = compose(
-  graphql<RoutesQuery, OwnProps, Props>(routesQuery, {
+  graphql<Query, OwnProps, Props>(QUERY, {
     props: ({ data }) => ({
       isLogin: data && data.currentUser,
     }),

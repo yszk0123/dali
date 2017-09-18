@@ -4,14 +4,13 @@ type Task {
   title: String!
   description: String
   done: Boolean!
-  phase: Phase
-  timeUnit: TimeUnit
+  project: Project
+  actions(used: Boolean, done: Boolean): [Action]
   assignee: User
 }
 
 enum TaskOrderField {
   TITLE
-  PRIORITY
   CREATED_AT
   UPDATED_AT
 }
@@ -22,12 +21,10 @@ input TaskOrder {
 }
 
 type Query {
-  task(id: ID!): Task
   tasks(
+    groupId: ID
+    projectId: ID
     done: Boolean
-    used: Boolean
-    phaseId: ID
-    timeUnitId: ID
     limit: ListLimit
     offset: ListOffset
     orderBy: TaskOrder
@@ -38,24 +35,27 @@ type RemoveTaskPayload {
   removedTaskId: ID
 }
 
+type MoveActionToTaskPayload {
+  action: Action
+  sourceTask: Task
+  targetTask: Task
+}
+
 type Mutation {
   createTask(
-    title: String!
+    title: String
     description: String
     done: Boolean
-    phaseId: ID
-    timeUnitId: ID
+    projectId: ID
   ): Task
   updateTask(
     taskId: ID!
     title: String
     description: String
     done: Boolean
-    phaseId: ID
-    timeUnitId: ID
+    projectId: ID
   ): Task
   removeTask(taskId: ID!): RemoveTaskPayload
-  setPhaseToTask(phaseId: ID!, taskId: ID!): Task
-  setTimeUnitToTask(timeUnitId: ID!, taskId: ID!): Task
-  setOrCreateTimeUnitToTask(date: DateOnly!, position: Int, taskId: ID!): Task
+  moveActionToTask(actionId: ID!, taskId: ID!): MoveActionToTaskPayload
+  setProjectToTask(taskId: ID!, projectId: ID!): Task
 }

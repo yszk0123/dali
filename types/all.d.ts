@@ -55,9 +55,3 @@ declare module 'merge-graphql-schemas' {
   export function mergeResolvers(_: any[]): any;
   export function mergeTypes(_: any[]): any;
 }
-
-// Workaround for react-dnd
-declare namespace __ReactDnd {
-  const DragDropContextProvider: any;
-  export { DragDropContextProvider };
-}

@@ -1,6 +1,6 @@
 import { camelCase, omitBy, isUndefined } from 'lodash';
 import { IResolvers, IModels, IContext } from '../interfaces';
-import resolver from '../utils/resolver';
+import { resolver } from '../utils';
 
 interface Input {
   models: IModels;
@@ -15,6 +15,7 @@ export default function createResolvers({
       projects: resolver(Group.Projects),
     },
     Query: {
+      group: resolver(Group),
       groups: resolver(Group, { list: true }),
     },
     Mutation: {

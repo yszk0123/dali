@@ -1,5 +1,5 @@
 import { IModels, IResolvers } from '../interfaces';
-import resolver from '../utils/resolver';
+import { resolver } from '../utils';
 
 interface Input {
   models: IModels;

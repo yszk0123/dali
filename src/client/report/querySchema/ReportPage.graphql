@@ -1,0 +1,19 @@
+query ReportPage($date: DateOnly!) {
+  periods(date: $date) {
+    id
+    date
+    actions {
+      id
+      title
+      done
+      task {
+        id
+        title
+        project {
+          id
+          title
+        }
+      }
+    }
+  }
+}

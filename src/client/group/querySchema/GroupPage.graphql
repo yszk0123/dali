@@ -1,0 +1,9 @@
+query GroupPage($groupId: ID!) {
+  group(id: $groupId) {
+    id
+    title
+  }
+  currentUser {
+    id
+  }
+}

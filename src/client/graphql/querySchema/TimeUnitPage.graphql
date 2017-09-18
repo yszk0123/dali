@@ -1,8 +1,0 @@
-#import "./TimeUnitItem_timeUnit.graphql"
-
-query TimeUnitPage($date: DateOnly) {
-  timeUnits(date: $date) {
-    id
-    ...TimeUnitItem_timeUnit
-  }
-}

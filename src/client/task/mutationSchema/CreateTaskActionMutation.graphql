@@ -1,0 +1,24 @@
+#import "../querySchema/TaskActionItem.graphql"
+
+mutation CreateTaskAction(
+  $title: String!
+  $description: String
+  $done: Boolean
+  $taskId: ID!
+  $periodId: ID
+) {
+  createAction(
+    title: $title
+    description: $description
+    done: $done
+    taskId: $taskId
+    periodId: $periodId
+  ) {
+    id
+    task {
+      id
+      title
+    }
+    ...TaskActionItem_action
+  }
+}

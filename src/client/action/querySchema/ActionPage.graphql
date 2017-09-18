@@ -1,0 +1,16 @@
+#import "./ActionPage_action.graphql"
+#import "./ActionPage_tasks.graphql"
+
+query ActionPage($actionId: ID!) {
+  action(id: $actionId) {
+    id
+    ...ActionPage_action
+  }
+  tasks(done: false, orderBy: { field: TITLE, direction: ASC }) {
+    id
+    ...ActionPage_tasks
+  }
+  currentUser {
+    id
+  }
+}

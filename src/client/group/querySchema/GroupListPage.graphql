@@ -1,0 +1,9 @@
+query GroupListPage {
+  groups {
+    id
+    title
+  }
+  currentUser {
+    id
+  }
+}

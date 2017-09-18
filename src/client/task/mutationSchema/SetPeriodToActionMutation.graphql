@@ -1,0 +1,8 @@
+#import "../querySchema/TaskActionItem.graphql"
+
+mutation SetPeriodToAction($date: DateOnly!, $position: Int, $actionId: ID!) {
+  setOrCreatePeriodToAction(date: $date, position: $position, actionId: $actionId) {
+    id
+    ...TaskActionItem_action
+  }
+}

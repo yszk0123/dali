@@ -1,0 +1,13 @@
+#import "./AddActionToPeriodForm_tasks.graphql"
+#import "./AddActionToPeriodForm_actions.graphql"
+
+query AddActionToPeriodForm {
+  tasks(done: false) {
+    id
+    ...AddActionToPeriodForm_tasks
+  }
+  actions(used: false) {
+    id
+    ...AddActionToPeriodForm_actions
+  }
+}

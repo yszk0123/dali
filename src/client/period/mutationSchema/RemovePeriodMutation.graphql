@@ -1,0 +1,5 @@
+mutation RemovePeriod($periodId: ID!) {
+  removePeriod(periodId: $periodId) {
+    removedPeriodId
+  }
+}

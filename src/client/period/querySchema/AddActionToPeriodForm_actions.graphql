@@ -1,0 +1,8 @@
+fragment AddActionToPeriodForm_actions on Action {
+  id
+  title
+  task {
+    id
+    title
+  }
+}

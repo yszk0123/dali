@@ -1,4 +1,0 @@
-fragment PhaseItem_projects on Project {
-  id
-  title
-}

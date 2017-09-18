@@ -11,9 +11,9 @@ export type IModels = {
   Group: any;
   Member: any;
   Project: any;
+  Action: any;
   Task: any;
-  Phase: any;
-  TimeUnit: any;
+  Period: any;
   User: any;
 };
 

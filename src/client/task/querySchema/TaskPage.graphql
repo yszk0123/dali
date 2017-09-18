@@ -1,0 +1,32 @@
+#import "./TaskItem_task.graphql"
+#import "./TaskItem_projects.graphql"
+
+query TaskPage(
+  $groupId: ID
+  $projectId: ID
+  $taskDone: Boolean
+  $actionUsed: Boolean
+) {
+  tasks(
+    groupId: $groupId
+    projectId: $projectId
+    limit: 100
+    done: $taskDone
+  ) {
+    id
+    title
+    ...TaskItem_task
+  }
+  projects(
+    done: false
+    groupId: $groupId
+    orderBy: { field: TITLE, direction: ASC }
+  ) {
+    id
+    title
+    ...TaskItem_projects
+  }
+  currentUser {
+    id
+  }
+}

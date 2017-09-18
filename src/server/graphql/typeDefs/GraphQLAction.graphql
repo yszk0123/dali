@@ -1,0 +1,64 @@
+type Action {
+  id: ID!
+  owner: User!
+  title: String!
+  description: String
+  done: Boolean!
+  task: Task
+  period: Period
+}
+
+enum ActionOrderField {
+  TITLE
+  PRIORITY
+  CREATED_AT
+  UPDATED_AT
+}
+
+input ActionOrder {
+  field: ActionOrderField!
+  direction: OrderDirection!
+}
+
+type Query {
+  action(id: ID!): Action
+  actions(
+    done: Boolean
+    used: Boolean
+    taskId: ID
+    periodId: ID
+    limit: ListLimit
+    offset: ListOffset
+    orderBy: ActionOrder
+  ): [Action]
+}
+
+type RemoveActionPayload {
+  removedActionId: ID
+}
+
+type Mutation {
+  createAction(
+    title: String!
+    description: String
+    done: Boolean
+    taskId: ID
+    periodId: ID
+  ): Action
+  updateAction(
+    actionId: ID!
+    title: String
+    description: String
+    done: Boolean
+    taskId: ID
+    periodId: ID
+  ): Action
+  removeAction(actionId: ID!): RemoveActionPayload
+  setTaskToAction(taskId: ID!, actionId: ID!): Action
+  setPeriodToAction(periodId: ID!, actionId: ID!): Action
+  setOrCreatePeriodToAction(
+    date: DateOnly!
+    position: Int
+    actionId: ID!
+  ): Action
+}

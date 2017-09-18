@@ -1,0 +1,16 @@
+#import "../querySchema/PeriodItem_period.graphql"
+
+mutation CreatePeriod(
+  $description: String
+  $date: DateOnly!
+  $position: Int
+) {
+  createPeriod(description: $description, date: $date, position: $position) {
+    id
+    actions {
+      id
+      title
+    }
+    ...PeriodItem_period
+  }
+}

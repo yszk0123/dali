@@ -1,20 +1,20 @@
 import { camelCase, omitBy, isUndefined } from 'lodash';
 import { IResolvers, IModels, IContext } from '../interfaces';
-import resolver from '../utils/resolver';
+import { resolver } from '../utils';
 
 interface Input {
   models: IModels;
 }
 
 export default function createResolvers({
-  models: { Project, Phase, Group },
+  models: { Project, Task, Group },
 }: Input): IResolvers {
   return {
     Project: {
       owner: resolver(Project.Owner),
       group: resolver(Project.Group),
       members: resolver(Project.Members, { list: true }),
-      phases: resolver(Project.Phases, { list: true }),
+      tasks: resolver(Project.Tasks, { list: true }),
     },
     Query: {
       projects: resolver(Project, { list: true }),
@@ -52,8 +52,8 @@ export default function createResolvers({
 
         return { removedProjectId: projectId };
       },
-      addPhaseToProject: async (root, { phaseId, projectId }, { user }) => {
-        const phase = await Phase.findById(phaseId, {
+      addTaskToProject: async (root, { taskId, projectId }, { user }) => {
+        const task = await Task.findById(taskId, {
           where: { ownerId: user.id },
           rejectOnEmpty: true,
         });
@@ -62,7 +62,7 @@ export default function createResolvers({
           rejectOnEmpty: true,
         });
 
-        await project.addPhase(phase);
+        await project.addTask(task);
 
         return project;
       },

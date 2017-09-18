@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { graphql, compose, withApollo, QueryProps } from 'react-apollo';
-import { NavBarQuery } from 'schema';
-import * as LogoutMutation from '../../graphql/mutations/LogoutMutation';
-import * as navBarQuery from '../../graphql/querySchema/NavBar.graphql';
-import styled, { ThemedProps } from '../styles/StyledComponents';
-import Button from '../components/Button';
-import Icon from '../components/Icon';
-import DropDownMenu from '../components/DropDownMenu';
+import { NavBarQuery as Query } from 'schema';
+import { Logout } from '../mutations';
+import * as QUERY from '../querySchema/NavBar.graphql';
+import { styled, ThemedProps } from '../../shared/styles';
+import { Button, Icon, DropDownMenu } from '../../shared/components';
 
 const DROPDOWN_Z_INDEX = 999;
 
@@ -48,7 +46,7 @@ const DropDownLink = styled(Link)`
 interface OwnProps {}
 
 type Props = Response &
-  NavBarQuery &
+  Query &
   QueryProps &
   OwnProps & {
     height: number;
@@ -81,7 +79,7 @@ export class NavBar extends React.Component<Props, State> {
       <NavBarWrapper style={{ height }}>
         <NavBarLink to="/groups">GROUP</NavBarLink>
         <NavBarLink to="/projects">PROJECT</NavBarLink>
-        <NavBarLink to="/timeUnits">TIMEUNIT</NavBarLink>
+        <NavBarLink to="/periods">PERIOD</NavBarLink>
         <NavBarLink to="/report">REPORT</NavBarLink>
         <DropDownMenu
           isOpen={isOpen}
@@ -89,8 +87,8 @@ export class NavBar extends React.Component<Props, State> {
           toggleElement={<Icon icon="bars" onClick={this.handleToggle} />}
           onClick={this.handleClose}
         >
-          <DropDownLink to="/phases">
-            <Icon icon="tasks" /> Phases
+          <DropDownLink to="/tasks">
+            <Icon icon="actions" /> Tasks
           </DropDownLink>
           <DropDownLink to="/settings">
             <Icon icon="cog" /> Settings
@@ -98,7 +96,11 @@ export class NavBar extends React.Component<Props, State> {
           <DropDownLink to="/profile">
             <Icon icon="user" /> Profile
           </DropDownLink>
-          {isLogin && <NavBarButton onClick={onLogout}>Logout</NavBarButton>}
+          {isLogin && (
+            <NavBarButton color="default" onClick={onLogout}>
+              Logout
+            </NavBarButton>
+          )}
         </DropDownMenu>
       </NavBarWrapper>
     );
@@ -106,16 +108,16 @@ export class NavBar extends React.Component<Props, State> {
 }
 
 const withData = compose(
-  graphql<Response & NavBarQuery, OwnProps, Props>(navBarQuery, {
+  graphql<Response & Query, OwnProps, Props>(QUERY, {
     props: ({ data }) => ({
       isLogin: data && data.currentUser,
     }),
   }),
   withApollo,
-  graphql<Response, { client: any }, Props>(LogoutMutation.mutation, {
+  graphql<Response, { client: any }, Props>(Logout.mutation, {
     props: ({ data, mutate, ownProps: { client } }) => ({
       onLogout: async () => {
-        mutate && (await mutate(LogoutMutation.buildMutationOptions()));
+        mutate && (await mutate(Logout.build()));
         await client.resetStore();
       },
     }),

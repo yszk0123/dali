@@ -1,17 +1,15 @@
 import * as React from 'react';
 import { graphql, QueryProps } from 'react-apollo';
-import { AppQuery } from 'schema';
-import * as appQuery from '../../graphql/querySchema/App.graphql';
-import ErrorOutput from '../components/ErrorOutput';
-import LoadingIndicator from '../components/LoadingIndicator';
+import { AppQuery as Query } from 'schema';
+import * as QUERY from '../querySchema/App.graphql';
+import { ErrorOutput, LoadingIndicator } from '../../shared/components';
 import Routes from './Routes';
 
-interface AppProps {
-  nickname: string;
-  isLogin: boolean;
-}
-
-type Props = QueryProps & AppQuery & AppProps;
+type Props = QueryProps &
+  Query & {
+    nickname: string;
+    isLogin: boolean;
+  };
 
 export function App({
   nickname,
@@ -31,10 +29,10 @@ export function App({
   return <Routes />;
 }
 
-const withData = graphql<Response & AppQuery, {}, Props>(appQuery, {
+const withData = graphql<Response & Query, {}, Props>(QUERY, {
   props: ({ data }) => ({
     ...data,
-    ...data && data.currentUser,
+    ...(data && data.currentUser),
     isLogin: data && data.currentUser,
   }),
 });

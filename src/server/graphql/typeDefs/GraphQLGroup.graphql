@@ -7,7 +7,7 @@ type Group {
     done: Boolean
     limit: ListLimit
     offset: ListOffset
-    orderBy: PhaseOrder
+    orderBy: TaskOrder
   ): [Project]
 }
 
@@ -27,6 +27,7 @@ input GroupOrder {
 }
 
 type Query {
+  group(id: ID): Group
   groups(
     id: ID
     limit: ListLimit

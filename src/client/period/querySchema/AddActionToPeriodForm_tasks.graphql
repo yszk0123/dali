@@ -1,0 +1,12 @@
+fragment AddActionToPeriodForm_tasks on Task {
+  id
+  title
+  project {
+    id
+    title
+  }
+  actions(used: false) {
+    id
+    title
+  }
+}
