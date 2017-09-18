@@ -92,7 +92,7 @@
     "react-hot-loader": "next",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
-    "react-select": "^1.0.0-rc.5",
+    "react-select": "^1.0.0-rc.10",
     "recompose": "^0.25.0",
     "redux": "^3.7.2",
     "sequelize": "^4.8.0",

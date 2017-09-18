@@ -59,8 +59,8 @@
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-1.3.1.tgz#2cf42972d0931c1060c7d5fa6627fce6bd876f2f"
 
 "@types/morgan@^1.7.32":
-  version "1.7.32"
-  resolved "https://registry.yarnpkg.com/@types/morgan/-/morgan-1.7.32.tgz#fab1ece4dae172e1a377d563d33e3634fa04927d"
+  version "1.7.33"
+  resolved "https://registry.yarnpkg.com/@types/morgan/-/morgan-1.7.33.tgz#149a1f07335d3e51d01753493e6d7173f94f4766"
   dependencies:
     "@types/express" "*"
 
@@ -77,8 +77,8 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.28.tgz#86206716f8d9251cf41692e384264cbd7058ad60"
 
 "@types/react-dnd@^2.0.33":
-  version "2.0.33"
-  resolved "https://registry.yarnpkg.com/@types/react-dnd/-/react-dnd-2.0.33.tgz#b7ce466ef3dfba48c3e11d7151f21b02e0472f58"
+  version "2.0.34"
+  resolved "https://registry.yarnpkg.com/@types/react-dnd/-/react-dnd-2.0.34.tgz#2aaf475ac70767059c6e2f9edfcea9f03200e3c5"
   dependencies:
     "@types/react" "*"
 
@@ -89,8 +89,8 @@
     "@types/react" "*"
 
 "@types/react-redux@^5.0.6":
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-5.0.8.tgz#fb08d5c8188a96fbd9942c711a17aed5dc736752"
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-5.0.9.tgz#9bfe915356aa0b10d1b9211df0121a06aa7ec9af"
   dependencies:
     "@types/react" "*"
     redux "^3.6.0"
@@ -111,8 +111,8 @@
     "@types/react" "*"
 
 "@types/react-select@^1.0.54":
-  version "1.0.56"
-  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-1.0.56.tgz#db404445579208763008b2d64170f2204ae5f45f"
+  version "1.0.57"
+  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-1.0.57.tgz#13ddd443becc9b3d34640a19fd6f2f78fdd7a735"
   dependencies:
     "@types/react" "*"
 
@@ -7348,7 +7348,7 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-select@^1.0.0-rc.5:
+react-select@^1.0.0-rc.10:
   version "1.0.0-rc.10"
   resolved "https://registry.yarnpkg.com/react-select/-/react-select-1.0.0-rc.10.tgz#f137346250f9255c979fbfa21860899928772350"
   dependencies:
