@@ -29,7 +29,6 @@ export default function createAction(
   const _Action = Action as any;
   _Action.associate = ({ Period, Task, User }: IModels) => {
     _Action.Owner = Action.belongsTo(User, { as: 'owner' });
-    _Action.Assignee = Action.belongsTo(User, { as: 'assignee' });
     _Action.Task = Action.belongsTo(Task);
     _Action.Period = Action.belongsTo(Period, { as: 'period' });
   };

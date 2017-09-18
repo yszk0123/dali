@@ -6,7 +6,6 @@ type Action {
   done: Boolean!
   task: Task
   period: Period
-  assignee: User
 }
 
 input ActionOrder {
@@ -203,6 +202,7 @@ type Task {
   done: Boolean!
   project: Project
   actions(used: Boolean, done: Boolean): [Action]
+  assignee: User
 }
 
 input TaskOrder {

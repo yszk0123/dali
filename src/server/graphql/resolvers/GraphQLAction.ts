@@ -14,7 +14,6 @@ export default function createResolvers({
       owner: resolver(Action.Owner),
       task: resolver(Action.Task),
       period: resolver(Action.Period),
-      assignee: resolver(Action.Assignee),
     },
     Query: {
       action: resolver(Action),

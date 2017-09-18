@@ -27,6 +27,7 @@ export default function createResolvers({
           return findOptions;
         },
       }),
+      assignee: resolver(Task.Assignee),
     },
     Query: {
       tasks: resolver(Task, {

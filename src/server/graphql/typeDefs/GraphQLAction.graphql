@@ -6,7 +6,6 @@ type Action {
   done: Boolean!
   task: Task
   period: Period
-  assignee: User
 }
 
 enum ActionOrderField {
@@ -57,5 +56,9 @@ type Mutation {
   removeAction(actionId: ID!): RemoveActionPayload
   setTaskToAction(taskId: ID!, actionId: ID!): Action
   setPeriodToAction(periodId: ID!, actionId: ID!): Action
-  setOrCreatePeriodToAction(date: DateOnly!, position: Int, actionId: ID!): Action
+  setOrCreatePeriodToAction(
+    date: DateOnly!
+    position: Int
+    actionId: ID!
+  ): Action
 }

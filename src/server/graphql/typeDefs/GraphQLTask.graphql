@@ -6,6 +6,7 @@ type Task {
   done: Boolean!
   project: Project
   actions(used: Boolean, done: Boolean): [Action]
+  assignee: User
 }
 
 enum TaskOrderField {

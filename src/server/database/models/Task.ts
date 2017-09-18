@@ -26,6 +26,7 @@ export default function createTask(sequelize: Sequelize, DataTypes: DataTypes) {
   const _Task = Task as any;
   _Task.associate = ({ Action, Project, User }: IModels) => {
     _Task.Owner = Task.belongsTo(User, { as: 'owner' });
+    _Task.Assignee = Task.belongsTo(User, { as: 'assignee' });
     _Task.Project = Task.belongsTo(Project);
     _Task.Actions = Task.hasMany(Action);
   };
