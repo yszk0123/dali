@@ -95,7 +95,7 @@ export type RemoveGroupMutation = {
 
 export type UpdateGroupMutationVariables = {
   groupId: string,
-  title?: string | null,
+  title: string,
 };
 
 export type UpdateGroupMutation = {
@@ -105,11 +105,25 @@ export type UpdateGroupMutation = {
   } | null,
 };
 
-export type GroupPageQuery = {
+export type GroupListPageQuery = {
   groups:  Array< {
     id: string,
     title: string,
   } | null > | null,
+  currentUser:  {
+    id: string,
+  } | null,
+};
+
+export type GroupPageQueryVariables = {
+  groupId: string,
+};
+
+export type GroupPageQuery = {
+  group:  {
+    id: string,
+    title: string,
+  } | null,
   currentUser:  {
     id: string,
   } | null,
@@ -735,11 +749,6 @@ export type ActionPage_tasksFragment = {
     id: string,
     title: string,
   } | null,
-};
-
-export type GroupItem_groupFragment = {
-  id: string,
-  title: string,
 };
 
 export type PeriodActionItem_actionFragment = {

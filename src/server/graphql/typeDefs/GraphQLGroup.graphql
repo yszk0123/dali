@@ -27,6 +27,7 @@ input GroupOrder {
 }
 
 type Query {
+  group(id: ID): Group
   groups(
     id: ID
     limit: ListLimit

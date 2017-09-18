@@ -5,6 +5,9 @@ const Theme: ThemeInterface = {
     fontSize: '1.6rem',
     marginBottom: '1.6rem',
   },
+  block: {
+    padding: '16px',
+  },
   navBar: {
     default: {
       color: '#c8cfef',
@@ -24,6 +27,9 @@ const Theme: ThemeInterface = {
     primary: {
       color: '#112ca5',
     },
+    danger: {
+      color: '#ea1212',
+    },
     default: {
       color: '#666',
     },
@@ -32,6 +38,10 @@ const Theme: ThemeInterface = {
     primary: {
       background: '#112ca5',
       color: '#111111',
+    },
+    danger: {
+      background: '#ea1212',
+      color: '#f8f8ff',
     },
     default: {
       background: '#666',

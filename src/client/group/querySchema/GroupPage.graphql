@@ -1,9 +1,7 @@
-#import "./GroupItem_group.graphql"
-
-query GroupPage {
-  groups {
+query GroupPage($groupId: ID!) {
+  group(id: $groupId) {
     id
-    ...GroupItem_group
+    title
   }
   currentUser {
     id

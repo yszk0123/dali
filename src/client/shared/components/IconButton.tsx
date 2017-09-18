@@ -1,7 +1,9 @@
 import * as React from 'react';
+import { Color } from '../styles';
 import Button from './Button';
 
 interface Props {
+  color: Color;
   icon: string;
   label: boolean;
   onIconClick: React.MouseEventHandler<HTMLElement>;

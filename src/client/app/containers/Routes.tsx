@@ -12,7 +12,7 @@ import {
   withScrollSpy,
 } from '../../shared/components';
 import { LoginPage } from '../../login';
-import { GroupPage } from '../../group';
+import { GroupPage, GroupListPage } from '../../group';
 import { ProjectPage } from '../../project';
 import { ActionPage } from '../../action';
 import { SignupPage } from '../../signup';
@@ -57,13 +57,18 @@ export function Routes({ y, isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/projects/:projectId/tasks"
-            component={TaskPage}
+            path="/groups/:groupId"
+            component={GroupPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
             path="/groups"
-            component={GroupPage}
+            component={GroupListPage}
+            isLogin={isLogin}
+          />
+          <PropsPrivateRoute
+            path="/projects/:projectId/tasks"
+            component={TaskPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute

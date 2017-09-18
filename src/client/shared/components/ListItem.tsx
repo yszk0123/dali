@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 const Main = styled.div`flex-grow: 1;`;
 
 interface Props {
-  children: React.ReactChild;
+  children: React.ReactNode;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
 }

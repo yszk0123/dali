@@ -1,4 +1,5 @@
 import Backdrop from './Backdrop';
+import Block from './Block';
 import Button from './Button';
 import Card from './Card';
 import ClipboardButton from './ClipboardButton';
@@ -26,6 +27,7 @@ import withScrollSpy from './withScrollSpy';
 
 export {
   Backdrop,
+  Block,
   Button,
   Card,
   ClipboardButton,

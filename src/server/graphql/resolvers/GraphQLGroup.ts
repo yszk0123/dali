@@ -15,6 +15,7 @@ export default function createResolvers({
       projects: resolver(Group.Projects),
     },
     Query: {
+      group: resolver(Group),
       groups: resolver(Group, { list: true }),
     },
     Mutation: {

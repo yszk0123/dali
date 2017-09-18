@@ -2,9 +2,9 @@ import { MutationOptions } from 'apollo-client';
 import {
   RemoveGroupMutationVariables as MutationVariables,
   RemoveGroupMutation as Mutation,
-  GroupPageQuery as Query,
+  GroupListPageQuery as Query,
 } from 'schema';
-import * as query from '../querySchema/GroupPage.graphql';
+import * as query from '../querySchema/GroupListPage.graphql';
 import * as mutation from '../mutationSchema/RemoveGroupMutation.graphql';
 
 type QueryVariables = {};

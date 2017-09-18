@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { Color } from '../styles';
 import { KeyCodes } from '../constants';
 import Button from './Button';
 
 interface Props {
+  color: Color;
   onSubmit(value: { value: string; isChanged: boolean }): void;
   value?: string;
 }
@@ -55,12 +57,15 @@ export default class InputWithButton extends React.Component<Props, State> {
   }
 
   render() {
+    const { color } = this.props;
     const { value } = this.state;
 
     return (
       <span>
         <input type="text" value={value} onChange={this.handleChange} />
-        <Button onClick={this.handleSubmit}>Submit</Button>
+        <Button color={color} onClick={this.handleSubmit}>
+          Submit
+        </Button>
       </span>
     );
   }

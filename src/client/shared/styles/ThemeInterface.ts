@@ -1,7 +1,12 @@
+export type Color = 'primary' | 'danger' | 'default';
+
 export default interface ThemeInterface {
   shared: {
     fontSize: string;
     marginBottom: string;
+  };
+  block: {
+    padding: string;
   };
   navBar: {
     default: {
@@ -18,24 +23,19 @@ export default interface ThemeInterface {
   timeLabel: {
     fontSize: string;
   };
-  icon: {
-    primary: {
+  icon: Record<
+    Color,
+    {
       color: string;
-    };
-    default: {
-      color: string;
-    };
-  };
-  button: {
-    primary: {
+    }
+  >;
+  button: Record<
+    Color,
+    {
       background: string;
       color: string;
-    };
-    default: {
-      background: string;
-      color: string;
-    };
-  };
+    }
+  >;
   goButton: {
     space: string;
   };

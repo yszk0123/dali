@@ -96,7 +96,11 @@ export class NavBar extends React.Component<Props, State> {
           <DropDownLink to="/profile">
             <Icon icon="user" /> Profile
           </DropDownLink>
-          {isLogin && <NavBarButton onClick={onLogout}>Logout</NavBarButton>}
+          {isLogin && (
+            <NavBarButton color="default" onClick={onLogout}>
+              Logout
+            </NavBarButton>
+          )}
         </DropDownMenu>
       </NavBarWrapper>
     );

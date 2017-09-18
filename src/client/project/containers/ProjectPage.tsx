@@ -4,7 +4,7 @@ import { ProjectPageQuery as Query } from 'schema';
 import * as QUERY from '../querySchema/ProjectPage.graphql';
 import { CreateProject } from '../mutations';
 import { styled } from '../../shared/styles';
-import { Button, TitleInput } from '../../shared/components';
+import { TitleInput } from '../../shared/components';
 import ProjectItem from './ProjectItem';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;

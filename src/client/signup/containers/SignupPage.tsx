@@ -123,7 +123,11 @@ export class SignupPage extends React.Component<
           />
         </div>
         <div>
-          <Button onClick={this.handleSignupButtonClick} disabled={!canSignup}>
+          <Button
+            color="primary"
+            onClick={this.handleSignupButtonClick}
+            disabled={!canSignup}
+          >
             Signup
           </Button>
           <Link to="/login">Login</Link>

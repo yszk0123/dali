@@ -10,7 +10,7 @@ import {
 import * as task_PAGE_QUERY from '../querySchema/TaskPage.graphql';
 import { CreateTask } from '../mutations';
 import { styled } from '../../shared/styles';
-import { Button, TitleInput } from '../../shared/components';
+import { TitleInput } from '../../shared/components';
 import TaskItem from './TaskItem';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;

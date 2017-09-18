@@ -166,6 +166,7 @@ enum ProjectVisibility {
 type Query {
   action(id: ID!): Action
   actions(done: Boolean, used: Boolean, taskId: ID, periodId: ID, limit: ListLimit, offset: ListOffset, orderBy: ActionOrder): [Action]
+  group(id: ID): Group
   groups(id: ID, limit: ListLimit, offset: ListOffset, orderBy: ProjectOrder): [Group]
   members(limit: ListLimit, offset: ListOffset, order: ListOrder): [Member]
   periods(date: DateOnly, after: DateOnly, before: DateOnly, limit: ListLimit, offset: ListOffset, order: PeriodOrder): [Period]

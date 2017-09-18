@@ -48,8 +48,10 @@ export function ReportPage({
         previousLink={`/report/${prev}`}
         nextLink={`/report/${next}`}
       />
-      <ClipboardButton target="#reportAsMarkdown" />
-      <Button onClick={refetch}>Update</Button>
+      <ClipboardButton color="primary" target="#reportAsMarkdown" />
+      <Button color="default" onClick={refetch}>
+        Update
+      </Button>
       <ul>
         {result.map((action: any) => (
           <li key={action.id}>
