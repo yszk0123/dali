@@ -1,10 +1,11 @@
 import * as React from 'react';
-import * as Select from 'react-select';
 import { Option } from 'react-select';
 import { times } from 'lodash';
 import { DateOnly } from '../../shared/interfaces';
 import { mapPositionToTimeRange, toDaliDate } from '../../shared/utils';
 import { Icon } from '../../shared/components';
+// FIXME: Use import
+const Select = require('react-select').default;
 
 const MAX_PERIODS = 48;
 
