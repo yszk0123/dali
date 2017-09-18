@@ -34,7 +34,7 @@
     "test:ci": "jest --config jestrc.json --coverage && cat ./coverage/lcov.info | coveralls",
     "watch": "run-p watch:client:*",
     "watch:client:client": "webpack-dev-server --hotOnly",
-    "watch:client:graphql-type": "nodemon --exec 'yarn graphql:generate:type' --watch ./src/client/graphql --ext graphql --delay 1",
+    "watch:client:graphql-type": "nodemon --exec 'yarn graphql:generate:type' --watch ./src/client --ext graphql --delay 1",
     "watch:server": "run-p watch:server:*",
     "watch:server:graphql": "yarn build:graphql -- --watch",
     "watch:server:server": "yarn build:server -- --watch",
