@@ -1,0 +1,8 @@
+#import "../querySchema/TaskItem_task.graphql"
+
+mutation SetProjectToTask($taskId: ID!, $projectId: ID!, $actionUsed: Boolean) {
+  setProjectToTask(taskId: $taskId, projectId: $projectId) {
+    id
+    ...TaskItem_task
+  }
+}

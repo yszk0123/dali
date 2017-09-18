@@ -8,7 +8,7 @@ interface GenerateFakeDataInput {
 
 export default async function generateFakeData({
   sequelize,
-  models: { User, Project, Phase, Task, TimeUnit },
+  models: { User, Project, Task, Action, Period },
 }: GenerateFakeDataInput): Promise<any> {
   return await sequelize.transaction(async transaction => {
     const user = await User.create(
@@ -23,29 +23,11 @@ export default async function generateFakeData({
       Project.create({ ownerId: user.id, title: 'Work' }, { transaction }),
       Project.create({ ownerId: user.id, title: 'Private' }, { transaction }),
     ]);
-    const phases = await Promise.all([
-      Phase.create(
-        {
-          ownerId: user.id,
-          projectId: projects[0].id,
-          title: 'Phase A',
-        },
-        { transaction },
-      ),
-      Phase.create(
-        {
-          ownerId: user.id,
-          projectId: projects[1].id,
-          title: 'Phase B',
-        },
-        { transaction },
-      ),
-    ]);
     const tasks = await Promise.all([
       Task.create(
         {
           ownerId: user.id,
-          phaseId: phases[0].id,
+          projectId: projects[0].id,
           title: 'Task A',
         },
         { transaction },
@@ -53,14 +35,32 @@ export default async function generateFakeData({
       Task.create(
         {
           ownerId: user.id,
-          phaseId: phases[1].id,
+          projectId: projects[1].id,
           title: 'Task B',
         },
         { transaction },
       ),
     ]);
-    const timeUnits = await Promise.all([
-      TimeUnit.create(
+    const actions = await Promise.all([
+      Action.create(
+        {
+          ownerId: user.id,
+          taskId: tasks[0].id,
+          title: 'Action A',
+        },
+        { transaction },
+      ),
+      Action.create(
+        {
+          ownerId: user.id,
+          taskId: tasks[1].id,
+          title: 'Action B',
+        },
+        { transaction },
+      ),
+    ]);
+    const periods = await Promise.all([
+      Period.create(
         {
           ownerId: user.id,
           date: '2017-01-20',
@@ -68,7 +68,7 @@ export default async function generateFakeData({
         },
         { transaction },
       ),
-      TimeUnit.create(
+      Period.create(
         {
           ownerId: user.id,
           date: '2017-01-20',
@@ -76,7 +76,7 @@ export default async function generateFakeData({
         },
         { transaction },
       ),
-      TimeUnit.create(
+      Period.create(
         {
           ownerId: user.id,
           date: '2017-01-20',
@@ -84,7 +84,7 @@ export default async function generateFakeData({
         },
         { transaction },
       ),
-      TimeUnit.create(
+      Period.create(
         {
           ownerId: user.id,
           date: '2017-01-21',
@@ -94,6 +94,6 @@ export default async function generateFakeData({
       ),
     ]);
 
-    return { user, projects, phases, tasks, timeUnits };
+    return { user, projects, tasks, actions, periods };
   });
 }

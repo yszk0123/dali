@@ -1,22 +1,22 @@
-#import "../querySchema/TaskPage_task.graphql"
+#import "../querySchema/TaskItem_task.graphql"
 
 mutation UpdateTask(
   $taskId: ID!
   $title: String
   $description: String
   $done: Boolean
-  $phaseId: ID
-  $timeUnitId: ID
+  $projectId: ID
+  $actionUsed: Boolean
 ) {
   updateTask(
     taskId: $taskId
     title: $title
     description: $description
     done: $done
-    phaseId: $phaseId
-    timeUnitId: $timeUnitId
+    projectId: $projectId
   ) {
     id
-    ...TaskPage_task
+    title
+    ...TaskItem_task
   }
 }

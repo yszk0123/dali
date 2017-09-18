@@ -1,0 +1,16 @@
+#import "../querySchema/TaskActionItem.graphql"
+
+mutation MoveActionToTask($actionId: ID!, $taskId: ID!) {
+  moveActionToTask(actionId: $actionId, taskId: $taskId) {
+    action {
+      id
+      ...TaskActionItem_action
+    }
+    sourceTask {
+      id
+    }
+    targetTask {
+      id
+    }
+  }
+}

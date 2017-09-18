@@ -1,5 +1,0 @@
-mutation RemovePhaseTask($taskId: ID!) {
-  removeTask(taskId: $taskId) {
-    removedTaskId
-  }
-}

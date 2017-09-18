@@ -1,8 +1,0 @@
-#import "../querySchema/ProjectItem_project.graphql"
-
-mutation AddPhaseToProject($phaseId: ID!, $projectId: ID!) {
-  addPhaseToProject(phaseId: $phaseId, projectId: $projectId) {
-    id
-    ...ProjectItem_project
-  }
-}

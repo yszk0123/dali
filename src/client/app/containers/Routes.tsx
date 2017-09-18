@@ -14,11 +14,11 @@ import {
 import { LoginPage } from '../../login';
 import { GroupPage } from '../../group';
 import { ProjectPage } from '../../project';
-import { TaskPage } from '../../task';
+import { ActionPage } from '../../action';
 import { SignupPage } from '../../signup';
-import { PhasePage } from '../../phase';
+import { TaskPage } from '../../task';
 import { ProfilePage } from '../../profile';
-import { TimeUnitPage } from '../../timeUnit';
+import { PeriodPage } from '../../period';
 import { ReportPage } from '../../report';
 import NavBar from './NavBar';
 
@@ -48,17 +48,17 @@ export function Routes({ y, isLogin }: Props) {
           <PropsPrivateRoute
             exact
             path="/"
-            component={TimeUnitPage}
+            component={PeriodPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/groups/:groupId/phases"
-            component={PhasePage}
+            path="/groups/:groupId/tasks"
+            component={TaskPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/projects/:projectId/phases"
-            component={PhasePage}
+            path="/projects/:projectId/tasks"
+            component={TaskPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
@@ -72,8 +72,8 @@ export function Routes({ y, isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/phases"
-            component={PhasePage}
+            path="/tasks"
+            component={TaskPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
@@ -82,8 +82,8 @@ export function Routes({ y, isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/timeUnits/:date"
-            component={TimeUnitPage}
+            path="/periods/:date"
+            component={PeriodPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
@@ -92,13 +92,13 @@ export function Routes({ y, isLogin }: Props) {
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/tasks/:taskId"
-            component={TaskPage}
+            path="/actions/:actionId"
+            component={ActionPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute
-            path="/timeUnits"
-            component={TimeUnitPage}
+            path="/periods"
+            component={PeriodPage}
             isLogin={isLogin}
           />
           <PropsPrivateRoute

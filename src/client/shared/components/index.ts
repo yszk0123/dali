@@ -18,7 +18,7 @@ import ListItem from './ListItem';
 import LoadingIndicator from './LoadingIndicator';
 import PropsPrivateRoute from './PropsPrivateRoute';
 import PropsRoute from './PropsRoute';
-import TaskLabel from './TaskLabel';
+import ActionLabel from './ActionLabel';
 import TitleInput from './TitleInput';
 import TitlePlaceholder from './TitlePlaceholder';
 import TitleSelect from './TitleSelect';
@@ -45,7 +45,7 @@ export {
   LoadingIndicator,
   PropsPrivateRoute,
   PropsRoute,
-  TaskLabel,
+  ActionLabel,
   TitleInput,
   TitlePlaceholder,
   TitleSelect,

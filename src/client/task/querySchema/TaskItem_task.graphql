@@ -1,0 +1,15 @@
+#import "./TaskActionItem.graphql"
+
+fragment TaskItem_task on Task {
+  id
+  title
+  done
+  project {
+    id
+    title
+  }
+  actions(used: $actionUsed) {
+    id
+    ...TaskActionItem_action
+  }
+}

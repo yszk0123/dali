@@ -13,13 +13,13 @@ type Project {
   group: Group
   visibility: ProjectVisibility!
   members: [Member]
-  phases(
+  tasks(
     projectId: ID
     done: Boolean
     limit: ListLimit
     offset: ListOffset
-    orderBy: PhaseOrder
-  ): [Phase]
+    orderBy: TaskOrder
+  ): [Task]
 }
 
 type RemoveProjectPayload {
@@ -56,6 +56,6 @@ type Mutation {
     groupId: ID
   ): Project
   removeProject(projectId: ID!): RemoveProjectPayload
-  addPhaseToProject(phaseId: ID!, projectId: ID!): Project
+  addTaskToProject(taskId: ID!, projectId: ID!): Project
   setGroupToProject(groupId: ID!, projectId: ID!): Project
 }

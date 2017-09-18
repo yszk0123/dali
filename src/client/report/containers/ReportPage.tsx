@@ -51,16 +51,16 @@ export function ReportPage({
       <ClipboardButton target="#reportAsMarkdown" />
       <Button onClick={refetch}>Update</Button>
       <ul>
-        {result.map((task: any) => (
-          <li key={task.id}>
-            <h3>{task.project}</h3>
+        {result.map((action: any) => (
+          <li key={action.id}>
+            <h3>{action.project}</h3>
             <ul>
-              {task.tasks.map((task: any) => (
-                <li key={task.id}>
-                  <h4>{task.phase}</h4>
+              {action.actions.map((action: any) => (
+                <li key={action.id}>
+                  <h4>{action.task}</h4>
                   <ul>
-                    {task.tasks.map((task: any) => (
-                      <li key={task.id}>{task.title}</li>
+                    {action.actions.map((action: any) => (
+                      <li key={action.id}>{action.title}</li>
                     ))}
                   </ul>
                 </li>
@@ -80,57 +80,57 @@ function filterNonNull<T>(items: (T | null)[]): T[] {
 }
 
 // TODO: Move this logic to server side
-function groupTasks(timeUnits: ReportPageQuery['timeUnits']) {
-  if (!timeUnits) {
+function groupActions(periods: ReportPageQuery['periods']) {
+  if (!periods) {
     return [];
   }
 
   return toPairs(
     groupBy(
       filterNonNull(
-        flatten(filterNonNull(timeUnits).map(t => !!t && t.tasks)),
-      ).map(({ id, done, title, phase }) => {
-        const project = phase && phase.project;
+        flatten(filterNonNull(periods).map(t => !!t && t.actions)),
+      ).map(({ id, done, title, task }) => {
+        const project = task && task.project;
         return {
           id,
           title,
           done,
-          phaseId: (phase && phase.id) || '',
-          phaseTitle: (phase && phase.title) || '',
+          taskId: (task && task.id) || '',
+          taskTitle: (task && task.title) || '',
           projectId: (project && project.id) || '',
           projectTitle: (project && project.title) || DEFAULT_PROJECT_NAME,
         };
       }),
-      task => task.projectId,
+      action => action.projectId,
     ),
-  ).map(([projectId, tasks]) => ({
+  ).map(([projectId, actions]) => ({
     id: projectId,
-    project: tasks[0].projectTitle,
-    tasks: toPairs(
-      groupBy(tasks, (task: any) => task.phaseId),
-    ).map(([phaseId, tasks]) => ({
-      id: phaseId,
-      phase: tasks[0].phaseTitle,
-      tasks: tasks,
+    project: actions[0].projectTitle,
+    actions: toPairs(
+      groupBy(actions, (action: any) => action.taskId),
+    ).map(([taskId, actions]) => ({
+      id: taskId,
+      task: actions[0].taskTitle,
+      actions: actions,
     })),
   }));
 }
 
 function renderAsMarkdown(result: any): string {
   return result
-    .map((task: any) => {
-      const tasksAsString = task.tasks
-        .map((task: any) => {
-          const str = task.tasks
+    .map((action: any) => {
+      const actionsAsString = action.actions
+        .map((action: any) => {
+          const str = action.actions
             .map(
-              (task: any) => `    - [${task.done ? 'x' : ' '}] ${task.title}`,
+              (action: any) => `    - [${action.done ? 'x' : ' '}] ${action.title}`,
             )
             .join('\n');
-          return `- ${task.phase}\n${str}`;
+          return `- ${action.task}\n${str}`;
         })
         .join('\n');
 
-      return `## ${task.project}\n\n${tasksAsString}`;
+      return `## ${action.project}\n\n${actionsAsString}`;
     })
     .join('\n\n');
 }
@@ -142,13 +142,13 @@ const withData = compose(
       fetchPolicy: 'network-only',
     }),
     props: ({ data, ownProps: { match } }) => {
-      const result = data && groupTasks(data.timeUnits);
+      const result = data && groupActions(data.periods);
       return {
         ...data,
         date: match.params.date || getToday(),
         result,
         markdown: renderAsMarkdown(result),
-        loading: data && (data.loading || !data.timeUnits),
+        loading: data && (data.loading || !data.periods),
       };
     },
   }),

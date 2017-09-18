@@ -1,112 +1,152 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
-import { TaskPageQuery } from 'schema';
-import * as TASK_PAGE_QUERY from '../querySchema/TaskPage.graphql';
-import { UpdateTask } from '../mutations';
-import { styled } from '../../shared/styles';
 import {
-  Icon,
-  List,
-  ListItem,
-  TitleInput,
-  TitleSelect,
-} from '../../shared/components';
+  TaskPageQuery,
+  TaskPageQueryVariables,
+  TaskItem_taskFragment,
+  TaskActionItem_actionFragment,
+} from 'schema';
+import * as task_PAGE_QUERY from '../querySchema/TaskPage.graphql';
+import { CreateTask } from '../mutations';
+import { styled } from '../../shared/styles';
+import { Button, TitleInput } from '../../shared/components';
+import TaskItem from './TaskItem';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;
+
+const TaskItemWrapper = styled.div`margin: 1.6rem 0;`;
+
+const TitleInputWrapper = styled.div`margin: 1.6rem 0.8rem;`;
 
 type Data = Response & TaskPageQuery;
 
 type OwnProps = RouteComponentProps<any> & {
-  queryVariables: {};
+  queryVariables: TaskPageQueryVariables;
 };
 
 type Props = QueryProps &
-  OwnProps &
-  TaskPageQuery & {
+  TaskPageQuery &
+  OwnProps & {
     isLogin: boolean;
-    updateTitle(title: string): void;
-    setPhase(phaseId: string): void;
+    createTask(title: string): void;
   };
 
 interface State {
-  title: string;
+  taskDone: boolean;
+  actionUsed: boolean;
 }
 
 export class TaskPage extends React.Component<
   ChildProps<Props, Response>,
   State
 > {
-  render() {
-    const { isLogin, task, phases, updateTitle, setPhase } = this.props;
+  state = { taskDone: false, actionUsed: false };
 
-    if (!isLogin || !task || !phases) {
+  private handleTaskDoneChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { refetch } = this.props;
+    const taskDone = !!event.target.checked;
+
+    this.setState<'taskDone'>({ taskDone }, () => {
+      refetch({ taskDone });
+    });
+  };
+
+  private handleActionDoneChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { refetch } = this.props;
+    const actionUsed = !!event.target.checked;
+
+    this.setState<'actionUsed'>({ actionUsed }, () => {
+      refetch({ actionUsed });
+    });
+  };
+
+  render() {
+    const {
+      isLogin,
+      tasks,
+      projects,
+      createTask,
+      queryVariables,
+    } = this.props;
+    const { taskDone, actionUsed } = this.state;
+
+    if (!isLogin) {
       return <span>Loading...</span>;
     }
 
-    const mappedPhases = (phases || []).map(
-      phase =>
-        phase && {
-          id: phase.id,
-          title: `${(phase.project && phase.project.title) ||
-            ''} > ${phase.title}`,
-        },
-    );
-
-    const phaseTitle = (task.phase && task.phase.title) || '';
-
     return (
       <Wrapper>
-        <List>
-          <ListItem leftIcon={<Icon icon="tasks" />}>
-            <TitleSelect
-              defaultLabel="Phase"
-              fullWidth
-              selectedId={(task.phase && task.phase.id) || null}
-              onChange={setPhase}
-              items={mappedPhases}
-            />
-          </ListItem>
-          <ListItem leftIcon={<Icon icon="list" />}>
-            <TitleInput fullWidth title={task.title} onChange={updateTitle} />
-          </ListItem>
-        </List>
+        <label htmlFor="taskDone">TaskDone: </label>
+        <input
+          id="taskDone"
+          type="checkbox"
+          checked={taskDone}
+          onChange={this.handleTaskDoneChange}
+        />
+        <label htmlFor="actionUsed">ActionUsed: </label>
+        <input
+          id="actionUsed"
+          type="checkbox"
+          checked={actionUsed}
+          onChange={this.handleActionDoneChange}
+        />
+        {tasks &&
+          tasks.map(
+            task =>
+              task && (
+                <TaskItemWrapper key={task.id}>
+                  <TaskItem
+                    task={task}
+                    projects={projects}
+                    queryVariables={queryVariables}
+                  />
+                </TaskItemWrapper>
+              ),
+          )}
+        <TitleInputWrapper>
+          <TitleInput
+            defaultLabel="New Task"
+            title=""
+            fullWidth
+            onChange={createTask}
+          />
+        </TitleInputWrapper>
       </Wrapper>
     );
   }
 }
 
 const withData = compose(
-  graphql<Data, OwnProps, Props>(TASK_PAGE_QUERY, {
+  graphql<Data, OwnProps, Props>(task_PAGE_QUERY, {
     options: ({ match }) => ({
       variables: {
-        taskId: match.params.taskId,
+        taskDone: false,
+        actionUsed: false,
+        groupId: match.params.groupId,
+        projectId: match.params.projectId,
       },
       fetchPolicy: 'network-only',
     }),
     props: ({ data, ownProps: { match } }) => ({
-      data,
       ...data,
-      isLogin: data && data.currentUser,
       queryVariables: {
-        taskId: match.params.taskId,
+        taskDone: false,
+        actionUsed: false,
+        groupId: match.params.groupId,
+        projectId: match.params.projectId,
       },
+      isLogin: data && data.currentUser,
     }),
   }),
-  graphql<Data, Props, Props>(UpdateTask.mutation, {
-    props: ({ mutate, ownProps: { task, queryVariables } }) => ({
-      updateTitle: (title: string) =>
-        task &&
-        mutate &&
-        mutate(
-          UpdateTask.build({ taskId: task.id, title }, queryVariables, task),
-        ),
-      setPhase: (phaseId: string) =>
-        task &&
-        mutate &&
-        mutate(
-          UpdateTask.build({ taskId: task.id, phaseId }, queryVariables, task),
-        ),
+  graphql<Data, OwnProps, Props>(CreateTask.mutation, {
+    props: ({ mutate, ownProps: { queryVariables } }) => ({
+      createTask: (title: string) =>
+        mutate && mutate(CreateTask.build({ title }, queryVariables)),
     }),
   }),
 );

@@ -1,0 +1,8 @@
+fragment ActionPage_tasks on Task {
+  id
+  title
+  project {
+    id
+    title
+  }
+}

@@ -1,0 +1,13 @@
+fragment PeriodActionItem_action on Action {
+  id
+  title
+  done
+  task {
+    id
+    title
+    project {
+      id
+      title
+    }
+  }
+}

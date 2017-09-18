@@ -30,7 +30,7 @@ type Props = QueryProps & OwnProps & GroupItemProps;
 export function GroupItem({ group, remove, updateTitle, setGroup }: Props) {
   return (
     <Wrapper>
-      <Link to={`/groups/${group.id}/phases`}>
+      <Link to={`/groups/${group.id}/tasks`}>
         <Icon icon="arrow-right" />
       </Link>
       <TitleInputWrapper>

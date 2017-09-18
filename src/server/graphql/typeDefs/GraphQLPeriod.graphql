@@ -1,0 +1,51 @@
+type Period {
+  id: ID!
+  owner: User!
+  description: String
+  date: DateOnly!
+  position: Int
+  actions: [Action]
+}
+
+type RemovePeriodPayload {
+  removedPeriodId: ID
+}
+
+type MoveActionToPeriodPayload {
+  action: Action
+  sourcePeriod: Period
+  targetPeriod: Period
+}
+
+enum PeriodOrderField {
+  DATE
+  POSITION
+}
+
+input PeriodOrder {
+  field: PeriodOrderField!
+  direction: OrderDirection!
+}
+
+type Query {
+  periods(
+    date: DateOnly
+    after: DateOnly
+    before: DateOnly
+    limit: ListLimit
+    offset: ListOffset
+    order: PeriodOrder
+  ): [Period]
+}
+
+type Mutation {
+  createPeriod(description: String, date: DateOnly!, position: Int): Period
+  updatePeriod(
+    periodId: ID!
+    description: String
+    date: DateOnly
+    position: Int
+  ): Period
+  moveActionToPeriod(actionId: ID!, periodId: ID!): MoveActionToPeriodPayload
+  removePeriod(periodId: ID!): RemovePeriodPayload
+}

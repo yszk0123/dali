@@ -1,0 +1,5 @@
+mutation RemoveTaskAction($actionId: ID!) {
+  removeAction(actionId: $actionId) {
+    removedActionId
+  }
+}

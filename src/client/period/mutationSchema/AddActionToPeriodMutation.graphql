@@ -1,0 +1,8 @@
+#import "../querySchema/PeriodActionItem_action.graphql"
+
+mutation AddActionToPeriod($periodId: ID!, $actionId: ID!) {
+  action: setPeriodToAction(periodId: $periodId, actionId: $actionId) {
+    id
+    ...PeriodActionItem_action
+  }
+}

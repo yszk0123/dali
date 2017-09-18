@@ -1,5 +1,0 @@
-mutation RemoveTimeUnit($timeUnitId: ID!) {
-  removeTimeUnit(timeUnitId: $timeUnitId) {
-    removedTimeUnitId
-  }
-}

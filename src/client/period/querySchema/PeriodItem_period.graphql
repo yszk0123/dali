@@ -1,0 +1,11 @@
+#import "./PeriodActionItem_action.graphql"
+
+fragment PeriodItem_period on Period {
+  id
+  date
+  position
+  actions {
+    id
+    ...PeriodActionItem_action
+  }
+}

@@ -1,3 +1,3 @@
 export default {
-  TASK: 'TASK',
+  action: 'action',
 };

@@ -1,0 +1,18 @@
+#import "../querySchema/PeriodItem_period.graphql"
+
+mutation UpdatePeriod(
+  $description: String
+  $date: DateOnly
+  $position: Int
+  $periodId: ID!
+) {
+  updatePeriod(
+    description: $description
+    date: $date
+    position: $position
+    periodId: $periodId
+  ) {
+    id
+    ...PeriodItem_period
+  }
+}

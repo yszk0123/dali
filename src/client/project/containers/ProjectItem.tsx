@@ -40,7 +40,7 @@ export function ProjectItem({
 }: Props) {
   return (
     <Wrapper>
-      <Link to={`/projects/${project.id}/phases`}>
+      <Link to={`/projects/${project.id}/tasks`}>
         <Icon icon="arrow-right" />
       </Link>
       <TitleSelect

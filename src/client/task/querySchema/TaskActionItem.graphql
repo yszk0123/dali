@@ -1,0 +1,8 @@
+fragment TaskActionItem_action on Action {
+  id
+  title
+  done
+  task {
+    id
+  }
+}

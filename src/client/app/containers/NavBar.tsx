@@ -79,7 +79,7 @@ export class NavBar extends React.Component<Props, State> {
       <NavBarWrapper style={{ height }}>
         <NavBarLink to="/groups">GROUP</NavBarLink>
         <NavBarLink to="/projects">PROJECT</NavBarLink>
-        <NavBarLink to="/timeUnits">TIMEUNIT</NavBarLink>
+        <NavBarLink to="/periods">PERIOD</NavBarLink>
         <NavBarLink to="/report">REPORT</NavBarLink>
         <DropDownMenu
           isOpen={isOpen}
@@ -87,8 +87,8 @@ export class NavBar extends React.Component<Props, State> {
           toggleElement={<Icon icon="bars" onClick={this.handleToggle} />}
           onClick={this.handleClose}
         >
-          <DropDownLink to="/phases">
-            <Icon icon="tasks" /> Phases
+          <DropDownLink to="/tasks">
+            <Icon icon="actions" /> Tasks
           </DropDownLink>
           <DropDownLink to="/settings">
             <Icon icon="cog" /> Settings

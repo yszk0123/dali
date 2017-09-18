@@ -1,0 +1,21 @@
+#import "../querySchema/TaskItem_task.graphql"
+
+mutation CreateTask(
+  $title: String
+  $description: String
+  $done: Boolean
+  $projectId: ID
+  $actionUsed: Boolean
+) {
+  createTask(
+    title: $title
+    description: $description
+    done: $done
+    projectId: $projectId
+  ) {
+    id
+    done
+    title
+    ...TaskItem_task
+  }
+}

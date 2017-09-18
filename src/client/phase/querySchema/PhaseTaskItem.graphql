@@ -1,8 +1,0 @@
-fragment PhaseTaskItem_task on Task {
-  id
-  title
-  done
-  phase {
-    id
-  }
-}

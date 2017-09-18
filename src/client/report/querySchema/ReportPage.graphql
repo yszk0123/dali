@@ -1,12 +1,12 @@
 query ReportPage($date: DateOnly!) {
-  timeUnits(date: $date) {
+  periods(date: $date) {
     id
     date
-    tasks {
+    actions {
       id
       title
       done
-      phase {
+      task {
         id
         title
         project {

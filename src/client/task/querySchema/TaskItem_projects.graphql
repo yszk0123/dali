@@ -1,0 +1,4 @@
+fragment TaskItem_projects on Project {
+  id
+  title
+}
