@@ -3,8 +3,8 @@ import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
 import { subDays, addDays } from 'date-fns';
 import { flatten, groupBy, toPairs, repeat } from 'lodash';
-import { ReportPageQuery } from 'schema';
-import * as REPORT_PAGE_QUERY from '../querySchema/ReportPage.graphql';
+import { ReportPageQuery as Query } from 'schema';
+import * as QUERY from '../querySchema/ReportPage.graphql';
 import { Button, ClipboardButton, DateSwitch } from '../../shared/components';
 import { styled } from '../../shared/styles';
 import { getToday, toDaliDate } from '../../shared/utils';
@@ -21,7 +21,7 @@ const TextArea = styled.textarea`
 type OwnProps = RouteComponentProps<any>;
 
 type Props = QueryProps &
-  ReportPageQuery &
+  Query &
   OwnProps & {
     date: DateOnly;
     result: any;
@@ -80,7 +80,7 @@ function filterNonNull<T>(items: (T | null)[]): T[] {
 }
 
 // TODO: Move this logic to server side
-function groupActions(periods: ReportPageQuery['periods']) {
+function groupActions(periods: Query['periods']) {
   if (!periods) {
     return [];
   }
@@ -137,7 +137,7 @@ function renderAsMarkdown(result: any): string {
 }
 
 const withData = compose(
-  graphql<Response & ReportPageQuery, OwnProps, Props>(REPORT_PAGE_QUERY, {
+  graphql<Response & Query, OwnProps, Props>(QUERY, {
     options: ({ match }) => ({
       variables: { date: match.params.date || getToday() },
       fetchPolicy: 'network-only',

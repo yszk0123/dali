@@ -19,13 +19,12 @@ type OwnProps = {
   group: GroupItem_groupFragment;
 };
 
-interface GroupItemProps {
-  remove(): void;
-  updateTitle(title: string): void;
-  setGroup(groupId: string): void;
-}
-
-type Props = QueryProps & OwnProps & GroupItemProps;
+type Props = QueryProps &
+  OwnProps & {
+    remove(): void;
+    updateTitle(title: string): void;
+    setGroup(groupId: string): void;
+  };
 
 export function GroupItem({ group, remove, updateTitle, setGroup }: Props) {
   return (

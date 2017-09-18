@@ -7,21 +7,19 @@ import {
   ChildProps,
   QueryProps,
 } from 'react-apollo';
-import { SignupPageQuery } from 'schema';
+import { SignupPageQuery as Query } from 'schema';
 import { styled } from '../../shared/styles';
 import { Signup } from '../mutations';
-import * as SIGNUP_PAGE_QUERY from '../querySchema/SignupPage.graphql';
+import * as QUERY from '../querySchema/SignupPage.graphql';
 import { Button } from '../../shared/components';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;
 
-interface SignupPageProps {
+type Props = QueryProps & {
   isSignup: boolean;
   from: any;
   signup(input: Signup.MutationVariables): void;
-}
-
-type Props = QueryProps & SignupPageProps;
+};
 
 type State = {
   email: string;
@@ -136,7 +134,7 @@ export class SignupPage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Response & SignupPageQuery>(SIGNUP_PAGE_QUERY, {
+  graphql<Response & Query>(QUERY, {
     props: ({ data }) => ({
       isSignup: data && data.currentUser,
     }),

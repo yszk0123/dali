@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
 import { RouteComponentProps } from 'react-router-dom';
-import { ActionPageQuery } from 'schema';
-import * as action_PAGE_QUERY from '../querySchema/ActionPage.graphql';
+import { ActionPageQuery as Query } from 'schema';
+import * as QUERY from '../querySchema/ActionPage.graphql';
 import { UpdateAction } from '../mutations';
 import { styled } from '../../shared/styles';
 import {
@@ -15,7 +15,7 @@ import {
 
 const Wrapper = styled.div`font-size: 1.6rem;`;
 
-type Data = Response & ActionPageQuery;
+type Data = Response & Query;
 
 type OwnProps = RouteComponentProps<any> & {
   queryVariables: {};
@@ -23,7 +23,7 @@ type OwnProps = RouteComponentProps<any> & {
 
 type Props = QueryProps &
   OwnProps &
-  ActionPageQuery & {
+  Query & {
     isLogin: boolean;
     updateTitle(title: string): void;
     setTask(taskId: string): void;
@@ -77,7 +77,7 @@ export class ActionPage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Data, OwnProps, Props>(action_PAGE_QUERY, {
+  graphql<Data, OwnProps, Props>(QUERY, {
     options: ({ match }) => ({
       variables: {
         actionId: match.params.actionId,

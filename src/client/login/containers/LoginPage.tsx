@@ -7,21 +7,19 @@ import {
   ChildProps,
   QueryProps,
 } from 'react-apollo';
-import { LoginPageQuery } from 'schema';
+import { LoginPageQuery as Query } from 'schema';
 import { styled } from '../../shared/styles';
 import { Login } from '../mutations';
-import * as LOGIN_PAGE_QUERY from '../querySchema/LoginPage.graphql';
+import * as QUERY from '../querySchema/LoginPage.graphql';
 import { Button } from '../../shared/components';
 
 const Wrapper = styled.div`font-size: 1.6rem;`;
 
-interface LoginPageProps {
+type Props = QueryProps & {
   isLogin: boolean;
   from: any;
   login(_: { email: string; password: string }): void;
-}
-
-type Props = QueryProps & LoginPageProps;
+};
 
 type State = {
   email: string;
@@ -116,7 +114,7 @@ export class LoginPage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Response & LoginPageQuery>(LOGIN_PAGE_QUERY, {
+  graphql<Response & Query>(QUERY, {
     props: ({ data }) => ({
       isLogin: data && data.currentUser,
     }),

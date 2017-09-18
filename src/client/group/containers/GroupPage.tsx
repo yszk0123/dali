@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import { GroupPageQuery } from 'schema';
-import * as GROUP_PAGE from '../querySchema/GroupPage.graphql';
+import { GroupPageQuery as Query } from 'schema';
+import * as QUERY from '../querySchema/GroupPage.graphql';
 import { CreateGroup } from '../mutations';
 import { styled } from '../../shared/styles';
 import { Button, TitleInput } from '../../shared/components';
@@ -13,16 +13,15 @@ const StyledGroupItem = styled(GroupItem)`margin: 1rem;`;
 
 const TitleInputWrapper = styled.div`margin: 1.6rem 0.8rem;`;
 
-interface GroupPageProps {
-  isLogin: boolean;
-  createGroup(title: string): void;
-}
-
 interface OwnProps {}
 
-type Data = Response & GroupPageQuery;
+type Data = Response & Query;
 
-type Props = QueryProps & GroupPageQuery & GroupPageProps;
+type Props = QueryProps &
+  Query & {
+    isLogin: boolean;
+    createGroup(title: string): void;
+  };
 
 interface State {}
 
@@ -65,7 +64,7 @@ export class GroupPage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Data, OwnProps, Props>(GROUP_PAGE, {
+  graphql<Data, OwnProps, Props>(QUERY, {
     options: {
       fetchPolicy: 'network-only',
     },

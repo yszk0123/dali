@@ -23,13 +23,12 @@ type OwnProps = {
   groups: (ProjectItem_groupsFragment | null)[];
 };
 
-interface ProjectItemProps {
-  remove(): void;
-  updateTitle(title: string): void;
-  setGroup(groupId: string): void;
-}
-
-type Props = QueryProps & OwnProps & ProjectItemProps;
+type Props = QueryProps &
+  OwnProps & {
+    remove(): void;
+    updateTitle(title: string): void;
+    setGroup(groupId: string): void;
+  };
 
 export function ProjectItem({
   project,

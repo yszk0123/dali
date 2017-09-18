@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import { ProjectPageQuery } from 'schema';
-import * as PROJECT_PAGE_QUERY from '../querySchema/ProjectPage.graphql';
+import { ProjectPageQuery as Query } from 'schema';
+import * as QUERY from '../querySchema/ProjectPage.graphql';
 import { CreateProject } from '../mutations';
 import { styled } from '../../shared/styles';
 import { Button, TitleInput } from '../../shared/components';
@@ -13,12 +13,12 @@ const StyledProjectItem = styled(ProjectItem)`margin: 1rem;`;
 
 const TitleInputWrapper = styled.div`margin: 1.6rem 0.8rem;`;
 
-type Data = Response & ProjectPageQuery;
+type Data = Response & Query;
 
 interface OwnProps {}
 
 type Props = QueryProps &
-  ProjectPageQuery & {
+  Query & {
     isLogin: boolean;
     createProject(title: string): void;
   };
@@ -71,7 +71,7 @@ export class ProjectPage extends React.Component<
 }
 
 const withData = compose(
-  graphql<Data, OwnProps, Props>(PROJECT_PAGE_QUERY, {
+  graphql<Data, OwnProps, Props>(QUERY, {
     options: {
       fetchPolicy: 'network-only',
     },

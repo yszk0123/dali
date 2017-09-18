@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Switch, withRouter } from 'react-router-dom';
 import { graphql, compose, QueryProps, ChildProps } from 'react-apollo';
-import { RoutesQuery } from 'schema';
+import { RoutesQuery as Query } from 'schema';
 import { styled } from '../../shared/styles';
 import { Theme } from '../../shared/constants';
-import * as ROUTES_QUERY from '../querySchema/Routes.graphql';
+import * as QUERY from '../querySchema/Routes.graphql';
 import {
   PropsRoute,
   PropsPrivateRoute,
@@ -30,7 +30,7 @@ const MainContent = styled.div`padding: 0 0;`;
 interface OwnProps {}
 
 type Props = QueryProps &
-  RoutesQuery & {
+  Query & {
     y: number | null;
     isLogin: boolean;
   };
@@ -115,7 +115,7 @@ export function Routes({ y, isLogin }: Props) {
 }
 
 const withData = compose(
-  graphql<RoutesQuery, OwnProps, Props>(ROUTES_QUERY, {
+  graphql<Query, OwnProps, Props>(QUERY, {
     props: ({ data }) => ({
       isLogin: data && data.currentUser,
     }),

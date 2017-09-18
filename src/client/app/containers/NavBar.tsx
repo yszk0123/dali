@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { graphql, compose, withApollo, QueryProps } from 'react-apollo';
-import { NavBarQuery } from 'schema';
+import { NavBarQuery as Query } from 'schema';
 import { Logout } from '../mutations';
-import * as NAV_BAR_QUERY from '../querySchema/NavBar.graphql';
+import * as QUERY from '../querySchema/NavBar.graphql';
 import { styled, ThemedProps } from '../../shared/styles';
 import { Button, Icon, DropDownMenu } from '../../shared/components';
 
@@ -46,7 +46,7 @@ const DropDownLink = styled(Link)`
 interface OwnProps {}
 
 type Props = Response &
-  NavBarQuery &
+  Query &
   QueryProps &
   OwnProps & {
     height: number;
@@ -104,7 +104,7 @@ export class NavBar extends React.Component<Props, State> {
 }
 
 const withData = compose(
-  graphql<Response & NavBarQuery, OwnProps, Props>(NAV_BAR_QUERY, {
+  graphql<Response & Query, OwnProps, Props>(QUERY, {
     props: ({ data }) => ({
       isLogin: data && data.currentUser,
     }),
