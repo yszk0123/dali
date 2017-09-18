@@ -123,7 +123,8 @@ function renderAsMarkdown(result: any): string {
         .map((action: any) => {
           const str = action.actions
             .map(
-              (action: any) => `    - [${action.done ? 'x' : ' '}] ${action.title}`,
+              (action: any) =>
+                `    - [${action.done ? 'x' : ' '}] ${action.title}`,
             )
             .join('\n');
           return `- ${action.task}\n${str}`;

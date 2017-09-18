@@ -66,13 +66,7 @@ export class TaskPage extends React.Component<
   };
 
   render() {
-    const {
-      isLogin,
-      tasks,
-      projects,
-      createTask,
-      queryVariables,
-    } = this.props;
+    const { isLogin, tasks, projects, createTask, queryVariables } = this.props;
     const { taskDone, actionUsed } = this.state;
 
     if (!isLogin) {

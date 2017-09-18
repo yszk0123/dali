@@ -37,10 +37,7 @@ export function build(
         actions: [],
       },
     },
-    update: (
-      store,
-      { data: { createTask: task } = { createTask: null } },
-    ) => {
+    update: (store, { data: { createTask: task } = { createTask: null } }) => {
       const data = store.readQuery<Query>({ query, variables });
       if (!data.tasks) {
         return;

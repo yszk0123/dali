@@ -34,17 +34,13 @@ export function build(
         return;
       }
 
-      const oldPeriodProxy = store.readFragment<
-        PeriodItem_periodFragment
-      >({
+      const oldPeriodProxy = store.readFragment<PeriodItem_periodFragment>({
         fragment: PeriodItem_period,
         fragmentName: 'PeriodItem_period',
         variables,
         id: dataIdFromObject(sourcePeriod),
       });
-      const newPeriodProxy = store.readFragment<
-        PeriodItem_periodFragment
-      >({
+      const newPeriodProxy = store.readFragment<PeriodItem_periodFragment>({
         fragment: PeriodItem_period,
         fragmentName: 'PeriodItem_period',
         variables,

@@ -1,10 +1,7 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import { IModels } from '../../graphql/interfaces';
 
-export default function createTask(
-  sequelize: Sequelize,
-  DataTypes: DataTypes,
-) {
+export default function createTask(sequelize: Sequelize, DataTypes: DataTypes) {
   const Task = sequelize.define(
     'task',
     {

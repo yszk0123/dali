@@ -99,13 +99,21 @@ const withData = compose(
         action &&
         mutate &&
         mutate(
-          UpdateAction.build({ actionId: action.id, title }, queryVariables, action),
+          UpdateAction.build(
+            { actionId: action.id, title },
+            queryVariables,
+            action,
+          ),
         ),
       setTask: (taskId: string) =>
         action &&
         mutate &&
         mutate(
-          UpdateAction.build({ actionId: action.id, taskId }, queryVariables, action),
+          UpdateAction.build(
+            { actionId: action.id, taskId },
+            queryVariables,
+            action,
+          ),
         ),
     }),
   }),

@@ -1,7 +1,10 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import { IModels } from '../../graphql/interfaces';
 
-export default function createAction(sequelize: Sequelize, DataTypes: DataTypes) {
+export default function createAction(
+  sequelize: Sequelize,
+  DataTypes: DataTypes,
+) {
   const Action = sequelize.define(
     'action',
     {

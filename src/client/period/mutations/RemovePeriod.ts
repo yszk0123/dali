@@ -27,10 +27,7 @@ export function build(
         removedPeriodId: periodId,
       },
     },
-    update: (
-      store,
-      { data: { removePeriod } = { removePeriod: null } },
-    ) => {
+    update: (store, { data: { removePeriod } = { removePeriod: null } }) => {
       const data = store.readQuery<Query>({ query, variables });
       if (!data.periods || !removePeriod) {
         return;

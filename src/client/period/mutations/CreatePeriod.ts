@@ -31,10 +31,7 @@ export function build(
         actions: [],
       },
     },
-    update: (
-      store,
-      { data: { createPeriod } = { createPeriod: null } },
-    ) => {
+    update: (store, { data: { createPeriod } = { createPeriod: null } }) => {
       const data = store.readQuery<Query>({ query, variables });
       if (!data.periods) {
         return;

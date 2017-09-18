@@ -140,7 +140,10 @@ const actionTarget: DropTargetSpec<Props> = {
     }
 
     const { actionId } = monitor.getItem() as any;
-    if (task.actions && task.actions.find(action => !!action && action.id === actionId)) {
+    if (
+      task.actions &&
+      task.actions.find(action => !!action && action.id === actionId)
+    ) {
       return { canMove: false };
     }
 
@@ -176,8 +179,7 @@ const withData = compose(
   graphql<Response, OwnProps, Props>(RemoveTask.mutation, {
     props: ({ mutate, ownProps: { task, queryVariables } }) => ({
       removeTask: () =>
-        mutate &&
-        mutate(RemoveTask.build({ taskId: task.id }, queryVariables)),
+        mutate && mutate(RemoveTask.build({ taskId: task.id }, queryVariables)),
     }),
   }),
   graphql<Response, OwnProps, Props>(UpdateTask.mutation, {
@@ -185,11 +187,7 @@ const withData = compose(
       updateTitle: (title: string) =>
         mutate &&
         mutate(
-          UpdateTask.build(
-            { title, taskId: task.id },
-            queryVariables,
-            task,
-          ),
+          UpdateTask.build({ title, taskId: task.id }, queryVariables, task),
         ),
       toggleDone: () =>
         mutate &&

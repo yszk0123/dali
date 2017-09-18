@@ -38,12 +38,7 @@ type Props = QueryProps &
     date: DateOnly;
   };
 
-export function PeriodPage({
-  date,
-  periods,
-  loading,
-  queryVariables,
-}: Props) {
+export function PeriodPage({ date, periods, loading, queryVariables }: Props) {
   if (loading) {
     return null;
   }

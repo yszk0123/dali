@@ -169,9 +169,7 @@ const withData = compose(
     props: ({ mutate, ownProps: { date, period, queryVariables } }) => ({
       removePeriod: (title: string) =>
         mutate &&
-        mutate(
-          RemovePeriod.build({ periodId: period.id }, queryVariables),
-        ),
+        mutate(RemovePeriod.build({ periodId: period.id }, queryVariables)),
     }),
   }),
   graphql<Response, OwnProps, Props>(UpdatePeriod.mutation, {

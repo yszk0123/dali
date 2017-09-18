@@ -63,7 +63,8 @@ export class CreatePeriodActionForm extends React.Component<
 
   private handleAdd = (actionId: string) => {
     const { addAction, actions } = this.props;
-    const action = actions && actions.find(action => !!action && action.id === actionId);
+    const action =
+      actions && actions.find(action => !!action && action.id === actionId);
     if (!action) {
       this.setState({ error: 'action not found' });
       return;

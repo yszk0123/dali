@@ -44,11 +44,7 @@ export default function createResolvers({
       }),
     },
     Mutation: {
-      createPeriod: async (
-        root,
-        { description, date, position },
-        { user },
-      ) => {
+      createPeriod: async (root, { description, date, position }, { user }) => {
         return await Period.create({
           ownerId: user.id,
           description,
