@@ -81,7 +81,7 @@
     "merge-graphql-schemas": "^1.1.2",
     "morgan": "^1.8.2",
     "normalize.css": "^7.0.0",
-    "pg": "6.4.1",
+    "pg": "^6.4.2",
     "pg-hstore": "^2.3.2",
     "react": "^15.5.4",
     "react-apollo": "^1.4.15",
